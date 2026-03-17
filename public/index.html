@@ -23,6 +23,48 @@
   </header>
 
   <main class="container">
+    <!-- 今日日报入口 -->
+    <section class="section" id="todaySection">
+      <a class="today-card" id="todayCard" href="#">
+        <div class="today-left">
+          <div class="today-date">
+            <span class="today-day" id="todayDay">--</span>
+            <div class="today-meta">
+              <span class="today-month" id="todayMonth">--</span>
+              <span class="today-weekday" id="todayWeekday">--</span>
+            </div>
+          </div>
+        </div>
+        <div class="today-right">
+          <div class="today-label">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            今日 AI 日报
+          </div>
+          <div class="today-tags" id="todayTags"></div>
+          <span class="today-arrow">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </div>
+      </a>
+    </section>
+
+    <!-- 历史日报入口 -->
+    <section class="section" id="historySection">
+      <div class="section-header">
+        <h2>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          历史日报
+        </h2>
+        <button class="toggle-btn" id="calendarToggle">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          展开日历
+        </button>
+      </div>
+      <div class="calendar-wrap" id="calendarWrap">
+        <div class="calendar" id="calendar"></div>
+      </div>
+    </section>
+
     <!-- 关键词热力图 -->
     <section class="section" id="heatmapSection">
       <div class="section-header">
@@ -48,24 +90,21 @@
         <canvas id="trendChart"></canvas>
       </div>
     </section>
-
-    <!-- 日报导航 -->
-    <section class="section" id="reportsSection">
-      <div class="section-header">
-        <h2>
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          每日日报
-        </h2>
-      </div>
-      <div class="reports-grid" id="reportsGrid">
-        <p class="loading">加载日报列表...</p>
-      </div>
-    </section>
   </main>
 
   <footer class="site-footer">
     <p>AI Pulse · 由 Claude 自动化生成</p>
   </footer>
+
+  <!-- 日报弹出层 -->
+  <div class="report-overlay" id="reportOverlay">
+    <div class="report-paper" id="reportPaper">
+      <button class="report-close" id="reportClose">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <iframe class="report-iframe" id="reportIframe" src="about:blank"></iframe>
+    </div>
+  </div>
 
   <div class="tooltip" id="tooltip"></div>
 

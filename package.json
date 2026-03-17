@@ -1,0 +1,12 @@
+{
+  "name": "ai-daily-report",
+  "version": "1.0.0",
+  "description": "AI 领域每日日报 - 关键词热力图与趋势追踪",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.0"
+  }
+}

@@ -80,10 +80,18 @@ Ai-report/
 **reports-index.json**:
 - 追加: `{ "date": "YYYY-MM-DD", "file": "YYYY-MM-DD.html", "title": "AI Daily Report | YYYY.MM.DD" }`
 
-### 4. Git 提交部署
+### 4. 本地验证
+
+提交前必须用 preview 工具验证：
+1. `preview_start` 启动 dev server（ai-pulse）
+2. 验证日报页 `/reports/YYYY-MM-DD.html`：内容、Tab 切换、无控制台报错
+3. 验证主页 `/`：今日卡片出现、热力图更新、趋势图更新、无报错
+4. 有问题先修复再提交
+
+### 5. Git 提交部署
 
 ```bash
-git add reports/ data/
+git add reports/ data/ public/
 git commit -m "daily: YYYY-MM-DD AI 日报更新"
 git push
 ```

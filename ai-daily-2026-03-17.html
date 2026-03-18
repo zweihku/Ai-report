@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily Report | 2026.03.17</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --claude-bg: #FAF9F7;
+    --claude-surface: #FFFFFF;
+    --claude-border: #E8E5E0;
+    --claude-text-primary: #1A1714;
+    --claude-text-secondary: #6B6560;
+    --claude-text-tertiary: #9B9590;
+    --claude-accent: #DA7756;
+    --claude-accent-light: #F5E6DF;
+    --claude-accent-dark: #C4623F;
+    --claude-tag-blue: #E8F0FE;
+    --claude-tag-blue-text: #3B6CB5;
+    --claude-tag-green: #E6F4EA;
+    --claude-tag-green-text: #2D7A3F;
+    --claude-tag-purple: #F0E6FA;
+    --claude-tag-purple-text: #7B3FAF;
+    --claude-tag-amber: #FEF3E2;
+    --claude-tag-amber-text: #B5752D;
+    --claude-tag-red: #FDE8E8;
+    --claude-tag-red-text: #B53B3B;
+    --claude-card-shadow: 0 1px 3px rgba(26, 23, 20, 0.06), 0 1px 2px rgba(26, 23, 20, 0.04);
+    --claude-card-shadow-hover: 0 4px 12px rgba(26, 23, 20, 0.08), 0 2px 4px rgba(26, 23, 20, 0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+    background: var(--claude-bg);
+    color: var(--claude-text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 48px 0 40px;
+    border-bottom: 1px solid var(--claude-border);
+    margin-bottom: 32px;
+  }
+
+  .header-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--claude-accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .header .date {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    font-weight: 400;
+  }
+
+  .header .edition-note {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    margin-top: 8px;
+  }
+
+  /* Tab Navigation */
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 36px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--claude-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .tab-btn:hover {
+    color: var(--claude-text-primary);
+    background: var(--claude-bg);
+  }
+
+  .tab-btn.active {
+    background: var(--claude-accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(218, 119, 86, 0.3);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* Section */
+  .section {
+    margin-bottom: 36px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .section-icon.gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .section-icon.model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .section-icon.product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .section-icon.research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .section-icon.industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  /* Card */
+  .card {
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--claude-card-shadow);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .card:hover {
+    box-shadow: var(--claude-card-shadow-hover);
+  }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .card p {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.75;
+    margin-bottom: 8px;
+  }
+
+  .card p:last-child { margin-bottom: 0; }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .tag-gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .tag-model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .tag-product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .tag-research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .tag-industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+
+  /* Highlight box */
+  .highlight {
+    background: var(--claude-accent-light);
+    border-left: 3px solid var(--claude-accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--claude-accent-dark);
+    line-height: 1.7;
+  }
+
+  /* Stats row */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .stat-item {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--claude-accent);
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--claude-text-tertiary);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  /* Source link */
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 8px;
+    transition: color 0.15s;
+  }
+
+  .source-link:hover { color: var(--claude-accent-dark); text-decoration: underline; }
+
+  /* Tech detail table */
+  .tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .tech-table th, .tech-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .tech-table th {
+    font-weight: 600;
+    color: var(--claude-text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: var(--claude-bg);
+  }
+
+  .tech-table td { color: var(--claude-text-primary); }
+
+  /* Code block for expert view */
+  .code-block {
+    background: #2D2A26;
+    color: #E8E5E0;
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    overflow-x: auto;
+    margin: 12px 0;
+  }
+
+  .code-block .comment { color: #9B9590; }
+  .code-block .keyword { color: #DA7756; }
+  .code-block .string { color: #7DB87D; }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 32px 0;
+    border-top: 1px solid var(--claude-border);
+    margin-top: 48px;
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+  }
+
+  .footer a {
+    color: var(--claude-accent);
+    text-decoration: none;
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .container { padding: 20px 16px 60px; }
+    .header h1 { font-size: 24px; }
+    .tab-btn { font-size: 13px; padding: 10px 8px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* Timeline */
+  .timeline-item {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-left: 4px;
+  }
+
+  .timeline-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--claude-accent);
+    margin-top: 8px;
+    flex-shrink: 0;
+  }
+
+  .timeline-content {
+    flex: 1;
+  }
+
+  .timeline-date {
+    font-size: 12px;
+    color: var(--claude-text-tertiary);
+    font-weight: 500;
+    margin-bottom: 2px;
+  }
+
+  .timeline-text {
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.6;
+  }
+
+  /* Subsection */
+  .subsection-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin: 16px 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  ul.detail-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0;
+  }
+
+  ul.detail-list li {
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.7;
+    padding: 4px 0 4px 16px;
+    position: relative;
+  }
+
+  ul.detail-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--claude-border);
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Header -->
+  <div class="header">
+    <div class="header-logo">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4"/><path d="M12 16V8"/></svg>
+      AI Daily Report
+    </div>
+    <h1>AI 领域日报</h1>
+    <div class="date">2026 年 3 月 17 日 星期二</div>
+    <div class="edition-note">GTC 2026 特别版 -- 覆盖 NVIDIA GTC 主题演讲及过去 24 小时重要 AI 动态</div>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('casual')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      轻松阅读版
+    </button>
+    <button class="tab-btn" onclick="switchTab('intermediate')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+      技术进阶版
+    </button>
+    <button class="tab-btn" onclick="switchTab('expert')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      深度技术版
+    </button>
+  </div>
+
+  <!-- ==================== 版本一：轻松阅读版 ==================== -->
+  <div class="tab-content active" id="tab-casual">
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon gpu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m13 2-2 2.5h3L12 7"/><path d="M10 14v-3"/><path d="M14 14v-3"/><path d="M11 19c-1.7 0-3-1.3-3-3v-2h8v2c0 1.7-1.3 3-3 3Z"/><path d="M12 22v-3"/></svg>
+        </div>
+        <h2 class="section-title">今日头条</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-gpu">GTC 2026</span>
+          黄仁勋放大招：DLSS 5、太空数据中心、还有冰雪奇缘里的 Olaf
+        </div>
+        <p>昨天在圣何塞的 GTC 大会上，黄仁勋穿着标志性的皮夹克发表了两个半小时的主题演讲。最抢眼的发布包括：DLSS 5 将在今年秋天到来，用 AI 直接生成"照片级真实"的游戏画面；全新的 Vera CPU 和 Rubin GPU 芯片平台，性能翻倍；以及一个和迪士尼合作训练的 Olaf 机器人在台上又走又聊天。</p>
+        <p>老黄还放出一个惊人数字：到 2027 年，Blackwell + Vera Rubin 相关订单预计达到 1 万亿美元。</p>
+        <div class="highlight">一句话总结：NVIDIA 要把 AI 芯片送上太空，把 AI 画面做到以假乱真，而且整个行业已经在万亿美元规模赛道上狂奔。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">行业震动</span>
+          "退出 ChatGPT" 运动持续发酵，Claude 登顶应用商店
+        </div>
+        <p>OpenAI 签下五角大楼合同引发的 #QuitGPT 运动已经吸引了超过 250 万人参与。ChatGPT 卸载量暴涨 295%，而拒绝五角大楼军事化 AI 交易的 Anthropic，其 Claude 应用直接冲上了美国 App Store 第一名。</p>
+        <p>Anthropic CEO Dario Amodei 公开表示"我们不能昧着良心答应这个要求"，而超过 30 名 OpenAI 和 Google DeepMind 员工联名支持 Anthropic 的立场。</p>
+        <div class="highlight">一句话总结：AI 公司在"赚钱"还是"守底线"之间的选择，正在由用户用脚投票来裁决。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">新势力</span>
+          图灵奖得主 Yann LeCun 的新公司一出生就融了 10 亿美元
+        </div>
+        <p>从 Meta 出来的 AI 教父 Yann LeCun 创立的 AMI Labs，刚成立四个月就完成了 10.3 亿美元的种子轮融资，估值 35 亿美元，创下欧洲最大种子轮纪录。</p>
+        <p>AMI Labs 在做的事情听起来很科幻 -- "世界模型"，让 AI 不只看文字，而是像人一样理解物理世界如何运作。投资人包括 Jeff Bezos、NVIDIA 和三星。</p>
+        <div class="highlight">一句话总结：学术大牛下场创业，带着对 AI "应该怎么做"的不同答案，而且资本市场完全买账。</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        </div>
+        <h2 class="section-title">值得关注</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">模型</span>
+          GPT-5.4 悄悄更新：能读 100 万字，还能边思考边规划
+        </div>
+        <p>OpenAI 在 3 月 5 日发布了 GPT-5.4，最大亮点是能一次处理相当于一本厚书的文字量（100 万 token），而且新增了"先规划再回答"的思考机制。另外还出了一个 ChatGPT for Excel 的测试版，能直接在表格里用 AI。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-product">产品</span>
+          亚马逊给 Prime 会员配了个 24 小时 AI 家庭医生
+        </div>
+        <p>Amazon 通过旗下 One Medical 推出了免费的 AI 健康助手，Prime 会员可以随时问诊、看化验单、管理处方药。在三分之二的美国人觉得看病太难的当下，这个服务可能会改变不少人的就医习惯。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-product">产品</span>
+          NVIDIA 要让每家公司都有自己的 AI 员工 -- OpenClaw 来了
+        </div>
+        <p>黄仁勋在 GTC 上重点推介了 OpenClaw 和 NemoClaw：一个能帮企业一键部署 AI 智能体的开源系统。AI 智能体可以连接云服务、派出其他 AI 帮手、自动拆分和完成复杂任务。老黄说"今天世界上每家公司都必须有 OpenClaw 战略"。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">裁员</span>
+          Atlassian 裁员 1600 人转投 AI
+        </div>
+        <p>做 Jira 和 Confluence 的 Atlassian 宣布裁掉 10% 的员工（约 1600 人），同时设立两个新的 AI 方向 CTO 职位。CEO 直言"AI 从根本上改变了公司需要的技能组合"。这是科技大公司"用 AI 换人"趋势的又一个信号。</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon product">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        </div>
+        <h2 class="section-title">快讯一览</h2>
+      </div>
+
+      <div class="card">
+        <ul class="detail-list">
+          <li>Google 发布 Gemini 3.1 Flash-Lite，价格低至每百万 token $0.25，响应速度提升 2.5 倍</li>
+          <li>Meta 公布四代自研 AI 芯片（MTIA 300/400/450/500），要减少对 NVIDIA 的依赖</li>
+          <li>Ford 推出 Ford Pro AI，每天分析 10 亿数据点，帮 84 万车队用户降低管理时间</li>
+          <li>DeepSeek V4 多模态模型推迟到 4 月发布，支持文本、图像和视频生成</li>
+          <li>Morgan Stanley 警告：2026 上半年将出现"震惊投资人"的 AI 突破</li>
+          <li>Nissan、比亚迪、吉利、现代宣布基于 NVIDIA Drive Hyperion 开发 L4 自动驾驶</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 版本二：技术进阶版 ==================== -->
+  <div class="tab-content" id="tab-intermediate">
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon gpu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>
+        </div>
+        <h2 class="section-title">GTC 2026 主题演讲重点</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-gpu">硬件</span>
+          Vera Rubin 平台与 DLSS 5 正式发布
+        </div>
+        <p>Jensen Huang 在 GTC 2026 主题演讲中发布了下一代 Vera CPU 和 Rubin GPU 平台，组成 Vera Rubin 模组。相比当前 Blackwell 架构，推理成本降低 10 倍，训练所需 GPU 数量减少 4 倍。</p>
+        <p>DLSS 5 被定位为"自 2018 年 DLSS 发布以来计算机图形学最重大的突破"，核心变化是将生成式 AI 直接嵌入渲染管线，在渲染过程中实时生成照片级光照和材质。预计今年秋季可用。</p>
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-value">10x</div>
+            <div class="stat-label">推理成本降低</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">4x</div>
+            <div class="stat-label">训练 GPU 需求减少</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">$1T</div>
+            <div class="stat-label">2027 年前预计订单</div>
+          </div>
+        </div>
+        <a class="source-link" href="https://www.tomshardware.com/news/live/nvidia-gtc-2026-keynote-live-blog-jensen-huang" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Tom's Hardware 实况
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-gpu">生态</span>
+          NemoClaw + OpenClaw：企业级 AI Agent 开源栈
+        </div>
+        <p>NVIDIA 联合 OpenClaw 推出 NemoClaw，定位为"智能体计算机的开源操作系统"。OpenClaw Agent 支持连接云系统、派生子 Agent、任务分解与调度。NemoClaw 在此基础上增加企业安全层，一条命令即可在本地部署安全模型。</p>
+        <p>配合 DGX Spark 和 DGX Station，NemoClaw 构成了本地开发和部署长时间运行自治 Agent 的完整平台。Huang 强调"每家公司都需要 OpenClaw 战略"。</p>
+        <a class="source-link" href="https://blogs.nvidia.com/blog/gtc-2026-news/" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          NVIDIA Blog
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-gpu">新品</span>
+          Space-1 模组 + Nemotron 联盟
+        </div>
+        <p>NVIDIA 宣布 Space-1 Vera Rubin 模组，目标是将 AI 数据中心部署到太空。同时推出 Nemotron Coalition 开放模型生态，整合六大前沿模型家族：Nemotron、Cosmos、Isaac GR00T、Alpaymayo、BioNeMo 和 Earth-2。</p>
+        <p>自动驾驶方面，Nissan、比亚迪、吉利、五十铃和现代宣布基于 NVIDIA Drive Hyperion 平台构建 L4 级自动驾驶车辆。</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        </div>
+        <h2 class="section-title">模型与产品动态</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">OpenAI</span>
+          GPT-5.4 发布 + ChatGPT for Excel
+        </div>
+        <p>3 月 5 日发布的 GPT-5.4 带来三项关键升级：100 万 token 上下文窗口（API）、执行前 Planning 机制（先规划后回答）、以及 Interrupting 机制（执行中可中断调整）。GDPVal 基准测试中得分 83.0%，达到或超过人类专家水平。</p>
+        <p>同日发布 ChatGPT for Excel (beta)，GPT-5.4 直接嵌入电子表格，并接入 FactSet、Dow Jones Factiva、Moody's 等数据源。另外 Codex Security preview 于 3 月 6 日上线，AI 代码审计工具误报率降低 90% 以上。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">Google</span>
+          Gemini 3.1 Flash-Lite + Workspace 深度整合
+        </div>
+        <p>Google 发布 Gemini 3.1 Flash-Lite：$0.25/M input tokens，TTFT 提速 2.5 倍，输出生成加快 45%。Arena.ai Elo 1432，GPQA Diamond 86.9%。定位效率优先的轻量级推理场景。</p>
+        <p>Gemini 同步深度接入 Google Workspace：Docs 可从邮件和文件自动生成文档；Sheets 在 SpreadsheetBench 上达到 70.48% 的自动化成功率；Drive 新增智能搜索和摘要功能。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">Anthropic</span>
+          Claude 登顶 App Store + 记忆功能全量上线
+        </div>
+        <p>因拒绝五角大楼军事化 AI 交易，Anthropic 获得大量公众支持。Claude 登上美国 App Store 第一名，免费用户增长 60%，日注册量翻四倍，付费订阅翻倍。30+ 名 OpenAI 和 Google DeepMind 员工联署支持 Anthropic 立场。</p>
+        <p>产品方面，3 月份记忆功能（Memory）向所有 Claude 用户开放。Claude Opus 4.6（2 月 5 日）和 Sonnet 4.6（2 月 17 日）此前已发布，1M token 上下文窗口进入 beta。</p>
+        <a class="source-link" href="https://techcrunch.com/2026/03/09/openai-and-google-employees-rush-to-anthropics-defense-in-dod-lawsuit/" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          TechCrunch 报道
+        </a>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon research">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+        </div>
+        <h2 class="section-title">研究与融资</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">融资</span>
+          AMI Labs: 10.3 亿美元种子轮，JEPA 世界模型路线
+        </div>
+        <p>图灵奖得主 Yann LeCun 创立的 AMI Labs 于 3 月 10 日完成 10.3 亿美元种子轮，估值 35 亿美元。核心技术路线是 JEPA（Joint Embedding Predictive Architecture）-- 学习世界的抽象表征，而非像 LLM 那样逐词预测。</p>
+        <p>投资方包括 Bezos Expeditions、NVIDIA、Samsung、Cathay Innovation 等。总部巴黎，在纽约、蒙特利尔和新加坡设有办公室。主攻机器人和制造业应用场景。</p>
+        <a class="source-link" href="https://techcrunch.com/2026/03/09/yann-lecuns-ami-labs-raises-1-03-billion-to-build-world-models/" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          TechCrunch 报道
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">预测</span>
+          Morgan Stanley 警告：变革性 AI 即将到来
+        </div>
+        <p>Morgan Stanley 3 月 13 日发布报告，称美国顶级 AI 实验室前所未有的算力积累正在推动一次重大突破，将在 2026 上半年发生。报告指出 Scaling Law 仍然成立，"变革性 AI"将成为强大的通缩力量，企业高管已在因 AI 效率提升而执行大规模裁员。</p>
+        <a class="source-link" href="https://fortune.com/2026/03/13/elon-musk-morgan-stanley-ai-leap-2026/" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Fortune 报道
+        </a>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h2 class="section-title">行业动态</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">企业</span>
+          本周行业简报
+        </div>
+        <ul class="detail-list">
+          <li><strong>Atlassian</strong>（3.11）：裁员 1600 人（10%），设两个 AI CTO，全面转向 AI 开发</li>
+          <li><strong>Meta</strong>（3.11）：发布 MTIA 300/400/450/500 四代自研 AI 芯片，计划 2027 年底部署；此前与 AMD 签署 $600 亿 GPU 合作协议</li>
+          <li><strong>Ford</strong>（3.10）：推出 Ford Pro AI，基于 Google Cloud，每日分析 10 亿数据点服务 84 万车队用户</li>
+          <li><strong>Amazon</strong>（3 月）：One Medical Health AI Agent 面向 Prime 会员免费开放，24/7 虚拟问诊</li>
+          <li><strong>DeepSeek</strong>：V4 多模态模型延至 4 月发布，支持文本/图像/视频，1M+ token 窗口，MoE 架构升级</li>
+          <li><strong>前 CIA 顾问 Jim Rickards</strong>（3.17）：警告 AI 基建快速扩张可能正在制造危险泡沫</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 版本三：深度技术版 ==================== -->
+  <div class="tab-content" id="tab-expert">
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon gpu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>
+        </div>
+        <h2 class="section-title">GTC 2026 技术深度解析</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-gpu">硬件</span>
+          Vera Rubin 架构与算力经济学
+        </div>
+        <p>Vera Rubin 是 Blackwell 之后的下一代 GPU 架构，搭配首款自研 Vera CPU，组成统一计算模组。核心指标提升：</p>
+        <table class="tech-table">
+          <thead>
+            <tr>
+              <th>指标</th>
+              <th>Blackwell</th>
+              <th>Vera Rubin</th>
+              <th>变化</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>推理成本/token</td>
+              <td>baseline</td>
+              <td>-90%</td>
+              <td>10x 降低</td>
+            </tr>
+            <tr>
+              <td>训练所需 GPU 数</td>
+              <td>baseline</td>
+              <td>-75%</td>
+              <td>4x 减少</td>
+            </tr>
+            <tr>
+              <td>预计订单 (至 2027)</td>
+              <td>$500B (prev.)</td>
+              <td>$1T (revised)</td>
+              <td>+100%</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>Space-1 模组将 Vera Rubin 适配太空部署场景，面向卫星数据处理和远程推理。Groq LPU 3 为 NVIDIA 去年收购 Groq（$20B 资产收购）后首款集成产品，预计 Q3 出货。</p>
+        <a class="source-link" href="https://www.cnbc.com/2026/03/16/nvidia-gtc-2026-ceo-jensen-huang-keynote-blackwell-vera-rubin.html" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          CNBC 详细报道
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-gpu">渲染</span>
+          DLSS 5: 生成式 AI 进入渲染管线
+        </div>
+        <p>DLSS 5 不再只是传统的超分辨率和帧生成，而是将生成式 AI 直接嵌入渲染管线。核心变化：</p>
+        <ul class="detail-list">
+          <li>实时生成 photorealistic 光照和材质，而非仅对低分辨率帧进行上采样</li>
+          <li>生成过程与渲染同步，不引入额外延迟</li>
+          <li>对比 DLSS 4 的帧生成，DLSS 5 在视觉保真度上有质的飞跃</li>
+          <li>预计 2026 秋季随新驱动发布，需 RTX 50 系列或更高</li>
+        </ul>
+        <div class="highlight">技术意义：DLSS 5 标志着实时渲染从"增强"范式转向"生成"范式。GPU 不再只是加速已有算法，而是 AI 直接参与画面创造。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-gpu">Agent</span>
+          NemoClaw 架构：企业 AI Agent 部署栈
+        </div>
+        <p>NemoClaw 由 NVIDIA 和 OpenClaw 联合开发，定位为 Agentic Computing 的开源 OS。架构分层：</p>
+        <div class="code-block">
+<span class="comment"># NemoClaw Stack Overview</span>
+<span class="keyword">Layer 4</span>: Application Agents (domain-specific)
+<span class="keyword">Layer 3</span>: OpenClaw Runtime (orchestration, sub-agent spawning, scheduling)
+<span class="keyword">Layer 2</span>: NemoClaw Security (auth, sandboxing, audit logging)
+<span class="keyword">Layer 1</span>: Model Backend (Nemotron, third-party, or custom models)
+<span class="keyword">Layer 0</span>: DGX Spark / DGX Station / Cloud
+<span class="comment"># Deploy: single command local install with enterprise security</span>
+        </div>
+        <p>OpenClaw 支持云服务连接、子 Agent 派生、问题分解与调度。NemoClaw 增加企业安全层（身份验证、沙箱、审计日志）。Nemotron Coalition 整合六大模型家族：Nemotron（语言）、Cosmos（世界模型）、Isaac GR00T（机器人）、Alpaymayo（视觉）、BioNeMo（生物计算）、Earth-2（气候模拟）。</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        </div>
+        <h2 class="section-title">模型发布与基准测试</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">OpenAI</span>
+          GPT-5.4 技术细节
+        </div>
+        <p>GPT-5.4 于 3 月 5 日发布，关键架构变更：</p>
+        <table class="tech-table">
+          <thead>
+            <tr>
+              <th>特性</th>
+              <th>GPT-5.3</th>
+              <th>GPT-5.4</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>上下文窗口</td>
+              <td>256K tokens</td>
+              <td>1M tokens (API)</td>
+            </tr>
+            <tr>
+              <td>推理机制</td>
+              <td>Standard CoT</td>
+              <td>Planning + Interrupting</td>
+            </tr>
+            <tr>
+              <td>GDPVal 得分</td>
+              <td>~76%</td>
+              <td>83.0%</td>
+            </tr>
+            <tr>
+              <td>定价 (Pro)</td>
+              <td>--</td>
+              <td>$30/M output tokens</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>Planning 机制在执行前生成结构化计划，Interrupting 允许在推理过程中中断和调整路径。GPT-5.3-Codex（2 月 5 日）速度提升 25%，支持多步骤自主编程。Codex Security（3 月 6 日 preview）是 AI 代码审计工具，误报率降低 90%+。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">Google</span>
+          Gemini 3.1 Flash-Lite 基准对比
+        </div>
+        <table class="tech-table">
+          <thead>
+            <tr>
+              <th>指标</th>
+              <th>Flash-Lite</th>
+              <th>对比</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>价格</td>
+              <td>$0.25/M input</td>
+              <td>极低成本定位</td>
+            </tr>
+            <tr>
+              <td>TTFT</td>
+              <td>2.5x faster</td>
+              <td>vs Gemini 2.5 Flash</td>
+            </tr>
+            <tr>
+              <td>输出速度</td>
+              <td>+45%</td>
+              <td>vs prior version</td>
+            </tr>
+            <tr>
+              <td>Arena.ai Elo</td>
+              <td>1432</td>
+              <td>--</td>
+            </tr>
+            <tr>
+              <td>GPQA Diamond</td>
+              <td>86.9%</td>
+              <td>--</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>定位：高吞吐、低成本推理，适合 classification、extraction、routing 等批量任务。不适合需要深度推理的复杂场景。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">DeepSeek</span>
+          V4 多模态模型状态追踪
+        </div>
+        <p>DeepSeek V4 原计划 3 月发布，目前推迟至 4 月（Whale Lab 3.16 报道确认）。关键预期参数：</p>
+        <ul class="detail-list">
+          <li>架构：MoE (Mixture-of-Experts) 大幅扩展，延续 V3 的效率优势</li>
+          <li>多模态：原生支持文本、图像和视频生成/理解</li>
+          <li>上下文：1M+ token 窗口</li>
+          <li>新机制：Engram conditional memory -- 条件式持久记忆</li>
+          <li>核心定位：deep reasoning + coding</li>
+        </ul>
+        <p>3 月 9 日有用户报告网站模型疑似更新为 "V4 Lite"，但 DeepSeek 官方未确认。腾讯混元新模型也预计同期发布。</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon research">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        </div>
+        <h2 class="section-title">研究前沿与行业分析</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">研究</span>
+          AMI Labs 与 JEPA 世界模型路线
+        </div>
+        <p>LeCun 的 AMI Labs（$1.03B seed, $3.5B valuation）押注 JEPA (Joint Embedding Predictive Architecture) 路线。核心差异在于：LLM 预测 token sequence（逐词预测），而 JEPA 在 embedding 空间中预测（抽象层面理解因果关系）。</p>
+        <div class="code-block">
+<span class="comment"># LLM vs JEPA paradigm</span>
+<span class="keyword">LLM</span>:  input_tokens -> predict next_token  <span class="comment"># surface-level</span>
+<span class="keyword">JEPA</span>: observation -> embed -> predict abstract_representation <span class="comment"># world-level</span>
+<span class="comment"># JEPA learns "how the world works" vs "what word comes next"</span>
+        </div>
+        <p>目标场景：机器人操控、制造业自动化。团队分布巴黎（HQ）、纽约、蒙特利尔、新加坡。投资人：Bezos Expeditions、NVIDIA、Samsung、Cathay Innovation、Greycroft、Hiro Capital、HV Capital。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">分析</span>
+          Meta AI 芯片战略：MTIA 路线图
+        </div>
+        <p>Meta 于 3 月 11 日公布四代自研 AI 芯片路线图，MTIA 400 已在测试中，性能接近竞品水平。MTIA 450/500 计划 2027 年底部署。此前 Meta 与 AMD 签署 5 年 $600 亿协议，采购 6GW Instinct GPU（H2 2026 起交付）。</p>
+        <p>战略目的：减少对 NVIDIA 的单一依赖，但短期内仍大量采购 NVIDIA 和 AMD GPU。MTIA 主要用于推理（inference workloads），训练仍依赖第三方 GPU。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">宏观</span>
+          #QuitGPT 事件的行业影响
+        </div>
+        <p>事件时间线：</p>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-date">2 月 27 日</div>
+            <div class="timeline-text">DOD 要求 Anthropic 开放 Claude 用于"所有合法目的"（含大规模国内监控、自主武器），Anthropic 拒绝。OpenAI CEO Altman 声称立场一致，数小时后签署五角大楼合同。</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-date">2 月 28 日</div>
+            <div class="timeline-text">ChatGPT 卸载量暴涨 295%。#QuitGPT 运动在 24 小时内吸引超过 150 万人参与。</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-date">3 月 1 日</div>
+            <div class="timeline-text">Claude 登顶美国 App Store #1。免费用户增 60%，日注册翻 4 倍，付费订阅翻倍。</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-date">3 月 9 日</div>
+            <div class="timeline-text">30+ 名 OpenAI 和 Google DeepMind 员工（含 Jeff Dean）联署支持 Anthropic。运动参与者超 250 万。</div>
+          </div>
+        </div>
+        <p style="margin-top: 16px;">Amodei 称 OpenAI 方案为 "safety theater"，Altman 回击称拒绝政府合作"对社会有害"。Pentagon 将 Anthropic 列为 supply chain risk。事件正在重塑 AI 公司在 safety 和 government contracts 之间的博弈格局。</p>
+        <a class="source-link" href="https://laikalabs.ai/news/quitgpt-movement-openai-pentagon-deal-mass-exodus" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          完整报道
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">宏观</span>
+          Morgan Stanley: Scaling Law 成立，变革性 AI 迫在眉睫
+        </div>
+        <p>Morgan Stanley 3 月 13 日报告核心论点：</p>
+        <ul class="detail-list">
+          <li>美国顶级 AI 实验室的算力积累达到前所未有水平，scaling law 持续成立</li>
+          <li>2026 H1 将出现"震惊投资人"的 AI 突破</li>
+          <li>Transformative AI 将成为强大的通缩力量 -- AI 工具以极低成本复制人类工作</li>
+          <li>企业高管已在执行大规模裁员（AI 效率替代）</li>
+          <li>AI 泡沫风险同时上升：前 CIA 顾问 Rickards（3.17）警告 AI 基建扩张速度可能制造危险泡沫</li>
+        </ul>
+        <div class="highlight">关键矛盾：Morgan Stanley 一方面认为 AI 突破真实且迫在眉睫，另一方面市场对 AI 基础设施的投资速度已经引发泡沫担忧。两种叙事都有数据支撑，关键在于变革性应用能否足够快地兑现回报。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>AI Daily Report -- 由 Claude 自动生成 | 数据来源截至 2026-03-17 12:00 UTC</p>
+    <p style="margin-top: 8px;">
+      Sources:
+      <a href="https://blogs.nvidia.com/blog/gtc-2026-news/">NVIDIA Blog</a> |
+      <a href="https://techcrunch.com/2026/03/09/openai-and-google-employees-rush-to-anthropics-defense-in-dod-lawsuit/">TechCrunch</a> |
+      <a href="https://fortune.com/2026/03/13/elon-musk-morgan-stanley-ai-leap-2026/">Fortune</a> |
+      <a href="https://www.crescendo.ai/news/latest-ai-news-and-updates">Crescendo AI</a> |
+      <a href="https://www.devflokers.com/blog/ai-breakthroughs-march-2026">devFlokers</a> |
+      <a href="https://www.cnbc.com/2026/03/16/nvidia-gtc-2026-ceo-jensen-huang-keynote-blackwell-vera-rubin.html">CNBC</a>
+    </p>
+  </div>
+</div>
+
+<script>
+function switchTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  const tabs = { casual: 0, intermediate: 1, expert: 2 };
+  document.querySelectorAll('.tab-btn')[tabs[tab]].classList.add('active');
+}
+</script>
+
+</body>
+</html>

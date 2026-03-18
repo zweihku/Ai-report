@@ -1,5 +1,6 @@
 {
   "reports": [
-    { "date": "2026-03-17", "file": "2026-03-17.html", "title": "AI Daily Report | 2026.03.17", "tags": ["GPT-5.4", "QuitGPT", "NVIDIA GTC"] }
+    { "date": "2026-03-17", "file": "2026-03-17.html", "title": "AI Daily Report | 2026.03.17", "tags": ["GPT-5.4", "QuitGPT", "NVIDIA GTC"] },
+    { "date": "2026-03-18", "file": "2026-03-18.html", "title": "AI Daily Report | 2026.03.18", "tags": ["Microsoft Superintelligence", "GTC 2026", "AI Layoffs"] }
   ]
 }

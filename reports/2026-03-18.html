@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily Report | 2026.03.18</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --claude-bg: #FAF9F7;
+    --claude-surface: #FFFFFF;
+    --claude-border: #E8E5E0;
+    --claude-text-primary: #1A1714;
+    --claude-text-secondary: #6B6560;
+    --claude-text-tertiary: #9B9590;
+    --claude-accent: #DA7756;
+    --claude-accent-light: #F5E6DF;
+    --claude-accent-dark: #C4623F;
+    --claude-tag-blue: #E8F0FE;
+    --claude-tag-blue-text: #3B6CB5;
+    --claude-tag-green: #E6F4EA;
+    --claude-tag-green-text: #2D7A3F;
+    --claude-tag-purple: #F0E6FA;
+    --claude-tag-purple-text: #7B3FAF;
+    --claude-tag-amber: #FEF3E2;
+    --claude-tag-amber-text: #B5752D;
+    --claude-tag-red: #FDE8E8;
+    --claude-tag-red-text: #B53B3B;
+    --claude-card-shadow: 0 1px 3px rgba(26, 23, 20, 0.06), 0 1px 2px rgba(26, 23, 20, 0.04);
+    --claude-card-shadow-hover: 0 4px 12px rgba(26, 23, 20, 0.08), 0 2px 4px rgba(26, 23, 20, 0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+    background: var(--claude-bg);
+    color: var(--claude-text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* Back link */
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 8px;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--claude-accent-dark); }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 48px 0 40px;
+    border-bottom: 1px solid var(--claude-border);
+    margin-bottom: 32px;
+  }
+
+  .header-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--claude-accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .header .date {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    font-weight: 400;
+  }
+
+  .header .edition-note {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    margin-top: 8px;
+  }
+
+  /* Tab Navigation */
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 36px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--claude-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .tab-btn:hover {
+    color: var(--claude-text-primary);
+    background: var(--claude-bg);
+  }
+
+  .tab-btn.active {
+    background: var(--claude-accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(218, 119, 86, 0.3);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* Section */
+  .section {
+    margin-bottom: 36px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .section-icon.gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .section-icon.model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .section-icon.product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .section-icon.research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .section-icon.industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  /* Card */
+  .card {
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--claude-card-shadow);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .card:hover {
+    box-shadow: var(--claude-card-shadow-hover);
+  }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .card p {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.75;
+    margin-bottom: 8px;
+  }
+
+  .card p:last-child { margin-bottom: 0; }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .tag-gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .tag-model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .tag-product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .tag-research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .tag-industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+
+  /* Highlight box */
+  .highlight {
+    background: var(--claude-accent-light);
+    border-left: 3px solid var(--claude-accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--claude-accent-dark);
+    line-height: 1.7;
+  }
+
+  /* Stats row */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .stat-item {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--claude-accent);
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--claude-text-tertiary);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  /* Source link */
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 8px;
+    transition: color 0.15s;
+  }
+
+  .source-link:hover { color: var(--claude-accent-dark); text-decoration: underline; }
+
+  /* Tech detail table */
+  .tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .tech-table th, .tech-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .tech-table th {
+    font-weight: 600;
+    color: var(--claude-text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: var(--claude-bg);
+  }
+
+  .tech-table td { color: var(--claude-text-primary); }
+
+  /* Code block for expert view */
+  .code-block {
+    background: #2D2A26;
+    color: #E8E5E0;
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    overflow-x: auto;
+    margin: 12px 0;
+  }
+
+  .code-block .comment { color: #9B9590; }
+  .code-block .keyword { color: #DA7756; }
+  .code-block .string { color: #7DB87D; }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 32px 0;
+    border-top: 1px solid var(--claude-border);
+    margin-top: 48px;
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+  }
+
+  .footer a {
+    color: var(--claude-accent);
+    text-decoration: none;
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .container { padding: 20px 16px 60px; }
+    .header h1 { font-size: 24px; }
+    .tab-btn { font-size: 13px; padding: 10px 8px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* Timeline */
+  .timeline-item {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-left: 4px;
+  }
+
+  .timeline-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--claude-accent);
+    margin-top: 8px;
+    flex-shrink: 0;
+  }
+
+  .timeline-content {
+    flex: 1;
+  }
+
+  .timeline-date {
+    font-size: 12px;
+    color: var(--claude-text-tertiary);
+    font-weight: 500;
+    margin-bottom: 2px;
+  }
+
+  .timeline-text {
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.6;
+  }
+
+  /* Subsection */
+  .subsection-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin: 16px 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  ul.detail-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0;
+  }
+
+  ul.detail-list li {
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.7;
+    padding: 4px 0 4px 16px;
+    position: relative;
+  }
+
+  ul.detail-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--claude-border);
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <a href="/" class="back-link">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+    返回 AI Pulse
+  </a>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-logo">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4"/><path d="M12 16V8"/></svg>
+      AI Daily Report
+    </div>
+    <h1>AI 领域日报</h1>
+    <div class="date">2026 年 3 月 18 日 星期三</div>
+    <div class="edition-note">微软超级智能转型 + GTC 2026 持续发酵 + AI 行业大裁员潮</div>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('casual')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      轻松阅读版
+    </button>
+    <button class="tab-btn" onclick="switchTab('intermediate')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+      技术进阶版
+    </button>
+    <button class="tab-btn" onclick="switchTab('expert')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      深度技术版
+    </button>
+  </div>
+
+  <!-- ==================== 版本一：轻松阅读版 ==================== -->
+  <div class="tab-content active" id="tab-casual">
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon gpu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m13 2-2 2.5h3L12 7"/><path d="M10 14v-3"/><path d="M14 14v-3"/><path d="M11 19c-1.7 0-3-1.3-3-3v-2h8v2c0 1.7-1.3 3-3 3Z"/><path d="M12 22v-3"/></svg>
+        </div>
+        <h2 class="section-title">今日头条</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">重磅</span>
+          微软大换血：Suleyman 全力冲刺"超级智能"
+        </div>
+        <p>微软昨天宣布了一次重大架构调整。之前负责 Copilot 的 AI 掌门人 Mustafa Suleyman 被"解放"了 -- 不再管日常产品，转而全身心投入打造微软自己的超级智能模型。Copilot 的消费端和企业端统一交给了前 Snapchat 高管 Jacob Andreou。</p>
+        <p>Suleyman 说他的目标是"在未来 3 到 5 年为微软打造成本最优、效率最高的专属 AI 模型"。这个信号很明显：微软开始认真准备减少对 OpenAI 的依赖了。</p>
+        <div class="highlight">一句话总结：微软不想只当 OpenAI 的分销商了，它要自己造引擎。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-gpu">GTC 2026</span>
+          GTC 第二天：机器人学会"看一遍就会做"
+        </div>
+        <p>NVIDIA GTC 大会进入第二天，Universal Robots 联合 Scale AI 发布了 UR AI Trainer -- 一个让机器人"看师傅做一遍就学会"的新系统。操作员演示一次动作，机器人就能通过视觉和力觉数据学会并复刻。</p>
+        <p>同时 GIGABYTE 宣布全线支持 Vera Rubin 平台，并计划在台湾建设 AI 工厂。黄仁勋昨天说的"万亿美元订单"仍在持续发酵。</p>
+        <div class="highlight">一句话总结：机器人正在从"按程序干活"进化到"看一遍就会"的新阶段。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">裁员潮</span>
+          科技巨头集体"换人"：Meta 计划裁 20%，Oracle 裁 3 万
+        </div>
+        <p>继昨天 Atlassian 裁员 1600 人之后，今天更大的数字来了：Meta 据报计划裁掉最多 20% 的员工来给 AI 基础设施腾预算，Oracle 也在酝酿裁员 2-3 万人并把 80-100 亿美元重新投向 AI。</p>
+        <p>讽刺的是，消息一出 Meta 股价反涨了 3%，投资人显然觉得"省下来的钱投 AI"是好事。</p>
+        <div class="highlight">一句话总结：2026 年的科技行业主旋律 -- 用 AI 投资取代人力成本，华尔街在鼓掌。</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        </div>
+        <h2 class="section-title">值得关注</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">模型</span>
+          Mistral Small 4 登场：欧洲的 AI 反击
+        </div>
+        <p>法国 AI 公司 Mistral 发布了 Small 4 -- 一个 119B 参数的 MoE 模型，支持多模态输入（文字+图片）和深度推理能力。在欧洲 AI 公司普遍被美国碾压的大背景下，这款模型代表了欧洲最有力的技术回应。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">模型</span>
+          DeepSeek V4 和腾讯混元确认 4 月发布
+        </div>
+        <p>中国 AI 的两张王牌有了明确时间表。DeepSeek V4 是一个万亿参数的多模态模型，能处理文字、图片、视频和音频；腾讯混元也将同期发布。两者都针对国产芯片（华为、寒武纪）做了优化，标志着中国 AI 在自主可控路线上的重要一步。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">融资</span>
+          AI 融资创纪录：2 月单月 1890 亿美元
+        </div>
+        <p>2026 年 2 月，全球 AI 初创公司融资额达到 1890 亿美元，同比暴涨 780%。其中 OpenAI 一家就拿了 1100 亿美元（估值 8400 亿），Anthropic 拿了 300 亿（估值 3800 亿）。83% 的资金流向了前三家公司，机器人领域全年有望突破 200 亿美元。</p>
+        <div class="highlight">一句话总结：AI 投资已经进入"国家级预算"量级，头部效应极度集中。</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon product">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        </div>
+        <h2 class="section-title">快讯一览</h2>
+      </div>
+
+      <div class="card">
+        <ul class="detail-list">
+          <li>Anthropic 成立 Anthropic Institute，专注 AI 进展预测和社会影响研究</li>
+          <li>中国十四五规划将脑机接口、具身智能、6G 列为未来产业重点</li>
+          <li>科罗拉多州 AI 法案 6 月 30 日生效，要求高风险 AI 系统提供文档和透明度</li>
+          <li>xAI 向所有移动端用户开放 Grok 图片和视频生成功能</li>
+          <li>YouTube 超 100 万频道每日使用 AI 创作工具，CEO 称"管理 AI 垃圾内容"是 2026 优先事项</li>
+          <li>Hacker News 更新指南，明确禁止 AI 生成或 AI 编辑的评论</li>
+          <li>机器人融资进入"超级轮"时代：Mind Robotics 等四家一周融了 12 亿美元</li>
+          <li>Nebius Group 宣布 37.5 亿美元融资后股价跌 10.47%</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 版本二：技术进阶版 ==================== -->
+  <div class="tab-content" id="tab-intermediate">
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+        </div>
+        <h2 class="section-title">微软超级智能战略转型</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">战略</span>
+          Copilot 统一 + Suleyman 专注超级智能模型
+        </div>
+        <p>微软 3 月 17 日发布内部备忘录，宣布两项重大调整：一是将消费端和企业端 Copilot 统一归 Jacob Andreou 管理，消除此前的组织碎片化；二是让 Mustafa Suleyman 全职领导去年 11 月成立的 Superintelligence 团队。</p>
+        <p>Suleyman 的核心任务是构建"高 COGS 效率"的企业级模型谱系，包括代码生成、图像、音频和推理等多条模型线。这与 OpenAI 的通用大模型路线形成差异化 -- 微软选择为自身生态量身定制。</p>
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-value">3-5 yr</div>
+            <div class="stat-label">模型谱系建设周期</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">4</div>
+            <div class="stat-label">模型方向（代码/图像/音频/推理）</div>
+          </div>
+        </div>
+        <div class="highlight">技术含义：微软正在构建独立于 OpenAI 的完整模型栈。Suleyman 提到的"enterprise-specific model lineages"暗示针对 Azure/M365/GitHub 场景做深度优化，而非追求通用 AGI。这是一个务实但意义深远的路线分歧。</div>
+        <a class="source-link" href="https://www.cnbc.com/2026/03/17/microsoft-copilot-ai-suleyman.html" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          CNBC 报道
+        </a>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon gpu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>
+        </div>
+        <h2 class="section-title">GTC 2026 第二日重点</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-product">机器人</span>
+          UR AI Trainer：从示教编程到模仿学习
+        </div>
+        <p>Universal Robots 与 Scale AI 合作推出的 UR AI Trainer 代表了工业机器人编程范式的转变。系统同步捕获运动轨迹、力/力矩数据和视觉信息，用于训练 Vision-Language-Action (VLA) 模型。</p>
+        <p>这与传统示教器编程的根本区别在于：不再是精确记录关节角度，而是让机器人理解任务的"意图"。操作员演示后，机器人能泛化到不同摆放位置和环境条件下执行同类任务。</p>
+        <a class="source-link" href="https://nvidianews.nvidia.com/news/ai-agents" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          NVIDIA Newsroom
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-gpu">硬件</span>
+          GIGABYTE 全线支持 Vera Rubin，台湾 AI 工厂计划
+        </div>
+        <p>GIGABYTE 子公司宣布覆盖 Vera Rubin 平台的完整数据中心产品组合，包括服务器、网络交换机和存储解决方案。同时公布台湾 AI 工厂建设计划，进一步巩固台湾在 AI 硬件供应链中的地位。</p>
+        <p>GTC 与 OFC 2026 同期举办，光互连技术成为连接 AI 集群的关键瓶颈解决方案。</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        </div>
+        <h2 class="section-title">模型动态</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">新发布</span>
+          Mistral Small 4：119B MoE 多模态推理模型
+        </div>
+        <p>Mistral 发布 Small 4，采用 MoE 架构（119B 总参数），支持文本和图像输入，具备推理能力。定位为中等规模场景的高性价比选择，在推理 benchmark 上表现接近 GPT-5.3 水平。</p>
+        <p>作为欧洲最具竞争力的 AI 模型，Mistral Small 4 的发布也恰逢 EU AI Act 执行窗口期，Mistral 的合规优势可能成为差异化卖点。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">预告</span>
+          DeepSeek V4：万亿参数 + 国产芯片优化
+        </div>
+        <p>DeepSeek V4 确认 4 月发布，关键技术参数：万亿总参数（MoE，每 token 激活 32B）、原生多模态、100 万+ token 上下文窗口、Engram 条件记忆机制。</p>
+        <p>最值得关注的是其对华为昇腾和寒武纪芯片的深度适配。配合 Apache 2.0 开源协议，这可能是中国 AI 在自主芯片生态上最完整的一次验证。泄露版本 "Healer Alpha" 和 "Hunter Alpha" 已出现在 OpenRouter 上。</p>
+        <table class="tech-table">
+          <tr><th>参数</th><th>规格</th></tr>
+          <tr><td>总参数量</td><td>~1T (MoE)</td></tr>
+          <tr><td>激活参数</td><td>32B / token</td></tr>
+          <tr><td>上下文窗口</td><td>1M+ tokens</td></tr>
+          <tr><td>模态</td><td>文本 / 图像 / 视频 / 音频</td></tr>
+          <tr><td>适配芯片</td><td>华为昇腾 / 寒武纪</td></tr>
+          <tr><td>开源协议</td><td>Apache 2.0</td></tr>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">架构创新</span>
+          Grok 4.20：四 Agent 并行架构
+        </div>
+        <p>xAI 的 Grok 4.20 采用了独特的四 Agent 架构：每个查询由四个专业 Agent 并行处理，各自产出候选答案后由 synthesis 模块合成最终响应。这种设计在复杂推理任务上带来显著提升，但推理成本也相应增加。</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon research">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        </div>
+        <h2 class="section-title">行业与政策</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">裁员</span>
+          AI 驱动的大规模人员替换加速
+        </div>
+        <p>三家大型科技公司本周内接连宣布 AI 导向裁员：</p>
+        <ul class="detail-list">
+          <li>Meta：计划裁员最多 20%，将节省资金投向 AI 基础设施建设</li>
+          <li>Oracle：2-3 万人裁员计划，80-100 亿美元重新分配至 AI 投资</li>
+          <li>Atlassian：已裁 1600 人（10%），CTO Rajeev Rajan 同时离职</li>
+        </ul>
+        <div class="highlight">Morgan Stanley 此前的预测正在兑现："AI 将成为强大的通缩力量，以极低成本复制人类工作。"企业高管的行动比分析师预期更快。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">政策</span>
+          中国十四五规划：智能经济正式提级
+        </div>
+        <p>中国新五年规划将脑机接口、具身智能和 6G 列为未来产业重点方向。3 月 5 日政府工作报告首次明确提出建设"智能经济"，深化"AI+"应用。AI 核心产业规模预计超过 1.2 万亿元。</p>
+        <p>同期，科罗拉多州 AI 法案将于 6 月 30 日生效，EU AI Act 义务持续分阶段落地。全球 AI 监管从讨论进入执行阶段。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 版本三：深度技术版 ==================== -->
+  <div class="tab-content" id="tab-expert">
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+        </div>
+        <h2 class="section-title">微软模型战略深度分析</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">战略</span>
+          从 OpenAI 分销商到自研模型：微软的 AI 独立路线图
+        </div>
+        <p>微软 3 月 17 日的组织调整表面看是 Copilot 团队的管理变更，实质是其 AI 战略从"依赖 OpenAI"向"自研+合作"双轨制的关键转折。</p>
+
+        <div class="subsection-title">Suleyman Superintelligence 团队的技术方向</div>
+        <ul class="detail-list">
+          <li>代码生成模型：针对 GitHub Copilot / VS Code 场景优化，目标是替代 GPT-based 后端</li>
+          <li>图像/音频模型：服务 Microsoft 365 和 Designer 产品线</li>
+          <li>推理模型：企业级 reasoning，针对 Azure AI 服务的准确性和可审计性优化</li>
+          <li>COGS 优化：Suleyman 强调"highly COGS-optimized"，意味着优先推理成本效率而非追求 frontier 性能</li>
+        </ul>
+
+        <div class="subsection-title">与 OpenAI 关系的演变</div>
+        <p>Windows Central 分析指出，此次重组是微软"构建 OpenAI-free 未来"的明确信号。微软在 2023 年向 OpenAI 投资 100 亿美元时获得了技术授权，但 OpenAI 的 IPO 计划和估值膨胀（8400 亿美元）使续约成本变得不可持续。自研模型是微软控制长期 COGS 的唯一出路。</p>
+
+        <a class="source-link" href="https://www.windowscentral.com/artificial-intelligence/microsoft-copilot/microsofts-copilot-ai-leadership-reshuffle-shows-the-company-is-building-toward-an-openai-free-future" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Windows Central 深度分析
+        </a>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon gpu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>
+        </div>
+        <h2 class="section-title">GTC 2026 技术深度</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-product">VLA</span>
+          UR AI Trainer 与 Vision-Language-Action 范式
+        </div>
+        <p>Universal Robots + Scale AI 的 UR AI Trainer 标志着工业机器人从 trajectory-based programming 向 VLA model-based imitation learning 的迁移。</p>
+
+        <div class="subsection-title">技术架构</div>
+        <ul class="detail-list">
+          <li>数据采集：同步记录 6-DOF 运动轨迹、力/力矩传感器读数、多视角 RGB-D 视觉数据</li>
+          <li>模型训练：采用 VLA (Vision-Language-Action) 架构，将视觉观察和自然语言任务描述映射到机器人动作空间</li>
+          <li>泛化能力：通过 domain randomization 和 few-shot adaptation 实现跨场景迁移</li>
+          <li>部署：模型压缩后在边缘 GPU（如 Jetson Thor）上实时推理</li>
+        </ul>
+
+        <div class="highlight">与 Google RT-2 和 Stanford ALOHA 的区别在于，UR AI Trainer 明确面向工业场景（协作机器人），数据采集流程标准化，且直接集成到 Universal Robots 的控制器生态中。这大幅降低了工厂部署门槛。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-gpu">硬件</span>
+          Groq 3 LPU：NVIDIA 的推理加速新棋子
+        </div>
+        <p>GTC 主题演讲中首次公开的 Groq 3 LPU 值得深入分析。这是 NVIDIA 通过 2025 年 12 月 200 亿美元资产收购 Groq 后推出的第一款产品。</p>
+        <ul class="detail-list">
+          <li>Groq 3 LPX 机架可容纳 256 个 LPU，设计上与 Vera Rubin NVL72 机架并列部署</li>
+          <li>LPU 架构专注确定性推理延迟，消除 GPU batch scheduling 带来的延迟波动</li>
+          <li>目标场景：实时对话、高频交易 AI、自动驾驶决策等延迟敏感型推理</li>
+          <li>NVIDIA 的策略是在 GPU（训练+高吞吐推理）和 LPU（低延迟推理）之间形成完整推理产品矩阵</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        </div>
+        <h2 class="section-title">模型与研究前沿</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">架构</span>
+          DeepSeek V4 技术架构预览
+        </div>
+        <p>根据已泄露的模型卡和 NxCode 的分析，DeepSeek V4 的架构设计有几个值得关注的创新点：</p>
+        <ul class="detail-list">
+          <li>Engram 条件记忆：一种新的 KV-cache 管理机制，允许模型在超长上下文中选择性"记住"关键信息段，而非均匀压缩</li>
+          <li>原生多模态 tokenizer：不再使用独立的视觉编码器（如 CLIP），而是统一的 patch-text tokenization 方案</li>
+          <li>国产芯片适配：针对华为昇腾 910B 和寒武纪 MLU 370 的算子库深度优化，包括自定义 attention kernel 和通信原语</li>
+          <li>MoE 路由优化：动态专家选择 + load balancing loss 改进，有效缓解 expert collapse 问题</li>
+        </ul>
+        <a class="source-link" href="https://www.nxcode.io/resources/news/deepseek-v4-release-specs-benchmarks-2026" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          NxCode 技术分析
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">论文</span>
+          本周值得关注的 arXiv 论文
+        </div>
+
+        <div class="subsection-title">FlashAttention-4 (Princeton et al.)</div>
+        <p>在 Blackwell GPU 上实现 attention 的软硬件协同设计。利用 Blackwell 的 TMA（Tensor Memory Accelerator）和 warp specialization 特性，将 attention 计算与 KV-cache I/O 完全重叠，在长序列场景（128K+ tokens）下实现接近理论峰值的 throughput。</p>
+
+        <div class="subsection-title">Hallucination as Geometric Anomaly</div>
+        <p>将 LLM 幻觉检测重新定义为隐藏层表示空间中的几何异常检测问题。通过在 residual stream 中检测偏离 manifold 的激活模式，在 binary QA 和 open-ended captioning 上都取得 SOTA。这种方法的优势在于不需要外部知识库，纯粹基于模型内部状态判断。</p>
+
+        <div class="subsection-title">ThinkStream：实时视频理解</div>
+        <p>提出 Watch-Think-Speak 三阶段范式处理流式视频。在 OVO-Bench 上达到 59.66 分，推理延迟低于 0.5 秒。关键创新是将视频帧的 temporal grounding 与语言生成解耦，实现真正的实时交互。</p>
+
+        <div class="subsection-title">PhysMoDPO：物理合理的人形运动</div>
+        <p>结合 Whole-Body Controller 和 Direct Preference Optimization (DPO) pipeline，refine 扩散模型生成物理上合理的人形运动。实现了从仿真到真实机器人的零样本迁移，在 humanoid locomotion benchmark 上显著优于 prior work。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">融资</span>
+          AI 资本市场数据深度
+        </div>
+        <table class="tech-table">
+          <tr><th>指标</th><th>数值</th><th>同比</th></tr>
+          <tr><td>2026 年 2 月总融资</td><td>$189B</td><td>+780%</td></tr>
+          <tr><td>OpenAI 估值</td><td>$840B (post-money)</td><td>--</td></tr>
+          <tr><td>Anthropic 估值</td><td>$380B (Series G)</td><td>--</td></tr>
+          <tr><td>Anthropic 年化收入</td><td>~$19B</td><td>--</td></tr>
+          <tr><td>OpenAI 年化收入</td><td>$25B+</td><td>--</td></tr>
+          <tr><td>前 3 家占融资比例</td><td>83%</td><td>--</td></tr>
+          <tr><td>2026 机器人融资预期</td><td>$20B</td><td>--</td></tr>
+        </table>
+        <div class="highlight">头部集中度持续加剧。83% 的资金流向前三家公司的现象，意味着 AI 行业正在形成类似云计算早期的寡头格局。但机器人领域的融资分散度更高（一周四家合计 $1.2B），可能成为下一个百花齐放的赛道。</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon product">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        </div>
+        <h2 class="section-title">监管与政策动态</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">监管</span>
+          全球 AI 监管进入执行期
+        </div>
+        <ul class="detail-list">
+          <li><strong>科罗拉多 AI 法案</strong>（6 月 30 日生效）：要求高风险 AI 系统提供 impact assessment、数据文档和透明度报告。AI Transparency Act 和 Generative AI Training Data Transparency Act 已于 1 月 1 日生效</li>
+          <li><strong>EU AI Act</strong>：通用 AI 模型的透明度义务、禁止类 AI 实践的执行、处罚机制持续分阶段落地至 2027 年</li>
+          <li><strong>中国智能经济</strong>：十四五规划将 AI 核心产业规模目标定为 1.2 万亿元；脑机接口、具身智能、6G 列为战略新兴产业</li>
+          <li><strong>美国联邦层面</strong>：Trump 2025 年 12 月行政令试图通过联邦政策抢占州级 AI 监管空间，与科罗拉多等州的立法形成张力</li>
+        </ul>
+        <div class="highlight">三大经济体的 AI 监管路径分化日趋明显：美国偏向联邦抢占 + 企业自律；欧盟侧重全面立法 + 合规成本；中国采用产业规划 + 技术标准双驱动。对跨国 AI 公司而言，合规碎片化是 2026 年最大运营挑战之一。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>AI Daily Report -- 由 Claude 自动生成 | 数据来源截至 2026-03-18 08:00 UTC</p>
+    <p style="margin-top: 8px;">
+      Sources:
+      <a href="https://www.cnbc.com/2026/03/17/microsoft-copilot-ai-suleyman.html">CNBC</a> |
+      <a href="https://blogs.microsoft.com/blog/2026/03/17/announcing-copilot-leadership-update/">Microsoft Blog</a> |
+      <a href="https://nvidianews.nvidia.com/news/ai-agents">NVIDIA Newsroom</a> |
+      <a href="https://www.nxcode.io/resources/news/deepseek-v4-release-specs-benchmarks-2026">NxCode</a> |
+      <a href="https://aifundingtracker.com/ai-startup-funding-news-today/">AI Funding Tracker</a> |
+      <a href="https://www.windowscentral.com/artificial-intelligence/microsoft-copilot/microsofts-copilot-ai-leadership-reshuffle-shows-the-company-is-building-toward-an-openai-free-future">Windows Central</a>
+    </p>
+  </div>
+</div>
+
+<script>
+function switchTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  const tabs = { casual: 0, intermediate: 1, expert: 2 };
+  document.querySelectorAll('.tab-btn')[tabs[tab]].classList.add('active');
+}
+</script>
+</body>
+</html>

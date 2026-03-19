@@ -1,6 +1,7 @@
 {
   "reports": [
     { "date": "2026-03-17", "file": "2026-03-17.html", "title": "AI Daily Report | 2026.03.17", "tags": ["GPT-5.4", "QuitGPT", "NVIDIA GTC"] },
-    { "date": "2026-03-18", "file": "2026-03-18.html", "title": "AI Daily Report | 2026.03.18", "tags": ["Microsoft Superintelligence", "GTC 2026", "AI Layoffs"] }
+    { "date": "2026-03-18", "file": "2026-03-18.html", "title": "AI Daily Report | 2026.03.18", "tags": ["Microsoft Superintelligence", "GTC 2026", "AI Layoffs"] },
+    { "date": "2026-03-19", "file": "2026-03-19.html", "title": "AI Daily Report | 2026.03.19", "tags": ["DLSS 5", "Anthropic DOD", "Open Source Security"] }
   ]
 }

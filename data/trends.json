@@ -1,56 +1,56 @@
 {
-  "updated": "2026-03-18",
-  "dates": ["2026-03-05", "2026-03-06", "2026-03-07", "2026-03-08", "2026-03-09", "2026-03-10", "2026-03-11", "2026-03-12", "2026-03-13", "2026-03-14", "2026-03-15", "2026-03-16", "2026-03-17", "2026-03-18"],
+  "updated": "2026-03-19",
+  "dates": ["2026-03-06", "2026-03-07", "2026-03-08", "2026-03-09", "2026-03-10", "2026-03-11", "2026-03-12", "2026-03-13", "2026-03-14", "2026-03-15", "2026-03-16", "2026-03-17", "2026-03-18", "2026-03-19"],
   "trends": [
     {
       "keyword": "NVIDIA GTC 2026",
       "category": "product",
-      "values": [15, 18, 20, 22, 28, 35, 42, 55, 68, 78, 88, 100, 98, 92]
+      "values": [18, 20, 22, 28, 35, 42, 55, 68, 78, 88, 100, 98, 92, 95]
     },
     {
-      "keyword": "Microsoft Superintelligence",
-      "category": "company",
-      "values": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 95]
-    },
-    {
-      "keyword": "Agentic AI",
-      "category": "concept",
-      "values": [42, 45, 48, 50, 52, 55, 58, 62, 65, 70, 75, 80, 88, 90]
-    },
-    {
-      "keyword": "Claude Opus 4.6",
-      "category": "model",
-      "values": [55, 60, 65, 62, 58, 55, 60, 65, 70, 72, 68, 65, 72, 70]
-    },
-    {
-      "keyword": "DeepSeek V4",
-      "category": "model",
-      "values": [72, 60, 50, 45, 42, 48, 45, 55, 58, 62, 55, 50, 45, 55]
-    },
-    {
-      "keyword": "OpenClaw",
+      "keyword": "DLSS 5",
       "category": "product",
-      "values": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 10, 85, 78]
-    },
-    {
-      "keyword": "AI Layoffs",
-      "category": "concept",
-      "values": [10, 12, 15, 18, 20, 22, 25, 28, 35, 42, 55, 65, 72, 88]
-    },
-    {
-      "keyword": "Autonomous Driving",
-      "category": "concept",
-      "values": [20, 22, 25, 28, 30, 32, 35, 42, 55, 65, 72, 80, 82, 78]
-    },
-    {
-      "keyword": "Mistral Small 4",
-      "category": "model",
-      "values": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 75]
+      "values": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 10, 15, 90]
     },
     {
       "keyword": "Anthropic",
       "category": "company",
-      "values": [48, 52, 55, 58, 72, 78, 68, 60, 55, 52, 50, 48, 55, 58]
+      "values": [52, 55, 58, 72, 78, 68, 60, 55, 52, 50, 48, 55, 58, 88]
+    },
+    {
+      "keyword": "Agentic AI",
+      "category": "concept",
+      "values": [45, 48, 50, 52, 55, 58, 62, 65, 70, 75, 80, 88, 90, 88]
+    },
+    {
+      "keyword": "Microsoft Superintelligence",
+      "category": "company",
+      "values": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 95, 85]
+    },
+    {
+      "keyword": "DeepSeek V4",
+      "category": "model",
+      "values": [60, 50, 45, 42, 48, 45, 55, 58, 62, 55, 50, 45, 55, 82]
+    },
+    {
+      "keyword": "Claude Opus 4.6",
+      "category": "model",
+      "values": [60, 65, 62, 58, 55, 60, 65, 70, 72, 68, 65, 72, 70, 78]
+    },
+    {
+      "keyword": "AI Military Ethics",
+      "category": "policy",
+      "values": [0, 0, 0, 0, 0, 0, 0, 0, 5, 8, 12, 15, 20, 75]
+    },
+    {
+      "keyword": "China AI Token",
+      "category": "concept",
+      "values": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 70]
+    },
+    {
+      "keyword": "Open Source Security",
+      "category": "concept",
+      "values": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 10, 78]
     }
   ]
 }

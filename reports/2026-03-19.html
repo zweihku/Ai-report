@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily Report | 2026.03.19</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --claude-bg: #FAF9F7;
+    --claude-surface: #FFFFFF;
+    --claude-border: #E8E5E0;
+    --claude-text-primary: #1A1714;
+    --claude-text-secondary: #6B6560;
+    --claude-text-tertiary: #9B9590;
+    --claude-accent: #DA7756;
+    --claude-accent-light: #F5E6DF;
+    --claude-accent-dark: #C4623F;
+    --claude-tag-blue: #E8F0FE;
+    --claude-tag-blue-text: #3B6CB5;
+    --claude-tag-green: #E6F4EA;
+    --claude-tag-green-text: #2D7A3F;
+    --claude-tag-purple: #F0E6FA;
+    --claude-tag-purple-text: #7B3FAF;
+    --claude-tag-amber: #FEF3E2;
+    --claude-tag-amber-text: #B5752D;
+    --claude-tag-red: #FDE8E8;
+    --claude-tag-red-text: #B53B3B;
+    --claude-card-shadow: 0 1px 3px rgba(26, 23, 20, 0.06), 0 1px 2px rgba(26, 23, 20, 0.04);
+    --claude-card-shadow-hover: 0 4px 12px rgba(26, 23, 20, 0.08), 0 2px 4px rgba(26, 23, 20, 0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+    background: var(--claude-bg);
+    color: var(--claude-text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 8px;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--claude-accent-dark); }
+
+  .header {
+    text-align: center;
+    padding: 48px 0 40px;
+    border-bottom: 1px solid var(--claude-border);
+    margin-bottom: 32px;
+  }
+
+  .header-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--claude-accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .header .date {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    font-weight: 400;
+  }
+
+  .header .edition-note {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    margin-top: 8px;
+  }
+
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 36px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--claude-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .tab-btn:hover {
+    color: var(--claude-text-primary);
+    background: var(--claude-bg);
+  }
+
+  .tab-btn.active {
+    background: var(--claude-accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(218, 119, 86, 0.3);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .section { margin-bottom: 36px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .section-icon.gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .section-icon.model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .section-icon.product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .section-icon.research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .section-icon.industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .card {
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--claude-card-shadow);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .card:hover { box-shadow: var(--claude-card-shadow-hover); }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .card p {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.75;
+    margin-bottom: 8px;
+  }
+
+  .card p:last-child { margin-bottom: 0; }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .tag-gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .tag-model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .tag-product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .tag-research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .tag-industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+
+  .highlight {
+    background: var(--claude-accent-light);
+    border-left: 3px solid var(--claude-accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--claude-accent-dark);
+    line-height: 1.7;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .stat-item {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--claude-accent);
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--claude-text-tertiary);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 8px;
+    transition: color 0.15s;
+  }
+
+  .source-link:hover { color: var(--claude-accent-dark); text-decoration: underline; }
+
+  .tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .tech-table th, .tech-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .tech-table th {
+    font-weight: 600;
+    color: var(--claude-text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: var(--claude-bg);
+  }
+
+  .tech-table td { color: var(--claude-text-primary); }
+
+  .code-block {
+    background: #2D2A26;
+    color: #E8E5E0;
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    overflow-x: auto;
+    margin: 12px 0;
+  }
+
+  .code-block .comment { color: #9B9590; }
+  .code-block .keyword { color: #DA7756; }
+  .code-block .string { color: #7DB87D; }
+
+  .footer {
+    text-align: center;
+    padding: 32px 0;
+    border-top: 1px solid var(--claude-border);
+    margin-top: 48px;
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+  }
+
+  .footer a {
+    color: var(--claude-accent);
+    text-decoration: none;
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 20px 16px 60px; }
+    .header h1 { font-size: 24px; }
+    .tab-btn { font-size: 13px; padding: 10px 8px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+  }
+
+  .timeline-item {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-left: 4px;
+  }
+
+  .timeline-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--claude-accent);
+    margin-top: 8px;
+    flex-shrink: 0;
+  }
+
+  .timeline-content { flex: 1; }
+
+  .timeline-date {
+    font-size: 12px;
+    color: var(--claude-text-tertiary);
+    font-weight: 500;
+    margin-bottom: 2px;
+  }
+
+  .timeline-text {
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.6;
+  }
+
+  .subsection-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin: 16px 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  ul.detail-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0;
+  }
+
+  ul.detail-list li {
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.7;
+    padding: 4px 0 4px 16px;
+    position: relative;
+  }
+
+  ul.detail-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--claude-border);
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <a href="/" class="back-link">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+    返回 AI Pulse
+  </a>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-logo">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4"/><path d="M12 16V8"/></svg>
+      AI Daily Report
+    </div>
+    <h1>AI 领域日报</h1>
+    <div class="date">2026 年 3 月 19 日 星期四</div>
+    <div class="edition-note">GTC 收官日 DLSS 5 亮相 + Anthropic 起诉五角大楼 + 开源安全联盟成立 + 中国 Token 消耗首超美国</div>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('casual')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      轻松阅读版
+    </button>
+    <button class="tab-btn" onclick="switchTab('intermediate')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+      技术进阶版
+    </button>
+    <button class="tab-btn" onclick="switchTab('expert')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      深度技术版
+    </button>
+  </div>
+
+  <!-- ==================== 版本一：轻松阅读版 ==================== -->
+  <div class="tab-content active" id="tab-casual">
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon gpu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m13 2-2 2.5h3L12 7"/><path d="M10 14v-3"/><path d="M14 14v-3"/><path d="M11 19c-1.7 0-3-3-3v-2h8v2c0 1.7-1.3 3-3 3Z"/><path d="M12 22v-3"/></svg>
+        </div>
+        <h2 class="section-title">今日头条</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-gpu">GTC 2026</span>
+          GTC 大会收官：DLSS 5 让游戏画面"AI 脑补"
+        </div>
+        <p>NVIDIA GTC 2026 今天迎来最后一天。最亮眼的发布是 DLSS 5 -- 一项全新的 AI 渲染技术，能让游戏画面不再是"算出来的"，而是由 AI 模型"脑补"出来的。传统 3D 渲染需要逐像素计算，而 DLSS 5 直接用生成式 AI 预测并填充缺失的画面细节。</p>
+        <p>同时发布的还有 Dynamo 1.0 -- 一个开源的"AI 基础设施操作系统"，帮助企业更高效地运行大规模 AI 应用。黄仁勋的万亿美元订单愿景正在通过一个个具体产品落地。</p>
+        <div class="highlight">一句话总结：AI 连游戏画面都不用"算"了，直接"想象"出来。这就是 DLSS 5。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">重磅</span>
+          Anthropic 把五角大楼告了：AI 公司拒绝做武器
+        </div>
+        <p>Claude 的开发商 Anthropic 做了一件罕见的事 -- 起诉美国国防部。原因是五角大楼把 Anthropic 列为"供应链风险"，理由是它拒绝让自家 AI 用于大规模监控和自主武器系统。</p>
+        <p>更值得关注的是，超过 30 名来自 OpenAI 和 Google DeepMind 的员工提交了支持 Anthropic 的声明。与此同时，OpenAI 已经和五角大楼达成协议，允许其 AI 进入国防机密网络（附带人类审核保障）；Google 则在安静地扩大军方客户。</p>
+        <div class="highlight">一句话总结：AI 行业正在分裂为"接受军用"和"拒绝军用"两个阵营，Anthropic 选择了对簿公堂。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-product">里程碑</span>
+          中国 AI 使用量首次超越美国
+        </div>
+        <p>一个历史性数据：2026 年 2 月，中国每周 AI Token 调用量达到 4.12 万亿次，首次超过美国的 2.94 万亿次。全球前五大模型中，四个来自中国（月之暗面、DeepSeek、MiniMax、通义千问），合计占全球使用量的 85.7%。</p>
+        <p>与此同时，阿里云从 3 月 18 日起将 AI 算力和存储价格上调最高 34%，理由是全球需求激增。</p>
+        <div class="highlight">一句话总结：中国不只是在追赶 AI 竞赛，在实际使用量上已经跑到了前面。</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+          </div>
+        <h2 class="section-title">值得关注</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">安全</span>
+          七大 AI 巨头联手保护开源安全
+        </div>
+        <p>Anthropic、AWS、GitHub、Google、Google DeepMind、Microsoft 和 OpenAI 通过 Linux 基金会共同出资 1250 万美元，帮助开源软件维护者抵御 AI 生成的安全威胁。这是 AI 行业首次针对"AI 攻击开源"这一新威胁的集体行动。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">模型</span>
+          MiniMax M2.7：AI 学会了"自我进化"
+        </div>
+        <p>中国 AI 公司 MiniMax 发布 M2.7 模型，最大亮点是"AI 自进化"能力 -- 模型可以自主构建复杂的 Agent 测试框架来改进自己。这听起来有点科幻，但它代表了 AI 从"被人类训练"到"自我改进"的重要一步。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">医疗</span>
+          微软 AI 诊断准确率碾压 21 名医生
+        </div>
+        <p>微软的 AI 诊断协调器（MAI-DxO）在测试中解决了 85.5% 的复杂病例（来自 NEJM 经典案例），而 21 位有经验的医生平均准确率只有 20%。这是 Suleyman 超级智能团队的第一个重量级成果。</p>
+        <div class="highlight">一句话总结：在复杂疑难病诊断上，AI 不只是辅助了，它已经远超人类平均水平。</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon product">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        </div>
+        <h2 class="section-title">快讯一览</h2>
+      </div>
+
+      <div class="card">
+        <ul class="detail-list">
+          <li>DeepSeek V4 据报下周发布，万亿参数多模态模型，针对国产芯片深度优化</li>
+          <li>Google 发布 Gemini 3.1 Flash-Lite：速度提升 2.5 倍，输入价格降至 $0.25/M tokens</li>
+          <li>AMI Labs（Yann LeCun 创办）以 35 亿美元估值完成 10.3 亿美元种子轮，研发"世界模型"</li>
+          <li>Waymo 完成 160 亿美元融资，估值 1260 亿美元，创自动驾驶领域纪录</li>
+          <li>阿里巴巴发布 Agent 平台"悟空"，小米宣布 MiMo 大模型和"小米微爪"AI 交互产品</li>
+          <li>Samsung 计划年底将 Gemini AI 设备数翻倍至 8 亿台</li>
+          <li>联合国 3 月报告：AI 正在全球范围内重塑劳动条件</li>
+          <li>Hume AI 开源 TADA 语音合成模型：速度提升 5 倍，解决幻觉问题</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 版本二：技术进阶版 ==================== -->
+  <div class="tab-content" id="tab-intermediate">
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon gpu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>
+        </div>
+        <h2 class="section-title">GTC 2026 收官日技术总结</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-gpu">图形</span>
+          DLSS 5：从超分辨率到生成式渲染
+        </div>
+        <p>DLSS 5 是 NVIDIA 图形渲染路线的一次范式跳跃。此前的 DLSS 版本本质上是"超分辨率" -- 渲染低分辨率帧后通过 AI 放大。DLSS 5 则走向"生成式渲染"：将传统 3D 渲染数据（深度图、法线、运动向量）作为条件输入，用生成模型直接预测高质量帧。</p>
+        <p>这意味着游戏引擎只需渲染场景的骨架信息，细节纹理、光照和特效由 AI 实时生成。对于下一代 Vera Rubin GPU，这将是杀手级应用。</p>
+        <a class="source-link" href="https://www.tomshardware.com/news/live/nvidia-gtc-2026-keynote-live-blog-jensen-huang" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Tom's Hardware GTC Live Blog
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-product">开源</span>
+          Dynamo 1.0：AI 推理基础设施的开源操作系统
+        </div>
+        <p>Dynamo 1.0 定位为 AI 推理集群的统一管理层，解决的核心问题是：在大规模 GPU 集群上高效调度异构 AI 工作负载。它提供了模型分片、动态 batch、自动扩缩容和多租户隔离等功能。</p>
+        <p>开源策略意味着 NVIDIA 希望将推理基础设施标准化为自家生态的一部分，类似 CUDA 对训练生态的锁定效应。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-gpu">硬件</span>
+          GTC 四天总结：物理 AI 全面铺开
+        </div>
+        <p>回顾 GTC 2026 全程，"Physical AI"是贯穿始终的主题：</p>
+        <ul class="detail-list">
+          <li>Cosmos 3 + Isaac Lab 3.0 + Isaac GR00T：机器人仿真到部署的完整工具链</li>
+          <li>Jetson Thor：边缘端多模态 AI 推理平台，面向具身智能</li>
+          <li>6 家机器人巨头（ABB、Agility、Figure、KUKA、UR、YASKAWA）宣布集成</li>
+          <li>5 家车企（Nissan、BYD、Geely、Isuzu、Hyundai）基于 DRIVE Hyperion 开发 L4 自动驾驶</li>
+        </ul>
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-value">$1T</div>
+            <div class="stat-label">Blackwell+Vera Rubin 预计订单</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">10x</div>
+            <div class="stat-label">Vera Rubin 能效比提升</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">$260B</div>
+            <div class="stat-label">5年开源AI模型投资</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+        </div>
+        <h2 class="section-title">Anthropic 起诉国防部</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">伦理</span>
+          军用 AI 伦理分裂：三条路线并行
+        </div>
+        <p>AI 行业在军事应用上已形成三种明确立场：</p>
+        <ul class="detail-list">
+          <li><strong>拒绝路线（Anthropic）</strong>：明确禁止大规模监控和自主武器，因此被国防部列为"供应链风险"后选择起诉</li>
+          <li><strong>有条件合作（OpenAI）</strong>：与五角大楼达成协议，AI 可进入机密网络，但附带反国内监控和人类审核保障</li>
+          <li><strong>安静扩张（Google）</strong>：在 Project Maven 争议后低调重建国防客户，增速超过竞争对手</li>
+        </ul>
+        <p>30+ 名 OpenAI 和 Google DeepMind 员工以个人身份提交声明支持 Anthropic，表明技术人员与公司管理层在军用 AI 问题上存在显著分歧。</p>
+        <div class="highlight">技术含义：这场诉讼的结果将直接影响 AI 公司的政府合同资格评估标准。如果 Anthropic 胜诉，"拒绝军用"将不再构成商业惩罚；如果败诉，企业级 AI 安全路线可能被市场边缘化。</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        </div>
+        <h2 class="section-title">模型与市场动态</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">市场</span>
+          中国大模型 Token 消耗超越美国
+        </div>
+        <p>2 月数据显示中国周 Token 调用量达 4.12 万亿，首超美国的 2.94 万亿。Token 消耗年增长 421%。核心驱动力包括：</p>
+        <ul class="detail-list">
+          <li>月之暗面 Kimi K2.5 上线 20 天收入超 2025 全年</li>
+          <li>DeepSeek 上下文扩展至 100 万 Token，用量激增</li>
+          <li>MiniMax M2.7 的"自进化"Agent 能力吸引开发者</li>
+          <li>行业趋势从纯参数堆叠转向稀疏注意力机制（DeepSeek NSA、Moonshot MoBA）</li>
+        </ul>
+        <p>阿里云顺势涨价 34%，侧面验证需求端的火爆。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">安全</span>
+          Linux 基金会开源安全联盟
+        </div>
+        <p>七家 AI 公司联合出资 1250 万美元成立开源安全基金。背景是 AI 代码生成工具的普及正在加速暴露开源项目的安全漏洞 -- Anthropic 最近用 Claude Opus 4.6 就在 Firefox 中发现了 22 个漏洞（14 个高危）。</p>
+        <p>这是一个值得注意的信号：AI 公司意识到自己的工具既是安全威胁的放大器，也可以成为防御利器，并开始承担相应责任。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">新发布</span>
+          Gemini 3.1 Flash-Lite + AMI Labs 世界模型
+        </div>
+        <p>Google 发布 Gemini 3.1 Flash-Lite，定位轻量快速场景：响应速度提升 2.5x，输出速度提升 45%，输入定价 $0.25/M tokens。这是对 DeepSeek 等低价竞品的直接回应。</p>
+        <p>更有看头的是 Yann LeCun 创办的 AMI Labs 以 35 亿美元估值完成 10.3 亿美元种子轮。LeCun 长期批评自回归 LLM 的局限性，AMI Labs 将开发基于"世界模型"的替代架构 -- 这可能是 2026 年最重要的架构层面挑战。</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon research">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        </div>
+        <h2 class="section-title">融资与投资</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">融资</span>
+          融资热度持续：Waymo 160 亿美元创纪录
+        </div>
+        <p>Waymo 完成 160 亿美元融资，估值 1260 亿美元，创自动驾驶行业单轮纪录。这也反映了 GTC 期间 Physical AI 叙事对资本市场的直接拉动。</p>
+        <p>OpenAI 计划 2026 年 Q4 IPO，目标估值 8300 亿美元，同时寻求额外 1000 亿美元融资。Anthropic 的融资额从最初的 100 亿目标膨胀到 200 亿以上，严重超额认购。</p>
+        <table class="tech-table">
+          <tr><th>公司</th><th>融资额</th><th>估值</th></tr>
+          <tr><td>OpenAI</td><td>$110B (Feb)</td><td>$840B</td></tr>
+          <tr><td>Anthropic</td><td>$20B+</td><td>$380B</td></tr>
+          <tr><td>Waymo</td><td>$16B</td><td>$126B</td></tr>
+          <tr><td>AMI Labs (LeCun)</td><td>$1.03B seed</td><td>$3.5B</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 版本三：深度技术版 ==================== -->
+  <div class="tab-content" id="tab-expert">
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon gpu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>
+        </div>
+        <h2 class="section-title">GTC 2026 技术架构深度</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-gpu">渲染</span>
+          DLSS 5 技术架构：条件生成式渲染
+        </div>
+        <p>DLSS 5 的架构本质是一个条件扩散/流匹配模型，以传统 3D 渲染管线的中间产物（G-buffer）作为条件输入：</p>
+        <ul class="detail-list">
+          <li><strong>输入条件</strong>：深度图、表面法线、运动向量、材质 ID、低分辨率色彩帧</li>
+          <li><strong>模型架构</strong>：基于 flow matching 的生成模型，在 Tensor Core 上实时推理</li>
+          <li><strong>时序一致性</strong>：通过运动向量引导的 temporal attention 保持帧间连贯</li>
+          <li><strong>输出</strong>：原生分辨率的完整渲染帧，包含光照、纹理、特效</li>
+        </ul>
+        <p>与此前 DLSS 3.5 的光线重建（Ray Reconstruction）不同，DLSS 5 不再依赖光线追踪硬件路径，而是将整个着色过程交给生成模型。这在理论上能实现"无限细节" -- 模型生成的纹理和光照效果不受传统渲染管线的采样率限制。</p>
+        <div class="highlight">关键约束：实时性要求模型推理在 ~8ms 内完成（120fps 目标），这对 Vera Rubin 的 Tensor Core 吞吐提出极高要求。NVIDIA 显然在用 DLSS 5 为 Vera Rubin GPU 创造"必须升级"的理由。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-product">基础设施</span>
+          Dynamo 1.0 架构与推理调度
+        </div>
+        <p>Dynamo 1.0 的核心设计目标是解决大模型推理集群的资源碎片化问题：</p>
+        <ul class="detail-list">
+          <li><strong>模型分片（Model Sharding）</strong>：支持 tensor parallel、pipeline parallel 和 expert parallel 的自动切分策略选择</li>
+          <li><strong>动态 Batching</strong>：continuous batching + speculative decoding 集成，最大化 GPU 利用率</li>
+          <li><strong>多租户隔离</strong>：基于 MIG（Multi-Instance GPU）的硬件级隔离，支持 SLA 差异化</li>
+          <li><strong>自动扩缩容</strong>：基于请求队列深度和 token 生成速率的双指标弹性策略</li>
+        </ul>
+        <p>开源策略的深层含义：NVIDIA 通过 Dynamo 标准化推理管理层，使得切换到 AMD MI400 或其他加速器的迁移成本大幅增加。这是继 CUDA 之后又一层生态锁定。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-gpu">机器人</span>
+          Physical AI 技术栈全景
+        </div>
+        <p>GTC 2026 展示了 NVIDIA 在具身智能领域的完整技术栈：</p>
+        <table class="tech-table">
+          <tr><th>层级</th><th>产品</th><th>功能</th></tr>
+          <tr><td>仿真</td><td>Cosmos 3 + Isaac Sim</td><td>合成数据生成 + 物理仿真</td></tr>
+          <tr><td>训练</td><td>Isaac Lab 3.0</td><td>RL/IL 训练框架，支持 domain randomization</td></tr>
+          <tr><td>基础模型</td><td>Isaac GR00T</td><td>通用机器人基础模型（VLA 架构）</td></tr>
+          <tr><td>边缘推理</td><td>Jetson Thor</td><td>多模态 AI + 机器人控制一体</td></tr>
+          <tr><td>自动驾驶</td><td>DRIVE Hyperion</td><td>L4 自驾计算平台</td></tr>
+        </table>
+        <p>值得注意的是 BYD 首次出现在 NVIDIA 自动驾驶合作名单中。此前 BYD 主要依赖自研和 Mobileye 方案。这一转变可能与 BYD 在欧洲市场面临的 L4 级合规要求有关。</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+        </div>
+        <h2 class="section-title">Anthropic v. DOD 诉讼深度分析</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">法律</span>
+          供应链风险认定的技术与法律逻辑
+        </div>
+        <p>国防部将 Anthropic 列为"供应链风险"的法律依据来自 FITARA 和联邦采购条例（FAR）中的供应链风险管理条款。传统上，这些条款用于排除与对手国家有关联的供应商。将其应用于一家因伦理立场拒绝合作的美国公司，在法律上属于前所未有的扩展解释。</p>
+
+        <div class="subsection-title">三方立场的技术实现差异</div>
+        <ul class="detail-list">
+          <li><strong>Anthropic</strong>：在模型层面实施 Constitutional AI 约束，使模型在 system prompt 层面拒绝特定任务类别。这种架构级限制很难在部署后被绕过</li>
+          <li><strong>OpenAI</strong>：采用 API 层面的使用策略 + 人类审核工作流。GPT-5.4 的 Computer Use 功能进入机密网络后，由策略层而非模型层控制行为边界</li>
+          <li><strong>Google</strong>：通过 Vertex AI 的 IAM 和审计日志实现合规性，不在模型层施加限制</li>
+        </ul>
+        <div class="highlight">核心悖论：Anthropic 的 Constitutional AI 方法从安全角度看最为可靠（模型层面的 hard constraint），但恰恰因为这种不可绕过的设计，使其无法满足国防部对灵活性的需求。安全性和军事可用性在架构层面存在根本矛盾。</div>
+
+        <a class="source-link" href="https://techcrunch.com/2026/03/09/openai-and-google-employees-rush-to-anthropics-defense-in-dod-lawsuit/" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          TechCrunch 报道
+        </a>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        </div>
+        <h2 class="section-title">模型架构与研究前沿</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">架构</span>
+          稀疏注意力机制：中国大模型的技术突围
+        </div>
+        <p>中国大模型 Token 消耗首超美国的背后，是一场静悄悄的架构变革。行业正在从纯参数堆叠转向稀疏注意力机制：</p>
+        <ul class="detail-list">
+          <li><strong>DeepSeek NSA (Native Sparse Attention)</strong>：在 attention 计算中动态选择 key-value 对，将长序列场景的计算量从 O(n^2) 降至 O(n*sqrt(n))。这是 V4 能支持 100 万+ context 的关键</li>
+          <li><strong>Moonshot MoBA (Mixture of Block Attention)</strong>：将 attention 分割为多个块级专家，不同 head 关注不同粒度的上下文范围</li>
+          <li><strong>DeepSeek Manifold-Constrained Hyperconnectivity</strong>：尚未公开细节的新架构，官方确认正在测试。名称暗示在隐藏层之间引入了受流形约束的跨层连接</li>
+        </ul>
+        <p>这些架构创新使中国模型在推理效率上取得了显著优势。配合国产芯片（昇腾、寒武纪）的定制化算子，形成了"算法-硬件"协同优化的闭环。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">世界模型</span>
+          AMI Labs：Yann LeCun 的 LLM 替代方案
+        </div>
+        <p>AMI Labs 以 35 亿美元估值完成 10.3 亿美元种子轮，这是 AI 基础模型领域最大的种子轮融资。LeCun 的核心论点：</p>
+        <ul class="detail-list">
+          <li>自回归 LLM 在 token 空间做规划，而非在语义空间做规划，这从根本上限制了推理能力</li>
+          <li>"世界模型"在连续向量空间中学习世界的因果结构，类似人类的心智模型</li>
+          <li>架构方向：Joint Embedding Predictive Architecture (JEPA) 的产业化版本</li>
+          <li>目标：学习物理世界的抽象表示，而非文本 token 的统计分布</li>
+        </ul>
+        <div class="highlight">这是 2026 年最值得追踪的架构层面赌注。如果 JEPA 系列方法能在复杂推理任务上比肩自回归模型，将动摇当前 LLM 主导的技术路线。但 LeCun 此前在 Meta FAIR 的类似项目（I-JEPA、V-JEPA）尚未产生 frontier 级成果。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">安全</span>
+          开源安全：AI 生成代码的系统性风险
+        </div>
+        <p>Linux 基金会的 1250 万美元开源安全基金直面一个日益严峻的问题：AI 代码生成工具正在系统性地暴露开源项目的攻击面。</p>
+        <ul class="detail-list">
+          <li>Anthropic 用 Opus 4.6 在 Firefox 中发现 22 个漏洞（14 个高危），这些漏洞此前在人工审计中被遗漏</li>
+          <li>AI 代码生成器（Copilot、Cursor 等）大量引用开源库，将已知漏洞模式传播到新项目中</li>
+          <li>攻击者可利用 AI 自动化发现 0-day 漏洞的速度远超人类安全研究员</li>
+          <li>开源维护者（多为无偿志愿者）缺乏对抗 AI 规模攻击的资源</li>
+        </ul>
+        <p>基金的具体计划包括：为 top 1000 开源项目提供 AI 辅助的持续安全审计、建立 AI 生成代码的漏洞模式数据库、资助维护者使用 AI 防御工具。</p>
+        <a class="source-link" href="https://www.how2shout.com/news/google-openai-anthropic-12-million-open-source-security-linux-foundation.html" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          How2Shout 报道
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">医疗</span>
+          MAI-DxO：微软医疗超级智能的技术实现
+        </div>
+        <p>Microsoft AI Diagnostic Orchestrator (MAI-DxO) 在 NEJM 复杂病例上达到 85.5% 准确率（21 位医生平均 20%）。技术架构要点：</p>
+        <ul class="detail-list">
+          <li><strong>多 Agent 协调</strong>：由诊断推理 Agent、鉴别诊断 Agent、检验解读 Agent 和文献检索 Agent 组成</li>
+          <li><strong>结构化推理</strong>：采用类似 chain-of-thought 的诊断树搜索，每个假设都有支持/反对的证据权重</li>
+          <li><strong>知识基础</strong>：集成 PubMed、UpToDate 和 NEJM 的实时检索增强</li>
+          <li><strong>不确定性量化</strong>：为每个诊断假设输出 calibrated probability，而非单一答案</li>
+        </ul>
+        <div class="highlight">85.5% vs 20% 的差距看起来惊人，但需要注意 NEJM 案例本身是"最难的医学谜题"，人类基线本就极低。更有意义的指标是在常见病的分诊准确率和漏诊率上的对比。</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon product">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        </div>
+        <h2 class="section-title">资本市场与行业数据</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">数据</span>
+          全球 AI 市场关键指标
+        </div>
+        <table class="tech-table">
+          <tr><th>指标</th><th>数值</th><th>备注</th></tr>
+          <tr><td>中国周 Token 调用量</td><td>4.12T</td><td>首超美国 (2.94T)</td></tr>
+          <tr><td>中国 Token 消耗年增长</td><td>421%</td><td>YoY</td></tr>
+          <tr><td>阿里云 AI 算力涨价</td><td>34%</td><td>3月18日起生效</td></tr>
+          <tr><td>智谱 / MiniMax</td><td>港股上市</td><td>全球首批 LLM 公司 IPO</td></tr>
+          <tr><td>OpenAI IPO 目标</td><td>$830B</td><td>计划 2026 Q4</td></tr>
+          <tr><td>主流模型更新周期</td><td>2-3 周</td><td>此前为数月</td></tr>
+          <tr><td>Samsung AI 设备目标</td><td>8 亿台</td><td>2026 年底</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>AI Daily Report -- 由 Claude 自动生成 | 数据来源截至 2026-03-19 08:00 UTC</p>
+    <p style="margin-top: 8px;">
+      Sources:
+      <a href="https://blogs.nvidia.com/blog/gtc-2026-news/">NVIDIA GTC Blog</a> |
+      <a href="https://techcrunch.com/2026/03/09/openai-and-google-employees-rush-to-anthropics-defense-in-dod-lawsuit/">TechCrunch</a> |
+      <a href="https://www.how2shout.com/news/google-openai-anthropic-12-million-open-source-security-linux-foundation.html">How2Shout</a> |
+      <a href="https://www.pymnts.com/artificial-intelligence-2/2026/microsoft-pushes-toward-medical-superintelligence-in-healthcare/">PYMNTS</a> |
+      <a href="https://news.crunchbase.com/venture/record-setting-global-funding-february-2026-openai-anthropic/">Crunchbase</a> |
+      <a href="https://www.tomshardware.com/news/live/nvidia-gtc-2026-keynote-live-blog-jensen-huang">Tom's Hardware</a>
+    </p>
+  </div>
+</div>
+
+<script>
+function switchTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  const tabs = { casual: 0, intermediate: 1, expert: 2 };
+  document.querySelectorAll('.tab-btn')[tabs[tab]].classList.add('active');
+}
+</script>
+</body>
+</html>

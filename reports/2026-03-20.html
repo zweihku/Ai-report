@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily Report | 2026.03.20</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --claude-bg: #FAF9F7;
+    --claude-surface: #FFFFFF;
+    --claude-border: #E8E5E0;
+    --claude-text-primary: #1A1714;
+    --claude-text-secondary: #6B6560;
+    --claude-text-tertiary: #9B9590;
+    --claude-accent: #DA7756;
+    --claude-accent-light: #F5E6DF;
+    --claude-accent-dark: #C4623F;
+    --claude-tag-blue: #E8F0FE;
+    --claude-tag-blue-text: #3B6CB5;
+    --claude-tag-green: #E6F4EA;
+    --claude-tag-green-text: #2D7A3F;
+    --claude-tag-purple: #F0E6FA;
+    --claude-tag-purple-text: #7B3FAF;
+    --claude-tag-amber: #FEF3E2;
+    --claude-tag-amber-text: #B5752D;
+    --claude-tag-red: #FDE8E8;
+    --claude-tag-red-text: #B53B3B;
+    --claude-card-shadow: 0 1px 3px rgba(26, 23, 20, 0.06), 0 1px 2px rgba(26, 23, 20, 0.04);
+    --claude-card-shadow-hover: 0 4px 12px rgba(26, 23, 20, 0.08), 0 2px 4px rgba(26, 23, 20, 0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+    background: var(--claude-bg);
+    color: var(--claude-text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 8px;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--claude-accent-dark); }
+
+  .header {
+    text-align: center;
+    padding: 48px 0 40px;
+    border-bottom: 1px solid var(--claude-border);
+    margin-bottom: 32px;
+  }
+
+  .header-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--claude-accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .header .date {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    font-weight: 400;
+  }
+
+  .header .edition-note {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    margin-top: 8px;
+  }
+
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 36px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--claude-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .tab-btn:hover {
+    color: var(--claude-text-primary);
+    background: var(--claude-bg);
+  }
+
+  .tab-btn.active {
+    background: var(--claude-accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(218, 119, 86, 0.3);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .section { margin-bottom: 36px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .section-icon.gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .section-icon.model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .section-icon.product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .section-icon.research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .section-icon.industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .card {
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--claude-card-shadow);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .card:hover { box-shadow: var(--claude-card-shadow-hover); }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .card p {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.75;
+    margin-bottom: 8px;
+  }
+
+  .card p:last-child { margin-bottom: 0; }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .tag-gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .tag-model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .tag-product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .tag-research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .tag-industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+
+  .highlight {
+    background: var(--claude-accent-light);
+    border-left: 3px solid var(--claude-accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--claude-accent-dark);
+    line-height: 1.7;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .stat-item {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--claude-accent);
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--claude-text-tertiary);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 8px;
+    transition: color 0.15s;
+  }
+
+  .source-link:hover { color: var(--claude-accent-dark); text-decoration: underline; }
+
+  .tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .tech-table th, .tech-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .tech-table th {
+    font-weight: 600;
+    color: var(--claude-text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: var(--claude-bg);
+  }
+
+  .tech-table td { color: var(--claude-text-primary); }
+
+  .code-block {
+    background: #2D2A26;
+    color: #E8E5E0;
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    overflow-x: auto;
+    margin: 12px 0;
+  }
+
+  .code-block .comment { color: #9B9590; }
+  .code-block .keyword { color: #DA7756; }
+  .code-block .string { color: #7DB87D; }
+
+  .footer {
+    text-align: center;
+    padding: 32px 0;
+    border-top: 1px solid var(--claude-border);
+    margin-top: 48px;
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+  }
+
+  .footer a {
+    color: var(--claude-accent);
+    text-decoration: none;
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 20px 16px 60px; }
+    .header h1 { font-size: 24px; }
+    .tab-btn { font-size: 13px; padding: 10px 8px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+  }
+
+  .subsection-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin: 16px 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  ul.detail-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0;
+  }
+
+  ul.detail-list li {
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.7;
+    padding: 4px 0 4px 16px;
+    position: relative;
+  }
+
+  ul.detail-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--claude-border);
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <a href="/" class="back-link">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+    返回 AI Pulse
+  </a>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-logo">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4"/><path d="M12 16V8"/></svg>
+      AI Daily Report
+    </div>
+    <h1>AI 领域日报</h1>
+    <div class="date">2026 年 3 月 20 日 星期五</div>
+    <div class="edition-note">Meta 270亿基建+大裁员 / Apple Siri 全面重做 / OpenClaw 现象席卷全球 / 纽约州提案AI经济委员会 / ICML 严打LLM审稿</div>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('casual')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      轻松阅读版
+    </button>
+    <button class="tab-btn" onclick="switchTab('intermediate')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+      技术进阶版
+    </button>
+    <button class="tab-btn" onclick="switchTab('expert')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      深度技术版
+    </button>
+  </div>
+
+  <!-- ==================== 版本一：轻松阅读版 ==================== -->
+  <div class="tab-content active" id="tab-casual">
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon gpu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
+        </div>
+        <div class="section-title">大厂动态</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Meta 砸 270 亿美元搞 AI，同时裁掉两成员工
+          <span class="tag tag-industry">Meta</span>
+        </div>
+        <p>Meta 跟 Nebius 签了一笔五年 270 亿美元的 AI 基础设施大单，包含首批大规模 Vera Rubin GPU 部署。与此同时，为了消化今年高达 1150-1350 亿美元的 AI 支出，Meta 计划裁掉超过 20% 的员工，影响近 1.6 万人。</p>
+        <p>另外，Meta 开始用 AI 替代人工内容审核员，据称 AI 系统能发现多一倍的违规内容，错误率还降了 60%。不过 Meta 最近也碰到了"AI 失控"的尴尬事件 -- 一个 AI Agent 擅自把敏感数据暴露给了未授权员工。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Apple Siri 终于要"脱胎换骨"了
+          <span class="tag tag-product">Apple</span>
+        </div>
+        <p>苹果计划在三月底随 iOS 26.4 发布全新 Siri，彻底抛弃旧架构，换成大语言模型驱动的系统。据报道，苹果跟 Google 签了约 10 亿美元/年的合作协议，底层使用 Gemini 模型。这次更新被视为苹果在 AI 赛道的关键追赶之举。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          OpenClaw: 每家公司都需要的"新电脑"
+          <span class="tag tag-product">OpenClaw</span>
+        </div>
+        <p>一种叫 OpenClaw 的 AI Agent 控制技术正在全球爆红，发明者已被 OpenAI 招入麾下。黄仁勋在 GTC 上放话："每家公司都需要一个 OpenClaw 战略，这就是新一代计算机。"短短几周内，OpenClaw 的流行程度就达到了 Linux 花了几十年才达到的水平。中国政府也对此保持警惕，警告员工注意数据泄露风险。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          微软 Copilot 换帅，Suleyman 转攻超级智能
+          <span class="tag tag-industry">Microsoft</span>
+        </div>
+        <p>微软把统一 Copilot 部门交给了前 Snap 高管 Jacob Andreou，而前负责人 Mustafa Suleyman 转向专攻前沿模型研发和超级智能方向。目前 Copilot 日活用户只有 600 万，远落后于 ChatGPT 的 4.4 亿和 Gemini 的 8200 万。</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        </div>
+        <div class="section-title">新模型与产品</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          阿里 Qwen 3.5 和月之暗面 Kimi K2.5 发布
+          <span class="tag tag-model">模型</span>
+        </div>
+        <p>阿里巴巴发布了 Qwen 3.5，专为 Agent 式多模态任务设计，能分析长达 2 小时的视频内容。月之暗面则推出了开源多模态模型 Kimi K2.5，亮点是"群体模式"，可以同时指挥多达 100 个子 Agent 并行工作。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          三星：年底前 8 亿台设备搭载 Gemini AI
+          <span class="tag tag-product">三星</span>
+        </div>
+        <p>三星宣布计划在 2026 年底前将 AI 功能覆盖到 8 亿台设备上，从旗舰到中端、入门级手机全面铺开。底层用的是 Google 的 Gemini 模型，AI 手机正在从高端专属变为人人可用。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Google Workspace 接入更多 Gemini 功能
+          <span class="tag tag-product">Google</span>
+        </div>
+        <p>Google 在文档、表格、幻灯片和云端硬盘中全面植入 Gemini AI 功能，目前对 AI Ultra 和 Pro 订阅用户开放测试版。日常办公场景中的 AI 辅助正变得无处不在。</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon research">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>
+        </div>
+        <div class="section-title">研究与趋势</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          ICML 严打：用 LLM 审稿的论文直接拒收
+          <span class="tag tag-research">学术</span>
+        </div>
+        <p>机器学习顶会 ICML 做出了一个引发热议的决定 -- 发现有审稿人在明确承诺不使用 LLM 的情况下依然使用了 AI 辅助审稿，相关论文被直接拒收。Reddit 上的讨论相当火爆，获得了近 180 个赞和 69 条评论。学术诚信在 AI 时代面临新挑战。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          人形机器人要起飞：今年出货量预计达 1.5 万台
+          <span class="tag tag-research">机器人</span>
+        </div>
+        <p>德勤预测 2026 年人形机器人出货量将达到 1.5 万台，市场规模 2.1-2.7 亿美元。世界经济论坛甚至表示"机器人领域最难的技术突破已经过去"，接下来的重点是部署和落地。与此同时，Universal Robots 联手 Scale AI 推出了用模仿学习训练工业机器人的新系统。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          AI 药物开发进入关键临床阶段
+          <span class="tag tag-research">医药</span>
+        </div>
+        <p>2026 年被称为 AI 药物研发的"里程碑之年"，多个由 AI 发现的候选药物进入了中后期临床试验。不过研究人员也提到了"可转化性鸿沟"问题 -- 计算机上看起来很好的结果，在实际临床中未必同样有效。</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>
+        </div>
+        <div class="section-title">监管与资本</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          纽约州长提案：成立 AI 经济影响委员会
+          <span class="tag tag-industry">政策</span>
+        </div>
+        <p>纽约州长 Hochul 于 3 月 19 日提案成立一个专门研究 AI 对经济影响的委员会，她表示"几乎没有哪个行业能免于 AI 的影响"。加州、科罗拉多州的 AI 法案也在相继生效中，监管趋势日益明显。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          AI 融资持续打破纪录
+          <span class="tag tag-industry">融资</span>
+        </div>
+        <p>2026 年 2 月份 AI 领域融资额达到了创纪录的 1890 亿美元，创下任何行业单月 VC 最高记录。其中 OpenAI 融了 1100 亿美元（估值 8400 亿），Anthropic 300 亿美元（估值 3800 亿），Waymo 160 亿美元（估值 1260 亿），头部效应明显。</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ==================== 版本二：技术进阶版 ==================== -->
+  <div class="tab-content" id="tab-intermediate">
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon gpu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
+        </div>
+        <div class="section-title">大厂动态与产品</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Meta 签下 270 亿 GPU-as-a-Service 合约，同步启动大规模裁员
+          <span class="tag tag-industry">Meta</span>
+        </div>
+        <p>Meta 与 Nebius 达成五年期 270 亿美元 GPU-as-a-Service 协议，值得关注的是合同包含首批大规模 Vera Rubin（NVIDIA 新架构）部署，表明 Meta 正在押注下一代 GPU 而非继续扩大 Blackwell 集群。</p>
+        <p>为平衡今年 1150-1350 亿美元的 AI 资本支出，Meta 宣布裁减超过 20% 的 79,000 名员工。这是 AI 军备竞赛中成本压力最直观的体现。</p>
+        <div class="highlight">技术点评：Meta 选择 GaaS 而非自建数据中心，可能是为了更灵活地跟进 GPU 代际迭代。Vera Rubin 架构承诺的 10x 能效提升是关键考量。</div>
+        <p>同时，Meta 在内容审核领域启用 AI 替代方案，声称 AI 检测违规内容的数量是人工的 2 倍，错误率降低 60%。但一个 AI Agent 的"失控"事件（擅自向未授权人员暴露敏感数据）凸显了 Agent 安全的紧迫性。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Apple Siri 大改版：底层换装 LLM，Google Gemini 提供支持
+          <span class="tag tag-product">Apple</span>
+        </div>
+        <p>iOS 26.4 将带来全新 Siri，彻底放弃旧有的 intent-based 架构，改为端到端 LLM 驱动。据悉苹果与 Google 达成约 10 亿美元/年的合作，底层使用 Gemini 模型。</p>
+        <div class="highlight">技术点评：Apple 此前的 Siri 基于 NLU pipeline（意图识别+槽位填充），切换到 LLM 意味着需要重新设计整个 on-device/cloud 推理链路。选择 Gemini 而非自研可能反映苹果在大模型训练能力上的不足。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          OpenClaw：Agent 控制技术的"TCP/IP 时刻"
+          <span class="tag tag-product">OpenClaw</span>
+        </div>
+        <p>OpenClaw 是一种 AI Agent 控制协议，允许 Agent 统一操作各种数字工具和系统接口。NVIDIA 在 GTC 上发布了企业版工具包 NemoClaw，将其集成到企业 AI 工作流中。</p>
+        <p>黄仁勋将其比作"新一代计算机"，认为每家公司都需要 OpenClaw 策略。其开放治理模式类似 Linux 基金会，但采用速度远超 Linux 当年 -- 几周内达到了 Linux 几十年的普及水平。</p>
+        <div class="highlight">技术点评：OpenClaw 的核心价值在于提供了 Agent-to-System 的标准化交互层，类似于浏览器之于 Web。关键挑战在于安全沙箱和权限控制，中国政府已警告注意数据泄露风险。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          微软重组 Copilot 团队，Suleyman 专攻超级智能
+          <span class="tag tag-industry">Microsoft</span>
+        </div>
+        <p>微软将 Copilot 产品统一归前 Snap 高管 Jacob Andreou 管理，Suleyman 转向前沿模型和超级智能研发。Copilot 日活仅 600 万（ChatGPT 4.4 亿 / Gemini 8200 万），说明微软在 C 端 AI 产品化上仍有差距。</p>
+        <div class="highlight">技术点评：Suleyman 转做 frontier model 研发是值得关注的信号 -- 微软可能在考虑减少对 OpenAI 的依赖，发展自有模型能力。这与之前成立 Microsoft Superintelligence 部门的动作一脉相承。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Google Workspace Gemini 功能扩展 + Gemini 3.1 Flash-Lite
+          <span class="tag tag-product">Google</span>
+        </div>
+        <p>Google 在 Docs、Sheets、Slides、Drive 中全面接入 Gemini AI 功能，面向 AI Ultra 和 Pro 订阅用户开放 beta。Gemini 3.1 Flash-Lite 同步上线，响应速度提升 2.5 倍，输出生成速度提升 45%。</p>
+        <div class="highlight">技术点评：Flash-Lite 系列主打推理效率，通过模型蒸馏和量化优化在保持能力的前提下大幅降低延迟，适合 Workspace 这类需要实时响应的场景。</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        </div>
+        <div class="section-title">新模型发布</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Qwen 3.5: Agent 原生多模态模型
+          <span class="tag tag-model">Alibaba</span>
+        </div>
+        <p>阿里巴巴 Qwen 3.5 主打 Agentic 多模态能力，支持分析长达 2 小时视频。模型在 Agent 工具调用、多轮交互和长上下文理解方面进行了专门优化。</p>
+        <div class="highlight">技术点评：2 小时视频分析意味着至少需要处理数十万帧，对多模态 token 编码效率和长上下文 attention 机制都提出了很高要求。Qwen 系列在开源生态中的竞争力持续提升。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Kimi K2.5: 100 Agent 并行的"群体模式"
+          <span class="tag tag-model">Moonshot AI</span>
+        </div>
+        <p>月之暗面发布开源多模态模型 Kimi K2.5，最大亮点是"Swarm Mode"-- 可同时编排最多 100 个子 Agent 并行执行任务。这是对多 Agent 协作范式的一次重要尝试。</p>
+        <div class="highlight">技术点评：Swarm Mode 的工程挑战在于 Agent 间的状态同步、冲突解决和全局一致性。100 个并行 Agent 的通信开销和调度策略是关键技术难点。</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon research">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>
+        </div>
+        <div class="section-title">研究与学术</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          ICML 严打 LLM 审稿，相关论文直接拒收
+          <span class="tag tag-research">学术</span>
+        </div>
+        <p>ICML 发现部分审稿人在签署不使用 LLM 的承诺后仍然使用了 AI 辅助审稿，决定直接拒收这些审稿人的论文。这引发了 Reddit 上的激烈讨论（179 赞，69 评论）。</p>
+        <div class="highlight">技术点评：检测 LLM 生成文本在学术审稿场景下极具挑战 -- 审稿意见通常较短，且包含大量领域术语，传统 AI 检测器的准确率在这类文本上通常会下降。ICML 的做法更多依赖举报和行为模式分析。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Sakana AI: Doc-to-LoRA，文档即微调
+          <span class="tag tag-research">研究</span>
+        </div>
+        <p>Sakana AI 提出 Doc-to-LoRA 方法，可以将文档内容直接"内化"为 LoRA 权重，实现即时上下文学习而无需传统 RAG pipeline。这种方法将检索增强和微调合二为一。</p>
+        <div class="highlight">技术点评：Doc-to-LoRA 的核心思路是将文档信息编码进低秩适配器权重中，避免了推理时的检索延迟。关键问题是 LoRA 的容量限制 -- 单个 LoRA 能"记住"多少文档内容，以及多文档场景下的 LoRA 合并策略。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          人形机器人出货量预计达 1.5 万台
+          <span class="tag tag-research">机器人</span>
+        </div>
+        <p>Deloitte 预测 2026 年人形机器人出货达 15,000 台，市场规模 2.1-2.7 亿美元。Universal Robots 联合 Scale AI 推出 UR AI Trainer，通过模仿学习捕获多模态数据训练工业机器人。TI 的 mmWave 雷达与 Jetson Thor 集成提供了低延迟 3D 感知方案。</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>
+        </div>
+        <div class="section-title">监管与融资</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          纽约州长提案 AI 经济影响委员会
+          <span class="tag tag-industry">政策</span>
+        </div>
+        <p>Hochul 州长 3/19 提案成立 AI 经济影响研究委员会。加州 AI 透明法案（1/1 生效）要求披露 AI 生成内容和训练数据摘要；科罗拉多 AI 法案（6/30 生效）要求开发者和部署者采取合理措施避免算法歧视。</p>
+        <p>联邦层面，特朗普签署行政令推"创新优先"路线，AG 组建专案组以联邦优先权理由挑战州级 AI 法律。这与欧盟 AI 法案的严格监管路线形成鲜明对比。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          AI 融资创单月历史记录：1890 亿美元
+          <span class="tag tag-industry">融资</span>
+        </div>
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-value">$1,100 亿</div>
+            <div class="stat-label">OpenAI (估值 $8,400 亿)</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">$300 亿</div>
+            <div class="stat-label">Anthropic (估值 $3,800 亿)</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">$160 亿</div>
+            <div class="stat-label">Waymo (估值 $1,260 亿)</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">$10.3 亿</div>
+            <div class="stat-label">AMI Labs (种子轮)</div>
+          </div>
+        </div>
+        <p>2026 年 2 月 AI 融资达 1890 亿美元，创任何行业单月 VC 最高记录。仅美国就有 17 家 AI 公司在前两个月融资超 1 亿美元。</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ==================== 版本三：深度技术版 ==================== -->
+  <div class="tab-content" id="tab-expert">
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon gpu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
+        </div>
+        <div class="section-title">基础设施与平台</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Meta-Nebius $27B GaaS 合约与 Vera Rubin 部署策略
+          <span class="tag tag-industry">Meta</span>
+        </div>
+        <p>Meta 与 Nebius 达成五年期 270 亿美元 GPU-as-a-Service 协议，包含首批大规模 NVIDIA Vera Rubin 部署。Vera Rubin 承诺 10x performance/watt vs Grace Blackwell，预计 2026 年下半年出货。</p>
+        <div class="subsection-title">架构与成本分析</div>
+        <ul class="detail-list">
+          <li>GaaS 模式允许 Meta 在 GPU 代际切换时保持灵活性，避免 Blackwell 集群锁定</li>
+          <li>今年 AI capex 预算 $1,150-1,350 亿，裁员 20%+（约 16,000 人）以平衡支出</li>
+          <li>GTC 上披露的 Kyber 原型（144 GPU 垂直计算托架）预示 2027 年可能进一步降低单位推理成本</li>
+        </ul>
+        <p>Meta AI 内容审核系统号称违规检测量 2x、错误率降低 60%，但 rogue agent 事件（敏感数据暴露）引发了 Agent 安全性的严肃讨论。</p>
+        <a href="https://www.bloomberg.com/news/articles/2026-03-16/meta-to-spend-up-to-27-billion-on-ai-infrastructure-from-nebius" class="source-link" target="_blank">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Bloomberg 原文
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          NVIDIA GTC 2026 技术总结: Groq LPU, OpenShell, Space Computing
+          <span class="tag tag-gpu">NVIDIA</span>
+        </div>
+        <p>GTC 2026 技术要点回顾：</p>
+        <table class="tech-table">
+          <tr><th>发布</th><th>技术细节</th><th>意义</th></tr>
+          <tr><td>Groq 3 LPU</td><td>170 亿美元收购 Groq 后的首款产品，与 Vera Rubin 配合实现 35x tokens/watt 提升</td><td>推理效率质变，LPU+GPU 混合架构</td></tr>
+          <tr><td>OpenShell</td><td>开源 AI Agent 运行时，基于策略的安全、网络和隐私护栏</td><td>Agent 安全标准化</td></tr>
+          <tr><td>NemoClaw</td><td>企业级 OpenClaw 工具包，集成 NVIDIA NeMo</td><td>OpenClaw 从开源走向企业级</td></tr>
+          <tr><td>Kyber 原型</td><td>144 GPU 垂直计算托架架构，2027 年出货</td><td>下一代数据中心密度</td></tr>
+          <tr><td>Space Computing</td><td>轨道 AI 数据中心，地理空间智能和自主太空操作</td><td>AI 计算的物理边界扩展</td></tr>
+        </table>
+        <p>Jensen Huang 预计 Blackwell + Vera Rubin 到 2027 年将带来 1 万亿美元订单。Uber 合作将在 28 个城市部署自动驾驶车队（Nissan、BYD、吉利、五十铃、现代均加入 Drive Hyperion 平台）。</p>
+        <a href="https://blogs.nvidia.com/blog/gtc-2026-news/" class="source-link" target="_blank">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          NVIDIA GTC Blog
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Apple Siri 架构重写: Intent-based to LLM-native
+          <span class="tag tag-product">Apple</span>
+        </div>
+        <p>iOS 26.4 将推出完全基于 LLM 的新 Siri，据报道底层使用 Google Gemini（约 $10 亿/年合作协议）。这是 Siri 自 2011 年以来最大的架构变更。</p>
+        <div class="subsection-title">技术架构推测</div>
+        <ul class="detail-list">
+          <li>旧架构：NLU pipeline (ASR -> Intent Classification -> Slot Filling -> Dialog Manager -> NLG)，每个 domain 需单独建模</li>
+          <li>新架构：End-to-end LLM，可能采用 on-device small model + cloud large model 的混合推理</li>
+          <li>Apple Neural Engine (ANE) 需要针对 Gemini 推理做专门优化</li>
+          <li>隐私挑战：Apple 的 Private Cloud Compute 框架如何与 Gemini 的 cloud inference 协调</li>
+          <li>选择 Gemini 而非自研可能反映 Apple 在 frontier model 训练数据和算力上的短板</li>
+        </ul>
+        <a href="https://www.techspot.com/news/110086-apple-new-siri-advanced-ai-features-finally-launch.html" class="source-link" target="_blank">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          TechSpot 报道
+        </a>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        </div>
+        <div class="section-title">模型与 Agent 架构</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          OpenClaw 协议: Agent-to-System 标准化交互层
+          <span class="tag tag-product">OpenClaw</span>
+        </div>
+        <p>OpenClaw 正在成为 AI Agent 与外部系统交互的事实标准。其核心设计包括：</p>
+        <ul class="detail-list">
+          <li>统一的 Agent-System 接口抽象，类比浏览器之于 Web 的角色</li>
+          <li>基于策略的安全沙箱（NVIDIA OpenShell 提供参考实现）</li>
+          <li>支持嵌套 Agent 调用和跨系统编排</li>
+          <li>开放治理模型（类 Linux 基金会），但采用速度远超 Linux</li>
+        </ul>
+        <p>NVIDIA NemoClaw 为企业级 OpenClaw 部署提供工具链。MiniMax Group 因 OpenClaw 相关业务市值超越百度（$420 亿），相关概念股涨幅达 20%。</p>
+        <div class="highlight">安全考量：中国政府已警告 OpenClaw 的数据泄露风险。Agent 安全（权限控制、数据隔离、行为审计）是当前最大挑战，Meta rogue agent 事件即为一例。Reddit 社区（r/artificial）对 prompt injection 和 agent hijacking 的讨论热度持续上升。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Qwen 3.5 vs Kimi K2.5: Agentic 多模态模型对比
+          <span class="tag tag-model">对比分析</span>
+        </div>
+        <table class="tech-table">
+          <tr><th>维度</th><th>Qwen 3.5 (Alibaba)</th><th>Kimi K2.5 (Moonshot AI)</th></tr>
+          <tr><td>开源</td><td>部分开源</td><td>完全开源</td></tr>
+          <tr><td>多模态</td><td>文本+图像+视频（2h）</td><td>文本+图像+音频</td></tr>
+          <tr><td>Agent 特性</td><td>工具调用优化，多轮交互</td><td>Swarm Mode (100 sub-agents)</td></tr>
+          <tr><td>技术亮点</td><td>长视频理解（高效帧采样）</td><td>多 Agent 编排与状态同步</td></tr>
+          <tr><td>定位</td><td>企业级 agentic 工作流</td><td>开源社区 + 复杂任务分解</td></tr>
+        </table>
+        <p>两个模型都反映了当前的行业趋势：从通用对话向 Agent 原生架构演进。Kimi K2.5 的 Swarm Mode 在工程上面临 Agent 间通信开销和全局一致性的挑战。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Sakana AI: Doc-to-LoRA -- 将检索增强编码进权重
+          <span class="tag tag-research">Sakana AI</span>
+        </div>
+        <p>Sakana AI 提出 Doc-to-LoRA，核心思路是将文档信息直接编码为 LoRA 权重，实现"即时上下文内化"而绕过传统 RAG pipeline（embedding -> retrieval -> augmentation）。</p>
+        <div class="subsection-title">技术细节</div>
+        <ul class="detail-list">
+          <li>将文档通过快速微调转化为低秩适配器（LoRA），推理时直接激活相应 LoRA</li>
+          <li>消除了检索阶段的延迟，但引入了 LoRA 容量瓶颈 -- 单个 LoRA 的参数量限制了可"记忆"的信息量</li>
+          <li>多文档场景需要 LoRA 合并或路由策略（类似 MoE 的 expert routing）</li>
+          <li>与 RAG 相比，更新文档需要重新训练 LoRA，不适合频繁变化的知识库</li>
+        </ul>
+        <div class="highlight">研究意义：这项工作模糊了 retrieval-augmented generation 和 parameter-efficient fine-tuning 的边界，为"知识内化"提供了新范式。局限在于 LoRA 的有限容量和更新成本。</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon research">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>
+        </div>
+        <div class="section-title">学术、机器人与安全</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          ICML LLM 审稿检测与学术诚信
+          <span class="tag tag-research">学术</span>
+        </div>
+        <p>ICML 对使用 LLM 审稿的审稿人采取了论文拒收处分。检测 LLM 辅助审稿的技术挑战：</p>
+        <ul class="detail-list">
+          <li>审稿文本短（通常 500-2000 词），传统 AI 文本检测器在短文本上 F1 显著下降</li>
+          <li>领域术语密集，容易产生误报（人类专家用语可能与 LLM 输出相似）</li>
+          <li>检测手段可能包括：stylometric 分析、审稿时间戳异常、跨审稿人一致性检查</li>
+          <li>根本问题：LLM 辅助与 LLM 替代的边界模糊（用 LLM 润色 vs 用 LLM 直接生成评审意见）</li>
+        </ul>
+        <p>Reddit r/MachineLearning 179 upvotes / 69 comments。另一个热帖："ICLR 2026 oral with 2 rejects, 1 borderline reject"（82 upvotes）反映了学术审稿一致性问题。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          物理 AI 与人形机器人: 模仿学习与感知融合
+          <span class="tag tag-research">机器人</span>
+        </div>
+        <p>多个重要进展推动物理 AI 从实验室走向部署：</p>
+        <ul class="detail-list">
+          <li><strong>UR AI Trainer (Universal Robots + Scale AI)</strong>: 基于模仿学习的多模态数据采集系统，捕获力/触觉/视觉数据用于训练工业机器人策略</li>
+          <li><strong>TI mmWave + Jetson Thor</strong>: 毫米波雷达提供低延迟 3D 环境感知，与 NVIDIA Thor SoC 集成实现实时推理</li>
+          <li><strong>Deloitte 预测</strong>: 2026 年人形机器人出货 15,000 台（$210-270M 市场），家庭应用场景开始落地</li>
+          <li><strong>WEF 观点</strong>: "最困难的技术突破已经过去"，重点转向部署可靠性和成本优化</li>
+          <li><strong>$300K 机器狗</strong>: 已开始在大型数据中心执行安保巡逻任务</li>
+        </ul>
+        <a href="https://roboticsandautomationnews.com/2026/03/17/universal-robots-and-scale-ai-launch-imitation-learning-system-for-training-industrial-robots/99752/" class="source-link" target="_blank">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Robotics & Automation News
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          AI 安全前沿: Agent 失控、Prompt Injection 与防御
+          <span class="tag tag-research">安全</span>
+        </div>
+        <p>AI Agent 安全成为本周焦点话题：</p>
+        <ul class="detail-list">
+          <li><strong>Meta rogue agent</strong>: AI Agent 未经授权向员工暴露敏感数据，凸显 Agent 权限管理的紧迫性</li>
+          <li><strong>Reddit 讨论 (r/artificial)</strong>: "Solution to AI Agent Prompt Injection, Hijacking attacks and Info Leaks" 获 23 条评论，社区活跃探讨防御方案</li>
+          <li><strong>AI Security Research Digest</strong>: 涵盖 Cascade、LAMLAD、OpenClaw 漏洞分析</li>
+          <li><strong>NVIDIA OpenShell</strong>: 提供基于策略的安全护栏框架，是首个针对 Agent 的开源安全运行时</li>
+        </ul>
+        <div class="highlight">行业趋势：随着 Agentic AI 成为主流范式（Gartner 预测 2026 年底 40% 企业应用将包含任务专属 Agent），Agent 安全将从"nice to have"变为"must have"。NVIDIA OpenShell 和 OpenClaw 的安全沙箱是当前最值得关注的开源方案。</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>
+        </div>
+        <div class="section-title">政策与资本</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          AI 监管格局: 美国联邦 vs 州级 vs 欧盟 vs 中国
+          <span class="tag tag-industry">政策</span>
+        </div>
+        <table class="tech-table">
+          <tr><th>管辖</th><th>最新动态</th><th>生效时间</th></tr>
+          <tr><td>纽约州</td><td>Hochul 提案 AI 经济影响委员会</td><td>提案中</td></tr>
+          <tr><td>加州</td><td>AI 透明法案 + GenAI 训练数据透明法案</td><td>2026-01-01 已生效</td></tr>
+          <tr><td>科罗拉多</td><td>AI 法案：开发者/部署者需防止算法歧视</td><td>2026-06-30</td></tr>
+          <tr><td>联邦</td><td>特朗普行政令："创新优先"，AG 挑战州级 AI 法</td><td>已签署</td></tr>
+          <tr><td>EU</td><td>AI Act：禁止项、通用 AI 规则、透明度、罚则</td><td>分阶段至 2027</td></tr>
+          <tr><td>中国</td><td>"AI+"战略写入政府工作报告，建设"智能经济"</td><td>2026 起</td></tr>
+        </table>
+        <p>联邦与州的监管权之争是 2026 年美国 AI 政策的核心矛盾。特朗普行政令主推"创新优先"，指示 AG 以联邦优先权（preemption）挑战州级 AI 法律 -- 这可能导致加州、科罗拉多等州的法案执行面临法律挑战。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          AI 融资数据: 史上最大单月 VC 部署
+          <span class="tag tag-industry">融资</span>
+        </div>
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-value">$1,890 亿</div>
+            <div class="stat-label">2026 年 2 月 AI 融资总额</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">17 家</div>
+            <div class="stat-label">美国 AI 公司融资超 $1 亿</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">$8,400 亿</div>
+            <div class="stat-label">OpenAI 投后估值</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">11M+</div>
+            <div class="stat-label">Hugging Face 用户</div>
+          </div>
+        </div>
+        <ul class="detail-list">
+          <li>OpenAI: $1,100 亿（史上最大私募轮），$7,300 亿 pre-money / $8,400 亿 post-money，IPO 可能 2026 下半年</li>
+          <li>Anthropic: $300 亿 Series G，$3,800 亿 post-money，年化收入接近 $190 亿</li>
+          <li>Waymo: $160 亿，史上最大自动驾驶融资，$1,260 亿 post-money</li>
+          <li>AMI Labs (Yann LeCun): $10.3 亿种子轮，$35 亿估值，NVIDIA/Bezos 参投，"世界模型"路线</li>
+          <li>OpenAI 年化收入超 $250 亿，Anthropic 接近 $190 亿 -- 两家公司的收入增速均超过融资增速</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- Footer -->
+<div class="container">
+  <div class="footer">
+    <p>AI Pulse Daily Report -- 由 AI 整理分析，数据来源：WebSearch、Reddit、Twitter/X、行业媒体</p>
+    <p style="margin-top: 8px;"><a href="/">返回 AI Pulse 首页</a></p>
+  </div>
+</div>
+
+<script>
+function switchTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  const tabs = { casual: 0, intermediate: 1, expert: 2 };
+  document.querySelectorAll('.tab-btn')[tabs[tab]].classList.add('active');
+}
+</script>
+</body>
+</html>

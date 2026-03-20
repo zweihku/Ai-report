@@ -1,56 +1,56 @@
 {
-  "updated": "2026-03-19",
-  "dates": ["2026-03-06", "2026-03-07", "2026-03-08", "2026-03-09", "2026-03-10", "2026-03-11", "2026-03-12", "2026-03-13", "2026-03-14", "2026-03-15", "2026-03-16", "2026-03-17", "2026-03-18", "2026-03-19"],
+  "updated": "2026-03-20",
+  "dates": ["2026-03-07", "2026-03-08", "2026-03-09", "2026-03-10", "2026-03-11", "2026-03-12", "2026-03-13", "2026-03-14", "2026-03-15", "2026-03-16", "2026-03-17", "2026-03-18", "2026-03-19", "2026-03-20"],
   "trends": [
+    {
+      "keyword": "OpenClaw",
+      "category": "product",
+      "values": [0, 0, 0, 0, 0, 0, 0, 5, 10, 25, 55, 75, 88, 97]
+    },
     {
       "keyword": "NVIDIA GTC 2026",
       "category": "product",
-      "values": [18, 20, 22, 28, 35, 42, 55, 68, 78, 88, 100, 98, 92, 95]
+      "values": [20, 22, 28, 35, 42, 55, 68, 78, 88, 100, 98, 92, 95, 88]
     },
     {
-      "keyword": "DLSS 5",
-      "category": "product",
-      "values": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 10, 15, 90]
-    },
-    {
-      "keyword": "Anthropic",
+      "keyword": "Meta AI Infrastructure",
       "category": "company",
-      "values": [52, 55, 58, 72, 78, 68, 60, 55, 52, 50, 48, 55, 58, 88]
+      "values": [0, 0, 0, 0, 0, 0, 0, 0, 0, 30, 45, 60, 75, 95]
     },
     {
       "keyword": "Agentic AI",
       "category": "concept",
-      "values": [45, 48, 50, 52, 55, 58, 62, 65, 70, 75, 80, 88, 90, 88]
+      "values": [48, 50, 52, 55, 58, 62, 65, 70, 75, 80, 88, 90, 88, 90]
     },
     {
-      "keyword": "Microsoft Superintelligence",
+      "keyword": "Apple Siri LLM",
+      "category": "product",
+      "values": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 30, 88]
+    },
+    {
+      "keyword": "Anthropic",
       "category": "company",
-      "values": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 95, 85]
+      "values": [55, 58, 72, 78, 68, 60, 55, 52, 50, 48, 55, 58, 88, 82]
     },
     {
-      "keyword": "DeepSeek V4",
+      "keyword": "Agent Security",
+      "category": "concept",
+      "values": [0, 0, 0, 0, 0, 0, 5, 8, 12, 18, 25, 35, 50, 74]
+    },
+    {
+      "keyword": "Kimi K2.5",
       "category": "model",
-      "values": [60, 50, 45, 42, 48, 45, 55, 58, 62, 55, 50, 45, 55, 82]
+      "values": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 20, 45, 80]
     },
     {
-      "keyword": "Claude Opus 4.6",
+      "keyword": "Qwen 3.5",
       "category": "model",
-      "values": [60, 65, 62, 58, 55, 60, 65, 70, 72, 68, 65, 72, 70, 78]
+      "values": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 15, 40, 78]
     },
     {
-      "keyword": "AI Military Ethics",
+      "keyword": "AI Regulation",
       "category": "policy",
-      "values": [0, 0, 0, 0, 0, 0, 0, 0, 5, 8, 12, 15, 20, 75]
-    },
-    {
-      "keyword": "China AI Token",
-      "category": "concept",
-      "values": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 70]
-    },
-    {
-      "keyword": "Open Source Security",
-      "category": "concept",
-      "values": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 10, 78]
+      "values": [30, 32, 35, 38, 40, 42, 45, 48, 50, 52, 55, 58, 62, 73]
     }
   ]
 }

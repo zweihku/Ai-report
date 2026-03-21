@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily Report | 2026.03.22</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --claude-bg: #FAF9F7;
+    --claude-surface: #FFFFFF;
+    --claude-border: #E8E5E0;
+    --claude-text-primary: #1A1714;
+    --claude-text-secondary: #6B6560;
+    --claude-text-tertiary: #9B9590;
+    --claude-accent: #DA7756;
+    --claude-accent-light: #F5E6DF;
+    --claude-accent-dark: #C4623F;
+    --claude-tag-blue: #E8F0FE;
+    --claude-tag-blue-text: #3B6CB5;
+    --claude-tag-green: #E6F4EA;
+    --claude-tag-green-text: #2D7A3F;
+    --claude-tag-purple: #F0E6FA;
+    --claude-tag-purple-text: #7B3FAF;
+    --claude-tag-amber: #FEF3E2;
+    --claude-tag-amber-text: #B5752D;
+    --claude-tag-red: #FDE8E8;
+    --claude-tag-red-text: #B53B3B;
+    --claude-card-shadow: 0 1px 3px rgba(26, 23, 20, 0.06), 0 1px 2px rgba(26, 23, 20, 0.04);
+    --claude-card-shadow-hover: 0 4px 12px rgba(26, 23, 20, 0.08), 0 2px 4px rgba(26, 23, 20, 0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+    background: var(--claude-bg);
+    color: var(--claude-text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 8px;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--claude-accent-dark); }
+
+  .header {
+    text-align: center;
+    padding: 48px 0 40px;
+    border-bottom: 1px solid var(--claude-border);
+    margin-bottom: 32px;
+  }
+
+  .header-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--claude-accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .header .date {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    font-weight: 400;
+  }
+
+  .header .edition-note {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    margin-top: 8px;
+  }
+
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 36px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--claude-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .tab-btn:hover {
+    color: var(--claude-text-primary);
+    background: var(--claude-bg);
+  }
+
+  .tab-btn.active {
+    background: var(--claude-accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(218, 119, 86, 0.3);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .section { margin-bottom: 36px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .section-icon.gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .section-icon.model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .section-icon.product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .section-icon.research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .section-icon.industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .section-icon.policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .card {
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--claude-card-shadow);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .card:hover { box-shadow: var(--claude-card-shadow-hover); }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .card p {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.75;
+    margin-bottom: 8px;
+  }
+
+  .card p:last-child { margin-bottom: 0; }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .tag-gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .tag-model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .tag-product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .tag-research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .tag-industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .tag-policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .highlight {
+    background: var(--claude-accent-light);
+    border-left: 3px solid var(--claude-accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--claude-accent-dark);
+    line-height: 1.7;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .stat-item {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--claude-accent);
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--claude-text-tertiary);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 8px;
+    transition: color 0.15s;
+  }
+
+  .source-link:hover { color: var(--claude-accent-dark); text-decoration: underline; }
+
+  .tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .tech-table th, .tech-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .tech-table th {
+    font-weight: 600;
+    color: var(--claude-text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: var(--claude-bg);
+  }
+
+  .tech-table td { color: var(--claude-text-primary); }
+
+  .code-block {
+    background: #2D2A26;
+    color: #E8E5E0;
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    overflow-x: auto;
+    margin: 12px 0;
+  }
+
+  .code-block .comment { color: #9B9590; }
+  .code-block .keyword { color: #DA7756; }
+  .code-block .string { color: #7DB87D; }
+
+  .footer {
+    text-align: center;
+    padding: 32px 0;
+    border-top: 1px solid var(--claude-border);
+    margin-top: 48px;
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+  }
+
+  .footer a {
+    color: var(--claude-accent);
+    text-decoration: none;
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 20px 16px 60px; }
+    .header h1 { font-size: 24px; }
+    .tab-btn { font-size: 13px; padding: 10px 8px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+  }
+
+  .subsection-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin: 16px 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  ul.detail-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0;
+  }
+
+  ul.detail-list li {
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.7;
+    padding: 4px 0 4px 16px;
+    position: relative;
+  }
+
+  ul.detail-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--claude-border);
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <a href="/" class="back-link">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+    返回 AI Pulse
+  </a>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-logo">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4"/><path d="M12 16V8"/></svg>
+      AI Daily Report
+    </div>
+    <h1>AI 领域日报</h1>
+    <div class="date">2026 年 3 月 22 日 星期日</div>
+    <div class="edition-note">OpenAI收购Astral / Tumbler Ridge安全事件 / 腾讯QClaw公测 / 机器人网球 / Visa AI Agent支付 / AI癌症疫苗</div>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('casual')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      轻松阅读版
+    </button>
+    <button class="tab-btn" onclick="switchTab('intermediate')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+      技术进阶版
+    </button>
+    <button class="tab-btn" onclick="switchTab('expert')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      深度技术版
+    </button>
+  </div>
+
+  <!-- ==================== 版本一：轻松阅读版 ==================== -->
+  <div class="tab-content active" id="tab-casual">
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon product">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
+        </div>
+        <div class="section-title">公司与产品</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          OpenAI 收购 Astral，拿下 Python 最热门开发工具
+          <span class="tag tag-product">收购</span>
+        </div>
+        <p>OpenAI 宣布收购了 Astral 公司，后者是 Python 社区最受欢迎的开发工具 Ruff（代码检查器）和 uv（包管理器）的创造者。这意味着 OpenAI 正在加速构建自己的编码平台生态，直接与 Cursor 等 AI 编程工具展开竞争。</p>
+        <p>对于数百万使用 Ruff 和 uv 的 Python 开发者来说，这些工具未来可能会深度整合 OpenAI 的 AI 能力，让写代码变得更加智能化。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          OpenAI "Tumbler Ridge" 安全事件引发关注
+          <span class="tag tag-policy">安全</span>
+        </div>
+        <p>OpenAI CEO Sam Altman 与加拿大官员会面，讨论了近期的 "Tumbler Ridge 事件"中 AI 账户标记协议的问题。虽然具体细节尚未完全公开，但 OpenAI 已承诺将加强 AI 安全措施，这表明业界对 AI 安全事件的响应机制正在逐步完善。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          腾讯 QClaw AI 助手全面开放公测
+          <span class="tag tag-product">产品</span>
+        </div>
+        <p>腾讯旗下 AI 助手 QClaw 正式进入全面公测阶段，提供超过 5000 个预定义技能，包括聊天总结、会议安排、文档起草和浏览器自动化等。公测期间所有 Token 费用由腾讯承担。</p>
+        <p>与此同时，腾讯旗下另一款 AI 产品"元宝"月活用户已达 1.14 亿，日活峰值 4000 万，累计完成超 10 亿次 AI 任务，显示出国内 AI 助手赛道的激烈竞争。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          OpenAI 将员工数翻倍至 8000 人
+          <span class="tag tag-industry">招聘</span>
+        </div>
+        <p>OpenAI 计划在 2026 年底前将员工人数从约 4500 人翻倍至 8000 人，重点布局企业市场。这一扩张计划与其年化收入突破 250 亿美元的里程碑同步，公司也在筹备可能于 2026 年底进行的 IPO。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          微软收缩 Windows Copilot 入口
+          <span class="tag tag-product">策略调整</span>
+        </div>
+        <p>微软决定减少 Windows 照片、小组件和便笺中的 Copilot AI 入口，这一调整源于用户反馈。行业正在重新思考 AI 功能的激进嵌入策略——不是所有地方都需要 AI 按钮。</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon research">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg>
+        </div>
+        <div class="section-title">研究与突破</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          AI 设计癌症疫苗：救活一只狗的肿瘤缩小 75%
+          <span class="tag tag-research">医疗AI</span>
+        </div>
+        <p>澳大利亚新南威尔士大学 RNA 研究所传来了一个温暖的故事：一位研究者使用 ChatGPT、AlphaFold 和 Grok 等 AI 工具，为一只患癌的流浪狗设计了个性化 mRNA 疫苗。结果令人振奋——肿瘤在一个月内缩小了 75%。</p>
+        <p>这个案例虽然只是个例，但展示了 AI 在个性化医疗领域的巨大潜力：从分析基因数据到预测蛋白质结构，AI 正在加速药物研发的每一个环节。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          机器人学会打网球了
+          <span class="tag tag-research">机器人</span>
+        </div>
+        <p>清华大学和北京大学联合团队让 Unitree G1 人形机器人学会了打网球对拉。他们开发的 LATENT 系统仅用 5 小时的人类运动数据就完成了训练，模拟环境中正手击球成功率高达 96%。从走路到打球，人形机器人的进化速度令人惊叹。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          MIT 用 Wi-Fi 信号重建 3D 物体
+          <span class="tag tag-research">前沿</span>
+        </div>
+        <p>MIT 研发出一种利用 Wi-Fi 信号反射来重建 3D 物体的生成式 AI 系统，未来可用于机器人在复杂环境中的感知和操作。这意味着机器人不再完全依赖摄像头就能"看到"周围的物体。</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="section-title">行业动态</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Visa 推出 AI Agent 支付方案
+          <span class="tag tag-industry">金融</span>
+        </div>
+        <p>Visa 联合德国商业银行和 DZ 银行在欧洲推出 "Agentic Ready" 项目，让 AI 助手可以在预设规则下自主完成日常购物支付。这是 AI Agent 从聊天走向"替你花钱"的重要一步。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          "Tokenmaxxing"：公司里的新型内卷
+          <span class="tag tag-industry">职场</span>
+        </div>
+        <p>纽约时报报道了一种新兴的职场现象——"Tokenmaxxing"，员工们争相在排行榜上展示自己使用 AI 的频率和规模。公司把 AI 使用量当成绩效指标，形成了一种新型的办公室竞赛文化。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Meta 计划裁员 20%，AI 投入再翻倍
+          <span class="tag tag-industry">裁员</span>
+        </div>
+        <p>Meta 计划裁减约 15000 名员工（约占总员工数 20%），以缓解 AI 支出压力。2026 年 AI 资本开支预计达到 1150-1350 亿美元，是 2025 年的两倍。一边裁人一边砸钱做 AI，科技巨头的转型阵痛显而易见。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          ElevenLabs 推出 AI 音乐交易市场
+          <span class="tag tag-product">音乐</span>
+        </div>
+        <p>AI 语音公司 ElevenLabs 推出了 AI 音乐交易市场，采用创作者收入分成模式。平台已生成约 1400 万首歌曲，累计向创作者支付超过 1100 万美元。提供三种授权等级，试图解决 AI 音乐的版权争议。</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/></svg>
+        </div>
+        <div class="section-title">政策与版权</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          大英百科全书和韦氏词典起诉 OpenAI
+          <span class="tag tag-policy">版权</span>
+        </div>
+        <p>大英百科全书和韦氏词典联合起诉 OpenAI，指控其未经许可抓取了约 10 万篇受版权保护的文章用于训练。这是继纽约时报之后，又一起针对 AI 公司的重磅版权诉讼。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          英国 AI 版权政策大转弯
+          <span class="tag tag-policy">监管</span>
+        </div>
+        <p>英国政府撤回了此前允许 AI 公司使用版权材料训练模型的豁免提案。大多数公众咨询回应者反对这一做法，政府最终选择尊重版权持有者的权益。这一转向可能影响全球 AI 训练数据的合规标准。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          World 推出 AgentKit 人类身份验证工具
+          <span class="tag tag-product">身份验证</span>
+        </div>
+        <p>Tools for Humanity（World）联合 Coinbase 和 Cloudflare 推出 AgentKit，用 World ID 和 x402 协议验证 AI 购物代理背后的真人身份。随着 AI Agent 代替人类进行越来越多的在线操作，区分"人还是机器"变得越来越重要。</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ==================== 版本二：技术进阶版 ==================== -->
+  <div class="tab-content" id="tab-intermediate">
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon product">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
+        </div>
+        <div class="section-title">公司与产品</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          OpenAI 收购 Astral：Python 工具链的战略布局
+          <span class="tag tag-product">收购</span>
+        </div>
+        <p>OpenAI 收购了 Ruff（Rust 编写的高速 Python linter）和 uv（Python 包管理器）的开发商 Astral。这一收购的战略意义在于：Ruff 和 uv 已成为 Python 生态的基础设施级工具，OpenAI 通过收购获得了直接触达数百万开发者的渠道。</p>
+        <p>技术点评：Ruff 以 Rust 实现的极速性能闻名，比传统 Python linter 快 10-100 倍。将这些工具与 OpenAI 的编码模型（如 Codex 系列）整合，可以在开发者工作流的最底层植入 AI 能力，形成与 Cursor、GitHub Copilot 的差异化竞争。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          OpenAI Tumbler Ridge 事件与安全协议升级
+          <span class="tag tag-policy">安全</span>
+        </div>
+        <p>Sam Altman 就 "Tumbler Ridge 事件" 与加拿大官员会面，承诺增强账户标记和安全响应协议。这一事件再次凸显了大规模 AI 系统在部署后面临的安全挑战——不仅仅是模型本身的安全对齐问题，还包括平台层面的滥用检测和响应机制。</p>
+        <p>技术点评：随着 AI 系统用户量级的增长，传统的基于规则的滥用检测已不够用。业界正在转向基于 AI 本身的行为异常检测（如 anomaly-based monitoring），形成"用 AI 监控 AI"的递归安全架构。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          腾讯 QClaw 公测：5000+ 技能的 AI Agent 平台
+          <span class="tag tag-product">Agent</span>
+        </div>
+        <p>腾讯 QClaw 以 5000+ 预定义技能正式进入公测，覆盖聊天总结、会议管理、文档生成和浏览器自动化等场景。元宝产品 MAU 达 1.14 亿，DAU 峰值 4000 万。</p>
+        <p>技术点评：与国际同行（如 Anthropic Claude Code、OpenAI Operator）相比，腾讯的策略更偏向"技能库+编排引擎"模式，而非依赖单一大模型的通用 Agent 能力。这种预定义技能方案在短期内可提供更稳定的用户体验，但灵活性受限。Token 费用全免的策略也暗示腾讯在用补贴换取 Agent 生态的用户基础。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          微软缩减 Copilot 嵌入点
+          <span class="tag tag-product">策略</span>
+        </div>
+        <p>微软在 Windows Photos、Widgets 和 Notes 中削减 Copilot 入口。这反映了 AI 产品设计的一个关键教训：用户更希望 AI 在需要时出现（pull model），而非无处不在的主动推送（push model）。</p>
+        <p>技术点评：这与 Agent 架构设计中的"ambient vs. explicit invocation"选择一致。成功的 AI 集成应该是上下文感知的——在用户真正需要帮助的时刻提供恰到好处的辅助，而非在每个界面都添加一个 AI 按钮。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          OpenAI 扩招至 8000 人，瞄准企业市场
+          <span class="tag tag-industry">扩张</span>
+        </div>
+        <p>OpenAI 计划从 4500 人扩张到 8000 人，重心放在企业客户服务。年化收入已超 250 亿美元，IPO 预计在 2026 年底推进。企业市场的争夺正在加剧——Anthropic 凭 Claude Code 在企业开发者市场快速增长，OpenAI 的反应是放弃"side quests"（如硬件、社交产品等探索性项目），重新聚焦于编码工具和企业服务。</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon research">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg>
+        </div>
+        <div class="section-title">研究与技术</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          AI 辅助 mRNA 疫苗设计：从 AlphaFold 到临床试验
+          <span class="tag tag-research">生物医疗</span>
+        </div>
+        <p>UNSW RNA 研究所利用 ChatGPT（文献分析和方案设计）、AlphaFold（蛋白质结构预测）和 Grok（数据交叉验证）组合设计了个性化 mRNA 癌症疫苗，在犬类试验中实现肿瘤体积缩小 75%。</p>
+        <p>技术点评：这个案例的技术路径值得关注——研究者没有使用专门的药物发现 AI 平台（如 Insilico Medicine 的 Chemistry42），而是组合使用了通用 LLM 和开源生物信息学工具。这种"通用AI + 专业工具"的组合模式可能比端到端的专用系统更灵活，尤其在小规模个性化医疗场景中。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          LATENT 系统：人形机器人实时网球对拉
+          <span class="tag tag-research">机器人</span>
+        </div>
+        <p>清华/北大联合团队的 LATENT 系统让 Unitree G1 机器人实现了实时网球对拉。关键数据：仅需 5 小时人类运动数据训练，模拟环境正手成功率 96%。</p>
+        <p>技术点评：LATENT 的创新在于将 latent space 动作表示与实时反馈控制相结合。传统机器人运动控制需要大量的动力学建模，而 LATENT 通过在隐空间中学习运动模式，大幅降低了数据需求。5 小时数据即可训练的效率意味着快速适应新运动场景成为可能。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          MIT Wi-Fi 3D 重建：非视觉感知的新范式
+          <span class="tag tag-research">感知</span>
+        </div>
+        <p>MIT 利用生成式 AI 从 Wi-Fi 信号反射重建 3D 物体。这一技术将 RF 感知与 3D 重建结合，为机器人在低可见度环境（烟雾、黑暗、遮挡）中的操作提供了替代视觉方案。</p>
+        <p>技术点评：该方法利用 Wi-Fi 信号的多径效应（multipath propagation）作为隐式的空间采样，再通过生成模型将稀疏的 RF 特征映射到 3D mesh。与 LiDAR 或深度相机相比，Wi-Fi 感知的优势在于穿透性和低成本，但空间分辨率仍然是主要瓶颈。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          WordPress AI Agent 自主发布功能
+          <span class="tag tag-product">Agent</span>
+        </div>
+        <p>WordPress.com 推出了允许 AI Agent 自主撰写、编辑和发布文章的功能。Agent 可以完成从内容生成到 SEO 优化再到定时发布的全流程。</p>
+        <p>技术点评：这是 AI Agent "写入权限"扩展的又一案例。从只读（搜索、分析）到只写（发消息、发帖），Agent 的权限边界正在快速扩展。安全问题在于——如何确保 Agent 发布的内容符合平台政策和用户意图，避免"幻觉内容"被自动发布到公开网站。</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="section-title">行业与市场</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Visa "Agentic Ready" 支付协议
+          <span class="tag tag-industry">金融科技</span>
+        </div>
+        <p>Visa 联合 Commerzbank 和 DZ Bank 在欧洲推出 Agent 支付协议，允许 AI 代理在预设规则和限额内自主完成购物交易。</p>
+        <p>技术点评：这触及了 AI Agent 架构中最敏感的问题之一——Agent 的金融行为权限。Visa 的方案采用了"预定义规则 + 人类监督"的分层授权模型，本质上是将传统的卡片预授权机制扩展到 AI Agent 场景。关键技术挑战在于实时欺诈检测——当交易发起方从人类变成 AI 时，行为模式识别需要全新的特征工程。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          "Tokenmaxxing"：AI 使用量成新 KPI
+          <span class="tag tag-industry">职场</span>
+        </div>
+        <p>纽约时报报道了"Tokenmaxxing"现象——公司将员工 AI 使用量（token 消耗、工具调用次数等）纳入绩效考核排行榜。</p>
+        <p>技术点评：从技术管理角度看，raw token 消耗并不是衡量 AI 效率的好指标。更有意义的指标应该是"AI 辅助任务完成率"或"人工干预频率"。过度追求 token 消耗量可能导致低效的 prompt 设计和不必要的 API 调用，反而增加成本而非提升生产力。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Meta 裁员 20% + AI 投入翻倍
+          <span class="tag tag-industry">策略</span>
+        </div>
+        <p>Meta 拟裁员约 15000 人以对冲 AI 资本开支（2026 年预计 $1150-1350 亿），人力结构向 AI 工程密集型转型。</p>
+        <p>技术点评：Meta 的资本配置策略反映了一个行业共识——AI 基础设施投资的回报周期正在拉长，而传统业务线的人力密度可以通过 AI 自动化大幅降低。每年超千亿美元的 AI capex 主要流向 GPU 集群（NVIDIA Vera Rubin 系列）和数据中心建设。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          ElevenLabs AI 音乐市场：创作者经济新模式
+          <span class="tag tag-product">内容创作</span>
+        </div>
+        <p>ElevenLabs 推出 AI 音乐交易市场，平台已生成 1400 万首歌曲，累计向创作者支付 1100 万+美元。三种授权等级覆盖个人、商业和独占使用。</p>
+        <p>技术点评：与其他 AI 音乐平台（Suno、Udio）不同，ElevenLabs 采用了"marketplace"模式而非"生成器"模式，将版权和收益分配前置到创作环节。这在法律上更清晰——创作者授权 AI 使用其音色/风格生成衍生内容，再通过平台分发和变现。</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/></svg>
+        </div>
+        <div class="section-title">政策与版权</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          百科全书 vs OpenAI：RAG 时代的版权新战场
+          <span class="tag tag-policy">版权</span>
+        </div>
+        <p>大英百科全书和韦氏词典起诉 OpenAI 未经授权抓取约 10 万篇文章。诉讼特别针对 RAG（检索增强生成）工作流中的版权问题——即使模型不在训练中使用原文，在推理时检索并引用版权内容是否构成侵权？</p>
+        <p>技术点评：这起诉讼可能重新定义 RAG 系统的法律边界。当前 RAG 实现中的引用归属（attribution）机制通常不够精确，难以满足版权法的要求。行业可能需要开发更细粒度的内容溯源技术，如基于 content hash 的引用追踪系统。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          英国撤回 AI 训练版权豁免提案
+          <span class="tag tag-policy">监管</span>
+        </div>
+        <p>英国政府在公众咨询后撤回了允许 AI 公司使用版权材料训练模型的 text-and-data-mining 豁免提案，回归到要求明确授权的立场。</p>
+        <p>技术点评：这对 AI 训练数据供应链产生直接影响。欧盟的立场（允许 opt-out）和英国的转向（要求 opt-in）之间的差异，正在形成一个全球 AI 训练数据合规的"拼凑式"监管图景。AI 公司可能需要建立区域化的训练数据管理系统。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          World AgentKit：AI Agent 的身份基础设施
+          <span class="tag tag-product">身份验证</span>
+        </div>
+        <p>World（前 Worldcoin）推出 AgentKit，用 World ID 和 x402 支付协议验证 AI 购物代理背后的人类身份。Coinbase 和 Cloudflare 作为合作方提供支付通道和边缘验证。</p>
+        <p>技术点评：x402 协议是一个基于 HTTP 402 状态码的 Agent 原生支付标准，允许 Agent 在请求级别完成微支付和身份验证。这解决了 Agent 经济中的两个核心问题：1）Agent 行为的人类归属，2）Agent 之间的无摩擦价值交换。</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ==================== 版本三：深度技术版 ==================== -->
+  <div class="tab-content" id="tab-expert">
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon product">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
+        </div>
+        <div class="section-title">公司与产品</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          OpenAI 收购 Astral：开发者工具链的垂直整合
+          <span class="tag tag-product">收购</span>
+        </div>
+        <p>OpenAI 收购 Astral（Ruff linter + uv 包管理器开发商），将 Python 生态核心基础设施纳入版图。</p>
+
+        <ul class="detail-list">
+          <li><strong>Ruff：</strong>Rust 实现的 Python linter/formatter，兼容 Flake8/isort/Black 规则集，速度比 Flake8 快 10-100x。GitHub 35k+ stars，已成为 Python 项目的事实标准 linter</li>
+          <li><strong>uv：</strong>Rust 实现的 Python 包管理器/虚拟环境管理工具，兼容 pip/pip-tools/virtualenv 接口，安装速度比 pip 快 10-100x</li>
+          <li><strong>战略分析：</strong>OpenAI 获得了 Python 开发者工作流的底层入口。潜在整合方向包括：代码编辑器内联 AI 建议（基于 linter 上下文）、智能依赖管理（基于项目语义分析）、以及与 Codex/GPT 编码模型的深度集成</li>
+          <li><strong>竞争影响：</strong>这直接威胁到 Cursor（刚发布 Composer 2）和 GitHub Copilot 的市场地位。OpenAI 正在构建从模型到工具链到 IDE 的完整编码生态</li>
+        </ul>
+
+        <a href="https://llm-stats.com/ai-news" class="source-link" target="_blank" rel="noopener">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+          LLM Stats 报道
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Tumbler Ridge 安全事件：AI 平台安全运营的挑战
+          <span class="tag tag-policy">安全</span>
+        </div>
+        <p>OpenAI CEO 与加拿大官方就账户标记协议问题进行紧急沟通，承诺增强安全响应机制。</p>
+
+        <ul class="detail-list">
+          <li><strong>安全架构问题：</strong>事件暴露了大规模 AI 系统在"模型安全"之外的运营安全短板——账户行为检测、跨域情报共享、政府协作响应等环节的不成熟</li>
+          <li><strong>技术方向：</strong>行业正在从 rule-based 检测转向 anomaly-based + ML-driven 的行为监控。核心挑战是平衡检测灵敏度与误报率——过于激进的标记策略会影响合法用户体验</li>
+          <li><strong>行业影响：</strong>Anthropic 的 Constitutional AI 安全框架与 OpenAI 的 Safety Systems 形成了两种不同的安全范式。此事件可能推动行业制定统一的 AI 平台安全运营标准</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          腾讯 AI Agent 生态：QClaw + 元宝的双轨策略
+          <span class="tag tag-product">Agent 平台</span>
+        </div>
+        <p>QClaw 以 5000+ 预定义技能公测，元宝 MAU 1.14 亿。腾讯的 Agent 策略采用"技能库编排"模式而非端到端大模型 Agent。</p>
+
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-value">5,000+</div>
+            <div class="stat-label">QClaw 预定义技能</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">1.14亿</div>
+            <div class="stat-label">元宝 MAU</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">4,000万</div>
+            <div class="stat-label">元宝 DAU 峰值</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">10亿+</div>
+            <div class="stat-label">累计 AI 任务数</div>
+          </div>
+        </div>
+
+        <ul class="detail-list">
+          <li><strong>架构对比：</strong>Anthropic Claude Code 和 OpenAI Operator 采用"通用模型 + 工具调用"的 Agent 架构，灵活但不稳定。腾讯的"技能库 + 编排引擎"方案更像是传统 RPA + LLM 的混合体，可控性强但扩展性受限</li>
+          <li><strong>Token 补贴策略：</strong>公测期间免费提供所有 Token，本质是用补贴换取 Agent 使用习惯和行为数据。这些数据对优化技能路由和用户意图理解至关重要</li>
+          <li><strong>微信生态整合：</strong>QClaw 的核心优势在于深度接入微信生态（聊天、群组、小程序），这是国际竞争对手无法复制的分发渠道</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          微软 Copilot 策略收缩：AI UX 的反思
+          <span class="tag tag-product">产品策略</span>
+        </div>
+        <p>微软在 Windows Photos、Widgets、Notes 中削减 Copilot 入口。这是继 Windows 11 的 Start Menu 广告争议后，微软在 AI 集成策略上的又一次调整。</p>
+
+        <ul class="detail-list">
+          <li><strong>设计模式转变：</strong>从 "push model"（主动推送 AI 功能）转向 "pull model"（用户主动调用）。这与 Apple Intelligence 的设计哲学（系统级 AI，但不抢占前台）趋同</li>
+          <li><strong>技术含义：</strong>意味着 AI 功能的触发机制将更依赖上下文感知（context-aware invocation）而非固定入口点。这要求更精准的用户意图预测和更低延迟的 AI 推理能力</li>
+          <li><strong>OpenAI 竞争因素：</strong>OpenAI 放弃"side quests"聚焦企业工具，也在反映同样的行业趋势——用户更需要"在正确的时间出现的正确 AI"，而非无处不在的 AI 按钮</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon research">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg>
+        </div>
+        <div class="section-title">研究与技术深度分析</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          AI 辅助个性化 mRNA 疫苗设计
+          <span class="tag tag-research">计算生物学</span>
+        </div>
+        <p>UNSW RNA Institute 使用多模型组合（ChatGPT + AlphaFold + Grok）为犬类肿瘤设计个性化 mRNA 疫苗，实现 75% 肿瘤体积缩小。</p>
+
+        <ul class="detail-list">
+          <li><strong>技术流程：</strong>1) 肿瘤全外显子测序(WES)获取新抗原突变谱 → 2) ChatGPT 辅助文献检索和候选表位筛选 → 3) AlphaFold 预测突变蛋白质 3D 结构和 MHC 结合亲和力 → 4) Grok 交叉验证表位免疫原性预测 → 5) mRNA 序列设计和密码子优化</li>
+          <li><strong>创新点：</strong>使用通用 LLM 替代专用工具（如 NetMHCpan）进行初步筛选，大幅降低了个性化疫苗设计的技术门槛和时间成本</li>
+          <li><strong>局限性：</strong>单一动物案例，缺乏对照组；犬类免疫系统与人类存在差异；75% 缩小的持久性和完全应答率未知</li>
+          <li><strong>行业意义：</strong>如果这一"通用AI + 专业生信工具"的组合范式在更大规模验证中成立，可能降低个性化癌症疫苗的开发成本数个数量级（目前 BioNTech 个性化疫苗成本约 $100K/人）</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          LATENT：人形机器人实时动态运动控制
+          <span class="tag tag-research">具身智能</span>
+        </div>
+        <p>清华/北大团队 LATENT 系统实现 Unitree G1 实时网球对拉。5h 数据训练，96% 模拟正手成功率。</p>
+
+        <ul class="detail-list">
+          <li><strong>架构：</strong>LATENT（Latent Action Trajectory Encoding for Neural Transfer）采用 VAE 将人类运动轨迹编码到连续隐空间，再通过 RL policy 在隐空间中搜索最优动作序列。这避免了直接在高维关节空间中学习策略的维度灾难</li>
+          <li><strong>关键创新：</strong>motion retargeting 从人类到 G1 机器人的运动学映射不是简单的关节对应，而是通过 task-space 目标（球拍位置/速度/角度）进行重定向，允许机器人用不同的关节配置达到相同的击球效果</li>
+          <li><strong>数据效率：</strong>5 小时训练数据 vs 传统 RL 方法通常需要数百小时模拟数据。隐空间的正则化约束有效防止了小数据集上的过拟合</li>
+          <li><strong>实际部署挑战：</strong>sim-to-real gap 仍然是主要瓶颈。论文的 96% 成功率是模拟环境数据，真实环境中的成功率受地面摩擦、风阻、视觉延迟等因素影响预计会显著下降</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Wi-Fi 感知 3D 重建：RF-to-3D 生成模型
+          <span class="tag tag-research">感知系统</span>
+        </div>
+        <p>MIT 开发基于 Wi-Fi 信号反射的生成式 3D 重建系统，为非视觉机器人感知提供新方案。</p>
+
+        <ul class="detail-list">
+          <li><strong>原理：</strong>利用 2.4/5GHz Wi-Fi 信号的多径传播特性，从 CSI（Channel State Information）中提取空间信息。生成模型将稀疏 RF 特征映射到 dense 3D point cloud 或 mesh</li>
+          <li><strong>技术路线：</strong>CSI 采集 → RF feature extraction (CNN) → latent space encoding → conditional diffusion model → 3D mesh generation</li>
+          <li><strong>性能特征：</strong>空间分辨率 ~5cm（远低于 LiDAR 的 mm 级），但具有穿墙和非视距感知能力。适用于烟雾、完全黑暗等视觉系统失效场景</li>
+          <li><strong>应用方向：</strong>仓储物流机器人（在高密度货架间导航）、灾后搜救（烟尘环境）、安防监控（隐私友好的活动检测，无需摄像头）</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          AI Agent 身份验证：World AgentKit + x402 协议
+          <span class="tag tag-product">Agent 基础设施</span>
+        </div>
+        <p>World 推出 AgentKit，基于 World ID（生物特征身份）和 x402 协议（HTTP 原生微支付）解决 Agent 经济的身份和支付问题。</p>
+
+        <ul class="detail-list">
+          <li><strong>x402 协议设计：</strong>利用 HTTP 402 (Payment Required) 状态码，在请求级别嵌入支付能力。Agent 发出的每个 HTTP 请求都可以携带支付凭证（payment credential），实现无摩擦的 request-level micropayment</li>
+          <li><strong>身份层：</strong>World ID 提供"proof of personhood"——通过虹膜扫描生成的零知识证明，确认 Agent 背后存在真实人类，但不暴露人类身份信息</li>
+          <li><strong>架构整合：</strong>Coinbase 提供法币-加密货币转换和托管钱包，Cloudflare 在边缘节点执行身份验证和支付结算，最大化减少 Agent 交易延迟</li>
+          <li><strong>行业影响：</strong>如果 x402 成为标准，将改变现有 API 定价模式——从"订阅制"/"按 token 计费"转向"按请求实时定价"。这对 AI Agent 中间件生态影响深远</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/></svg>
+        </div>
+        <div class="section-title">政策、版权与治理</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          百科全书诉 OpenAI：RAG 系统的版权困境
+          <span class="tag tag-policy">知识产权</span>
+        </div>
+        <p>大英百科全书和韦氏词典联合起诉 OpenAI，涉及约 10 万篇文章的未授权使用。诉讼焦点集中在 RAG 工作流中的版权问题。</p>
+
+        <ul class="detail-list">
+          <li><strong>法律焦点：</strong>诉讼区分了两个层面——1) 训练数据版权（pre-training corpus）和 2) 检索引用版权（RAG retrieval）。后者是新的法律前沿：即使模型权重中不包含原文，在推理时实时检索并呈现版权内容是否构成"复制"或"衍生作品"？</li>
+          <li><strong>技术影响：</strong>如果法院认定 RAG 检索构成侵权，现有的 RAG 架构需要引入强制性的 content licensing 和 attribution 层。可能需要类似 DRM 的"数据权限管理"系统来控制哪些内容可以被检索引用</li>
+          <li><strong>行业应对：</strong>Google 已通过与内容出版商的授权协议规避这一风险（如与 Reddit 的 $60M/年数据协议）。OpenAI 可能需要为 RAG 知识库建立类似的授权框架</li>
+        </ul>
+
+        <a href="https://www.neuralbuddies.com/p/ai-news-recap-march-20-2026" class="source-link" target="_blank" rel="noopener">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+          NeuralBuddies 报道
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          英国 TDM 豁免撤回与全球 AI 训练数据合规
+          <span class="tag tag-policy">监管</span>
+        </div>
+        <p>英国政府撤回 text-and-data-mining (TDM) 版权豁免提案，要求 AI 公司获得版权内容的明确授权。</p>
+
+        <ul class="detail-list">
+          <li><strong>全球监管对比：</strong>美国（fair use 判例法，尚无定论）→ 欧盟（AI Act + opt-out TDM 豁免）→ 英国（撤回豁免，要求 opt-in）→ 日本（宽松，允许非商业 AI 训练使用）</li>
+          <li><strong>技术合规要求：</strong>AI 公司需要实现 provenance tracking——追踪每条训练数据的来源、授权状态和使用范围。这要求在数据管道中嵌入元数据管理层，增加了训练基础设施的复杂度</li>
+          <li><strong>对开源影响：</strong>开源模型（如 Qwen、Mistral Small 4）面临更大的合规风险，因为它们的训练数据集通常缺乏详细的 provenance 记录。区域化训练数据管理可能导致模型能力的地理差异化</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          EU 数字立法精简：AI 生成色情内容禁令
+          <span class="tag tag-policy">欧盟</span>
+        </div>
+        <p>欧盟理事会就数字立法框架精简达成立场，明确禁止 AI 生成的非自愿亲密内容和儿童性虐待材料（CSAM）。</p>
+
+        <ul class="detail-list">
+          <li><strong>技术执行：</strong>禁令的执行需要 NSFW 检测模型 + 人脸/身份匹配系统的组合。关键技术挑战是降低误报率——在保护合法艺术创作的同时有效识别恶意生成内容</li>
+          <li><strong>模型层合规：</strong>基础模型提供商需要在 safety filter 层面预防此类内容生成，而非仅在输出层进行事后过滤。这推动了 constitutional AI、RLHF safety training 等安全对齐技术的发展</li>
+        </ul>
+
+        <a href="https://www.consilium.europa.eu/en/press/press-releases/2026/03/13/council-agrees-position-to-streamline-rules-on-artificial-intelligence/" class="source-link" target="_blank" rel="noopener">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+          EU Council 公告
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Visa Agentic Ready：金融 Agent 的授权与风控架构
+          <span class="tag tag-industry">Agent 金融</span>
+        </div>
+        <p>Visa + Commerzbank + DZ Bank 在欧洲推出 AI Agent 支付协议，允许 Agent 在预设规则内自主完成交易。</p>
+
+        <ul class="detail-list">
+          <li><strong>授权模型：</strong>三层授权架构——1) 用户设定规则（merchant whitelist, 单笔限额, 类别限制）→ 2) Agent 实时决策（在规则边界内自主执行）→ 3) 异常回退（超出规则的交易需人类审批）</li>
+          <li><strong>风控挑战：</strong>传统反欺诈模型基于人类消费行为模式训练。Agent 的行为模式（固定时间、批量操作、无地理锚定）与人类完全不同，需要重新设计特征工程和检测模型</li>
+          <li><strong>与 World AgentKit 的互补：</strong>Visa 解决"Agent 可以花多少钱"，World AgentKit 解决"Agent 背后是谁"。两者组合可能形成 Agent 经济的基础金融架构</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- Footer -->
+<div class="container">
+  <div class="footer">
+    <p>AI Pulse Daily Report -- 由 AI 整理分析，数据来源：WebSearch、行业媒体</p>
+    <p style="margin-top: 8px;"><a href="/">返回 AI Pulse 首页</a></p>
+  </div>
+</div>
+
+<script>
+function switchTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  const tabs = { casual: 0, intermediate: 1, expert: 2 };
+  document.querySelectorAll('.tab-btn')[tabs[tab]].classList.add('active');
+}
+</script>
+</body>
+</html>

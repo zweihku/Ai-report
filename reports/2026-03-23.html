@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily Report | 2026.03.23</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --claude-bg: #FAF9F7;
+    --claude-surface: #FFFFFF;
+    --claude-border: #E8E5E0;
+    --claude-text-primary: #1A1714;
+    --claude-text-secondary: #6B6560;
+    --claude-text-tertiary: #9B9590;
+    --claude-accent: #DA7756;
+    --claude-accent-light: #F5E6DF;
+    --claude-accent-dark: #C4623F;
+    --claude-tag-blue: #E8F0FE;
+    --claude-tag-blue-text: #3B6CB5;
+    --claude-tag-green: #E6F4EA;
+    --claude-tag-green-text: #2D7A3F;
+    --claude-tag-purple: #F0E6FA;
+    --claude-tag-purple-text: #7B3FAF;
+    --claude-tag-amber: #FEF3E2;
+    --claude-tag-amber-text: #B5752D;
+    --claude-tag-red: #FDE8E8;
+    --claude-tag-red-text: #B53B3B;
+    --claude-card-shadow: 0 1px 3px rgba(26, 23, 20, 0.06), 0 1px 2px rgba(26, 23, 20, 0.04);
+    --claude-card-shadow-hover: 0 4px 12px rgba(26, 23, 20, 0.08), 0 2px 4px rgba(26, 23, 20, 0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+    background: var(--claude-bg);
+    color: var(--claude-text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 8px;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--claude-accent-dark); }
+
+  .header {
+    text-align: center;
+    padding: 48px 0 40px;
+    border-bottom: 1px solid var(--claude-border);
+    margin-bottom: 32px;
+  }
+
+  .header-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--claude-accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .header .date {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    font-weight: 400;
+  }
+
+  .header .edition-note {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    margin-top: 8px;
+  }
+
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 36px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--claude-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .tab-btn:hover {
+    color: var(--claude-text-primary);
+    background: var(--claude-bg);
+  }
+
+  .tab-btn.active {
+    background: var(--claude-accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(218, 119, 86, 0.3);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .section { margin-bottom: 36px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .section-icon.gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .section-icon.model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .section-icon.product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .section-icon.research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .section-icon.industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .section-icon.policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .card {
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--claude-card-shadow);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .card:hover { box-shadow: var(--claude-card-shadow-hover); }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .card p {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.75;
+    margin-bottom: 8px;
+  }
+
+  .card p:last-child { margin-bottom: 0; }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .tag-gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .tag-model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .tag-product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .tag-research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .tag-industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .tag-policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .highlight {
+    background: var(--claude-accent-light);
+    border-left: 3px solid var(--claude-accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--claude-accent-dark);
+    line-height: 1.7;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .stat-item {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--claude-accent);
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--claude-text-tertiary);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 8px;
+    transition: color 0.15s;
+  }
+
+  .source-link:hover { color: var(--claude-accent-dark); text-decoration: underline; }
+
+  .tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .tech-table th, .tech-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .tech-table th {
+    font-weight: 600;
+    color: var(--claude-text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: var(--claude-bg);
+  }
+
+  .tech-table td { color: var(--claude-text-primary); }
+
+  .code-block {
+    background: #2D2A26;
+    color: #E8E5E0;
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    overflow-x: auto;
+    margin: 12px 0;
+  }
+
+  .code-block .comment { color: #9B9590; }
+  .code-block .keyword { color: #DA7756; }
+  .code-block .string { color: #7DB87D; }
+
+  .footer {
+    text-align: center;
+    padding: 32px 0;
+    border-top: 1px solid var(--claude-border);
+    margin-top: 48px;
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+  }
+
+  .footer a {
+    color: var(--claude-accent);
+    text-decoration: none;
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 20px 16px 60px; }
+    .header h1 { font-size: 24px; }
+    .tab-btn { font-size: 13px; padding: 10px 8px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+  }
+
+  .subsection-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin: 16px 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  ul.detail-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0;
+  }
+
+  ul.detail-list li {
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.7;
+    padding: 4px 0 4px 16px;
+    position: relative;
+  }
+
+  ul.detail-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--claude-border);
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <a href="/" class="back-link">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+    返回 AI Pulse
+  </a>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-logo">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4"/><path d="M12 16V8"/></svg>
+      AI Daily Report
+    </div>
+    <h1>AI 领域日报</h1>
+    <div class="date">2026 年 3 月 23 日 星期一</div>
+    <div class="edition-note">Gemini 3.1 Pro发布 / MiMo-V2全模态模型 / 机器人融资爆发 / Replit $9B估值 / X平台AI标注 / Apple Siri重塑</div>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('casual')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      轻松阅读版
+    </button>
+    <button class="tab-btn" onclick="switchTab('intermediate')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+      技术进阶版
+    </button>
+    <button class="tab-btn" onclick="switchTab('expert')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      深度技术版
+    </button>
+  </div>
+
+  <!-- ==================== 版本一：轻松阅读版 ==================== -->
+  <div class="tab-content active" id="tab-casual">
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        </div>
+        <div class="section-title">模型与产品</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Google 发布 Gemini 3.1 Pro，追平 GPT-5.4
+          <span class="tag tag-model">模型</span>
+        </div>
+        <p>Google DeepMind 正式推出 Gemini 3.1 Pro，这是目前与 OpenAI GPT-5.4 并驾齐驱的顶尖 AI 模型。它支持文字、图片、音频、视频和代码的多模态理解，拥有100万 token 的超长上下文窗口。</p>
+        <p>在 AI Analysis Index 评测中，Gemini 3.1 Pro 和 GPT-5.4 Pro 都拿到了 57 分的并列成绩，AI 模型的"两强争霸"格局正式形成。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          小米发布 MiMo-V2 全模态 AI 模型
+          <span class="tag tag-model">模型</span>
+        </div>
+        <p>小米正式发布 MiMo-V2-Omni，一款能同时处理文字、图片和视频的全模态 AI 模型。配合同步推出的 MiMo-V2-TTS 语音合成系统，AI 对话可以像真人一样自然地说话。</p>
+        <p>值得注意的是，之前传言的"DeepSeek V4"被确认实际上是小米的 MiMo-V2-Pro，并非 DeepSeek 的新模型。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Apple Siri 迎来史上最大升级
+          <span class="tag tag-product">产品</span>
+        </div>
+        <p>Apple 宣布 Siri 将接入 Google 1.2 万亿参数的 Gemini 模型，获得屏幕感知和跨应用整合能力。升级后的 Siri 将在 iOS 26.4（预计3月底）推送，真正成为一个"看得懂你屏幕"的智能助手。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Gemini 3.1 Flash-Lite：又快又便宜的 AI
+          <span class="tag tag-model">模型</span>
+        </div>
+        <p>Google 同时推出了轻量版 Gemini 3.1 Flash-Lite，响应速度提升 2.5 倍，输出速度快了 45%，输入价格低至每百万 token 仅 0.25 美元。对于需要大规模调用 AI 的开发者来说，这是一个性价比极高的选择。</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="section-title">行业动态</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          机器人行业一周融资超 12 亿美元
+          <span class="tag tag-industry">融资</span>
+        </div>
+        <p>过去一周，全球机器人领域迎来融资井喷：Mind Robotics（5亿美元）、Rhoda AI（4.5亿美元）、Sunday（1.65亿美元）、Oxa（1.03亿美元）。资本正在疯狂涌入实体 AI 赛道。</p>
+        <p>与此同时，现代汽车宣布计划在 2028 年前在美国工厂部署人形机器人，机器人"进工厂"的时间表越来越清晰。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Replit 完成 4 亿美元融资，估值 90 亿
+          <span class="tag tag-industry">融资</span>
+        </div>
+        <p>在线编程平台 Replit 以 90 亿美元估值完成 D 轮融资，仅6个月前估值还只有 30 亿美元。Replit 的核心卖点是让不懂代码的人也能通过 AI 对话来创建软件。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          HSBC 计划裁员两万人，AI 替代加速
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>汇丰银行正考虑裁减约 2 万个岗位，作为其 AI 驱动数字化转型的一部分。银行业正成为 AI 对就业冲击最直接的领域之一。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          X 平台开始测试 AI 内容标注
+          <span class="tag tag-product">平台</span>
+        </div>
+        <p>马斯克旗下的 X（原 Twitter）正在测试强制性 AI 生成内容标注功能。未来由 AI 生成的帖子将被自动打上标签，帮助用户分辨哪些内容来自人类、哪些来自 AI。</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>
+        </div>
+        <div class="section-title">安全与监管</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          英国监管机构调查 Grok 图像生成
+          <span class="tag tag-policy">监管</span>
+        </div>
+        <p>英国信息专员办公室（ICO）和通信管理局（Ofcom）联合对 xAI 的 Grok 模型展开正式调查，原因是其图像生成功能存在制造深度伪造和非自愿内容的风险。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Anthropic 与五角大楼之争持续发酵
+          <span class="tag tag-policy">安全</span>
+        </div>
+        <p>Anthropic 拒绝美国国防部将其技术用于大规模监控和自主武器，被五角大楼标记为"供应链风险"。超过 30 名来自 OpenAI 和 Google 的员工（包括 Jeff Dean）公开声援 Anthropic 的立场。</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon research">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        </div>
+        <div class="section-title">研究前沿</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Google 发布 Gemini Robotics 1.5，AI 走进物理世界
+          <span class="tag tag-research">研究</span>
+        </div>
+        <p>Google DeepMind 发布了 Gemini Robotics 1.5，这是首个具备"思考能力"的机器人推理模型。它能将视觉信息直接转化为机器人动作指令，让 AI 从屏幕后面走到真实世界中。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          微软 Argos：让 AI 不再"看错"
+          <span class="tag tag-research">研究</span>
+        </div>
+        <p>微软发布了 Argos 研究成果，通过多模态强化学习和代理验证机制，大幅降低了 AI 的"幻觉"问题，提升了空间推理能力。这意味着 AI 处理图片和视频时会变得更加准确可靠。</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ==================== 版本二：技术进阶版 ==================== -->
+  <div class="tab-content" id="tab-intermediate">
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        </div>
+        <div class="section-title">模型更新</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Gemini 3.1 Pro：多模态推理的新标杆
+          <span class="tag tag-model">模型</span>
+        </div>
+        <p>Google DeepMind 发布 Gemini 3.1 Pro，在 ARC-AGI-2 测试中达到 77.1% 的准确率，在 AI Analysis Index 上与 GPT-5.4 Pro 并列 57 分。模型原生支持文本、图像、音频、视频和代码五种模态的联合推理。</p>
+        <div class="highlight">
+          Gemini 3.1 Pro 的核心技术进步在于统一的多模态注意力机制，不再需要为不同模态设置独立的编码器管线，而是在 Transformer 内部直接对齐多种模态的表示空间。
+        </div>
+        <p>同步推出的 Flash-Lite 变体将推理延迟降低 2.5 倍，输出速度提升 45%，API 定价 $0.25/M 输入 token，适合大规模部署场景。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          MiMo-V2-Omni：小米的全模态 Agent 模型
+          <span class="tag tag-model">模型</span>
+        </div>
+        <p>小米发布 MiMo-V2-Omni，定位为全模态 Agent 模型，能处理文本、图像和视频输入，输出文本和自然语音（通过 MiMo-V2-TTS）。此前传闻的 "DeepSeek V4 Hunter Alpha" 实际为小米的 MiMo-V2-Pro。</p>
+        <p>技术亮点在于 TTS 模块采用了基于 diffusion 的声码器，支持 zero-shot 声音克隆和情感控制，语音自然度显著优于传统 TTS 方案。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          NVIDIA Nemotron 3 Super：MoE 架构的效率突破
+          <span class="tag tag-model">模型</span>
+        </div>
+        <p>NVIDIA 在 GTC 2026 上发布的 Nemotron 3 Super 采用 120B 参数的 Mamba-Transformer 混合 MoE 架构，活跃参数仅 12B，支持 1M 上下文窗口，吞吐量是同类开源模型的 2.2 倍。</p>
+        <p>Mamba 层处理长序列时的线性复杂度与 Transformer 的注意力机制互补，实现了高效长文本推理。模型已开源，适用于高吞吐 Agent 场景。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Kimi K2.5 开源："群体模式"可调度100个子 Agent
+          <span class="tag tag-model">模型</span>
+        </div>
+        <p>Moonshot AI 开源了 Kimi K2.5 多模态模型，最大亮点是 "swarm mode"，允许主 Agent 并行调度最多 100 个子 Agent 协同完成任务。这种架构适合需要大规模并行处理的复杂工作流场景。</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon product">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
+        </div>
+        <div class="section-title">产品与平台</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Apple Siri 接入 Gemini 1.2T 参数模型
+          <span class="tag tag-product">产品</span>
+        </div>
+        <p>Apple 宣布下一代 Siri 将以 Google 1.2 万亿参数 Gemini 模型作为后端推理引擎，结合设备端模型实现混合推理架构。关键能力包括屏幕上下文感知（screen awareness）和跨应用 intent routing。</p>
+        <p>技术实现上，设备端轻量模型负责 intent 分类和隐私过滤，云端 Gemini 模型处理复杂推理任务。预计在 iOS 26.4 中上线。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          X 平台测试 AI 内容强制标注系统
+          <span class="tag tag-product">平台</span>
+        </div>
+        <p>X 正在测试基于 C2PA 标准的 AI 生成内容自动检测和标注系统。系统会分析内容的元数据和生成特征，对高置信度的 AI 生成内容自动添加标签。这是社交平台在 AI 内容治理方面的重要尝试。</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon research">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        </div>
+        <div class="section-title">研究进展</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Gemini Robotics 1.5：视觉-语言-动作统一模型
+          <span class="tag tag-research">研究</span>
+        </div>
+        <p>Google DeepMind 推出 Gemini Robotics 1.5 和 Gemini Robotics-ER 1.5（Embodied Reasoning），首次实现将"思考"能力引入物理世界任务。模型直接将视觉信息映射为机器人电机指令，无需传统的感知-规划-控制三阶段管线。</p>
+        <p>Robotics-ER 变体在 embodied reasoning 任务上达到 SOTA，能处理模糊指令（"把桌子整理一下"）并自主规划多步骤操作。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          微软 Argos：多模态强化学习 + 代理验证
+          <span class="tag tag-research">研究</span>
+        </div>
+        <p>微软研究院发布 Argos 框架，将强化学习与 agentic verification 结合用于多模态 AI。核心思路是训练一个"验证 Agent"来检查主模型的推理过程，在推理时动态修正错误。</p>
+        <p>实验显示 Argos 在视觉问答和空间推理任务上将幻觉率降低了 37%，同时保持了推理速度。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          NVIDIA Jetson Thor + mmWave 雷达融合
+          <span class="tag tag-research">研究</span>
+        </div>
+        <p>TI 与 NVIDIA 在 GTC 2026 上展示了 Jetson AGX Thor 与毫米波雷达的集成方案，实现机器人低延迟 3D 感知。该方案将雷达的高鲁棒性（不受光照、天气影响）与视觉模型的语义理解能力结合。</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="section-title">融资与行业</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          机器人赛道单周融资超 12 亿美元
+          <span class="tag tag-industry">融资</span>
+        </div>
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-value">$5.0 亿</div>
+            <div class="stat-label">Mind Robotics</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">$4.5 亿</div>
+            <div class="stat-label">Rhoda AI</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">$1.65 亿</div>
+            <div class="stat-label">Sunday</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">$1.03 亿</div>
+            <div class="stat-label">Oxa</div>
+          </div>
+        </div>
+        <p>机器人赛道资金密度在过去两周急剧上升，与 NVIDIA Jetson Thor 发布和 Gemini Robotics 的推出形成明显共振。现代汽车宣布 2028 年开始在美国工厂部署人形机器人。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Replit D 轮 $4 亿，6 个月估值翻三倍
+          <span class="tag tag-industry">融资</span>
+        </div>
+        <p>Replit 以 90 亿美元估值完成 D 轮，核心产品是 AI Agent 驱动的全栈应用开发。6 个月前 C 轮估值仅 30 亿美元，增速反映了"AI 低代码/无代码"赛道的市场热度。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          UK 监管调查 Grok 深度伪造风险
+          <span class="tag tag-policy">监管</span>
+        </div>
+        <p>英国 ICO 和 Ofcom 联合对 xAI Grok 图像生成功能展开正式调查，关注点集中在 deepfake 生成和非自愿色情内容风险。这是继 EU AI Act 之后，英国监管首次针对特定 AI 图像生成模型采取行动。</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ==================== 版本三：深度技术版 ==================== -->
+  <div class="tab-content" id="tab-expert">
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        </div>
+        <div class="section-title">模型深度分析</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Gemini 3.1 Pro 架构与 Benchmark 详解
+          <span class="tag tag-model">模型</span>
+        </div>
+        <p>Google DeepMind 发布 Gemini 3.1 Pro，在多项基准测试中与 GPT-5.4 Pro 形成正面对决：</p>
+        <table class="tech-table">
+          <thead>
+            <tr><th>Benchmark</th><th>Gemini 3.1 Pro</th><th>GPT-5.4 Pro</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>ARC-AGI-2</td><td>77.1%</td><td>75.3%</td></tr>
+            <tr><td>AI Analysis Index</td><td>57</td><td>57</td></tr>
+            <tr><td>Context Window</td><td>1M tokens</td><td>1M tokens</td></tr>
+            <tr><td>Modalities</td><td>Text/Image/Audio/Video/Code</td><td>Text/Image/Audio/Code</td></tr>
+          </tbody>
+        </table>
+        <div class="highlight">
+          关键架构创新：Gemini 3.1 采用统一多模态注意力层（Unified Multimodal Attention），五种模态的 token 在同一个注意力矩阵中交互，而非传统的模态独立编码 + 后期融合。这使得跨模态推理（如"这段代码的输出图像中有什么问题"）的表现大幅提升。
+        </div>
+        <p>Flash-Lite 变体采用更激进的量化策略（W4A8）和投机解码（speculative decoding），在保持 95% 以上质量的同时将延迟降至原版的 40%。API 定价 $0.25/M 输入 token、$1.00/M 输出 token。</p>
+        <a href="https://deepmind.google/technologies/gemini/" class="source-link" target="_blank">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+          Google DeepMind - Gemini
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          NVIDIA Nemotron 3 Super：Mamba-Transformer 混合 MoE
+          <span class="tag tag-model">模型</span>
+        </div>
+        <p>Nemotron 3 Super 的核心架构是 Mamba-Transformer 混合 MoE。120B 总参数中每次推理仅激活 12B（10% 激活率），在 1M 上下文窗口下实现了 2.2x 的吞吐量提升：</p>
+        <ul class="detail-list">
+          <li><strong>Mamba 层（占 60%）：</strong>处理长程依赖，O(n) 复杂度的选择性状态空间模型，高效处理超长上下文</li>
+          <li><strong>Transformer 层（占 40%）：</strong>处理局部注意力和精细推理，使用 Grouped Query Attention (GQA) 降低 KV cache 内存</li>
+          <li><strong>MoE 路由：</strong>Top-2 expert 选择，128 个 expert 组，使用 load-balancing auxiliary loss 防止路由坍缩</li>
+          <li><strong>训练数据：</strong>15T tokens，包含 3T 代码 token，采用三阶段课程学习（curriculum learning）</li>
+        </ul>
+        <p>模型权重已在 NVIDIA NGC 和 Hugging Face 上开源，支持 vLLM 和 TensorRT-LLM 部署。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          MiMo-V2-Omni 与 MiMo-V2-TTS 技术栈
+          <span class="tag tag-model">模型</span>
+        </div>
+        <p>小米 MiMo-V2-Omni 采用多阶段训练策略：</p>
+        <ul class="detail-list">
+          <li><strong>Stage 1 - Vision Encoder Warm-up：</strong>冻结 LLM，仅训练视觉编码器在大规模图文数据上对齐</li>
+          <li><strong>Stage 2 - Multimodal Instruction Tuning：</strong>全参数微调，支持文本/图像/视频输入</li>
+          <li><strong>Stage 3 - Agent Alignment：</strong>通过 RLHF + tool-use 数据对齐 Agent 行为</li>
+        </ul>
+        <p>MiMo-V2-TTS 采用 diffusion-based vocoder，支持 zero-shot voice cloning（3秒参考音频）和 8 种情感风格控制。延迟 &lt;200ms（首 token），码率 24kHz/16bit。</p>
+        <p>确认此前在野外出现的 "DeepSeek V4 Hunter Alpha" 实为 MiMo-V2-Pro 的内部代号泄露。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Kimi K2.5 Swarm Mode 架构
+          <span class="tag tag-model">模型</span>
+        </div>
+        <p>Moonshot AI 开源 Kimi K2.5，其 Swarm Mode 的技术实现：</p>
+        <ul class="detail-list">
+          <li><strong>调度架构：</strong>主 Agent 作为 orchestrator，通过 task graph 将复杂任务分解为 DAG，分发给最多 100 个子 Agent 并行执行</li>
+          <li><strong>通信协议：</strong>基于 structured message passing，子 Agent 间可通过共享 memory pool 交换中间结果</li>
+          <li><strong>容错机制：</strong>单个子 Agent 失败时自动重试或 re-route 到备用 Agent，不影响整体任务</li>
+          <li><strong>效率提升：</strong>在复杂代码重构任务上，Swarm Mode 相比单 Agent 执行速度提升 8-15x</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon research">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        </div>
+        <div class="section-title">研究深度解析</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Gemini Robotics 1.5 / Robotics-ER 1.5：端到端 VLA 模型
+          <span class="tag tag-research">研究</span>
+        </div>
+        <p>Google DeepMind 的 Gemini Robotics 1.5 是首个将"思考型"（thinking）推理能力引入 Vision-Language-Action (VLA) 模型的工作：</p>
+        <ul class="detail-list">
+          <li><strong>VLA 统一架构：</strong>视觉输入 -> 语言推理 -> 连续动作空间输出，全部在一个 Transformer 内完成。动作输出使用 diffusion head 生成连续控制信号</li>
+          <li><strong>Embodied Reasoning（ER 变体）：</strong>增加了"内在思维链"，机器人在执行前生成中间推理步骤（如"桌上有3个物体，用户要求整理，应该先按类别分组"），然后才输出动作序列</li>
+          <li><strong>训练数据：</strong>混合了 Internet-scale 视觉-语言数据和 robot manipulation 数据（来自 Google 的 RT-X 数据集），采用分阶段训练</li>
+          <li><strong>Benchmark：</strong>在 RLBench 和 CALVIN 上刷新 SOTA，尤其在需要 multi-step reasoning 的任务上提升显著（+23% vs RT-2X）</li>
+        </ul>
+        <a href="https://deepmind.google/blog/gemini-robotics-15-brings-ai-agents-into-the-physical-world/" class="source-link" target="_blank">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+          DeepMind Blog - Gemini Robotics 1.5
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          微软 Argos：Agentic Verification for Multimodal RL
+          <span class="tag tag-research">研究</span>
+        </div>
+        <p>Argos 的核心贡献是将 agentic verification 引入多模态强化学习：</p>
+        <ul class="detail-list">
+          <li><strong>Verifier Agent：</strong>独立训练的验证模型，在主模型每个推理步骤后检查逻辑一致性和事实准确性</li>
+          <li><strong>Reward Shaping：</strong>将验证结果作为辅助 reward signal 注入 RL 训练循环，引导主模型学习更可靠的推理路径</li>
+          <li><strong>结果：</strong>视觉问答幻觉率降低 37%，空间推理准确率提升 22%，推理延迟仅增加 8%（因为验证和生成可部分并行）</li>
+          <li><strong>与 Self-Consistency 的区别：</strong>Self-Consistency 通过多次采样取多数投票，而 Argos 的 Verifier 是结构化检查，能指出具体错误位置并提供修正建议</li>
+        </ul>
+        <a href="https://www.microsoft.com/en-us/research/blog/multimodal-reinforcement-learning-with-agentic-verifier-for-ai-agents/" class="source-link" target="_blank">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+          Microsoft Research - Argos
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Jetson AGX Thor + mmWave 3D 感知融合
+          <span class="tag tag-research">研究</span>
+        </div>
+        <p>TI 与 NVIDIA 展示的 Jetson Thor + mmWave 集成方案技术要点：</p>
+        <ul class="detail-list">
+          <li><strong>传感器融合策略：</strong>Early fusion -- mmWave 点云和 RGB 图像在特征提取阶段就进行对齐和融合，而非传统的后期融合</li>
+          <li><strong>mmWave 优势：</strong>60GHz/77GHz 毫米波雷达不受光照、雾霾、灰尘影响，测量精度达厘米级，特别适合工厂和仓库等恶劣环境</li>
+          <li><strong>延迟指标：</strong>端到端感知-决策延迟 &lt;15ms，满足实时机器人控制需求</li>
+          <li><strong>与 Gemini Robotics 的协同：</strong>Thor 提供边缘推理算力，Gemini Robotics 提供高层规划能力，两者可组成分层控制架构</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="section-title">行业与资本</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          机器人融资热潮的技术逻辑
+          <span class="tag tag-industry">分析</span>
+        </div>
+        <p>过去一周机器人赛道超 12 亿美元融资背后的技术催化因素：</p>
+        <ul class="detail-list">
+          <li><strong>VLA 模型成熟：</strong>Gemini Robotics、RT-2X 等端到端 VLA 模型让机器人不再需要手工编写控制逻辑，泛化能力大幅提升</li>
+          <li><strong>硬件平台就绪：</strong>NVIDIA Jetson Thor 提供了标准化的 Physical AI 计算平台，降低了硬件集成门槛</li>
+          <li><strong>Sim-to-Real 进步：</strong>仿真训练到真实世界部署的迁移效率显著提升，训练成本下降了一个数量级</li>
+          <li><strong>商业路径清晰：</strong>仓储物流（Oxa）、制造业（Mind Robotics）、农业（Sunday）都已有明确的 ROI 验证</li>
+        </ul>
+        <p>Morgan Stanley 预测 2026 上半年将出现 AI 能力的重大突破，主要由前所未有的算力积累驱动。机器人赛道的融资潮可能是对这一预期的提前押注。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Replit 估值逻辑：AI-native 开发平台
+          <span class="tag tag-industry">分析</span>
+        </div>
+        <p>Replit D 轮 $4 亿 / $9B 估值的技术支撑：</p>
+        <ul class="detail-list">
+          <li><strong>Agent 驱动开发：</strong>用户用自然语言描述需求，Replit Agent 自动生成全栈应用（前端 + 后端 + 数据库 + 部署），成功率已达约 70%</li>
+          <li><strong>云端执行环境：</strong>所有代码在 Replit 云端运行，用户无需配置本地开发环境，降低了零到一的门槛</li>
+          <li><strong>6 个月 3x 增长：</strong>估值从 $3B 涨到 $9B，反映了市场对"AI 替代初级开发者"赛道的极高预期</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Anthropic vs. DoD：AI 伦理的行业分水岭
+          <span class="tag tag-policy">安全</span>
+        </div>
+        <p>Anthropic 拒绝 DoD 将 Claude 用于大规模监控和自主武器后被标记为"供应链风险"，30+ 名 OpenAI 和 Google 员工（包括 Google VP Jeff Dean）公开声援：</p>
+        <ul class="detail-list">
+          <li><strong>法律论点：</strong>Anthropic 主张 AI 公司有权在 Terms of Service 中限制军事用途，DoD 的"供应链风险"定性构成对企业自主权的侵犯</li>
+          <li><strong>行业影响：</strong>如果 DoD 立场成立，任何拒绝军方使用的 AI 公司都可能被排除出政府采购链，这对整个 AI 行业的伦理立场构成结构性压力</li>
+          <li><strong>员工声援的意义：</strong>跨公司声援表明 AI 安全不是单一公司的立场，而是行业共识。Google 和 OpenAI 未官方表态，但容许员工以个人身份发声</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- Footer -->
+<div class="container">
+  <div class="footer">
+    <p>AI Pulse Daily Report -- 由 AI 整理分析，数据来源：WebSearch、行业媒体</p>
+    <p style="margin-top: 8px;"><a href="/">返回 AI Pulse 首页</a></p>
+  </div>
+</div>
+
+<script>
+function switchTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  const tabs = { casual: 0, intermediate: 1, expert: 2 };
+  document.querySelectorAll('.tab-btn')[tabs[tab]].classList.add('active');
+}
+</script>
+</body>
+</html>

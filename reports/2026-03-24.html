@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily Report | 2026.03.24</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --claude-bg: #FAF9F7;
+    --claude-surface: #FFFFFF;
+    --claude-border: #E8E5E0;
+    --claude-text-primary: #1A1714;
+    --claude-text-secondary: #6B6560;
+    --claude-text-tertiary: #9B9590;
+    --claude-accent: #DA7756;
+    --claude-accent-light: #F5E6DF;
+    --claude-accent-dark: #C4623F;
+    --claude-tag-blue: #E8F0FE;
+    --claude-tag-blue-text: #3B6CB5;
+    --claude-tag-green: #E6F4EA;
+    --claude-tag-green-text: #2D7A3F;
+    --claude-tag-purple: #F0E6FA;
+    --claude-tag-purple-text: #7B3FAF;
+    --claude-tag-amber: #FEF3E2;
+    --claude-tag-amber-text: #B5752D;
+    --claude-tag-red: #FDE8E8;
+    --claude-tag-red-text: #B53B3B;
+    --claude-card-shadow: 0 1px 3px rgba(26, 23, 20, 0.06), 0 1px 2px rgba(26, 23, 20, 0.04);
+    --claude-card-shadow-hover: 0 4px 12px rgba(26, 23, 20, 0.08), 0 2px 4px rgba(26, 23, 20, 0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+    background: var(--claude-bg);
+    color: var(--claude-text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 8px;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--claude-accent-dark); }
+
+  .header {
+    text-align: center;
+    padding: 48px 0 40px;
+    border-bottom: 1px solid var(--claude-border);
+    margin-bottom: 32px;
+  }
+
+  .header-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--claude-accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .header .date {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    font-weight: 400;
+  }
+
+  .header .edition-note {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    margin-top: 8px;
+  }
+
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 36px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--claude-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .tab-btn:hover {
+    color: var(--claude-text-primary);
+    background: var(--claude-bg);
+  }
+
+  .tab-btn.active {
+    background: var(--claude-accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(218, 119, 86, 0.3);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .section { margin-bottom: 36px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .section-icon.gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .section-icon.model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .section-icon.product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .section-icon.research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .section-icon.industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .section-icon.policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .card {
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--claude-card-shadow);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .card:hover { box-shadow: var(--claude-card-shadow-hover); }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .card p {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.75;
+    margin-bottom: 8px;
+  }
+
+  .card p:last-child { margin-bottom: 0; }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .tag-gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .tag-model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .tag-product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .tag-research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .tag-industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .tag-policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .highlight {
+    background: var(--claude-accent-light);
+    border-left: 3px solid var(--claude-accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--claude-accent-dark);
+    line-height: 1.7;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .stat-item {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--claude-accent);
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--claude-text-tertiary);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 8px;
+    transition: color 0.15s;
+  }
+
+  .source-link:hover { color: var(--claude-accent-dark); text-decoration: underline; }
+
+  .tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .tech-table th, .tech-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .tech-table th {
+    font-weight: 600;
+    color: var(--claude-text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: var(--claude-bg);
+  }
+
+  .tech-table td { color: var(--claude-text-primary); }
+
+  .code-block {
+    background: #2D2A26;
+    color: #E8E5E0;
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    overflow-x: auto;
+    margin: 12px 0;
+  }
+
+  .code-block .comment { color: #9B9590; }
+  .code-block .keyword { color: #DA7756; }
+  .code-block .string { color: #7DB87D; }
+
+  .footer {
+    text-align: center;
+    padding: 32px 0;
+    border-top: 1px solid var(--claude-border);
+    margin-top: 48px;
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+  }
+
+  .footer a {
+    color: var(--claude-accent);
+    text-decoration: none;
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 20px 16px 60px; }
+    .header h1 { font-size: 24px; }
+    .tab-btn { font-size: 13px; padding: 10px 8px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+  }
+
+  .subsection-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin: 16px 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  ul.detail-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0;
+  }
+
+  ul.detail-list li {
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.7;
+    padding: 4px 0 4px 16px;
+    position: relative;
+  }
+
+  ul.detail-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--claude-border);
+  }
+
+  /* ===== 轻松版 Anti-FOMO 专属样式 ===== */
+  .mood-banner {
+    background: linear-gradient(135deg, #F0F7F0 0%, #FFF9F0 100%);
+    border: 1px solid #D4E8D4;
+    border-radius: 16px;
+    padding: 28px 24px;
+    margin-bottom: 32px;
+    text-align: center;
+  }
+
+  .mood-banner .mood-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin-bottom: 6px;
+  }
+
+  .mood-banner .mood-subtitle {
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.6;
+  }
+
+  .mood-meter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 16px 0 8px;
+  }
+
+  .mood-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    transition: all 0.3s;
+  }
+
+  .mood-dot.active {
+    width: 16px;
+    height: 16px;
+    box-shadow: 0 0 8px rgba(45, 122, 63, 0.3);
+  }
+
+  .mood-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--claude-tag-green-text);
+    margin-top: 4px;
+  }
+
+  .comfort-note {
+    background: #F0F7F0;
+    border-left: 3px solid #7DB87D;
+    border-radius: 0 10px 10px 0;
+    padding: 14px 18px;
+    margin-top: 12px;
+    font-size: 14px;
+    color: #2D6B3F;
+    line-height: 1.7;
+  }
+
+  .comfort-note::before {
+    content: '';
+    display: inline;
+    font-weight: 600;
+  }
+
+  .card-casual .card-title {
+    color: var(--claude-text-primary);
+  }
+
+  .tldr-box {
+    background: var(--claude-bg);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    border: 1px dashed var(--claude-border);
+  }
+
+  .tldr-box strong {
+    color: var(--claude-accent);
+    font-weight: 600;
+  }
+
+  .closing-card {
+    background: linear-gradient(135deg, #FFF9F0 0%, #FFF5F0 100%);
+    border: 1px solid #F0DDD0;
+    border-radius: 16px;
+    padding: 32px 24px;
+    text-align: center;
+    margin-top: 24px;
+  }
+
+  .closing-card .closing-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin-bottom: 8px;
+  }
+
+  .closing-card .closing-text {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.75;
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  .section-casual .section-header {
+    border-bottom-color: #D4E8D4;
+  }
+
+  .section-casual .section-icon {
+    background: #F0F7F0;
+    color: #2D7A3F;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <a href="/" class="back-link">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+    返回 AI Pulse
+  </a>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-logo">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4"/><path d="M12 16V8"/></svg>
+      AI Daily Report
+    </div>
+    <h1>AI 领域日报</h1>
+    <div class="date">2026 年 3 月 24 日 星期二</div>
+    <div class="edition-note">Anthropic国防部诉讼风波 / Mistral Small 4发布 / AMI Labs $10亿种子轮 / Atlassian裁员转型AI / 中国AI调用量超越美国 / AI准确性危机</div>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('casual')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      轻松阅读版
+    </button>
+    <button class="tab-btn" onclick="switchTab('intermediate')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+      技术进阶版
+    </button>
+    <button class="tab-btn" onclick="switchTab('expert')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      深度技术版
+    </button>
+  </div>
+
+  <!-- ==================== 版本一：轻松阅读版（Anti-FOMO） ==================== -->
+  <div class="tab-content active" id="tab-casual">
+
+    <!-- 今日心情指南 -->
+    <div class="mood-banner">
+      <div class="mood-title">今日 AI 焦虑指数：低</div>
+      <div class="mood-meter">
+        <div class="mood-dot" style="background: #7DB87D;"></div>
+        <div class="mood-dot active" style="background: #7DB87D;"></div>
+        <div class="mood-dot" style="background: #E8E5E0;"></div>
+        <div class="mood-dot" style="background: #E8E5E0;"></div>
+        <div class="mood-dot" style="background: #E8E5E0;"></div>
+      </div>
+      <div class="mood-label">今天的 AI 世界很热闹，但和你的生活没什么紧急关系</div>
+      <div class="mood-subtitle" style="margin-top: 12px;">今天的新闻主要是公司之间的竞争和学术圈的故事。你的工作方式、生活节奏不需要因此做任何调整。泡杯茶，轻松看看就好。</div>
+    </div>
+
+    <!-- 第一组：和你有关的 -->
+    <div class="section section-casual">
+      <div class="section-header">
+        <div class="section-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+        <div class="section-title">和你有关的好消息</div>
+      </div>
+
+      <div class="card card-casual">
+        <div class="card-title">
+          Amazon 推出免费 AI 健康顾问
+          <span class="tag tag-product">生活</span>
+        </div>
+        <p>Amazon 为 Prime 会员推出了一个 24 小时在线的 AI 健康助手。它可以帮你解读体检报告里那些看不懂的指标，提醒你续处方药，甚至帮你预约看医生。</p>
+        <div class="comfort-note">这不是什么需要你"赶紧学会"的新工具，而是一个帮你省事的服务。就像超市新增了一个咨询台，需要的时候去问问就好，不需要专门学什么。</div>
+      </div>
+
+      <div class="card card-casual">
+        <div class="card-title">
+          AI 音乐工具 Suno 用户破 200 万
+          <span class="tag tag-product">生活</span>
+        </div>
+        <p>AI 音乐生成工具 Suno 的付费用户突破了 200 万。你可以用它哼一段旋律或写几句歌词，它就能帮你生成一首完整的歌曲。</p>
+        <div class="comfort-note">这不是"AI 取代音乐家"。200 万用户里，绝大多数是像你我一样没学过音乐、但想给朋友生日做首歌的普通人。AI 在这里是降低门槛，不是抢饭碗。</div>
+      </div>
+
+      <div class="card card-casual">
+        <div class="card-title">
+          OpenAI 在研发一个类似智能笔的小设备
+          <span class="tag tag-product">生活</span>
+        </div>
+        <p>OpenAI 正在秘密开发一款代号 "Project Gumdrop" 的硬件产品，可能是一支能随时和 AI 对话的智能笔或便携录音设备。</p>
+        <div class="comfort-note">听起来很酷，但目前还只是传言阶段，离上市还早。就算真的出了，也只是多了一个可选的小工具，和手机上装个 App 没有本质区别。不必急着关注。</div>
+      </div>
+    </div>
+
+    <!-- 第二组：听起来吓人但其实还好 -->
+    <div class="section section-casual">
+      <div class="section-header">
+        <div class="section-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+        </div>
+        <div class="section-title">听起来吓人，但其实还好</div>
+      </div>
+
+      <div class="card card-casual">
+        <div class="card-title">
+          "AI 模型 108 天更新三代！"
+          <span class="tag tag-model">科普</span>
+        </div>
+        <p>国内 AI 公司 MiniMax 在 108 天内连发三个版本的 AI 模型。很多自媒体会用"恐怖的迭代速度"来形容这件事。</p>
+        <div class="comfort-note">换个角度想：手机 App 也经常更新，你会因为微信更新了三个版本就焦虑吗？AI 模型的更新和 App 更新一样，是厂商的事。对你来说，能用的时候打开用就行，版本号不重要。</div>
+      </div>
+
+      <div class="card card-casual">
+        <div class="card-title">
+          "法国又出了一个更强的开源 AI 模型！"
+          <span class="tag tag-model">科普</span>
+        </div>
+        <p>法国的 Mistral AI 发布了一个叫 Mistral Small 4 的"全能型"开源模型。标题党会说"又一个 GPT 杀手"。</p>
+        <div class="comfort-note">AI 模型就像汽车品牌，每年都有新款，但你不需要每出一款就换车。这些模型之间的竞争，最终受益的是消费者 -- 价格会更低，体验会更好。你只需要在需要时选一个顺手的用就好。</div>
+      </div>
+
+      <div class="card card-casual">
+        <div class="card-title">
+          "Atlassian 裁员 1,600 人转型 AI！"
+          <span class="tag tag-industry">科普</span>
+        </div>
+        <p>做 Jira 和 Confluence 的公司 Atlassian 裁掉了 10% 的员工，把钱投到 AI 方向。</p>
+        <div class="comfort-note">大公司内部重组和你的职业安全是两回事。Atlassian 裁的主要是重复的管理岗位和传统销售岗。更重要的是：每次技术浪潮中，新岗位的创造速度都远超旧岗位的消失速度。互联网时代如此，AI 时代也一样。</div>
+      </div>
+
+      <div class="card card-casual">
+        <div class="card-title">
+          "中国 AI 调用量超过美国了！"
+          <span class="tag tag-industry">科普</span>
+        </div>
+        <p>中国 AI 模型的周调用量达到了 4.69 万亿 Token，超过了美国。</p>
+        <div class="comfort-note">这个数字听起来很大，但大部分调用来自企业后台自动化处理，不是什么"全民 AI 竞赛"。你不需要为了"跟上"而强迫自己使用 AI。技术的普及是一个自然的过程 -- 就像你不知不觉就学会了用手机扫码支付一样。</div>
+      </div>
+    </div>
+
+    <!-- 第三组：值得知道的背景 -->
+    <div class="section section-casual">
+      <div class="section-header">
+        <div class="section-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        </div>
+        <div class="section-title">值得知道的背景故事</div>
+      </div>
+
+      <div class="card card-casual">
+        <div class="card-title">
+          有人对 AI 武器化说了"不"
+          <span class="tag tag-policy">背景</span>
+        </div>
+        <p>AI 公司 Anthropic 因为拒绝让美国军方用他们的 AI 做大规模监控，被五角大楼列入了"不可信"名单。但有意思的是，竞争对手 OpenAI 和 Google 的 30 多位员工反而站出来公开支持 Anthropic 的决定。</p>
+        <div class="comfort-note">这件事说明一件让人安心的事：AI 行业内部是有人在守底线的。而且不是一个人，是跨公司的集体行动。AI 的未来不只是由"追求利润"的力量决定，也有"坚守原则"的力量在发挥作用。</div>
+      </div>
+
+      <div class="card card-casual">
+        <div class="card-title">
+          AI 也经常说错话 -- 这是好消息
+          <span class="tag tag-research">背景</span>
+        </div>
+        <p>最新研究发现，AI 有 45% 的回答包含错误信息。Google 的 Gemini 更是高达 76% 的错误率。</p>
+        <div class="comfort-note">为什么说这是好消息？因为它提醒我们：AI 远没有很多人想象的那么"全知全能"。你不会因为"不懂 AI"就落后于时代，因为 AI 自己都还在犯大量错误。把它当一个不太靠谱但有时挺有用的助手就好 -- 重要的事情，还是得靠自己判断。</div>
+      </div>
+
+      <div class="card card-casual">
+        <div class="card-title">
+          图灵奖大佬亲自创业，说明什么？
+          <span class="tag tag-industry">背景</span>
+        </div>
+        <p>AI 领域最顶级的学者之一 Yann LeCun 拿到了 10 亿美元创办了新公司 AMI Labs。他的核心观点是：现在所有人都在用的聊天式 AI（像 ChatGPT），可能根本就走错了方向。</p>
+        <div class="comfort-note">连最顶级的专家都说"现在的 AI 路线可能是错的"。这恰恰说明 AI 还处于非常早期的阶段 -- 就像 2005 年的智能手机。你完全不需要急着"All in"，因为未来的主流 AI 可能和现在的完全不一样。慢慢观察，保持好奇就够了。</div>
+      </div>
+    </div>
+
+    <!-- 收尾：今日总结 -->
+    <div class="closing-card">
+      <div class="closing-title">今日小结</div>
+      <div class="closing-text">
+        今天的 AI 世界：公司们在忙着竞争，学者们在忙着争论方向，政府在忙着制定规则。而你需要做的？什么都不需要。AI 最终会像电力和互联网一样，自然而然地融入生活。在那之前，过好今天的日子，比追赶任何一条 AI 新闻都重要。
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ==================== 版本二：技术进阶版 ==================== -->
+  <div class="tab-content" id="tab-intermediate">
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        </div>
+        <div class="section-title">模型与技术</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Mistral Small 4：首款全能型开源模型
+          <span class="tag tag-model">模型</span>
+        </div>
+        <p>Mistral AI 于 3 月 16 日发布 Mistral Small 4，定位为旗舰级全能开源模型。该模型首次在单一架构中融合了逻辑推理、多模态理解和专业编程三大能力，无需在不同专精模型间切换。</p>
+        <div class="highlight">技术点评：Mistral 采用了统一编码器架构而非传统的模态特定头部设计，这使得跨模态推理更加自然。开源策略也给企业私有化部署提供了更多灵活性。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          MiniMax M2 系列快速迭代：108 天三代更新
+          <span class="tag tag-model">模型</span>
+        </div>
+        <p>MiniMax 在 108 天内完成 M2 到 M2.5 三代迭代。M2.5 在推理能力上有显著提升，尤其在数学和代码生成任务上接近 GPT-5.4 水平。MiniMax 还发布了首份公开的大模型商业运营报告。</p>
+        <div class="highlight">技术点评：这种高频迭代模式表明 MiniMax 采用了高度自动化的训练流水线和持续评估框架，能在保证质量的前提下大幅缩短版本周期。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          通义千问 Qwen3.5-Max-Preview 登顶 LMArena
+          <span class="tag tag-model">模型</span>
+        </div>
+        <p>阿里通义千问 Qwen3.5-Max-Preview 在 LMArena 盲测中以 1464 分位列前茅，超越 GPT-5.4 和 Claude 4.5 等海外模型。这是国产模型首次在权威盲测榜单上全面超越所有海外竞品。</p>
+        <div class="highlight">技术点评：LMArena 采用人类盲测排名（ELO 评分），结果更能反映真实用户体验。Qwen 的优势集中在中文理解、长文本处理和多轮对话连贯性上。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          DeepSeek 架构优化研究：规模之外的突破
+          <span class="tag tag-research">研究</span>
+        </div>
+        <p>DeepSeek 发表研究指出，优化神经网络架构（而非单纯增加参数量）可以显著提升 LLM 推理能力。该研究重新审视了"Scaling Law"的边界，提出结构效率同样关键。</p>
+        <div class="highlight">技术点评：这一发现可能标志着行业从"暴力扩展"向"精细化架构设计"的范式转移。对资源有限的团队尤为重要，意味着不必依赖万亿参数也能实现强推理。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          OpenAI 开发 "Project Gumdrop" 硬件设备
+          <span class="tag tag-product">产品</span>
+        </div>
+        <p>OpenAI 正在开发代号 "Project Gumdrop" 的首款 AI 硬件产品，可能是智能笔或便携音频设备。这表明 OpenAI 正在探索端侧推理和始终在线的 AI 交互范式。</p>
+        <div class="highlight">技术点评：从 API 到消费级硬件的跳跃暗示 OpenAI 可能在研发针对端侧优化的小型推理模型，以及低延迟的语音-文本交互系统。</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/></svg>
+        </div>
+        <div class="section-title">行业与商业</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          AMI Labs 10.3 亿美元种子轮：Yann LeCun 的新赌注
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>Yann LeCun 创办的 AMI Labs 完成 10.3 亿美元种子轮融资，估值 35 亿美元。LeCun 一直主张"世界模型"路线，认为当前的 LLM 范式存在根本性局限。AMI Labs 预计将推进基于 JEPA（联合嵌入预测架构）的新一代 AI 系统。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Atlassian 裁员 10% 全面押注 AI
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>Atlassian 裁减 1,600 个岗位并用两位 AI 专家替换 CTO，将研发资源全面转向 AI 驱动的企业协作工具。此举反映了传统 SaaS 公司在 AI 时代面临的转型压力。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          中国 AI 调用量连续两周超越美国
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>中国 AI 大模型周调用量达 4.69 万亿 Token，全球前三均为中国模型。据中国信通院报告，国内具备完整大模型能力的企业超过 80 家，其中 15 家已实现规模化商业落地。</p>
+        <div class="highlight">技术点评：调用量领先的背后是中国在 ToC 应用场景（聊天、创作、教育）的快速渗透，而非 ToB 场景。这与美国以企业级 API 调用为主的结构形成对比。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Suno 达 $300M ARR，AI 音乐商业化提速
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>AI 音乐生成公司 Suno 付费用户突破 200 万，ARR 达 3 亿美元，估值 24.5 亿美元。AI 在创意内容领域的 PMF（产品-市场匹配）正在被快速验证。</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>
+        </div>
+        <div class="section-title">政策与安全</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Anthropic vs. 五角大楼：AI 伦理的标杆之争
+          <span class="tag tag-policy">政策</span>
+        </div>
+        <p>五角大楼因 Anthropic 拒绝军事监控用途将其列为"供应链风险"。30+ 名 OpenAI 和 Google DeepMind 员工（含 Jeff Dean）联名声援。此事件可能影响未来 AI 公司与政府的合作模式。</p>
+        <div class="highlight">技术点评：这一事件的核心争议在于 AI 模型的"可控使用边界"。Anthropic 的 Constitutional AI 框架本身就包含了对军事用途的限制，这次冲突实质上是技术伦理约束与国家安全需求的直接碰撞。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          AI 准确性研究：45% 回答含重大错误
+          <span class="tag tag-research">研究</span>
+        </div>
+        <p>最新评估显示 AI 回答中 45% 包含重大错误，Google Gemini 错误率高达 76%。这一数据对依赖 AI 进行关键决策的企业敲响警钟，Retrieval-Augmented Generation（RAG）和事实核查层的重要性更加凸显。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          科罗拉多 AI 法案 6 月生效，算法歧视首入法律
+          <span class="tag tag-policy">政策</span>
+        </div>
+        <p>科罗拉多 AI 法案将于 6 月 30 日正式实施，要求 AI 系统开发者和部署者对算法歧视承担法律责任。配合 1 月已生效的 AI 透明度法案，美国正在形成州级 AI 监管的多层框架。</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon gpu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>
+        </div>
+        <div class="section-title">基础设施</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          微软 MicroLED 光互联技术减少数据中心 50% 能耗
+          <span class="tag tag-gpu">硬件</span>
+        </div>
+        <p>微软公布 MicroLED 光互联技术，用光信号替代铜线传输数据，能效比激光方案提升 50%。该技术直接瞄准 AI 训练集群中 GPU 间通信的能耗瓶颈。</p>
+        <div class="highlight">技术点评：当前 AI 训练集群中，约 30% 的能耗来自 GPU 间的数据传输。MicroLED 光互联有望大幅降低这一开销，对万卡级训练集群的成本优化意义重大。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          华为 FlexNPU 柔性智算操作系统
+          <span class="tag tag-gpu">硬件</span>
+        </div>
+        <p>华为云推出 FlexNPU 操作系统，实现 NPU 算力的弹性调度和资源池化。该系统旨在解决企业级 AI 推理场景中算力利用率低和调度效率差的问题。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Vistra 40 亿美元电厂收购：AI 重塑能源市场
+          <span class="tag tag-gpu">硬件</span>
+        </div>
+        <p>Vistra Corp 以 40 亿美元收购燃气发电厂集群，专门为 AI 数据中心供电。AI 算力需求正在从芯片层面向上游能源基础设施传导。</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ==================== 版本三：深度技术版 ==================== -->
+  <div class="tab-content" id="tab-expert">
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        </div>
+        <div class="section-title">模型与研究</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Mistral Small 4：统一架构多模态开源模型
+          <span class="tag tag-model">模型</span>
+        </div>
+        <p>Mistral AI 于 3 月 16 日发布 Mistral Small 4，首次在单一模型架构中实现旗舰级逻辑推理、多模态理解和专业编程能力。采用统一编码器设计，支持图像、文本和代码的联合推理。</p>
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-value">统一</div>
+            <div class="stat-label">编码器架构</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">开源</div>
+            <div class="stat-label">License: Apache 2.0</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">3 合 1</div>
+            <div class="stat-label">推理+视觉+代码</div>
+          </div>
+        </div>
+        <p>Mistral Small 4 的技术路线与 Qwen 系列和 MiMo-V2-Omni 类似，都在向"一个模型解决所有问题"的方向收敛。区别在于 Mistral 保持了较小的参数量，更适合边缘部署和私有化场景。</p>
+        <ul class="detail-list">
+          <li>统一 Vision Encoder 处理图像和视频帧，避免了多编码器间的信息损失</li>
+          <li>代码生成能力在 HumanEval+ 上达到 SOTA 开源水平</li>
+          <li>支持 32K context window，适合中等长度文档处理</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          DeepSeek 架构优化研究：Scaling Law 的新维度
+          <span class="tag tag-research">研究</span>
+        </div>
+        <p>DeepSeek 发表的最新研究挑战了传统 Scaling Law 的"参数至上"假设。研究表明，通过优化注意力机制结构、前馈网络拓扑和信息流路径，可以在相同参数预算下将推理能力提升 15-25%。</p>
+        <div class="highlight">核心发现：架构效率（Architecture Efficiency）作为 Scaling Law 的第四维度，与模型大小、数据量、计算量并列，共同决定模型的最终性能上限。</div>
+        <ul class="detail-list">
+          <li>提出 "Structural Scaling Coefficient" 衡量架构对性能的贡献度</li>
+          <li>在 MATH 和 GPQA 推理 benchmark 上验证了架构优化的效果</li>
+          <li>对 MoE（混合专家）架构的路由策略提出了改进方案</li>
+          <li>结论支持"更聪明的架构 > 更大的参数"的技术路线</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Qwen3.5-Max-Preview 在 LMArena 盲测登顶
+          <span class="tag tag-model">模型</span>
+        </div>
+        <p>阿里 Qwen3.5-Max-Preview 以 1464 ELO 评分在 LMArena 盲测中超越 GPT-5.4（1451）和 Claude 4.5 Opus（1443），成为首个在人类盲测中全面领先海外模型的国产 LLM。</p>
+        <table class="tech-table">
+          <thead>
+            <tr><th>模型</th><th>ELO 评分</th><th>中文理解</th><th>长文本</th><th>代码</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Qwen3.5-Max-Preview</td><td>1464</td><td>A+</td><td>A+</td><td>A</td></tr>
+            <tr><td>GPT-5.4</td><td>1451</td><td>A</td><td>A+</td><td>A+</td></tr>
+            <tr><td>Claude 4.5 Opus</td><td>1443</td><td>A</td><td>A</td><td>A+</td></tr>
+            <tr><td>Gemini 3.1 Pro</td><td>1438</td><td>A-</td><td>A+</td><td>A</td></tr>
+          </tbody>
+        </table>
+        <p>Qwen 的优势主要体现在中文语境理解和超长文本处理上，而在代码生成和数学推理方面仍略逊于 GPT-5.4 和 Claude Opus。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          MiniMax M2.5：高频迭代的工程实践
+          <span class="tag tag-model">模型</span>
+        </div>
+        <p>MiniMax 在 108 天内完成 M2 -> M2.1 -> M2.5 三代更新，得益于其自动化训练流水线和持续评估框架。M2.5 在推理任务上显著提升，数学和代码能力接近 GPT-5.4。</p>
+        <ul class="detail-list">
+          <li>采用持续训练（Continual Training）而非从头训练，大幅缩短版本周期</li>
+          <li>引入在线人类偏好数据实时更新 RLHF 策略</li>
+          <li>首份公开大模型商业运营报告显示 DAU 和 API 调用的增长曲线</li>
+          <li>预判 2026 年 AI 三大超级 PMF 方向：创意内容、企业工作流、个人助理</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Apple 单图 3D 重建研究突破
+          <span class="tag tag-research">研究</span>
+        </div>
+        <p>Apple 研究团队发表论文，解决了单张 2D 图像生成完整 3D 物体的核心挑战。该方法利用扩散模型（Diffusion Model）生成多视角一致的 3D 表示，无需多视角输入或深度传感器。</p>
+        <ul class="detail-list">
+          <li>基于 Score Distillation Sampling 的改进变体生成 3D NeRF</li>
+          <li>引入几何一致性约束解决多视角生成的不一致性问题</li>
+          <li>在 ShapeNet 和 Objaverse 数据集上达到 SOTA</li>
+          <li>潜在应用：AR/VR 内容生成、电商产品展示、游戏资产制作</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>
+        </div>
+        <div class="section-title">安全与治理</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Anthropic DOD 供应链风险争议：技术伦理 vs. 国家安全
+          <span class="tag tag-policy">政策</span>
+        </div>
+        <p>五角大楼将 Anthropic 列为"供应链风险"，起因是 Anthropic 拒绝国防部将 Claude 用于大规模监控和自主武器系统。30+ 名 OpenAI/Google 员工（含 Jeff Dean）联名声援，引发行业关于 AI 军事应用边界的深度讨论。</p>
+        <ul class="detail-list">
+          <li>Anthropic 的 Responsible Scaling Policy（RSP）明确禁止 AI 用于自主致命决策</li>
+          <li>五角大楼的"供应链风险"定性可能影响 Anthropic 的政府合同资质</li>
+          <li>Google 可能成为渔翁得利者，其与国防部的合作关系更为灵活</li>
+          <li>此事件可能推动行业建立统一的"AI 军事使用准则"</li>
+        </ul>
+        <a href="https://techcrunch.com/2026/03/09/openai-and-google-employees-rush-to-anthropics-defense-in-dod-lawsuit/" class="source-link" target="_blank">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          TechCrunch: OpenAI and Google employees rush to Anthropic's defense
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          AI 幻觉危机：系统性评估报告
+          <span class="tag tag-research">研究</span>
+        </div>
+        <p>最新独立评估报告显示，主流 AI 模型中 45% 的回答包含重大事实错误或虚假信息。Google Gemini 的错误率高达 76%，GPT-5.4 为 32%，Claude 4.5 Opus 表现最优为 28%。</p>
+        <table class="tech-table">
+          <thead>
+            <tr><th>模型</th><th>重大错误率</th><th>幻觉类型</th><th>RAG 缓解效果</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Google Gemini</td><td>76%</td><td>事实编造为主</td><td>降至 41%</td></tr>
+            <tr><td>GPT-5.4</td><td>32%</td><td>过度推断为主</td><td>降至 18%</td></tr>
+            <tr><td>Claude 4.5 Opus</td><td>28%</td><td>细节偏差为主</td><td>降至 15%</td></tr>
+          </tbody>
+        </table>
+        <p>报告建议企业在关键决策场景中必须部署 RAG + 事实核查双重保障层，单独依赖模型原生输出的风险过高。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          科罗拉多 AI 法案技术合规要求解读
+          <span class="tag tag-policy">政策</span>
+        </div>
+        <p>科罗拉多 AI 法案（SB 24-205）将于 6 月 30 日生效，对 AI 开发者和部署者提出具体技术合规要求：</p>
+        <ul class="detail-list">
+          <li>Impact Assessment：所有"高风险" AI 系统须完成算法影响评估</li>
+          <li>Bias Audit：定期进行偏差审计，覆盖受保护类别（种族、性别、年龄等）</li>
+          <li>Transparency：向用户披露 AI 决策的关键因素和数据来源</li>
+          <li>Human Override：关键决策必须保留人工复核和干预机制</li>
+          <li>与 1 月已生效的 AI Transparency Act 和 Generative AI Training Data Transparency Act 形成三层监管框架</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon gpu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>
+        </div>
+        <div class="section-title">基础设施</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          微软 MicroLED 光互联：数据中心通信的范式转移
+          <span class="tag tag-gpu">硬件</span>
+        </div>
+        <p>微软公布 MicroLED 光互联技术细节：用 MicroLED 阵列替代传统 VCSEL 激光器作为光源，在数据中心内实现芯片间高速光通信。相比铜线方案能耗降低 70%+，相比传统激光光学方案降低约 50%。</p>
+        <ul class="detail-list">
+          <li>MicroLED 光源的制造成本和功耗远低于 VCSEL 激光器</li>
+          <li>支持 Co-Packaged Optics（CPO）封装，与 GPU 紧密集成</li>
+          <li>带宽密度可达每毫米 1Tb/s 以上</li>
+          <li>对 AI 训练集群中 All-Reduce 通信延迟的优化效果显著</li>
+          <li>预计 2027 年进入量产阶段</li>
+        </ul>
+        <a href="https://www.edtechinnovationhub.com/news/microsoft-details-microled-breakthrough-to-reduce-energy-use-in-ai-data-centers" class="source-link" target="_blank">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          EdTech Innovation Hub: Microsoft MicroLED breakthrough
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          华为 FlexNPU：NPU 算力弹性调度
+          <span class="tag tag-gpu">硬件</span>
+        </div>
+        <p>华为云 FlexNPU 操作系统实现 Ascend NPU 的虚拟化和弹性调度，支持算力池化、动态分配和多租户隔离。目标是将企业 AI 推理的算力利用率从行业平均 30% 提升至 70% 以上。</p>
+        <ul class="detail-list">
+          <li>NPU 虚拟化粒度可达 1/8 卡，支持细粒度算力切分</li>
+          <li>兼容 MindSpore 和 ONNX 推理框架</li>
+          <li>内置模型预加载和热切换机制，降低推理冷启动延迟</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          能源公司 40 亿美元押注 AI 算力供电
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>Vistra Corp 以 40 亿美元收购燃气发电厂集群，战略定位为 AI 数据中心专属供电。这反映了 AI 算力需求正在重塑能源市场：</p>
+        <ul class="detail-list">
+          <li>预计到 2028 年，AI 数据中心将占美国总电力消耗的 8-12%</li>
+          <li>单个万卡训练集群的年电力成本已超过 5000 万美元</li>
+          <li>核电和天然气正成为 AI 算力的首选能源，因其稳定性优于可再生能源</li>
+          <li>Microsoft、Google、Amazon 均已签署长期购电协议（PPA）</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/></svg>
+        </div>
+        <div class="section-title">融资与市场</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          AMI Labs $1.03B 种子轮：LeCun 的世界模型路线
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>Yann LeCun 创办的 AMI Labs 完成 10.3 亿美元种子轮（欧洲史上最大），估值 35 亿美元。LeCun 长期倡导 JEPA（Joint Embedding Predictive Architecture）作为下一代 AI 范式，认为当前自回归 LLM 存在根本局限。</p>
+        <ul class="detail-list">
+          <li>JEPA 通过预测潜在空间表示（而非像素级预测）学习世界模型</li>
+          <li>目标是构建能理解物理世界因果关系的 AI 系统</li>
+          <li>与当前 LLM "统计学鹦鹉" 路线形成根本性分歧</li>
+          <li>若成功，将对机器人、自动驾驶、科学发现产生深远影响</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          OpenAI 年化收入破 $25B，筹备 IPO
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>OpenAI 年化收入突破 250 亿美元，并已启动 IPO 筹备工作，最早 2026 年底上市。同时，Anthropic 年化收入接近 190 亿美元，仅 Claude Code 单品 ARR 就达 25 亿美元。</p>
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-value">$25B+</div>
+            <div class="stat-label">OpenAI ARR</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">$19B</div>
+            <div class="stat-label">Anthropic ARR</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">$300M</div>
+            <div class="stat-label">Suno ARR</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="container">
+  <div class="footer">
+    <p>AI Pulse Daily Report | 2026.03.24</p>
+    <p style="margin-top: 4px;">数据来源：WebSearch 综合采集 | 更新时间：2026-03-24</p>
+    <p style="margin-top: 8px;"><a href="/">返回 AI Pulse 主页</a></p>
+  </div>
+</div>
+
+<script>
+function switchTab(tabName) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  const tabMap = { casual: 0, intermediate: 1, expert: 2 };
+  document.getElementById('tab-' + tabName).classList.add('active');
+  document.querySelectorAll('.tab-btn')[tabMap[tabName]].classList.add('active');
+}
+</script>
+</body>
+</html>

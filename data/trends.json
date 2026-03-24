@@ -1,56 +1,56 @@
 {
-  "updated": "2026-03-23",
-  "dates": ["2026-03-10", "2026-03-11", "2026-03-12", "2026-03-13", "2026-03-14", "2026-03-15", "2026-03-16", "2026-03-17", "2026-03-18", "2026-03-19", "2026-03-20", "2026-03-21", "2026-03-22", "2026-03-23"],
+  "updated": "2026-03-24",
+  "dates": ["2026-03-11", "2026-03-12", "2026-03-13", "2026-03-14", "2026-03-15", "2026-03-16", "2026-03-17", "2026-03-18", "2026-03-19", "2026-03-20", "2026-03-21", "2026-03-22", "2026-03-23", "2026-03-24"],
   "trends": [
     {
-      "keyword": "Gemini 3.1 Pro",
-      "category": "model",
-      "values": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 95]
+      "keyword": "Anthropic DOD",
+      "category": "policy",
+      "values": [0, 0, 0, 0, 0, 0, 0, 0, 40, 55, 65, 70, 80, 95]
     },
     {
       "keyword": "Agentic AI",
       "category": "concept",
-      "values": [55, 58, 62, 65, 70, 75, 80, 88, 90, 88, 90, 90, 93, 92]
+      "values": [58, 62, 65, 70, 75, 80, 88, 90, 88, 90, 90, 93, 92, 90]
     },
     {
       "keyword": "OpenAI",
       "category": "company",
-      "values": [42, 45, 48, 50, 52, 55, 58, 62, 68, 72, 80, 80, 95, 90]
+      "values": [45, 48, 50, 52, 55, 58, 62, 68, 72, 80, 80, 95, 90, 89]
+    },
+    {
+      "keyword": "Mistral Small 4",
+      "category": "model",
+      "values": [0, 0, 0, 0, 0, 88, 75, 60, 50, 45, 40, 38, 35, 88]
     },
     {
       "keyword": "Google DeepMind",
       "category": "company",
-      "values": [30, 32, 35, 38, 40, 42, 45, 50, 55, 58, 63, 68, 72, 88]
+      "values": [32, 35, 38, 40, 42, 45, 50, 55, 58, 63, 68, 72, 88, 86]
     },
     {
-      "keyword": "Gemini Robotics 1.5",
-      "category": "research",
-      "values": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 87]
-    },
-    {
-      "keyword": "MiMo-V2",
-      "category": "model",
+      "keyword": "AMI Labs",
+      "category": "company",
       "values": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 85]
     },
     {
-      "keyword": "Nemotron 3 Super",
+      "keyword": "MiniMax M2.5",
       "category": "model",
-      "values": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 30, 84]
+      "values": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 84]
     },
     {
-      "keyword": "Robotics Funding",
-      "category": "concept",
-      "values": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 83]
-    },
-    {
-      "keyword": "Kimi K2.5",
+      "keyword": "Gemini 3.1 Pro",
       "category": "model",
-      "values": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 30, 72, 95, 82]
+      "values": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 95, 83]
     },
     {
-      "keyword": "Replit",
-      "category": "product",
-      "values": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 80]
+      "keyword": "Qwen3.5 Max",
+      "category": "model",
+      "values": [0, 0, 0, 0, 0, 0, 0, 0, 0, 30, 45, 55, 68, 82]
+    },
+    {
+      "keyword": "Anthropic",
+      "category": "company",
+      "values": [35, 38, 40, 42, 45, 48, 52, 58, 65, 72, 75, 78, 79, 81]
     }
   ]
 }

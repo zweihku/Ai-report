@@ -17,6 +17,7 @@
     { "date": "2026-04-01", "file": "2026-04-01.html", "title": "AI Daily Report | 2026.04.01", "tags": ["Claude Code Leak", "Oracle Layoffs", "DeepSeek V4"] },
     { "date": "2026-04-02", "file": "2026-04-02.html", "title": "AI Daily Report | 2026.04.02", "tags": ["Q1 Record Funding", "GPT-5.4 Benchmark", "AlphaEvolve"] },
     { "date": "2026-04-03", "file": "2026-04-03.html", "title": "AI Daily Report | 2026.04.03", "tags": ["Qwen3.6-Plus", "Claude Code Leak", "Tennessee AI Bill"] },
-    { "date": "2026-04-08", "file": "2026-04-08.html", "title": "AI Daily Report | 2026.04.08", "tags": ["Project Glasswing", "GPT-6", "Gemma 4"] }
+    { "date": "2026-04-08", "file": "2026-04-08.html", "title": "AI Daily Report | 2026.04.08", "tags": ["Project Glasswing", "GPT-6", "Gemma 4"] },
+    { "date": "2026-04-09", "file": "2026-04-09.html", "title": "AI Daily Report | 2026.04.09", "tags": ["Muse Spark", "Claude Managed Agents", "OpenAI IPO"] }
   ]
 }

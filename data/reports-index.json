@@ -11,6 +11,12 @@
     { "date": "2026-03-25", "file": "2026-03-25.html", "title": "AI Daily Report | 2026.03.25", "tags": ["OpenClaw", "Seedance 2.0", "Terafab"] },
     { "date": "2026-03-26", "file": "2026-03-26.html", "title": "AI Daily Report | 2026.03.26", "tags": ["Anthropic DOD", "ARM AGI CPU", "OpenAI $730B"] },
     { "date": "2026-03-27", "file": "2026-03-27.html", "title": "AI Daily Report | 2026.03.27", "tags": ["Lyria 3 Pro", "Shopify UCP", "GitHub Copilot"] },
-    { "date": "2026-03-28", "file": "2026-03-28.html", "title": "AI Daily Report | 2026.03.28", "tags": ["Claude Mythos", "Anthropic IPO", "AI Safety"] }
+    { "date": "2026-03-28", "file": "2026-03-28.html", "title": "AI Daily Report | 2026.03.28", "tags": ["Claude Mythos", "Anthropic IPO", "AI Safety"] },
+    { "date": "2026-03-29", "file": "2026-03-29.html", "title": "AI Daily Report | 2026.03.29", "tags": ["Claude Code Growth", "Harvey AI", "MCP 97M"] },
+    { "date": "2026-03-30", "file": "2026-03-30.html", "title": "AI Daily Report | 2026.03.30", "tags": ["Gemini 3 Deep Think", "Meta $10B DC", "Qwen 3.5"] },
+    { "date": "2026-04-01", "file": "2026-04-01.html", "title": "AI Daily Report | 2026.04.01", "tags": ["Claude Code Leak", "Oracle Layoffs", "DeepSeek V4"] },
+    { "date": "2026-04-02", "file": "2026-04-02.html", "title": "AI Daily Report | 2026.04.02", "tags": ["Q1 Record Funding", "GPT-5.4 Benchmark", "AlphaEvolve"] },
+    { "date": "2026-04-03", "file": "2026-04-03.html", "title": "AI Daily Report | 2026.04.03", "tags": ["Qwen3.6-Plus", "Claude Code Leak", "Tennessee AI Bill"] },
+    { "date": "2026-04-08", "file": "2026-04-08.html", "title": "AI Daily Report | 2026.04.08", "tags": ["Project Glasswing", "GPT-6", "Gemma 4"] }
   ]
 }

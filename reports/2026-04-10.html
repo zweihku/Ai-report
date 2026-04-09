@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily Report | 2026.04.10</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --claude-bg: #FAF9F7;
+    --claude-surface: #FFFFFF;
+    --claude-border: #E8E5E0;
+    --claude-text-primary: #1A1714;
+    --claude-text-secondary: #6B6560;
+    --claude-text-tertiary: #9B9590;
+    --claude-accent: #DA7756;
+    --claude-accent-light: #F5E6DF;
+    --claude-accent-dark: #C4623F;
+    --claude-tag-blue: #E8F0FE;
+    --claude-tag-blue-text: #3B6CB5;
+    --claude-tag-green: #E6F4EA;
+    --claude-tag-green-text: #2D7A3F;
+    --claude-tag-purple: #F0E6FA;
+    --claude-tag-purple-text: #7B3FAF;
+    --claude-tag-amber: #FEF3E2;
+    --claude-tag-amber-text: #B5752D;
+    --claude-tag-red: #FDE8E8;
+    --claude-tag-red-text: #B53B3B;
+    --claude-card-shadow: 0 1px 3px rgba(26, 23, 20, 0.06), 0 1px 2px rgba(26, 23, 20, 0.04);
+    --claude-card-shadow-hover: 0 4px 12px rgba(26, 23, 20, 0.08), 0 2px 4px rgba(26, 23, 20, 0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+    background: var(--claude-bg);
+    color: var(--claude-text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 8px;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--claude-accent-dark); }
+
+  .header {
+    text-align: center;
+    padding: 48px 0 40px;
+    border-bottom: 1px solid var(--claude-border);
+    margin-bottom: 32px;
+  }
+
+  .header-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--claude-accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .header .date {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    font-weight: 400;
+  }
+
+  .header .edition-note {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    margin-top: 8px;
+  }
+
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 36px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--claude-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .tab-btn:hover {
+    color: var(--claude-text-primary);
+    background: var(--claude-bg);
+  }
+
+  .tab-btn.active {
+    background: var(--claude-accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(218, 119, 86, 0.3);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .section { margin-bottom: 36px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .section-icon.gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .section-icon.model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .section-icon.product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .section-icon.research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .section-icon.industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .section-icon.policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .card {
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--claude-card-shadow);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .card:hover { box-shadow: var(--claude-card-shadow-hover); }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .card p {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.75;
+    margin-bottom: 8px;
+  }
+
+  .card p:last-child { margin-bottom: 0; }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .tag-gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .tag-model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .tag-product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .tag-research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .tag-industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .tag-policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .highlight {
+    background: var(--claude-accent-light);
+    border-left: 3px solid var(--claude-accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--claude-accent-dark);
+    line-height: 1.7;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .stat-item {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--claude-accent);
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--claude-text-tertiary);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 8px;
+    transition: color 0.15s;
+  }
+
+  .source-link:hover { color: var(--claude-accent-dark); text-decoration: underline; }
+
+  .tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .tech-table th, .tech-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .tech-table th {
+    font-weight: 600;
+    color: var(--claude-text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: var(--claude-bg);
+  }
+
+  .tech-table td { color: var(--claude-text-primary); }
+
+  .code-block {
+    background: #2D2A26;
+    color: #E8E5E0;
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    overflow-x: auto;
+    margin: 12px 0;
+  }
+
+  .code-block .comment { color: #9B9590; }
+  .code-block .keyword { color: #DA7756; }
+  .code-block .string { color: #7DB87D; }
+
+  .footer {
+    text-align: center;
+    padding: 32px 0;
+    border-top: 1px solid var(--claude-border);
+    margin-top: 48px;
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+  }
+
+  .footer a {
+    color: var(--claude-accent);
+    text-decoration: none;
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 20px 16px 60px; }
+    .header h1 { font-size: 24px; }
+    .tab-btn { font-size: 13px; padding: 10px 8px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+  }
+
+  .subsection-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin: 16px 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  ul.detail-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0;
+  }
+
+  ul.detail-list li {
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.7;
+    padding: 4px 0 4px 16px;
+    position: relative;
+  }
+
+  ul.detail-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--claude-border);
+  }
+
+  .mood-banner {
+    background: linear-gradient(135deg, #FFF5F0 0%, #FFF9F0 100%);
+    border: 1px solid #F0DDD0;
+    border-radius: 16px;
+    padding: 28px 24px;
+    margin-bottom: 32px;
+    text-align: center;
+  }
+
+  .mood-banner .mood-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin-bottom: 6px;
+  }
+
+  .mood-banner .mood-subtitle {
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.6;
+  }
+
+  .mood-meter {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    margin: 12px 0;
+  }
+
+  .mood-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    transition: transform 0.2s;
+  }
+
+  .mood-dot.active { transform: scale(1.4); }
+
+  .mood-label {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+
+  .tldr-box {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.6;
+  }
+
+  .closing-card {
+    background: linear-gradient(135deg, #FFF5F0 0%, #FFF9F0 100%);
+    border: 1px solid #F0DDD0;
+    border-radius: 16px;
+    padding: 28px 24px;
+    margin-top: 32px;
+    text-align: center;
+  }
+
+  .closing-card .closing-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin-bottom: 10px;
+  }
+
+  .closing-card .closing-text {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.7;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <a href="/" class="back-link">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+    返回 AI Pulse
+  </a>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-logo">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4"/><path d="M12 16V8"/></svg>
+      AI Daily Report
+    </div>
+    <h1>AI 领域日报</h1>
+    <div class="date">2026 年 4 月 10 日 星期五</div>
+    <div class="edition-note">前沿实验室联合反蒸馏 / AI Agent 金融风控标准发布 / 国家机器人周聚焦物理 AI / OpenAI 经济蓝图引发热议</div>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('casual')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      轻松阅读版
+    </button>
+    <button class="tab-btn" onclick="switchTab('intermediate')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+      技术进阶版
+    </button>
+    <button class="tab-btn" onclick="switchTab('expert')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      深度技术版
+    </button>
+  </div>
+
+  <!-- ==================== 版本一：轻松阅读版 ==================== -->
+  <div class="tab-content active" id="tab-casual">
+
+    <!-- 今日心情指南 -->
+    <div class="mood-banner">
+      <div class="mood-title">今日 AI 节奏：攻防博弈</div>
+      <div class="mood-meter">
+        <div class="mood-dot active" style="background: #DA7756;"></div>
+        <div class="mood-dot active" style="background: #DA7756;"></div>
+        <div class="mood-dot active" style="background: #DA7756;"></div>
+        <div class="mood-dot" style="background: #E8E5E0;"></div>
+        <div class="mood-dot" style="background: #E8E5E0;"></div>
+      </div>
+      <div class="mood-label">行业热度 3/5 -- 战略博弈升温</div>
+      <div class="mood-subtitle">今天的主旋律不是新产品发布，而是行业格局的深层重塑：三大实验室史无前例联手防御、AI Agent 获得了"金融身份证"、机器人开始在本地独立思考。</div>
+    </div>
+
+    <!-- 行业格局 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/></svg>
+        </div>
+        <div class="section-title">行业大事</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">重磅</span>
+          三大 AI 巨头联手"反偷师"
+        </div>
+        <p>OpenAI、Anthropic、Google 通过 Frontier Model Forum 首次启动联合情报共享行动，阻止中国 AI 公司通过"对抗性蒸馏"窃取模型能力。Anthropic 此前曝光三家中国实验室创建了约 2.4 万个假账号，发起超 1600 万次非法查询。这是该论坛成立以来首次作为实战情报中心运作。</p>
+        <div class="tldr-box">简单来说：美国三大 AI 公司发现有人在"抄作业"，于是决定组队一起"反抄袭"。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">商业</span>
+          OpenAI 发布"AI 经济蓝图"
+        </div>
+        <p>OpenAI 发布政策提案，为即将到来的"智能时代"描绘经济愿景：建议设立公共财富基金、征收机器人税、推行四天工作制。这份文件将左翼社会保障理念与市场驱动的资本主义框架相融合，暗示超级智能已近在咫尺。</p>
+        <div class="tldr-box">简单来说：OpenAI 认为 AI 会让大家更富有，但需要重新设计经济规则来分配财富。建议每周只工作四天。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">投资</span>
+          Eclipse 募资 13 亿美元押注 AI 硬件
+        </div>
+        <p>Cerebras 早期投资者 Eclipse Ventures 完成 13 亿美元新基金募集，专注投资 AI 基础设施、机器人和先进制造。这是继 Q1 全球风投创纪录的 3000 亿美元之后，又一个重磅物理世界 AI 投资信号。</p>
+      </div>
+    </div>
+
+    <!-- 产品与应用 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon product">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        </div>
+        <div class="section-title">产品与应用</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-product">Agent</span>
+          AI Agent 有了"金融安全网"
+        </div>
+        <p>Google DeepMind、微软、哥伦比亚大学等联合发布 Agentic Risk Standard (ARS)，为 AI Agent 自主交易建立托管、承保和抵押机制。模拟测试显示可减少最高 61% 的用户损失。当 AI 帮你花钱时，终于有人想到要加道"保险"了。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-product">机器人</span>
+          国家机器人周：机器人学会"本地思考"
+        </div>
+        <p>NVIDIA 在国家机器人周展示多项物理 AI 突破：OpenClaw 机器人操作系统现已完全在 Jetson Thor 上本地运行，搭载优化版 Nemotron 模型和 vLLM 推理库，实现私有、低延迟的边缘 AI。机器人不再需要"打电话给云端问路"了。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-product">竞赛</span>
+          Perplexity 推出"十亿美元挑战"
+        </div>
+        <p>Perplexity 宣布 "Billion Dollar Build" 计划 -- 为期 8 周的 AI 创业竞赛，使用 Perplexity Computer 构建有望达到 10 亿美元规模的公司。入围者可获得最高 100 万美元投资和等额计算资源。</p>
+      </div>
+    </div>
+
+    <!-- 研究突破 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon research">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>
+        </div>
+        <div class="section-title">科研前沿</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">突破</span>
+          AI 预测干旱：提前 90 天预警
+        </div>
+        <p>美国地质调查局发布了革命性的 AI 干旱预测技术，能以前所未有的准确度提前 90 天预测干旱状况。对农业和水资源管理来说是巨大利好。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">前沿</span>
+          "遵守物理定律"的 AI 来了
+        </div>
+        <p>夏威夷大学研究团队在 AIP Advances 发表新算法，让 AI 在处理复杂数据时严格遵守物理定律，显著提高流体力学和气候建模的预测精度。AI 终于开始"讲道理"了。</p>
+      </div>
+    </div>
+
+    <!-- 政策法规 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+        </div>
+        <div class="section-title">政策与监管</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-policy">美国</span>
+          各州 AI 立法爆发：已超 600 项法案
+        </div>
+        <p>2026 年美国各州议员已提出超过 600 项 AI 相关法案。其中印第安纳州、犹他州和华盛顿州已通过新法律，禁止健康保险公司仅凭 AI 拒绝或修改理赔。司法部还成立了 AI 诉讼工作组，专门挑战"越界"的州级 AI 法规。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-policy">欧盟</span>
+          EU AI Act 进入全面执行期
+        </div>
+        <p>欧盟 AI 法案在 2026 年初进入全面执行阶段，将 AI 系统分为四个风险等级。高风险 AI（用于关键基础设施、教育、就业等领域）现在必须满足风险管理、技术文档、人工监督等严格要求。</p>
+      </div>
+    </div>
+
+    <div class="closing-card">
+      <div class="closing-title">今日总结</div>
+      <div class="closing-text">今天的 AI 世界不是在比谁跑得快，而是在比谁"防线"更牢。三大实验室联手反蒸馏、AI Agent 获得金融风控标准、各国立法加速 -- 这些都在说明：AI 正在从"狂奔"转向"可控"。对普通人来说，这意味着你未来用的 AI 产品会更安全、更靠谱。</div>
+    </div>
+
+  </div>
+
+  <!-- ==================== 版本二：技术进阶版 ==================== -->
+  <div class="tab-content" id="tab-intermediate">
+
+    <div class="mood-banner">
+      <div class="mood-title">技术视角：基础设施日</div>
+      <div class="mood-subtitle">今日重点不在模型能力跃迁，而在基础设施层面的制度化建设：威胁情报共享机制、Agent 金融风控标准、边缘 AI 推理栈。这些"看不见的手"将深刻影响后续技术路线选择。</div>
+    </div>
+
+    <!-- 安全与防御 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>
+        </div>
+        <div class="section-title">安全与防御</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">防御</span>
+          Frontier Model Forum 启动实战情报共享
+        </div>
+        <p>OpenAI、Anthropic 和 Google 通过 Frontier Model Forum 首次启动联合威胁情报共享操作，针对中国实验室的对抗性蒸馏攻击。此前该论坛仅聚焦研究和政策；现在正式转型为运营级情报中心，借鉴网络安全行业的威胁情报共享模式。</p>
+        <div class="highlight">技术要点：对抗性蒸馏是指通过精心设计的 API 查询序列，系统性提取目标模型的行为模式和知识。Anthropic 记录到三家中国实验室（DeepSeek、Moonshot AI、MiniMax）创建约 2.4 万个账号、发起 1600 万次查询。三家公司现在采用类似 CERT 的模式：一方发现攻击模式后立即通知其他两方。</div>
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-value">24,000</div>
+            <div class="stat-label">虚假账号</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">16M</div>
+            <div class="stat-label">非法 API 调用</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">3</div>
+            <div class="stat-label">涉事实验室</div>
+          </div>
+        </div>
+        <a href="https://www.bloomberg.com/news/articles/2026-04-06/openai-anthropic-google-unite-to-combat-model-copying-in-china" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Bloomberg
+        </a>
+      </div>
+    </div>
+
+    <!-- Agent 生态 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon product">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 7h10"/><path d="M7 12h10"/><path d="M7 17h10"/></svg>
+        </div>
+        <div class="section-title">Agent 生态</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-product">标准</span>
+          Agentic Risk Standard (ARS)：Agent 的金融协议栈
+        </div>
+        <p>Google DeepMind、微软、哥伦比亚大学和 T54 Labs 联合提出 Agentic Risk Standard，为 AI Agent 自主金融交易建立三层保护机制：托管 (Escrow)、承保 (Underwriting)、抵押 (Collateral)。</p>
+        <div class="highlight">架构设计：ARS 将整个交易生命周期形式化为确定性状态机，执行显式资金控制规则。标准任务（如生成报告）使用托管模式 -- 资金冻结直到验证完成；高风险任务（如交易）增加承保层 -- 由风险方评估定价并承诺赔付。模拟测试显示用户损失最高可降低 61%。这填补了 AI 安全技术（概率性保证）与金融合规（确定性保证）之间的"保证缺口"。</div>
+        <a href="https://globalcrypto.tv/researchers-from-google-deepmind-microsoft-columbia-university-and-t54-labs-propose-financial-risk-standard-for-ai-agents/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Global Crypto TV
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-product">边缘</span>
+          OpenClaw 全栈本地化：Jetson Thor + Nemotron + vLLM
+        </div>
+        <p>NVIDIA 在国家机器人周展示 OpenClaw 机器人操作框架完全运行在 Jetson Thor 边缘平台上，搭载优化版 Nemotron 开源模型和 vLLM 推理引擎。这标志着机器人 AI 从"云端依赖"向"边缘自主"的关键转型。</p>
+        <div class="highlight">技术意义：vLLM 的 PagedAttention 机制在资源受限的 Jetson Thor 上实现高效 KV cache 管理；Nemotron 针对嵌入式场景优化后保持了操作理解能力。硬件在环测试 (HIL) 使用 Isaac Sim 的摄像头流直接验证，部分系统已实现代码自生成完成任务。</div>
+        <a href="https://blogs.nvidia.com/blog/national-robotics-week-2026/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          NVIDIA Blog
+        </a>
+      </div>
+    </div>
+
+    <!-- 研究 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon research">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>
+        </div>
+        <div class="section-title">研究前沿</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">ICLR</span>
+          TurboQuant：大上下文窗口的内存救星
+        </div>
+        <p>Google 研究团队在 ICLR 2026 发表 TurboQuant 算法，通过 PolarQuant 向量旋转和 Johnson-Lindenstrauss 压缩两步法，大幅降低向量量化的内存开销，使超长上下文窗口模型在推理时更加高效。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">物理</span>
+          物理约束机器学习新算法
+        </div>
+        <p>夏威夷大学团队在 AIP Advances 发表的新算法实现了"物理信息机器学习"的重大进步，使 AI 在处理流体力学和气候数据时严格遵守物理定律，避免了纯数据驱动方法的非物理输出问题。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">应用</span>
+          USGS 干旱预测 AI：90 天提前量
+        </div>
+        <p>美国地质调查局发布的 AI 干旱预测系统，能以前所未有的精度提前 90 天预报干旱状况，为农业规划和水资源管理提供决策窗口。这是环境 AI 从实验室走向实用的标志性案例。</p>
+      </div>
+    </div>
+
+    <!-- 政策 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+        </div>
+        <div class="section-title">政策与治理</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-policy">监管</span>
+          美国各州 AI 立法潮：600+ 法案
+        </div>
+        <p>2026 年立法季，美国各州已提出超过 600 项 AI 法案。重点方向包括：健康保险 AI 决策限制（印第安纳州、犹他州、华盛顿州已立法）、深度伪造监管、AI 聊天机器人管控。与此同时，DOJ 成立 AI 诉讼工作组，对"过度监管"的州法律发起挑战。联邦与州之间的监管拉锯战正在加剧。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-policy">经济</span>
+          OpenAI 政策蓝图：机器人税与四天工作制
+        </div>
+        <p>OpenAI 发布的政策文件将自身定位为"AI 时代的经济架构师"。核心建议包括：公共财富基金（将 AI 产生的利润部分社会化）、机器人税（对自动化替代劳动力征税）、四天工作制（适应生产力跃升后的新常态）。文件暗示超级智能已近在咫尺，呼吁在其到来前建立新的社会契约。</p>
+        <a href="https://techcrunch.com/2026/04/06/openais-vision-for-the-ai-economy-public-wealth-funds-robot-taxes-and-a-four-day-work-week/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          TechCrunch
+        </a>
+      </div>
+    </div>
+
+    <div class="closing-card">
+      <div class="closing-title">技术总结</div>
+      <div class="closing-text">今日的技术信号指向基础设施成熟化：Frontier Model Forum 从研究机构转型为情报中心，ARS 为 Agent 金融行为建立了形式化状态机，OpenClaw 的边缘部署解决了机器人 AI 的延迟瓶颈。这些进展不如新模型发布耀眼，但它们定义了 AI 能力可以被安全、高效部署的边界条件。</div>
+    </div>
+
+  </div>
+
+  <!-- ==================== 版本三：深度技术版 ==================== -->
+  <div class="tab-content" id="tab-expert">
+
+    <div class="mood-banner">
+      <div class="mood-title">深度视角：制度化拐点</div>
+      <div class="mood-subtitle">三条技术主线交汇：模型安全从被动防御转向主动情报共享；Agent 经济从概念验证进入金融合规建设；物理 AI 从云端推理迁移至边缘自主。底层逻辑：AI 产业链正在从"能力竞赛"过渡到"制度竞赛"。</div>
+    </div>
+
+    <!-- 模型安全 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>
+        </div>
+        <div class="section-title">模型安全与知识产权防护</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">深度分析</span>
+          Frontier Model Forum 威胁情报共享机制解析
+        </div>
+        <p>2026 年 4 月 6-7 日，OpenAI、Anthropic 和 Google 通过 Frontier Model Forum 启动了针对对抗性蒸馏的联合情报共享操作。这是该论坛自 2023 年成立以来首次从研究/政策机构转型为运营级威胁情报中心。</p>
+
+        <div class="subsection-title">攻击面分析</div>
+        <ul class="detail-list">
+          <li>对抗性蒸馏 (Adversarial Distillation)：通过精心构造的 API 查询序列，系统性提取目标模型的输出分布和隐含知识，用于训练本地替代模型</li>
+          <li>Anthropic 2026 年 2 月报告：DeepSeek、Moonshot AI、MiniMax 三家中国实验室创建约 24,000 个虚假账号，发起超 1600 万次查询</li>
+          <li>攻击模式包括：多样化 prompt 覆盖能力维度、chain-of-thought 提取、系统 prompt 逆向工程</li>
+        </ul>
+
+        <div class="subsection-title">防御架构</div>
+        <ul class="detail-list">
+          <li>情报共享模型借鉴 CERT/CC 和网络安全 ISACs：一方检测到攻击模式后，标准化描述并实时通知其他参与方</li>
+          <li>检测手段包括：异常查询模式识别、账号行为聚类、输出相似度交叉验证</li>
+          <li>防御策略可能包括：输出扰动 (output perturbation)、水印注入 (watermarking)、API 速率限制调整</li>
+        </ul>
+
+        <div class="subsection-title">战略影响</div>
+        <ul class="detail-list">
+          <li>知识产权保护从法律追诉（事后）转向技术阻断（实时），改变了攻防时间线</li>
+          <li>三家竞争对手共享攻击情报本身就是行业成熟度的标志 -- 类似金融行业的反欺诈联盟</li>
+          <li>可能推动 API 定价模型变化：高价值 API 端点可能引入更严格的身份验证和使用配额</li>
+        </ul>
+
+        <a href="https://www.bloomberg.com/news/articles/2026-04-06/openai-anthropic-google-unite-to-combat-model-copying-in-china" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Bloomberg
+        </a>
+        <a href="https://winbuzzer.com/2026/04/08/openai-anthropic-google-team-up-to-stop-chinese-ai-model-the-xcxwbn/" class="source-link" target="_blank" style="margin-left: 12px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          WinBuzzer
+        </a>
+      </div>
+    </div>
+
+    <!-- Agent 金融标准 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon product">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 7h10"/><path d="M7 12h10"/><path d="M7 17h10"/></svg>
+        </div>
+        <div class="section-title">Agent 金融风控标准</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-product">论文</span>
+          Agentic Risk Standard (ARS) 技术架构深度解析
+        </div>
+        <p>Google DeepMind、Microsoft Research、Columbia University 和 T54 Labs 联合提出的 ARS 框架，首次为 AI Agent 自主金融交易定义了完整的风控协议栈。</p>
+
+        <div class="subsection-title">核心问题：保证缺口 (Guarantee Gap)</div>
+        <ul class="detail-list">
+          <li>AI 安全技术提供概率性可靠性保证（如 RLHF 降低有害输出概率），但用户委托高风险任务需要可执行的确定性保证</li>
+          <li>ARS 通过金融工程手段弥合这一缺口，将工程可靠性问题转化为金融风险定价问题</li>
+        </ul>
+
+        <div class="subsection-title">三层防护架构</div>
+        <table class="tech-table">
+          <thead>
+            <tr>
+              <th>层级</th>
+              <th>机制</th>
+              <th>适用场景</th>
+              <th>保护方式</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>L1 托管</td>
+              <td>Escrow</td>
+              <td>标准服务（报告、代码）</td>
+              <td>资金冻结至验证完成</td>
+            </tr>
+            <tr>
+              <td>L2 承保</td>
+              <td>Underwriting</td>
+              <td>资金操作（交易、换汇）</td>
+              <td>风险方评估定价，承诺赔付</td>
+            </tr>
+            <tr>
+              <td>L3 抵押</td>
+              <td>Collateral</td>
+              <td>高风险自主交易</td>
+              <td>预存保证金，覆盖最大损失</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="subsection-title">形式化模型</div>
+        <ul class="detail-list">
+          <li>交易生命周期形式化为确定性状态机 (Deterministic State Machine)，每个状态转换有显式资金控制规则</li>
+          <li>无论 Agent 内部行为如何（黑箱），用户的金融结果由可审计、可执行的结算逻辑治理</li>
+          <li>模拟实验：在 10,000 次随机交易场景中，ARS 框架将用户最大损失降低 61%，平均损失降低 43%</li>
+        </ul>
+
+        <div class="subsection-title">对开发者的影响</div>
+        <ul class="detail-list">
+          <li>Agent 开发需要在协议层实现 ARS 接口，类似于支付系统集成 PCI DSS 合规</li>
+          <li>可能催生 "Agent 保险" 这一新市场 -- 第三方承保 Agent 行为风险</li>
+          <li>ARS 的状态机模型可直接映射到智能合约，Web3 与 Agent 经济的交汇点</li>
+        </ul>
+
+        <a href="https://globalcrypto.tv/researchers-from-google-deepmind-microsoft-columbia-university-and-t54-labs-propose-financial-risk-standard-for-ai-agents/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Global Crypto TV
+        </a>
+      </div>
+    </div>
+
+    <!-- 边缘 AI -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon gpu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>
+        </div>
+        <div class="section-title">边缘 AI 与物理智能</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-gpu">硬件</span>
+          OpenClaw on Jetson Thor：边缘机器人 AI 全栈技术解析
+        </div>
+        <p>NVIDIA 在国家机器人周展示的 OpenClaw 本地化部署标志着机器人 AI 从云端推理向边缘自主的关键转型。</p>
+
+        <div class="subsection-title">技术栈</div>
+        <table class="tech-table">
+          <thead>
+            <tr>
+              <th>组件</th>
+              <th>技术</th>
+              <th>作用</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>计算平台</td>
+              <td>Jetson Thor</td>
+              <td>边缘 AI SoC，支持 Transformer 加速</td>
+            </tr>
+            <tr>
+              <td>语言模型</td>
+              <td>Nemotron (优化版)</td>
+              <td>操作理解、任务规划、代码生成</td>
+            </tr>
+            <tr>
+              <td>推理引擎</td>
+              <td>vLLM + PagedAttention</td>
+              <td>资源受限场景下的高效 KV cache 管理</td>
+            </tr>
+            <tr>
+              <td>仿真验证</td>
+              <td>Isaac Sim HIL</td>
+              <td>硬件在环测试，摄像头流直接验证</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="subsection-title">关键突破</div>
+        <ul class="detail-list">
+          <li>完全本地推理消除了网络延迟瓶颈，对实时操作任务（如抓取、装配）至关重要</li>
+          <li>部分系统实现了自生成代码完成任务 -- Agent 范式从语言领域向物理领域的直接延伸</li>
+          <li>私有化部署解决了制造业场景的数据安全顾虑，降低了工业部署的合规成本</li>
+        </ul>
+
+        <a href="https://blogs.nvidia.com/blog/national-robotics-week-2026/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          NVIDIA Blog
+        </a>
+      </div>
+    </div>
+
+    <!-- 研究 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon research">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>
+        </div>
+        <div class="section-title">学术与研究</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">ICLR 2026</span>
+          TurboQuant：向量量化的内存效率革命
+        </div>
+        <p>Google Research 在 ICLR 2026 发表的 TurboQuant 算法，通过两步压缩流程解决了大上下文窗口模型推理时的内存瓶颈问题。</p>
+        <div class="subsection-title">算法流程</div>
+        <ul class="detail-list">
+          <li>Step 1: PolarQuant 向量旋转 -- 将 KV cache 向量旋转到量化友好的坐标系，减少量化误差</li>
+          <li>Step 2: Quantized Johnson-Lindenstrauss (QJL) 压缩 -- 利用 JL 引理的量化版本进行降维，在保持距离关系的同时大幅减少存储</li>
+          <li>两步组合实现了比现有 KV cache 压缩方法更好的精度-内存权衡</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">物理 ML</span>
+          Physics-Informed ML：AIP Advances 新算法
+        </div>
+        <p>夏威夷大学 Manoa 分校的研究团队在 AIP Advances 发表了物理信息机器学习的重大进展。该算法强制 AI 模型在训练和推理过程中遵守物理守恒定律（如质量守恒、能量守恒），解决了纯数据驱动方法可能产生违反物理规律的输出问题。在流体力学和气候建模任务上显示出显著的精度提升。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">环境</span>
+          USGS 干旱预测系统：90 天预报窗口
+        </div>
+        <p>美国地质调查局的 AI 干旱预测系统通过融合卫星遥感、土壤湿度传感器、历史气候模式和 ENSO 指数等多源数据，实现了 90 天提前量的干旱预测。模型架构可能融合了时间序列 Transformer 和物理约束优化，将预测窗口从传统方法的 30 天扩展到 90 天。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">材料</span>
+          MIT：AI 发现原子缺陷改进能量转换
+        </div>
+        <p>MIT 研究团队开发的 AI 模型能够在原子尺度上识别材料缺陷，这一能力可用于改进半导体和可再生能源系统的热传导和能量转换效率。另一个 MIT 团队基于蛋白质的动态运动而非静态形状设计蛋白质，开辟了动态生物材料和自适应治疗的新方向。</p>
+      </div>
+    </div>
+
+    <!-- 政策 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+        </div>
+        <div class="section-title">治理与合规</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-policy">美国</span>
+          联邦 vs 州：AI 监管主权之争加剧
+        </div>
+        <p>2026 年立法季呈现联邦与州层面的双向拉锯态势。</p>
+        <div class="subsection-title">州级立法爆发</div>
+        <ul class="detail-list">
+          <li>600+ AI 法案已在各州提出，覆盖健康保险 AI 决策、深度伪造、聊天机器人监管等领域</li>
+          <li>印第安纳州 HB 1271、犹他州 SB 319、华盛顿州 SB 5395：禁止健康保险公司仅凭 AI 拒绝或修改理赔</li>
+          <li>这些法案直接回应了 UnitedHealth 等公司使用 AI 自动拒绝理赔的争议</li>
+        </ul>
+        <div class="subsection-title">联邦反制</div>
+        <ul class="detail-list">
+          <li>DOJ AI 诉讼工作组：专门挑战"违反州际商业条款"或"与联邦法规冲突"的州级 AI 法律</li>
+          <li>2025 年 12 月 AI 优先权行政令 (AI Preemption Executive Order) 的执行工具</li>
+          <li>白宫 3 月 20 日国家 AI 政策框架：推动全国统一的 AI 治理方案，抑制碎片化州法</li>
+        </ul>
+        <a href="https://www.globalpolicywatch.com/2026/04/u-s-tech-legislative-regulatory-update-first-quarter-2026/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Global Policy Watch
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-policy">经济</span>
+          OpenAI 经济蓝图：超级智能时代的社会契约
+        </div>
+        <p>OpenAI 发布的政策蓝图是迄今为止前沿 AI 公司对社会经济影响最系统的阐述。核心论述逻辑：超级智能即将到来 -> 生产力将指数级增长 -> 现有经济分配机制将失效 -> 需要新的社会契约。</p>
+        <div class="subsection-title">关键提案</div>
+        <ul class="detail-list">
+          <li>公共财富基金：将 AI 企业利润的一定比例注入公共基金，类似挪威主权财富基金模式</li>
+          <li>机器人税/自动化税：对替代人类劳动力的 AI 系统征税，资金用于再培训和社会保障</li>
+          <li>四天工作制：适应生产力跃升后的新常态，保持就业率同时提高生活质量</li>
+          <li>扩大社会安全网：增强失业保险、医疗保障等基础保障</li>
+        </ul>
+        <div class="subsection-title">分析</div>
+        <ul class="detail-list">
+          <li>值得注意的是，这些提案将 OpenAI 从"技术公司"重新定位为"经济架构师"，这在 IPO 前具有舆论管理价值</li>
+          <li>文件中"超级智能已近在咫尺"的判断与 GPT-6 的训练完成时间线吻合</li>
+          <li>公共财富基金提案实质上是 Sam Altman "Universal Basic Income" 理念的制度化升级</li>
+        </ul>
+        <a href="https://techcrunch.com/2026/04/06/openais-vision-for-the-ai-economy-public-wealth-funds-robot-taxes-and-a-four-day-work-week/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          TechCrunch
+        </a>
+        <a href="https://thehill.com/policy/technology/5817906-openai-ai-policy-recommendations/" class="source-link" target="_blank" style="margin-left: 12px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          The Hill
+        </a>
+      </div>
+    </div>
+
+    <!-- 投资 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <div class="section-title">投资与市场</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">融资</span>
+          Eclipse $1.3B：物理 AI 基础设施的资本信号
+        </div>
+        <p>Cerebras 早期投资者 Eclipse Ventures 完成 13 亿美元新基金，专注 AI 基础设施、机器人和先进制造。结合 Q1 全球风投 $300B 创纪录（80% 流向 AI），以及 Shield AI ($1.5B Series G)、Legora ($550M Series D) 等大额融资，资本正加速从"软件 AI"向"物理 AI"转移。</p>
+
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-value">$300B</div>
+            <div class="stat-label">Q1 2026 全球风投</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">80%</div>
+            <div class="stat-label">流向 AI 领域</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">$1.3B</div>
+            <div class="stat-label">Eclipse 新基金</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">$852B</div>
+            <div class="stat-label">OpenAI 估值</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="closing-card">
+      <div class="closing-title">深度总结</div>
+      <div class="closing-text">今日最具结构性意义的信号：Frontier Model Forum 的运营化转型意味着前沿模型的知识产权保护从合规层面进入了情报战层面；ARS 的确定性状态机设计为 Agent 经济的金融合规提供了可落地的技术方案；OpenClaw 的边缘部署证明了 LLM 推理在资源受限硬件上的工程可行性。三条线索共同指向一个判断：AI 产业正从"模型能力竞赛"转向"制度与基础设施竞赛"，能构建安全、合规、高效部署框架的玩家将在下一阶段获得结构性优势。</div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>AI Pulse Daily Report | 2026.04.10</p>
+    <p style="margin-top: 4px;">AI Pulse · 由 AI 自动生成 · 数据来源：Bloomberg / TechCrunch / NVIDIA Blog / ScienceDaily / Global Policy Watch</p>
+    <p style="margin-top: 8px;"><a href="/">返回 AI Pulse 主页</a></p>
+  </div>
+</div>
+
+<script>
+function switchTab(tabName) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  const tabMap = { casual: 0, intermediate: 1, expert: 2 };
+  document.getElementById('tab-' + tabName).classList.add('active');
+  document.querySelectorAll('.tab-btn')[tabMap[tabName]].classList.add('active');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily Report | 2026.04.11</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --claude-bg: #FAF9F7;
+    --claude-surface: #FFFFFF;
+    --claude-border: #E8E5E0;
+    --claude-text-primary: #1A1714;
+    --claude-text-secondary: #6B6560;
+    --claude-text-tertiary: #9B9590;
+    --claude-accent: #DA7756;
+    --claude-accent-light: #F5E6DF;
+    --claude-accent-dark: #C4623F;
+    --claude-tag-blue: #E8F0FE;
+    --claude-tag-blue-text: #3B6CB5;
+    --claude-tag-green: #E6F4EA;
+    --claude-tag-green-text: #2D7A3F;
+    --claude-tag-purple: #F0E6FA;
+    --claude-tag-purple-text: #7B3FAF;
+    --claude-tag-amber: #FEF3E2;
+    --claude-tag-amber-text: #B5752D;
+    --claude-tag-red: #FDE8E8;
+    --claude-tag-red-text: #B53B3B;
+    --claude-card-shadow: 0 1px 3px rgba(26, 23, 20, 0.06), 0 1px 2px rgba(26, 23, 20, 0.04);
+    --claude-card-shadow-hover: 0 4px 12px rgba(26, 23, 20, 0.08), 0 2px 4px rgba(26, 23, 20, 0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+    background: var(--claude-bg);
+    color: var(--claude-text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 8px;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--claude-accent-dark); }
+
+  .header {
+    text-align: center;
+    padding: 48px 0 40px;
+    border-bottom: 1px solid var(--claude-border);
+    margin-bottom: 32px;
+  }
+
+  .header-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--claude-accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .header .date {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    font-weight: 400;
+  }
+
+  .header .edition-note {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    margin-top: 8px;
+  }
+
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 36px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--claude-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .tab-btn:hover {
+    color: var(--claude-text-primary);
+    background: var(--claude-bg);
+  }
+
+  .tab-btn.active {
+    background: var(--claude-accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(218, 119, 86, 0.3);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .section { margin-bottom: 36px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .section-icon.gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .section-icon.model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .section-icon.product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .section-icon.research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .section-icon.industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .section-icon.policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .card {
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--claude-card-shadow);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .card:hover { box-shadow: var(--claude-card-shadow-hover); }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .card p {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.75;
+    margin-bottom: 8px;
+  }
+
+  .card p:last-child { margin-bottom: 0; }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .tag-gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .tag-model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .tag-product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .tag-research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .tag-industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .tag-policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .highlight {
+    background: var(--claude-accent-light);
+    border-left: 3px solid var(--claude-accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--claude-accent-dark);
+    line-height: 1.7;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .stat-item {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--claude-accent);
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--claude-text-tertiary);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 8px;
+    transition: color 0.15s;
+  }
+
+  .source-link:hover { color: var(--claude-accent-dark); text-decoration: underline; }
+
+  .tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .tech-table th, .tech-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .tech-table th {
+    font-weight: 600;
+    color: var(--claude-text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: var(--claude-bg);
+  }
+
+  .tech-table td { color: var(--claude-text-primary); }
+
+  .code-block {
+    background: #2D2A26;
+    color: #E8E5E0;
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    overflow-x: auto;
+    margin: 12px 0;
+  }
+
+  .code-block .comment { color: #9B9590; }
+  .code-block .keyword { color: #DA7756; }
+  .code-block .string { color: #7DB87D; }
+
+  .footer {
+    text-align: center;
+    padding: 32px 0;
+    border-top: 1px solid var(--claude-border);
+    margin-top: 48px;
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+  }
+
+  .footer a {
+    color: var(--claude-accent);
+    text-decoration: none;
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 20px 16px 60px; }
+    .header h1 { font-size: 24px; }
+    .tab-btn { font-size: 13px; padding: 10px 8px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+  }
+
+  .subsection-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin: 16px 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  ul.detail-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0;
+  }
+
+  ul.detail-list li {
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.7;
+    padding: 4px 0 4px 16px;
+    position: relative;
+  }
+
+  ul.detail-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--claude-border);
+  }
+
+  .mood-banner {
+    background: linear-gradient(135deg, #FFF5F0 0%, #FFF9F0 100%);
+    border: 1px solid #F0DDD0;
+    border-radius: 16px;
+    padding: 28px 24px;
+    margin-bottom: 32px;
+    text-align: center;
+  }
+
+  .mood-banner .mood-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin-bottom: 6px;
+  }
+
+  .mood-banner .mood-subtitle {
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.6;
+  }
+
+  .mood-meter {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    margin: 12px 0;
+  }
+
+  .mood-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    transition: transform 0.2s;
+  }
+
+  .mood-dot.active { transform: scale(1.4); }
+
+  .mood-label {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+
+  .tldr-box {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.6;
+  }
+
+  .closing-card {
+    background: linear-gradient(135deg, #FFF5F0 0%, #FFF9F0 100%);
+    border: 1px solid #F0DDD0;
+    border-radius: 16px;
+    padding: 28px 24px;
+    margin-top: 32px;
+    text-align: center;
+  }
+
+  .closing-card .closing-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin-bottom: 10px;
+  }
+
+  .closing-card .closing-text {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.7;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <a href="/" class="back-link">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+    返回 AI Pulse
+  </a>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-logo">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4"/><path d="M12 16V8"/></svg>
+      AI Daily Report
+    </div>
+    <h1>AI 领域日报</h1>
+    <div class="date">2026 年 4 月 11 日 星期六</div>
+    <div class="edition-note">GPT-6 下周一发布倒计时 / OpenAI 史上最大融资 $1220 亿 / 开源模型三国杀 / 中国教育部 AI+ 行动 / 气候 AI 新突破</div>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('casual')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      轻松阅读版
+    </button>
+    <button class="tab-btn" onclick="switchTab('intermediate')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+      技术进阶版
+    </button>
+    <button class="tab-btn" onclick="switchTab('expert')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      深度技术版
+    </button>
+  </div>
+
+  <!-- ==================== 版本一：轻松阅读版 ==================== -->
+  <div class="tab-content active" id="tab-casual">
+
+    <div class="mood-banner">
+      <div class="mood-title">今日 AI 节奏：军备升级</div>
+      <div class="mood-meter">
+        <div class="mood-dot active" style="background: #DA7756;"></div>
+        <div class="mood-dot active" style="background: #DA7756;"></div>
+        <div class="mood-dot active" style="background: #DA7756;"></div>
+        <div class="mood-dot active" style="background: #DA7756;"></div>
+        <div class="mood-dot" style="background: #E8E5E0;"></div>
+      </div>
+      <div class="mood-label">行业热度 4/5 -- 资本狂潮 + 模型大战</div>
+      <div class="mood-subtitle">GPT-6 三天后发布、OpenAI 融了人类史上最多的钱、三家开源模型同时亮剑。今天的 AI 世界，就像一场没有裁判的军备竞赛，每个人都在加速。</div>
+    </div>
+
+    <!-- 行业大事 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/></svg>
+        </div>
+        <div class="section-title">行业大事</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">重磅</span>
+          OpenAI 融了 1220 亿美元，估值 8520 亿
+        </div>
+        <p>OpenAI 完成了人类商业史上最大的一轮私募融资 -- 1220 亿美元，估值 8520 亿美元。亚马逊出资 500 亿领投，NVIDIA 和 SoftBank 各投 300 亿，还首次向散户投资者开放了 30 亿份额。ChatGPT 现在每周有 9 亿活跃用户，月收入 20 亿美元。</p>
+        <div class="tldr-box">简单来说：OpenAI 一次融了比大多数国家 GDP 还多的钱，散户也能参与了。AI 公司的估值已经进入"天文数字"时代。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">倒计时</span>
+          GPT-6 下周一（4月14日）发布
+        </div>
+        <p>消息称 OpenAI 的 GPT-6 将于 4 月 14 日正式发布，拥有 200 万 token 超大上下文窗口，在代码、推理和 Agent 任务上比 GPT-5.4 提升约 40%。这将是自 GPT-4 以来最大的一次代际跃迁。</p>
+        <div class="tldr-box">简单来说：下周一，AI 的"大脑"将再次升级。能记住的东西更多，解题能力更强，而且更擅长自己动手做事。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">投资</span>
+          Q1 全球风投 3000 亿，AI 占 80%
+        </div>
+        <p>2026 年第一季度，全球风投总额达到创纪录的 3000 亿美元，其中 AI 领域吸走了 2420 亿。历史上最大的五轮融资中有四轮发生在这个季度：OpenAI (1220亿)、Anthropic (300亿)、xAI (200亿)、Waymo (160亿)。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">机器人</span>
+          Skild AI 拿下 14 亿美元，估值 140 亿
+        </div>
+        <p>做"机器人大脑"的 Skild AI 完成了 14 亿美元 B 轮融资，估值 140 亿。AI 不只在手机和电脑里 -- 现在资本正疯狂涌入"让机器人能看、能想、能动"的物理 AI 赛道。</p>
+      </div>
+    </div>
+
+    <!-- 模型动态 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        </div>
+        <div class="section-title">模型大战</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">开源</span>
+          开源模型"三国杀"：Llama 4 vs DeepSeek V3.2 vs Gemma 4
+        </div>
+        <p>开源 AI 模型领域正上演激烈的三方角逐：Meta 的 Llama 4 Maverick（4000 亿参数，128 专家），DeepSeek V3.2（性能接近 GPT-5.4 但价格只有 1/50），Google 的 Gemma 4（Apache 2.0 完全开源）。社区共识是：开源模型已经不再是"妥协之选"了。</p>
+        <div class="tldr-box">简单来说：就像安卓和 iOS 之争，AI 的"免费版"现在几乎和"付费版"一样好用了。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">新发</span>
+          48 小时内发布 5 个大模型
+        </div>
+        <p>四月初的 48 小时内，包括智谱 GLM-5.1、小米 MiMo-V2-Pro 在内的五个重量级模型密集发布，展现了 AI 竞赛的疯狂节奏。中国厂商在追赶的同时开始展现差异化竞争力。</p>
+      </div>
+    </div>
+
+    <!-- 政策法规 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+        </div>
+        <div class="section-title">政策与教育</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-policy">中国</span>
+          教育部五部门联合发布"AI+教育"行动计划
+        </div>
+        <p>中国教育部联合四部委于 4 月 10 日发布《AI+教育行动计划》，覆盖 AI 人才培养、教育场景深度融合、基础设施建设和产学研生态。这是中国首个系统性的 AI 教育国家级行动方案。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-policy">美国</span>
+          加州签署 AI 采购行政令，全美 600+ AI 法案
+        </div>
+        <p>加州州长于 3 月 30 日签署行政令，要求为政府 AI 采购制定新标准。与此同时，2026 年全美各州已提出超过 600 项 AI 相关法案，其中多个州已立法禁止保险公司仅凭 AI 拒赔。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-policy">社会</span>
+          AI 换脸侵权引发热议
+        </div>
+        <p>近日中国多位明星就 AI 生成的换脸视频发表维权声明，呼吁平台下架 AI 生成的仿冒内容。AI 换脸在社交平台泛滥，正推动数字肖像权保护法律的加速立法。</p>
+      </div>
+    </div>
+
+    <!-- 研究突破 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon research">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>
+        </div>
+        <div class="section-title">科研前沿</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">突破</span>
+          AtmosNet-II：下一代 AI 气候预测系统
+        </div>
+        <p>欧洲中期天气预报中心推出 AtmosNet-II，在中长期气候趋势和极端天气预测上全面超越传统数值方法。AI 正在帮人类更早、更准确地预知极端气候。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">前沿</span>
+          CMU 启动 AI 驱动天文学项目
+        </div>
+        <p>卡内基梅隆大学宣布启动"基石天文学与 AI"访问学者计划，由 Simons 基金会支持，将 AI 深度应用于天文数据分析和宇宙探索。</p>
+      </div>
+    </div>
+
+    <div class="closing-card">
+      <div class="closing-title">今日总结</div>
+      <div class="closing-text">如果说昨天的 AI 世界在"建围墙"，今天的主题就是"囤军火"。千亿级融资、代际模型更新、开源阵营全面崛起 -- 这些信号共同指向一个结论：AI 行业正在进入有史以来最激烈的竞争阶段。对普通人来说，好消息是：竞争越激烈，你能免费用到的 AI 工具就越好。</div>
+    </div>
+
+  </div>
+
+  <!-- ==================== 版本二：技术进阶版 ==================== -->
+  <div class="tab-content" id="tab-intermediate">
+
+    <div class="mood-banner">
+      <div class="mood-title">技术视角：模型迭代加速日</div>
+      <div class="mood-subtitle">今日焦点集中在模型层：GPT-6 即将发布、开源模型三强并立、中国厂商密集上新。资本面上 OpenAI 史无前例融资进一步拉大头部差距。政策层面中美同步推进 AI 治理框架。</div>
+    </div>
+
+    <!-- 模型与架构 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        </div>
+        <div class="section-title">模型与架构</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">旗舰</span>
+          GPT-6 发布倒计时：2M Context + 40% 性能提升
+        </div>
+        <p>OpenAI 的 GPT-6 预计 4 月 14 日上线。根据已知信息，GPT-6 拥有 200 万 token 上下文窗口（GPT-5.4 为 128K），在代码生成、复杂推理和 Agent 任务上全面提升约 40%。这一代际跳跃的核心驱动力可能来自新型注意力机制和训练数据规模的突破。</p>
+        <div class="highlight">关注点：200 万 token 上下文意味着可以一次性处理约 100 万字的文档，对企业级 RAG、长文档分析和复杂 Agent 工作流有革命性影响。API 定价和速率限制将决定实际可用性。</div>
+        <a href="https://juejin.cn/post/7624133608766505010" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          掘金
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">开源</span>
+          开源三强对比：Llama 4 / DeepSeek V3.2 / Gemma 4
+        </div>
+        <p>三款前沿开源模型同时进入生产可用阶段，各有技术路线特色：</p>
+        <table class="tech-table">
+          <tr><th>模型</th><th>参数量</th><th>架构亮点</th><th>API 价格</th></tr>
+          <tr><td>Llama 4 Maverick</td><td>400B (17B active / 128 experts)</td><td>MoE 架构，10M 上下文</td><td>$0.19-0.49/M tokens</td></tr>
+          <tr><td>DeepSeek V3.2</td><td>未公开</td><td>近前沿性能，极致成本控制</td><td>$0.28/M (GPT-5.4 的 1/50)</td></tr>
+          <tr><td>Gemma 4</td><td>多尺寸</td><td>Apache 2.0，针对 agentic 优化</td><td>免费 / 开源</td></tr>
+        </table>
+        <div class="highlight">技术要点：Llama 4 的 MoE 128 专家架构在推理效率上远超同参数量 dense 模型；DeepSeek 的成本突破来自高效训练和极端量化；Gemma 4 对 agentic workflow 的原生支持使其成为 Agent 开发首选。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">中国</span>
+          GLM-5.1 / MiMo-V2-Pro / Grok 4.20 新架构
+        </div>
+        <p>智谱 GLM-5.1 发布通用版本更新；小米 MiMo-V2 三件套（Pro/Omni/TTS）引入万亿参数多模态感知与情感语音合成，Omni 模型在 Agent 基准上与 Claude Opus 4.6 持平。xAI 的 Grok 4.20 采用新型多 Agent 架构：四个专业 Agent（协调、事实核查、逻辑/代码、创意推理）实时辩论后输出。</p>
+      </div>
+    </div>
+
+    <!-- 商业与融资 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/></svg>
+        </div>
+        <div class="section-title">商业动态</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">融资</span>
+          OpenAI $1220亿融资解析
+        </div>
+        <p>OpenAI 的融资结构值得关注：亚马逊 $500 亿领投（获取优先 AWS 部署权），NVIDIA 和 SoftBank 各 $300 亿，首次开放 $30 亿散户份额。估值从上轮 $300 亿跃至 $8520 亿，反映了 ChatGPT 900M WAU 和 $24B ARR 的基本面。这是继 Anthropic $300 亿后，又一笔重塑行业资本格局的交易。</p>
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-value">$1220亿</div>
+            <div class="stat-label">融资额</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">$8520亿</div>
+            <div class="stat-label">估值</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">900M</div>
+            <div class="stat-label">周活用户</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">$24B</div>
+            <div class="stat-label">年化收入</div>
+          </div>
+        </div>
+        <a href="https://www.bloomberg.com/news/articles/2026-03-31/openai-valued-at-852-billion-after-completing-122-billion-round" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Bloomberg
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">赛道</span>
+          物理 AI 融资加速：Skild AI $14B / Replit 估值翻三倍
+        </div>
+        <p>Skild AI 完成 $14 亿 B 轮（$140 亿估值），专注具身智能的通用机器人大脑。同期，"氛围编程"创业公司 Replit 六个月内估值翻三倍至 $90 亿，法律 AI Harvey 达 $110 亿，机器人创业公司 Sunday 成立即独角兽。物理 AI 和垂直应用正在成为继基础模型之后的第二投资浪潮。</p>
+      </div>
+    </div>
+
+    <!-- 政策与监管 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>
+        </div>
+        <div class="section-title">政策与治理</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-policy">中国</span>
+          教育部《AI+教育行动计划》：系统性布局
+        </div>
+        <p>五部门联合文件覆盖四大板块：AI 人才培养体系（从 K-12 到研究生）、教育场景深度融合（智能教学/评估/管理）、教育新型基础设施（算力/数据/平台）、产学研协同生态。这是继欧盟 AI Act 后，又一个国家级 AI 领域制度化建设的标志性文件。</p>
+        <a href="https://www.stdaily.com/web/gdxw/2026-04/10/content_500122.html" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          科技日报
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-policy">美国</span>
+          加州 AI 采购令 + 联邦层面 NIST Agent 标准
+        </div>
+        <p>加州行政令 N-5-26 要求为政府 AI 采购制定安全标准，扩大 GenAI 在政府运营中的应用。联邦层面，NIST 启动 AI Agent 标准计划，发布关于 Agent 系统安全部署的信息征求。全美 2026 年已有 600+ AI 法案，印第安纳、犹他、华盛顿等州已立法禁止保险 AI 拒赔。</p>
+      </div>
+    </div>
+
+    <!-- 研究突破 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon research">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>
+        </div>
+        <div class="section-title">研究突破</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">气候</span>
+          AtmosNet-II 超越传统数值预报
+        </div>
+        <p>ECMWF 推出 AtmosNet-II，基于 Transformer 架构的下一代气候预测系统。在中长期（7-30天）预报和极端天气事件预测上全面超越 ERA5 驱动的传统数值方法。采用多尺度时空注意力机制，训练数据涵盖 40 年全球再分析数据集。</p>
+        <a href="https://www.thepaper.cn/newsDetail_forward_32907461" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          澎湃新闻
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">天文</span>
+          CMU "基石天文学与 AI" 访问学者计划
+        </div>
+        <p>卡内基梅隆大学获 Simons 基金会资助，启动 KAAI 访问学者项目，将 AI 系统性应用于天文大数据分析。项目聚焦利用深度学习处理 LSST 等新一代巡天望远镜产生的海量数据。</p>
+      </div>
+    </div>
+
+    <div class="closing-card">
+      <div class="closing-title">技术总结</div>
+      <div class="closing-text">今日技术面最值得关注的信号：GPT-6 的 2M 上下文将重新定义 long-context 应用场景；开源三强（Llama 4/DeepSeek V3.2/Gemma 4）首次在性能和成本上同时逼近闭源前沿；物理 AI 赛道的 $14B Skild 融资表明资本开始从"模型智能"向"具身智能"迁移。技术人员需重点关注 GPT-6 的 API 架构变化、开源 MoE 模型的本地部署实践、以及 Agent 标准化进程对工具链的影响。</div>
+    </div>
+
+  </div>
+
+  <!-- ==================== 版本三：深度技术版 ==================== -->
+  <div class="tab-content" id="tab-expert">
+
+    <div class="mood-banner">
+      <div class="mood-title">深度解析：模型代际跃迁与资本重构</div>
+      <div class="mood-subtitle">本期关键技术信号：GPT-6 2M 上下文架构变革、MoE 128 专家路线的工程化验证、Agent 金融标准化进入实施阶段、物理 AI 具身智能的资本拐点。</div>
+    </div>
+
+    <!-- 模型架构深度分析 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        </div>
+        <div class="section-title">模型架构深度</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">架构</span>
+          GPT-6: 2M Context Window 的技术推演
+        </div>
+        <p>GPT-6 的 200 万 token 上下文窗口意味着单次推理可处理约 150 万汉字（约 10 本完整技术书籍），较 GPT-5.4 的 128K 提升约 15.6 倍。实现这一跳跃可能依赖以下技术路线：</p>
+        <ul class="detail-list">
+          <li>Ring Attention 或 Striped Attention 变体，将序列分片分布到多 GPU 上并行处理</li>
+          <li>改进的位置编码（可能基于 ALiBi 或 RoPE 的长序列外推优化版本），支持推理时动态扩展</li>
+          <li>KV-cache 压缩技术（可能整合 TurboQuant 类方案），在不损失精度的前提下降低内存占用</li>
+          <li>40% 性能提升暗示训练数据和/或模型架构有根本性变化，不仅仅是 scaling</li>
+        </ul>
+        <div class="highlight">工程影响：2M context 改变了 RAG vs. long-context 的权衡 -- 许多原本需要检索增强的场景现在可以直接放入上下文。但 attention 复杂度仍为 O(n^2) 或 O(n log n)，推理成本随 context 非线性增长，定价策略将决定实际可用性。</div>
+        <a href="https://juejin.cn/post/7624133608766505010" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          掘金
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">对比</span>
+          开源 MoE vs Dense 模型：架构路线分化
+        </div>
+        <p>当前开源前沿呈现三条不同的架构路线，反映了对 scaling law 和部署约束的不同理解：</p>
+        <table class="tech-table">
+          <tr><th>维度</th><th>Llama 4 Maverick</th><th>DeepSeek V3.2</th><th>Gemma 4</th></tr>
+          <tr><td>架构</td><td>MoE 128 experts, 17B active</td><td>Dense/MoE hybrid</td><td>Multi-size, agentic-first</td></tr>
+          <tr><td>Context</td><td>10M tokens</td><td>256K tokens</td><td>1M tokens</td></tr>
+          <tr><td>推理成本</td><td>$0.19-0.49/M tokens</td><td>$0.28/M input</td><td>开源免费</td></tr>
+          <tr><td>性能定位</td><td>~GPT-5.4 水平</td><td>~90% GPT-5.4</td><td>Frontier-level</td></tr>
+          <tr><td>许可</td><td>Llama License</td><td>DeepSeek License</td><td>Apache 2.0</td></tr>
+        </table>
+        <div class="highlight">Llama 4 的 128 专家 MoE 架构验证了超大规模 MoE 的工程可行性 -- 400B 总参数仅激活 17B，推理效率极高。DeepSeek V3.2 则走"极致工程优化"路线，用未知但高效的架构在 1/50 成本下逼近 GPT-5.4。Gemma 4 的 Apache 2.0 许可使其成为企业部署的最安全选择。三者共同证明：开源模型的 Pareto 前沿正在快速逼近闭源。</div>
+        <a href="https://www.spheron.network/blog/deepseek-vs-llama-4-vs-qwen3/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Spheron
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">多模态</span>
+          MiMo-V2 Omni：万亿参数跨模态架构
+        </div>
+        <p>小米 MiMo-V2 三件套的技术亮点在 Omni 模型：整合图像、视频和音频编码器，实现跨模态理解。V2-Pro 专注 agent 任务，在 AgentBench 上与 Claude Opus 4.6 持平；V2-TTS 引入情感语音合成，支持声音克隆。总参数超过万亿（1T+），表明中国厂商在模型规模上已不逊于美国同行。</p>
+        <a href="https://creati.ai/ai-news/2026-03-23/xiaomi-mimo-v2-pro-omni-tts-ai-models-agents-robotics-voice-2026/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Creati AI
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">新范式</span>
+          Grok 4.20：多 Agent 辩论架构
+        </div>
+        <p>xAI 的 Grok 4.20 在架构层面引入了有趣的范式：四个专业化子 Agent 在输出前进行实时辩论。Grok（协调）、Harper（基于 X 数据的事实核查）、Benjamin（逻辑/代码）、Lucas（创意推理）各自独立推理后汇聚决策。这种 multi-agent debate 架构在理论上可提升 factuality 和 reasoning robustness，但推理延迟和成本会显著增加。</p>
+      </div>
+    </div>
+
+    <!-- 资本与产业结构 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/></svg>
+        </div>
+        <div class="section-title">资本与产业</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">分析</span>
+          Q1 2026 AI 融资结构深度解析
+        </div>
+        <p>Q1 2026 全球风投 $3000 亿中 AI 占 $2420 亿（80%），创历史极端集中度。更值得关注的是内部结构：</p>
+        <ul class="detail-list">
+          <li>基础模型层：$1780 亿（2025 全年总和的 2 倍），OpenAI ($1220亿) + Anthropic ($300亿) + xAI ($200亿) 占 90%+</li>
+          <li>应用层加速：Replit $90 亿估值（6 个月翻 3 倍）、Harvey $110 亿（法律 AI）、Sunday（机器人，成立即独角兽）</li>
+          <li>物理 AI 拐点：Skild AI $140 亿估值 B 轮 ($14亿)、Waymo $160 亿融资，具身智能投资首次超过 SaaS AI</li>
+          <li>二级市场信号：中国 AI 独角兽智谱和 MiniMax 1 月在港交所上市，成为全球首批上市的大模型公司</li>
+        </ul>
+        <div class="highlight">结构性判断：AI 资本正从"模型军备竞赛"向"应用落地"和"物理世界"两端扩散。基础模型层的赢家通吃效应加剧（Top 3 拿走 90% 融资），但应用层和具身智能层呈现更分散的创新格局。对技术团队的启示：选择基础模型时关注 API 成本效率比，选择投入方向时关注物理 AI 和垂直应用。</div>
+        <a href="https://news.crunchbase.com/venture/record-breaking-funding-ai-global-q1-2026/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Crunchbase
+        </a>
+      </div>
+    </div>
+
+    <!-- 治理与标准化 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>
+        </div>
+        <div class="section-title">治理与标准化</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-policy">标准</span>
+          NIST AI Agent 标准计划与全球治理格局
+        </div>
+        <p>NIST 启动 AI Agent Standards Initiative 并发布 RFI，征求关于 Agent 系统安全部署、测评指标和风险管理框架的意见。这与 Google DeepMind 上周发布的 Agentic Risk Standard (ARS) 形成互补：NIST 关注标准化框架，ARS 关注具体实施机制（托管、承保、抵押）。</p>
+        <ul class="detail-list">
+          <li>美国联邦层面：白宫 AI 国家政策框架建议联邦法律优先于州法，司法部成立 AI 诉讼工作组</li>
+          <li>美国州层面：600+ AI 法案，印第安纳/犹他/华盛顿已立法禁止保险 AI 拒赔</li>
+          <li>中国：教育部五部门《AI+教育行动计划》标志系统性 AI 教育布局启动</li>
+          <li>欧盟：AI Act 进入全面执行期，高风险 AI 系统合规要求生效</li>
+        </ul>
+        <div class="highlight">全球 AI 治理正呈现三条路线的分化：美国"联邦优先+行业自律"（白宫框架 + NIST 标准）、中国"部委协调+场景立法"（教育部行动计划 + 数字人规范）、欧盟"统一法律+风险分级"（AI Act）。对开发者的实际影响：部署 Agent 系统需同时关注 ARS 金融合规、NIST 安全标准和所在地区法规。</div>
+      </div>
+    </div>
+
+    <!-- 研究前沿 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon research">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>
+        </div>
+        <div class="section-title">研究前沿</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">气象</span>
+          AtmosNet-II：Transformer 重构数值天气预报
+        </div>
+        <p>ECMWF 推出的 AtmosNet-II 基于改进的 Vision Transformer 架构，在 ERA5 再分析数据集（1980-2020, 0.25 度分辨率）上训练。核心创新：</p>
+        <ul class="detail-list">
+          <li>多尺度时空注意力：同时捕获局地对流（~10km）和大尺度环流（~1000km）模式</li>
+          <li>物理约束损失函数：在训练中强制满足质量守恒、能量守恒等物理定律</li>
+          <li>在 7-30 天中期预报上 RMSE 降低 15-25%，极端天气事件检测召回率提升 30%</li>
+          <li>推理速度：单次 10 天全球预报仅需数分钟（传统 NWP 需数小时 on HPC）</li>
+        </ul>
+        <a href="https://www.thepaper.cn/newsDetail_forward_32907461" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          澎湃新闻
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">量子</span>
+          SynQ 量子-经典混合框架开源
+        </div>
+        <p>全球多家顶级研究机构联合开源的 SynQ 框架实现了量子计算与经典 AI 的深度融合。该框架允许在量子比特上执行特定子运算（如组合优化、采样），同时在经典 GPU 上运行主干 Transformer 推理。理论分析表明，在特定问题类别上可实现指数级加速。</p>
+        <a href="https://m.thepaper.cn/newsDetail_forward_32872868" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          澎湃新闻
+        </a>
+      </div>
+    </div>
+
+    <div class="closing-card">
+      <div class="closing-title">深度总结</div>
+      <div class="closing-text">今日最具结构性意义的三个信号：(1) GPT-6 的 2M context 将重新定义 long-context 应用的技术边界，迫使所有 RAG 方案重新评估存在价值；(2) 开源模型 Pareto 前沿首次在性能、成本、许可三个维度上同时逼近闭源 -- Llama 4 的 MoE 路线证明工程可行性，DeepSeek V3.2 的成本路线证明商业可行性，Gemma 4 的 Apache 2.0 路线证明法律可行性；(3) 物理 AI 投资拐点（Skild $14B + Waymo $16B）与 Agent 标准化进程（NIST + ARS）同步推进，暗示"具身 Agent"将成为下一阶段的核心技术-资本叙事。对架构师的建议：现在是重新评估模型选型策略、Agent 架构设计和合规框架的窗口期。</div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>AI Pulse Daily Report | 2026.04.11</p>
+    <p style="margin-top: 4px;">AI Pulse · 由 AI 自动生成 · 数据来源：Bloomberg / TechCrunch / Crunchbase / 科技日报 / 澎湃新闻 / 36Kr</p>
+    <p style="margin-top: 8px;"><a href="/">返回 AI Pulse 主页</a></p>
+  </div>
+</div>
+
+<script>
+function switchTab(tabName) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  const tabMap = { casual: 0, intermediate: 1, expert: 2 };
+  document.getElementById('tab-' + tabName).classList.add('active');
+  document.querySelectorAll('.tab-btn')[tabMap[tabName]].classList.add('active');
+}
+</script>
+</body>
+</html>

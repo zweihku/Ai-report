@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily Report | 2026.04.14</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --claude-bg: #FAF9F7;
+    --claude-surface: #FFFFFF;
+    --claude-border: #E8E5E0;
+    --claude-text-primary: #1A1714;
+    --claude-text-secondary: #6B6560;
+    --claude-text-tertiary: #9B9590;
+    --claude-accent: #DA7756;
+    --claude-accent-light: #F5E6DF;
+    --claude-accent-dark: #C4623F;
+    --claude-tag-blue: #E8F0FE;
+    --claude-tag-blue-text: #3B6CB5;
+    --claude-tag-green: #E6F4EA;
+    --claude-tag-green-text: #2D7A3F;
+    --claude-tag-purple: #F0E6FA;
+    --claude-tag-purple-text: #7B3FAF;
+    --claude-tag-amber: #FEF3E2;
+    --claude-tag-amber-text: #B5752D;
+    --claude-tag-red: #FDE8E8;
+    --claude-tag-red-text: #B53B3B;
+    --claude-card-shadow: 0 1px 3px rgba(26, 23, 20, 0.06), 0 1px 2px rgba(26, 23, 20, 0.04);
+    --claude-card-shadow-hover: 0 4px 12px rgba(26, 23, 20, 0.08), 0 2px 4px rgba(26, 23, 20, 0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+    background: var(--claude-bg);
+    color: var(--claude-text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 8px;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--claude-accent-dark); }
+
+  .header {
+    text-align: center;
+    padding: 48px 0 40px;
+    border-bottom: 1px solid var(--claude-border);
+    margin-bottom: 32px;
+  }
+
+  .header-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--claude-accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .header .date {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    font-weight: 400;
+  }
+
+  .header .edition-note {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    margin-top: 8px;
+  }
+
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 36px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--claude-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .tab-btn:hover {
+    color: var(--claude-text-primary);
+    background: var(--claude-bg);
+  }
+
+  .tab-btn.active {
+    background: var(--claude-accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(218, 119, 86, 0.3);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .section { margin-bottom: 36px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .section-icon.gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .section-icon.model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .section-icon.product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .section-icon.research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .section-icon.industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .section-icon.policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .card {
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--claude-card-shadow);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .card:hover { box-shadow: var(--claude-card-shadow-hover); }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .card p {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.75;
+    margin-bottom: 8px;
+  }
+
+  .card p:last-child { margin-bottom: 0; }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .tag-gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .tag-model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .tag-product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .tag-research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .tag-industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .tag-policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .highlight {
+    background: var(--claude-accent-light);
+    border-left: 3px solid var(--claude-accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--claude-accent-dark);
+    line-height: 1.7;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .stat-item {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--claude-accent);
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--claude-text-tertiary);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 8px;
+    transition: color 0.15s;
+  }
+
+  .source-link:hover { color: var(--claude-accent-dark); text-decoration: underline; }
+
+  .tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .tech-table th, .tech-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .tech-table th {
+    font-weight: 600;
+    color: var(--claude-text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: var(--claude-bg);
+  }
+
+  .tech-table td { color: var(--claude-text-primary); }
+
+  .code-block {
+    background: #2D2A26;
+    color: #E8E5E0;
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    overflow-x: auto;
+    margin: 12px 0;
+  }
+
+  .code-block .comment { color: #9B9590; }
+  .code-block .keyword { color: #DA7756; }
+  .code-block .string { color: #7DB87D; }
+
+  .footer {
+    text-align: center;
+    padding: 32px 0;
+    border-top: 1px solid var(--claude-border);
+    margin-top: 48px;
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+  }
+
+  .footer a {
+    color: var(--claude-accent);
+    text-decoration: none;
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 20px 16px 60px; }
+    .header h1 { font-size: 24px; }
+    .tab-btn { font-size: 13px; padding: 10px 8px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+  }
+
+  .subsection-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin: 16px 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  ul.detail-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0;
+  }
+
+  ul.detail-list li {
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.7;
+    padding: 4px 0 4px 16px;
+    position: relative;
+  }
+
+  ul.detail-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--claude-border);
+  }
+
+  .mood-banner {
+    background: linear-gradient(135deg, #FFF5F0 0%, #FFF9F0 100%);
+    border: 1px solid #F0DDD0;
+    border-radius: 16px;
+    padding: 28px 24px;
+    margin-bottom: 32px;
+    text-align: center;
+  }
+
+  .mood-banner .mood-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin-bottom: 6px;
+  }
+
+  .mood-banner .mood-subtitle {
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.6;
+  }
+
+  .mood-meter {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    margin: 12px 0;
+  }
+
+  .mood-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    transition: transform 0.2s;
+  }
+
+  .mood-dot.active { transform: scale(1.4); }
+
+  .mood-label {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+
+  .tldr-box {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.6;
+  }
+
+  .closing-card {
+    background: linear-gradient(135deg, #FFF5F0 0%, #FFF9F0 100%);
+    border: 1px solid #F0DDD0;
+    border-radius: 16px;
+    padding: 28px 24px;
+    margin-top: 32px;
+    text-align: center;
+  }
+
+  .closing-card .closing-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin-bottom: 10px;
+  }
+
+  .closing-card .closing-text {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.8;
+    text-align: left;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <a href="/" class="back-link">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
+    返回 AI Pulse
+  </a>
+
+  <div class="header">
+    <div class="header-logo">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      AI PULSE DAILY
+    </div>
+    <h1>AI 日报 | 2026.04.14</h1>
+    <div class="date">2026 年 4 月 14 日 星期二</div>
+    <div class="edition-note">第 24 期 -- Spud 传闻今日发布，Q1 融资 3000 亿美元破纪录</div>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('casual')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+      轻松阅读
+    </button>
+    <button class="tab-btn" onclick="switchTab('intermediate')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      技术进阶
+    </button>
+    <button class="tab-btn" onclick="switchTab('expert')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      深度技术
+    </button>
+  </div>
+
+  <!-- ==================== 轻松阅读版 ==================== -->
+  <div id="tab-casual" class="tab-content active">
+
+    <div class="mood-banner">
+      <div class="mood-title">今日 AI 圈：Spud 发布传闻发酵，资本狂潮创历史纪录</div>
+      <div class="mood-meter">
+        <div class="mood-dot" style="background:#4CAF50"></div>
+        <div class="mood-dot" style="background:#8BC34A"></div>
+        <div class="mood-dot" style="background:#FFC107"></div>
+        <div class="mood-dot active" style="background:#FF9800"></div>
+        <div class="mood-dot" style="background:#F44336"></div>
+      </div>
+      <div class="mood-label">市场情绪：亢奋期待</div>
+      <div class="mood-subtitle">OpenAI 的 Spud 传闻今日发布，Q1 全球 AI 融资 3000 亿美元破纪录，Anthropic 签下 CoreWeave 算力大单</div>
+    </div>
+
+    <!-- 头条 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="section-title">头条速览</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">模型</span>
+          OpenAI 的 "Spud" 今天发布？未经证实的传闻搅动整个行业
+        </div>
+        <p>OpenAI 下一代模型代号 "Spud" 的预训练已于 3 月 24 日完成，而未经证实的传闻将发布日期指向今天（4 月 14 日）。Polymarket 上的交易者给出超过 90% 的概率认为它会在 6 月底前上线。这个模型目前尚未确定最终名称 -- 可能叫 GPT-5.5，也可能叫 GPT-6，取决于性能跃升幅度。OpenAI 为了集中算力，已经关停了视频生成工具 Sora。</p>
+        <a href="https://lumichats.com/blog/gpt-5-5-spud-openai-release-date-features-april-2026-complete-guide" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          LumiChats
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">融资</span>
+          Q1 2026 全球创投融资 3000 亿美元，AI 占 80%
+        </div>
+        <p>2026 年第一季度全球风险投资总额达到 3000 亿美元，同比增长超过 150%。其中 AI 相关投资占到 2420 亿美元，约占总额的 80%。仅基础模型公司就拿了 1780 亿美元，是 2025 年全年的两倍。OpenAI 以 1220 亿美元的单轮融资刷新了私募纪录，估值飙升至 8520 亿美元。</p>
+        <a href="https://news.crunchbase.com/venture/record-breaking-funding-ai-global-q1-2026/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Crunchbase
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-gpu">基础设施</span>
+          Anthropic 签下 CoreWeave 多年算力协议
+        </div>
+        <p>Anthropic 与云计算公司 CoreWeave 签署了一项多年期协议，将使用 CoreWeave 的 GPU 算力来运行 Claude 系列模型。这意味着十大 AI 模型公司中已有九家在使用 CoreWeave 的服务。消息公布后 CoreWeave 股价涨超 10%。在此之前一天，CoreWeave 刚与 Meta 签下了 210 亿美元的算力扩展协议。</p>
+        <a href="https://www.cnbc.com/2026/04/10/coreweave-anthropic-claude-ai-deal.html" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          CNBC
+        </a>
+      </div>
+    </div>
+
+    <!-- 行业动态 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </div>
+        <div class="section-title">行业动态</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">报告</span>
+          MIT 科技评论：AI 现状一图看懂
+        </div>
+        <p>MIT 科技评论发布了一组图表分析当前 AI 发展现状。结论是：Anthropic 目前在模型性能排名中领先，紧随其后的是 xAI、Google 和 OpenAI。中国模型（如 DeepSeek 和阿里巴巴）差距很小。斯坦福 2026 AI 指数报告也证实，顶级模型仍在持续进步。人们采用 AI 的速度比当年 PC 和互联网都快。</p>
+        <a href="https://www.technologyreview.com/2026/04/13/1135675/want-to-understand-the-current-state-of-ai-check-out-these-charts/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          MIT Technology Review
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">数据</span>
+          中国大模型调用量连续五周超越美国
+        </div>
+        <p>根据 OpenRouter 平台数据，截至 4 月 5 日当周，中国 AI 大模型周调用量达到 12.96 万亿 Token，较前周大涨 31.48%，已连续五周超越美国。与此同时，阿里最新发布的 Qwen3.6-Plus 被定位为"当下中国编程能力最强的模型"。</p>
+        <a href="https://hub.baai.ac.cn/view/53791" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          智源社区
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">机器人</span>
+          Generalist AI 发布 GEN-1，机器人任务成功率达 99%
+        </div>
+        <p>Generalist AI 推出了全新的通用机器人模型 GEN-1，在折叠箱子、打包物品和组装零件等任务中实现了 99% 的成功率。机器人可以理解自然语言指令并完成上千次重复任务。与此同时，北京 E-Town 正在为 4 月 19 日的人形机器人半程马拉松做准备，超过 300 台来自 26 个品牌的机器人将与人类一同参赛。</p>
+        <a href="https://roboticsandautomationnews.com/2026/04/11/generalist-ai-unveils-gen-1-model-claiming-breakthrough-in-real-world-robotic-task-performance/100516/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Robotics & Automation News
+        </a>
+      </div>
+    </div>
+
+    <!-- 政策与监管 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="section-title">政策与监管</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-policy">监管</span>
+          美国 AI 监管进入"多线并行"时代
+        </div>
+        <p>联邦层面，TRUMP AMERICA AI Act 讨论稿已发布，白宫也出台了七大支柱的 AI 国家政策框架。与此同时，各州已提出超过 600 项 AI 相关法案。印第安纳、犹他和华盛顿州率先立法禁止保险公司仅依据 AI 拒绝理赔。科罗拉多州长则准备用新法案替代 2024 年的 AI 法案。</p>
+        <a href="https://www.insideglobaltech.com/2026/04/06/u-s-tech-legislative-regulatory-update-first-quarter-2026/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Inside Global Tech
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">会议</span>
+          世界互联网大会亚太峰会第二天
+        </div>
+        <p>2026 年世界互联网大会亚太峰会今天在香港进入第二天，来自 50 余国家和地区的代表围绕 AI 安全治理、数字金融和智能体创新展开讨论。大会首次设立部长级会议，预计将发布十余份 AI 与数字治理成果报告。</p>
+        <a href="https://news.cgtn.com/news/2026-03-17/HK-to-host-2026-WIC-Asia-Pacific-Summit-in-April-1LAfdf50Mxi/p.html" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          CGTN
+        </a>
+      </div>
+    </div>
+
+    <div class="closing-card">
+      <div class="closing-title">今日总结</div>
+      <div class="closing-text">今天的 AI 圈有两个关键词："钱"和"期待"。Q1 全球 AI 融资 3000 亿美元，打破一切历史纪录；而 OpenAI 的 Spud 模型传闻今日发布，让所有人屏息以待。与此同时，AI 基础设施竞赛进入白热化 -- CoreWeave 两天内分别拿下 Meta 和 Anthropic 的大单，成为 AI 算力领域的关键供应商。在地球另一端，北京正为月底的人形机器人半程马拉松做准备。AI 已经不只是软件的事了。</div>
+    </div>
+
+  </div>
+
+  <!-- ==================== 技术进阶版 ==================== -->
+  <div id="tab-intermediate" class="tab-content">
+
+    <div class="mood-banner">
+      <div class="mood-title">技术全景：Spud 预训练完毕进入红队阶段，CoreWeave 成为 AI 基础设施枢纽</div>
+      <div class="mood-subtitle">模型性能排名进入毫厘之争，基础设施供应链整合加速，监管碎片化催生合规工程新领域</div>
+    </div>
+
+    <!-- 模型与算力 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="section-title">模型与算力</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">模型</span>
+          Spud (GPT-5.5/6) 预训练完成，命名取决于性能跃升
+        </div>
+        <p>OpenAI 代号 "Spud" 的下一代模型于 3 月 24 日完成预训练，目前处于安全评估和红队测试阶段。根据以往经验，从预训练完成到公开发布通常需要 3-6 周。该模型的最终命名尚未确定 -- OpenAI 表示将根据相对 GPT-5.4 的性能提升幅度来决定叫 GPT-5.5 还是 GPT-6。4 月 14 日发布的传闻未经证实。</p>
+        <div class="highlight">值得注意的是，OpenAI 已关停 Sora 视频生成工具以释放 GPU 资源给 Spud。这一决策信号清晰：OpenAI 正将所有算力集中在下一代语言模型上。Greg Brockman 称 Spud 是"两年研发的结晶"。</div>
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-value">3/24</div>
+            <div class="stat-label">预训练完成日期</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">&gt;90%</div>
+            <div class="stat-label">Polymarket 6月前发布概率</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">$852B</div>
+            <div class="stat-label">OpenAI 最新估值</div>
+          </div>
+        </div>
+        <a href="https://findskill.ai/blog/gpt-6-release-date/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          FindSkill.ai
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-gpu">基础设施</span>
+          CoreWeave 两天签下 Meta 和 Anthropic 双重大单
+        </div>
+        <p>CoreWeave 在 48 小时内先后宣布与 Meta 签署 210 亿美元算力扩展协议、与 Anthropic 签署多年期 Claude 模型运行协议。这使得全球前十大 AI 模型公司中有九家在使用 CoreWeave 的 GPU 云服务。该交易涵盖多种 NVIDIA 芯片架构，将在美国多个数据中心分阶段上线。</p>
+        <p>CoreWeave 股价在协议公布后累计上涨超过 12%，市场认为这有效分散了其对微软的客户集中度风险。</p>
+        <a href="https://www.bloomberg.com/news/articles/2026-04-10/anthropic-agrees-to-rent-coreweave-ai-capacity-to-power-claude" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Bloomberg
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">排名</span>
+          模型性能进入毫厘之争，竞争转向成本和可靠性
+        </div>
+        <p>MIT Technology Review 和斯坦福 2026 AI 指数报告共同指出，当前顶级 AI 模型之间的性能差距已缩小到极窄的范围。Anthropic 暂时领先，xAI、Google 和 OpenAI 紧随其后，中国模型（DeepSeek、阿里巴巴）的差距也非常小。竞争焦点正从纯性能转向成本效率、延迟和实际可用性。</p>
+        <p>Google 新推出的 Gemini 3.1 Flash-Lite 就是这一趋势的缩影：以 $0.25/百万输入 token 的价格提供 2.5 倍速度提升。</p>
+        <a href="https://www.technologyreview.com/2026/04/13/1135675/want-to-understand-the-current-state-of-ai-check-out-these-charts/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          MIT Technology Review
+        </a>
+      </div>
+    </div>
+
+    <!-- 融资与产业 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </div>
+        <div class="section-title">融资与产业</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">融资</span>
+          Q1 2026 VC 创纪录：$3000 亿投向 6000 家创业公司
+        </div>
+        <p>2026 Q1 全球创投融资达到 3000 亿美元，同比和环比均增长超过 150%。AI 相关投资占总额的 80%（2420 亿美元），其中基础模型公司 24 笔交易合计拿到 1780 亿美元，是 2025 全年的两倍。</p>
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-value">$300B</div>
+            <div class="stat-label">Q1 全球 VC 总额</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">80%</div>
+            <div class="stat-label">AI 占比</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">6,000</div>
+            <div class="stat-label">获投公司数</div>
+          </div>
+        </div>
+        <p>重要单笔融资：OpenAI $1220 亿（估值 $8520 亿）、Shield AI $15 亿（估值 $127 亿，年增 140%）、Legora $5.5 亿（估值 $55.5 亿）、Runware $5000 万（超声推理引擎）。人形机器人成为 2026 年的新热门赛道，预计全年融资超过 200 亿美元。</p>
+        <a href="https://news.crunchbase.com/venture/record-breaking-funding-ai-global-q1-2026/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Crunchbase
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">机器人</span>
+          GEN-1 模型：通用机器人操作的新里程碑
+        </div>
+        <p>Generalist AI 发布的 GEN-1 模型在折叠、打包、组装等重复性任务中实现 99% 成功率，且能在数千次重复中保持稳定性。该模型结合了自然语言理解和视觉-语言-动作推理（VLA），让机器人可以理解口头指令并执行多步骤任务。NVIDIA 同期更新了 Isaac GR00T 开放模型，支持机器人理解自然语言并完成复杂多步骤任务。</p>
+        <p>百度 AI Cloud 也在同期推出了"具身智能数据超市"，联合国内头部机器人企业标准化数据格式，加速人形机器人商业化。</p>
+        <a href="https://roboticsandautomationnews.com/2026/04/11/generalist-ai-unveils-gen-1-model-claiming-breakthrough-in-real-world-robotic-task-performance/100516/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Robotics & Automation News
+        </a>
+      </div>
+    </div>
+
+    <!-- 政策 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="section-title">政策与生态</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-policy">监管</span>
+          联邦-州-国际三级 AI 监管并行，合规矩阵呈指数扩展
+        </div>
+        <p>美国 AI 监管正在三个层面同步推进：(1) 联邦层面，TRUMP AMERICA AI Act 讨论稿和白宫七大支柱框架并行；(2) 州层面，2026 会期已提出 600+ 法案，覆盖医疗 AI（印第安纳/犹他/华盛顿禁止保险公司纯 AI 拒赔）、心理健康 AI（田纳西/特拉华禁止 AI 冒充持证专业人员）、科罗拉多 AI 法案替代案等；(3) 司法部成立 AI 诉讼特别工作组，专门挑战违宪的州级 AI 法律。</p>
+        <p>值得关注的是白宫框架中关于联邦优先权的讨论 -- 如果联邦法律最终确立对州法的优先权，将大幅简化合规矩阵。</p>
+        <a href="https://www.insideglobaltech.com/2026/04/06/u-s-tech-legislative-regulatory-update-first-quarter-2026/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Inside Global Tech
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">数据</span>
+          中国 AI 调用量：12.96 万亿 Token/周，连续五周领先全球
+        </div>
+        <p>OpenRouter 平台数据显示，中国 AI 模型周调用量达 12.96 万亿 Token，周环比上涨 31.48%。这一增速得益于阿里 Qwen3.6-Plus、智谱 GLM-5.1 等新模型的推出，以及 AI 在医疗、制造、金融等行业的加速落地。Qwen3.6-Plus 定位为中国最强编程模型，GLM-5.1 提价 10%，信心十足。</p>
+        <a href="https://hub.baai.ac.cn/view/53791" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          智源社区
+        </a>
+      </div>
+    </div>
+
+    <div class="closing-card">
+      <div class="closing-title">技术总结</div>
+      <div class="closing-text">今日核心信号：(1) 模型竞争格局 -- 性能天花板逼近，Spud 能否打破僵局将决定下一阶段排名；(2) 基础设施整合 -- CoreWeave 48 小时签下 Meta + Anthropic，AI 算力供应链正在形成新的寡头格局；(3) 具身 AI 加速落地 -- GEN-1 的 99% 任务成功率和即将到来的机器人马拉松标志着从实验室到生产的关键转折；(4) 监管碎片化 -- 联邦-州-国际三级并行意味着合规工程将成为 AI 公司的核心基础设施投入。</div>
+    </div>
+
+  </div>
+
+  <!-- ==================== 深度技术版 ==================== -->
+  <div id="tab-expert" class="tab-content">
+
+    <div class="mood-banner">
+      <div class="mood-title">深度分析：模型性能平台期、算力供应链重构与监管计算复杂度</div>
+      <div class="mood-subtitle">前沿模型间的性能差距缩窄至统计噪声水平，竞争维度从 benchmark 转向系统级指标</div>
+    </div>
+
+    <!-- 模型前沿 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="section-title">模型前沿</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">模型</span>
+          Spud 技术推演：从预训练到发布的关键变量
+        </div>
+        <p>OpenAI 代号 Spud 的下一代模型于 3 月 24 日完成预训练。截至 4 月 12 日，OpenAI 尚未公布架构论文、参数量、训练数据、benchmark、定价和发布日期。当前处于安全评估和红队测试阶段。</p>
+        <div class="subsection-title">关键技术问题</div>
+        <ul class="detail-list">
+          <li>命名策略暗示性能不确定性：OpenAI 明确表示 Spud 是叫 GPT-5.5 还是 GPT-6 取决于相对 GPT-5.4 的性能跃升幅度。这表明即便在预训练完成后，团队仍未确信性能提升是否足以构成"代际飞跃"。</li>
+          <li>Sora 关停释放的算力规模：视频生成模型通常需要大量推理算力，Sora 的关停可能释放了数千张 H100/B200 级别 GPU，这些资源重新分配给 Spud 的 RLHF/RLAIF 后训练阶段。</li>
+          <li>GPT-5.4 的 OSWorld-V 基线：GPT-5.4 在 1M token 上下文窗口下，OSWorld-V 得分 75%，略超人类基线 72.4%。Spud 需要在类似实际任务 benchmark 上展现显著提升才能获得 "GPT-6" 命名。</li>
+          <li>预训练到发布的典型时间线：近期 OpenAI 模型（GPT-5.4、o3）从预训练完成到公开发布通常需要 3-6 周的安全评估。从 3 月 24 日算起，窗口为 4 月 14 日至 5 月 5 日。</li>
+        </ul>
+        <a href="https://www.mejba.me/blog/gpt-6-spud-openai-analysis" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Engr Mejba Ahmed
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">分析</span>
+          模型性能平台期：当 benchmark 差距缩窄至统计噪声
+        </div>
+        <p>斯坦福 2026 AI 指数和 MIT Technology Review 的分析共同揭示了一个重要趋势：前沿模型之间的性能差距正在缩窄到 benchmark 方差的数量级。Anthropic、xAI、Google、OpenAI 在多数标准测试中的排名差异可能仅来自测试样本的随机性。</p>
+        <div class="subsection-title">竞争维度转移</div>
+        <ul class="detail-list">
+          <li>成本效率：Google Gemini 3.1 Flash-Lite 以 $0.25/M input tokens 提供 2.5x 速度提升，标志着价格战向推理端延伸。</li>
+          <li>系统级能力：GPT-5.4 的 OSWorld-V 测试（模拟真实桌面操作）和 Claude Mythos 的沙盒逃逸测试，代表了从"知道什么"到"能做什么"的评估范式转变。</li>
+          <li>中国模型追赶：OpenRouter 数据显示中国模型调用量连续五周超美国（12.96T tokens/week），阿里 Qwen3.6-Plus 在编程任务上声称达到国内最强，智谱 GLM-5.1 提价 10% 表明市场信心。</li>
+        </ul>
+        <a href="https://www.technologyreview.com/2026/04/13/1135675/want-to-understand-the-current-state-of-ai-check-out-these-charts/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          MIT Technology Review
+        </a>
+      </div>
+    </div>
+
+    <!-- 基础设施 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon gpu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <div class="section-title">基础设施与供应链</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-gpu">基础设施</span>
+          CoreWeave 供应链整合：9/10 前沿模型公司已入网
+        </div>
+        <p>CoreWeave 在 48 小时内完成两笔标志性交易：4 月 9 日与 Meta 签署 $210 亿扩展协议，4 月 10 日与 Anthropic 签署多年期 Claude 运行协议。至此，全球前十大 AI 模型公司中有九家使用 CoreWeave 基础设施。</p>
+        <div class="subsection-title">架构分析</div>
+        <ul class="detail-list">
+          <li>多芯片架构支持：CoreWeave-Anthropic 协议涵盖多种 NVIDIA 架构（推测为 H100/B200/GB200），表明 Anthropic 正在为不同工作负载（训练/推理/微调）优化硬件选型。</li>
+          <li>分阶段上线策略：协议将"在今年晚些时候开始分阶段交付算力"，这与大规模 GPU 集群的交付和冷却基础设施部署周期一致。</li>
+          <li>客户集中度风险缓解：CoreWeave 历史上高度依赖微软，Anthropic 和 Meta 的加入有效分散了这一风险，这也是市场给予 12% 溢价的关键逻辑。</li>
+          <li>行业格局信号：AI 算力供应链正在形成 CoreWeave + hyperscalers（AWS/Azure/GCP）的双轨供应格局，前者以灵活性和 GPU 密度取胜，后者以网络和存储生态取胜。</li>
+        </ul>
+        <a href="https://siliconangle.com/2026/04/10/coreweave-inks-multiyear-cloud-deal-anthropic/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          SiliconANGLE
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">融资</span>
+          Q1 2026 VC 数据深度解析：$3000 亿的结构性分布
+        </div>
+        <p>Q1 2026 全球 VC 投资 $3000 亿（6000 笔交易），同比增长 150%+。AI 相关投资 $2420 亿（80%），其中基础模型公司 24 笔交易 $1780 亿（占 AI 总投资的 73.6%），是 2025 年全年基础模型融资的 2 倍。</p>
+        <table class="tech-table">
+          <tr><th>公司</th><th>融资额</th><th>估值</th><th>关键细节</th></tr>
+          <tr><td>OpenAI</td><td>$1220 亿</td><td>$8520 亿</td><td>Amazon 独家第三方云伙伴（$500 亿承诺）</td></tr>
+          <tr><td>Anthropic</td><td>$300 亿 (Series G)</td><td>$3800 亿</td><td>2026 年 2 月关闭</td></tr>
+          <tr><td>Shield AI</td><td>$15 亿 (Series G)</td><td>$127 亿</td><td>年增长 140%，军事 AI</td></tr>
+          <tr><td>Legora</td><td>$5.5 亿 (Series D)</td><td>$55.5 亿</td><td>AI 基础设施</td></tr>
+          <tr><td>Runware</td><td>$5000 万 (Series A)</td><td>未公开</td><td>Sonic 推理引擎优化</td></tr>
+        </table>
+        <div class="highlight">结构性信号：基础模型融资的高度集中（24 笔交易占 AI 总融资 73.6%）表明资本正在加速向头部集中。同时，人形机器人赛道（预计 2026 年融资 $200 亿+）代表了 AI 资本从"数字世界"向"物理世界"的结构性迁移。</div>
+        <a href="https://news.crunchbase.com/venture/foundational-ai-startup-funding-doubled-openai-anthropic-xai-q1-2026/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Crunchbase
+        </a>
+      </div>
+    </div>
+
+    <!-- 具身 AI -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon research">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        </div>
+        <div class="section-title">具身 AI 与机器人</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">研究</span>
+          GEN-1 与 VLA 范式：通用机器人操作的技术路径
+        </div>
+        <p>Generalist AI 的 GEN-1 模型在标准工业任务（折叠、打包、组装）中实现 99% 成功率，且在数千次连续重复中保持稳定性。这一成果建立在视觉-语言-动作（VLA）架构之上，融合自然语言指令理解和多步骤任务规划。</p>
+        <div class="subsection-title">技术生态进展</div>
+        <ul class="detail-list">
+          <li>NVIDIA Isaac GR00T 更新：新版开放模型支持自然语言指令到复杂多步骤动作的端到端推理，降低了机器人开发者的门槛。</li>
+          <li>EAIDC 2026 首届具身 AI 开发者大会：X Square Robot 主办的首届全球具身 AI 开发者大会聚焦四大核心能力：抓取与放置、语言理解、精细操作、长 horizon 决策。竞赛任务包括环形件放置、指令水果分拣、电缆插拔和单词拼写。</li>
+          <li>AGIBOT WORLD 2026 数据集：开源的异构机器人数据集，提供结构化、高质量、精确标注的真实世界机器人数据，降低了具身 AI 研究的数据壁垒。</li>
+          <li>百度"具身智能数据超市"：联合国内头部机器人企业，标准化数据格式和采集流程，旨在解决中国具身 AI 产业的数据碎片化问题。</li>
+          <li>Boston Dynamics Atlas 量产：电动版 Atlas 2026 年产能已全部售罄，首批交付 Hyundai 和 Google DeepMind。</li>
+        </ul>
+        <div class="highlight">4 月 19 日，北京将举行人形机器人半程马拉松，300+ 台来自 26 个品牌的机器人与人类同场竞技。这不仅是技术 showcase，更是行业成熟度的标志事件。</div>
+        <a href="https://blogs.nvidia.com/blog/national-robotics-week-2026/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          NVIDIA Blog
+        </a>
+      </div>
+    </div>
+
+    <!-- 政策深度 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="section-title">监管与合规工程</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-policy">监管</span>
+          美国 AI 监管三级并行：合规计算复杂度分析
+        </div>
+        <p>当前美国 AI 监管正在三个层面同步推进，形成一个日益复杂的合规矩阵：</p>
+        <div class="subsection-title">联邦层面</div>
+        <ul class="detail-list">
+          <li>TRUMP AMERICA AI Act 讨论稿（3 月 18 日）：七大立法优先级 -- 保护儿童、社区安全、知识产权、反审查、创新、AI 劳动力、联邦优先权。</li>
+          <li>白宫 AI 国家政策框架（3 月 20 日）：非约束性框架，但明确提出联邦法律对州法的优先权，这可能是简化合规矩阵的关键杠杆。</li>
+          <li>DOJ AI 诉讼特别工作组（1 月成立）：专责挑战违宪的州级 AI 法律，可能成为联邦优先权的执法工具。</li>
+        </ul>
+        <div class="subsection-title">州层面</div>
+        <ul class="detail-list">
+          <li>2026 会期已提出 600+ 法案，覆盖医疗 AI（保险理赔限制）、心理健康 AI（禁止冒充持证专业人员）、自动决策（科罗拉多替代案）等。</li>
+          <li>科罗拉多州长 Jared Polis 的新法案将替代 2024 年 AI 法案，重新定义"受管自动决策技术"的范围和合规要求。</li>
+        </ul>
+        <div class="highlight">对系统架构师的启示：policy-as-code 正在从 nice-to-have 变成 must-have。AI 公司需要构建可插拔的合规中间件，支持按州/联邦/行业三个维度动态加载规则集。预计 2026 下半年会出现专门的 AI 合规 SaaS 平台。</div>
+        <a href="https://kjk.com/2026/04/01/how-the-federal-ai-regulation-push-could-impact-your-business/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          KJK
+        </a>
+      </div>
+    </div>
+
+    <div class="closing-card">
+      <div class="closing-title">深度总结</div>
+      <div class="closing-text">今日三个结构性信号值得深入跟踪：(1) 模型性能平台期与竞争维度转移 -- 前沿模型间的 benchmark 差距缩窄至统计噪声水平，竞争正在从"谁更聪明"转向"谁更便宜/更快/更可靠"。Spud 能否打破这一平台期，将决定 2026 下半年的格局。如果 Spud 仅是增量提升（GPT-5.5 命名），则证实平台期假说；如果是代际飞跃（GPT-6 命名），则意味着 scaling laws 仍有余量；(2) AI 算力供应链的寡头化 -- CoreWeave 在 48 小时内签下 Meta + Anthropic，加上已有的微软关系，正在成为 AI 基础设施的"关键少数"。这种集中度既提供了效率优势，也构成了系统性风险 -- 一个 CoreWeave 级别的故障可能同时影响多家前沿 AI 公司的服务；(3) 具身 AI 从实验到量产的临界点 -- GEN-1 的 99% 任务成功率、Atlas 产能售罄、300+ 机器人马拉松，三个数据点指向同一方向：具身 AI 正在穿越"可用性鸿沟"。对投资者而言，Q1 $3000 亿 VC 中人形机器人赛道的快速增长（预计 $200 亿+/年）是这一判断的资本市场验证。</div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>AI Pulse Daily Report | 2026.04.14</p>
+    <p style="margin-top: 4px;">AI Pulse -- 由 AI 自动生成 -- 数据来源：Crunchbase / MIT Technology Review / Bloomberg / CNBC / NVIDIA / 智源社区</p>
+    <p style="margin-top: 8px;"><a href="/">返回 AI Pulse 主页</a></p>
+  </div>
+</div>
+
+<script>
+function switchTab(tabName) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  const tabMap = { casual: 0, intermediate: 1, expert: 2 };
+  document.getElementById('tab-' + tabName).classList.add('active');
+  document.querySelectorAll('.tab-btn')[tabMap[tabName]].classList.add('active');
+}
+</script>
+</body>
+</html>

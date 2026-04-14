@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily Report | 2026.04.15</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --claude-bg: #FAF9F7;
+    --claude-surface: #FFFFFF;
+    --claude-border: #E8E5E0;
+    --claude-text-primary: #1A1714;
+    --claude-text-secondary: #6B6560;
+    --claude-text-tertiary: #9B9590;
+    --claude-accent: #DA7756;
+    --claude-accent-light: #F5E6DF;
+    --claude-accent-dark: #C4623F;
+    --claude-tag-blue: #E8F0FE;
+    --claude-tag-blue-text: #3B6CB5;
+    --claude-tag-green: #E6F4EA;
+    --claude-tag-green-text: #2D7A3F;
+    --claude-tag-purple: #F0E6FA;
+    --claude-tag-purple-text: #7B3FAF;
+    --claude-tag-amber: #FEF3E2;
+    --claude-tag-amber-text: #B5752D;
+    --claude-tag-red: #FDE8E8;
+    --claude-tag-red-text: #B53B3B;
+    --claude-card-shadow: 0 1px 3px rgba(26, 23, 20, 0.06), 0 1px 2px rgba(26, 23, 20, 0.04);
+    --claude-card-shadow-hover: 0 4px 12px rgba(26, 23, 20, 0.08), 0 2px 4px rgba(26, 23, 20, 0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+    background: var(--claude-bg);
+    color: var(--claude-text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 8px;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--claude-accent-dark); }
+
+  .header {
+    text-align: center;
+    padding: 48px 0 40px;
+    border-bottom: 1px solid var(--claude-border);
+    margin-bottom: 32px;
+  }
+
+  .header-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--claude-accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .header .date {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    font-weight: 400;
+  }
+
+  .header .edition-note {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    margin-top: 8px;
+  }
+
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 36px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--claude-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .tab-btn:hover {
+    color: var(--claude-text-primary);
+    background: var(--claude-bg);
+  }
+
+  .tab-btn.active {
+    background: var(--claude-accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(218, 119, 86, 0.3);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .section { margin-bottom: 36px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .section-icon.gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .section-icon.model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .section-icon.product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .section-icon.research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .section-icon.industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .section-icon.policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .card {
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--claude-card-shadow);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .card:hover { box-shadow: var(--claude-card-shadow-hover); }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .card p {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.75;
+    margin-bottom: 8px;
+  }
+
+  .card p:last-child { margin-bottom: 0; }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .tag-gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .tag-model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .tag-product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .tag-research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .tag-industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .tag-policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .highlight {
+    background: var(--claude-accent-light);
+    border-left: 3px solid var(--claude-accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--claude-accent-dark);
+    line-height: 1.7;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .stat-item {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--claude-accent);
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--claude-text-tertiary);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 8px;
+    transition: color 0.15s;
+  }
+
+  .source-link:hover { color: var(--claude-accent-dark); text-decoration: underline; }
+
+  .tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .tech-table th, .tech-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .tech-table th {
+    font-weight: 600;
+    color: var(--claude-text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: var(--claude-bg);
+  }
+
+  .tech-table td { color: var(--claude-text-primary); }
+
+  .code-block {
+    background: #2D2A26;
+    color: #E8E5E0;
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    overflow-x: auto;
+    margin: 12px 0;
+  }
+
+  .code-block .comment { color: #9B9590; }
+  .code-block .keyword { color: #DA7756; }
+  .code-block .string { color: #7DB87D; }
+
+  .footer {
+    text-align: center;
+    padding: 32px 0;
+    border-top: 1px solid var(--claude-border);
+    margin-top: 48px;
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+  }
+
+  .footer a {
+    color: var(--claude-accent);
+    text-decoration: none;
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 20px 16px 60px; }
+    .header h1 { font-size: 24px; }
+    .tab-btn { font-size: 13px; padding: 10px 8px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+  }
+
+  .subsection-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin: 16px 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  ul.detail-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0;
+  }
+
+  ul.detail-list li {
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.7;
+    padding: 4px 0 4px 16px;
+    position: relative;
+  }
+
+  ul.detail-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--claude-border);
+  }
+
+  .mood-banner {
+    background: linear-gradient(135deg, #FFF5F0 0%, #FFF9F0 100%);
+    border: 1px solid #F0DDD0;
+    border-radius: 16px;
+    padding: 28px 24px;
+    margin-bottom: 32px;
+    text-align: center;
+  }
+
+  .mood-banner .mood-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin-bottom: 6px;
+  }
+
+  .mood-banner .mood-subtitle {
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.6;
+  }
+
+  .mood-meter {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    margin: 12px 0;
+  }
+
+  .mood-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    transition: transform 0.2s;
+  }
+
+  .mood-dot.active { transform: scale(1.4); }
+
+  .mood-label {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+
+  .tldr-box {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.6;
+  }
+
+  .closing-card {
+    background: linear-gradient(135deg, #FFF5F0 0%, #FFF9F0 100%);
+    border: 1px solid #F0DDD0;
+    border-radius: 16px;
+    padding: 28px 24px;
+    margin-top: 32px;
+    text-align: center;
+  }
+
+  .closing-card .closing-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin-bottom: 10px;
+  }
+
+  .closing-card .closing-text {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.8;
+    text-align: left;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <a href="/" class="back-link">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
+    返回 AI Pulse
+  </a>
+
+  <div class="header">
+    <div class="header-logo">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      AI PULSE DAILY
+    </div>
+    <h1>AI 日报 | 2026.04.15</h1>
+    <div class="date">2026 年 4 月 15 日 星期三</div>
+    <div class="edition-note">第 25 期 -- 具身 AI 元周：Gemini Robotics-ER 1.6 发布，人形机器人走向消费市场</div>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('casual')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+      轻松阅读
+    </button>
+    <button class="tab-btn" onclick="switchTab('intermediate')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      技术进阶
+    </button>
+    <button class="tab-btn" onclick="switchTab('expert')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      深度技术
+    </button>
+  </div>
+
+  <!-- ==================== 轻松阅读版 ==================== -->
+  <div id="tab-casual" class="tab-content active">
+
+    <div class="mood-banner">
+      <div class="mood-title">今日 AI 圈：机器人「进家门」的一周，Claude 遭遇用户信任危机</div>
+      <div class="mood-meter">
+        <div class="mood-dot" style="background:#4CAF50"></div>
+        <div class="mood-dot" style="background:#8BC34A"></div>
+        <div class="mood-dot active" style="background:#FFC107"></div>
+        <div class="mood-dot" style="background:#FF9800"></div>
+        <div class="mood-dot" style="background:#F44336"></div>
+      </div>
+      <div class="mood-label">市场情绪：分化博弈</div>
+      <div class="mood-subtitle">Google 发布机器人专用 AI，中国车企卖起人形机器人，Anthropic 营收破 300 亿美元却遭用户吐槽变笨了</div>
+    </div>
+
+    <!-- 头条 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="section-title">头条速览</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">模型</span>
+          Google 发布 Gemini Robotics-ER 1.6，让机器人「看懂世界」
+        </div>
+        <p>Google DeepMind 昨天发布了 Gemini Robotics-ER 1.6，这是一个专门为机器人设计的 AI 模型。它能让机器人精准理解周围环境，比如数清楚桌上有几个物体、判断一个任务有没有做完，甚至能看懂工业仪表盘上的读数。波士顿动力已经在用这个模型来训练他们的机器人。开发者可以通过 Google AI Studio 直接使用。</p>
+        <a href="https://deepmind.google/blog/gemini-robotics-er-1-6/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Google DeepMind
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">争议</span>
+          Anthropic 年营收突破 300 亿美元，但用户抱怨 Claude「变笨了」
+        </div>
+        <p>Anthropic 宣布年化营收已超过 300 亿美元，较 2025 年底的 90 亿美元增长超过两倍。但好消息的背后藏着隐忧：大量开发者和重度用户在社交媒体上反映，Claude 最近的表现明显下降 -- 更容易偷懒、不按指令做事、复杂任务频繁出错。据报道，Anthropic 为了降低运算成本，悄悄降低了 Claude 的默认「努力程度」。</p>
+        <a href="https://fortune.com/2026/04/14/anthropic-claude-performance-decline-user-complaints-backlash-lack-of-transparency-accusations-compute-crunch/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Fortune
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">模型</span>
+          Spud 爽约：4 月 14 日发布传闻未实现，仍在安全测试中
+        </div>
+        <p>此前被热炒的 OpenAI 下一代模型「Spud」并未如传闻所说在 4 月 14 日发布。目前它仍处于安全评估和红队测试阶段。Polymarket 上的预测市场给出的最新概率是：4 月底前发布 78%，6 月底前发布 95% 以上。OpenAI 仍未确定最终叫 GPT-5.5 还是 GPT-6。</p>
+        <a href="https://findskill.ai/blog/gpt-6-release-date/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          FindSkill.ai
+        </a>
+      </div>
+    </div>
+
+    <!-- 机器人专题 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon research">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="3"/><path d="M7 22v-2"/><path d="M17 22v-2"/></svg>
+        </div>
+        <div class="section-title">机器人进家门</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">机器人</span>
+          奇瑞 Aimoga 人形机器人上架京东，售价 28.58 万元
+        </div>
+        <p>奇瑞汽车孵化的机器人品牌 Aimoga 正式在京东开售人形机器人 Mornine M1，售价 28.58 万元（约 4.2 万美元），预计 5 月 23 日后开始发货。同时还有一款 1.58 万元的四足机器狗在售。Aimoga 还推出了分期付款和长期租赁方案，让普通消费者也买得起。截至 2025 年底，该公司已向全球 30 多个国家交付了 300 台人形机器人和 1000 台机器狗。</p>
+        <a href="https://roboticsandautomationnews.com/2026/04/13/chinese-automaker-chery-begins-selling-humanoid-robot-to-consumers-for-42000-each/100544/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Robotics & Automation News
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">机器人</span>
+          UniX AI「黑豹」开始全球交付，号称首款家用人形机器人
+        </div>
+        <p>中国机器人公司 UniX AI 宣布旗下「黑豹」（Panther）人形机器人开始全球交付，定位为全球首款进入真实家庭场景部署的服务型人形机器人。它能完成基本的家务辅助任务，标志着人形机器人从展厅展示到家庭实用的跨越。</p>
+        <a href="https://www.naturalnews.com/2026-04-14-unix-ai-launches-humanoid-robot-household-tasks.html" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          NaturalNews
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">投资</span>
+          现代汽车宣布 260 亿美元美国投资计划，押注 AI 与机器人
+        </div>
+        <p>韩国现代汽车集团宣布将在 2028 年前向美国投资 260 亿美元，重点方向包括 AI 和机器人。公司目标是到 2030 年实现年产 3 万台人形机器人的产能。这是继特斯拉、波士顿动力之后，又一家传统企业巨头大举进军人形机器人赛道。</p>
+        <a href="https://www.upi.com/Top_News/World-News/2026/04/13/Hyundai-Motor-to-invest-26B-in-US-expand-AI-robotics-push/3871776122037/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          UPI
+        </a>
+      </div>
+    </div>
+
+    <!-- 政策与监管 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="section-title">政策与产品</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-policy">监管</span>
+          AI 陪伴聊天机器人监管潮来袭，五州已立法
+        </div>
+        <p>美国正迎来一波针对 AI 陪伴聊天机器人的监管浪潮。华盛顿州新通过法案要求 AI 聊天机器人必须提前告知用户「你在和 AI 对话」，并在检测到用户情绪异常时自动连接危机干预服务。纽约州已要求 AI 平台必须配备自杀检测协议，缅因州正在推进一项治疗类机器人禁令。2026 年第一季度已有至少五个州通过或推进了相关立法。</p>
+        <a href="https://www.roborhythms.com/ai-companion-chatbot-regulation-wave-2026/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          RoboRhythms
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-product">产品</span>
+          Claude Code 新增「例行程序」功能，支持离线自动执行
+        </div>
+        <p>Anthropic 为 Claude Code 加入了全新的「例行程序」（Routines）功能，用户可以设定重复执行的自动化流程，即使在 Mac 离线时也能运行。Claude Code 同时新增了工作树切换（worktree switching）、后台插件监控等功能。这让 AI 编程助手从「问一次答一次」进化到了「持续自动化工作」。</p>
+        <a href="https://9to5mac.com/2026/04/14/anthropic-adds-repeatable-routines-feature-to-claude-code-heres-how-it-works/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          9to5Mac
+        </a>
+      </div>
+    </div>
+
+    <div class="closing-card">
+      <div class="closing-title">今日总结</div>
+      <div class="closing-text">今天的 AI 圈关键词是「机器人」和「信任」。一方面，具身 AI 正在密集突破 -- Google 发布了专门给机器人用的 AI 大脑，中国车企开始在京东上卖人形机器人，韩国现代砸 260 亿美元押注机器人未来。机器人从实验室走进消费者的家，不再是科幻电影的情节。另一方面，Anthropic 在营收暴涨的同时遭遇了用户信任危机，因降低模型性能以节约成本而引发广泛不满。而 OpenAI 的 Spud 继续「薛定谔的发布」-- 4 月 14 日的传闻落空了。AI 行业正在经历一个有趣的拐点：模型竞争从「谁更聪明」转向「谁更省钱」，而机器人竞争则从「能不能动」转向「消费者买不买」。</div>
+    </div>
+
+  </div>
+
+  <!-- ==================== 技术进阶版 ==================== -->
+  <div id="tab-intermediate" class="tab-content">
+
+    <div class="mood-banner">
+      <div class="mood-title">技术全景：Gemini Robotics-ER 1.6 带来具身推理升级，Claude 面临效率-质量取舍争议</div>
+      <div class="mood-subtitle">空间推理模型迎来重大升级，人形机器人进入消费级定价区间，AI 服务的成本优化与用户体验出现结构性冲突</div>
+    </div>
+
+    <!-- 模型与算力 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="section-title">模型与推理</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">模型</span>
+          Gemini Robotics-ER 1.6：从 1.5 到 1.6 的关键提升
+        </div>
+        <p>Google DeepMind 于 4 月 14 日发布 Gemini Robotics-ER 1.6，这是一个专注于具身推理（Embodied Reasoning）的模型，相比 ER 1.5 和 Gemini 3.0 Flash 在空间推理任务上有显著提升。核心能力升级包括：指向定位（pointing/localization）精度提升、物体计数准确率提高、多视角任务成功检测，以及全新的工业仪表读数能力。</p>
+        <div class="highlight">波士顿动力是 ER 1.6 的深度合作伙伴。仪表读数功能正是在与波士顿动力的协作中被发现并开发的。这种「模型供应商 + 机器人制造商」的深度绑定模式，正在成为具身 AI 领域的标准合作范式。</div>
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-value">4/14</div>
+            <div class="stat-label">发布日期</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">API</div>
+            <div class="stat-label">Gemini API 可用</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">4/30</div>
+            <div class="stat-label">ER 1.5 下线日期</div>
+          </div>
+        </div>
+        <a href="https://deepmind.google/blog/gemini-robotics-er-1-6/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Google DeepMind
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">争议</span>
+          Claude 性能下降事件：effort 调控引发开发者信任危机
+        </div>
+        <p>据 Fortune 报道，Anthropic 被指悄悄降低了 Claude 模型的默认 effort 级别以节约 token 消耗成本。大量开发者反映 Claude 出现了指令遵循能力下降、在复杂工作流中走捷径、错误率上升等问题。与此同时，Anthropic 宣布年化营收已突破 300 亿美元（2025 年底为 90 亿），HumanX 大会上开发者对 Claude 的热情依然高涨。</p>
+        <p>这一事件折射出 AI 服务商面临的核心矛盾：在快速扩张用户规模的同时，如何在算力成本和模型质量之间找到平衡。</p>
+        <a href="https://fortune.com/2026/04/14/anthropic-claude-performance-decline-user-complaints-backlash-lack-of-transparency-accusations-compute-crunch/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Fortune
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">模型</span>
+          Spud 进入红队阶段，5 月发布窗口概率最高
+        </div>
+        <p>OpenAI 的 Spud 未在 4 月 14 日发布，目前处于安全评估和红队测试阶段。参考 OpenAI 历史发布节奏（预训练完成到发布通常 3-6 周），3 月 24 日完成预训练意味着最早 4 月中旬、最晚 5 月初可发布。Polymarket 预测 4 月底前发布概率为 78%。OpenAI 已关停 Sora 释放 GPU 资源，Greg Brockman 称 Spud 是「两年研发的结晶」。</p>
+        <a href="https://lumichats.com/blog/gpt-5-5-spud-openai-release-date-features-april-2026-complete-guide" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          LumiChats
+        </a>
+      </div>
+    </div>
+
+    <!-- 具身 AI -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon research">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="3"/><path d="M7 22v-2"/><path d="M17 22v-2"/></svg>
+        </div>
+        <div class="section-title">具身 AI 与机器人</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">机器人</span>
+          Chery Aimoga Mornine M1：28.58 万元人形机器人登陆京东
+        </div>
+        <p>奇瑞旗下 Aimoga Robotics 的人形机器人 Mornine M1 于 4 月 13 日在京东正式开售，售价 28.58 万元，配备 0.7 kWh 电池。同步发售的还有 1.58 万元的四足机器狗。为降低购买门槛，Aimoga 提供直购、长租和分期三种方案。此前该公司已向 30+ 国家交付 300 台人形机器人。</p>
+        <p>Mornine M1 从汽车展厅助手转型为消费级产品，标志着中国人形机器人产业链从 B2B 向 B2C 的关键转型。</p>
+        <a href="https://cnevpost.com/2026/04/13/chery-brings-humanoid-robot-to-general-consumer-market/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          CnEVPost
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">投资</span>
+          现代 $260 亿美国投资 + Unitree 冲刺 10 m/s：人形机器人赛道全面加速
+        </div>
+        <p>现代汽车宣布 2028 年前向美国投资 260 亿美元，目标 2030 年实现年产 3 万台人形机器人。与此同时，宇树科技（Unitree）宣布 H1 机器人跑步速度达到 10 m/s，逼近博尔特 10.44 m/s 的人类极限。2025 年 Unitree 已出货 5500 台人形机器人，2026 年目标 1-2 万台。相比之下，特斯拉、Figure AI 和 Agility Robotics 2025 年各出货约 150 台。</p>
+        <a href="https://www.upi.com/Top_News/World-News/2026/04/13/Hyundai-Motor-to-invest-26B-in-US-expand-AI-robotics-push/3871776122037/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          UPI
+        </a>
+      </div>
+    </div>
+
+    <!-- 政策与产品 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="section-title">政策与开发者工具</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-policy">监管</span>
+          AI 陪伴聊天机器人监管：从自杀检测到强制披露
+        </div>
+        <p>2026 年 Q1 成为 AI 陪伴聊天机器人监管史上最密集的立法期。华盛顿州要求所有 AI 聊天机器人必须前置声明 AI 身份，并在检测到用户痛苦信号时自动连接危机服务。纽约州 S-3008C 已生效，要求自杀检测协议和强制 AI 披露。缅因州即将签署治疗类聊天机器人禁令。至少五个州在本季度通过或推进了相关法案。</p>
+        <p>联邦层面仍无综合立法，监管格局继续呈现州法先行的碎片化态势。</p>
+        <a href="https://www.roborhythms.com/ai-companion-chatbot-regulation-wave-2026/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          RoboRhythms
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-product">产品</span>
+          Claude Code Routines：AI 编程助手进入自动化时代
+        </div>
+        <p>Anthropic 为 Claude Code 推出 Routines 功能，允许用户定义可重复执行的自动化工作流，支持 macOS 离线运行。同期更新还包括 worktree 分支切换、PreCompact 钩子阻断、后台插件监控等。Claude Code 的产品方向正从「交互式 copilot」向「自主式 agent」演进。</p>
+        <a href="https://9to5mac.com/2026/04/14/anthropic-adds-repeatable-routines-feature-to-claude-code-heres-how-it-works/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          9to5Mac
+        </a>
+      </div>
+    </div>
+
+    <div class="closing-card">
+      <div class="closing-title">技术总结</div>
+      <div class="closing-text">今日三个技术信号值得关注：(1) 具身推理进入产品迭代期 -- Gemini Robotics-ER 从 1.5 到 1.6 的快速迭代表明，机器人专用 AI 模型已进入持续优化通道，波士顿动力的深度参与验证了「模型商 + 硬件商」绑定模式的可行性；(2) AI 服务的效率-质量悖论 -- Anthropic 在 $300 亿 ARR 的商业成功与用户吐槽性能下降之间的张力，暴露了 AI 服务商在规模扩张期面临的核心工程挑战：如何在不降低用户体验的前提下优化推理成本；(3) 人形机器人 B2C 元年 -- 奇瑞 Mornine M1 上架京东、UniX AI Panther 开始家庭交付、现代汽车 $260 亿押注，三个信号指向同一结论：2026 年是人形机器人从 B2B 工业场景走向 B2C 消费市场的拐点年。</div>
+    </div>
+
+  </div>
+
+  <!-- ==================== 深度技术版 ==================== -->
+  <div id="tab-expert" class="tab-content">
+
+    <div class="mood-banner">
+      <div class="mood-title">深度分析：具身推理架构升级、推理成本优化的用户侧代价、人形机器人产业链成熟度评估</div>
+      <div class="mood-subtitle">Gemini Robotics-ER 1.6 的空间推理架构如何提升 pointing 精度？Anthropic effort 调控的技术实现机制是什么？人形机器人 B2C 转型的真实可行性如何？</div>
+    </div>
+
+    <!-- 模型与系统 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="section-title">模型与系统架构</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">模型</span>
+          Gemini Robotics-ER 1.6 深度解析：具身推理的五大能力维度
+        </div>
+        <p>Gemini Robotics-ER 1.6 在五个核心具身推理维度上实现了显著提升：(1) Pointing/Localization -- 从图像/视频中精确定位物体的空间坐标，这是机器人抓取和导航的基础能力；(2) Object Counting -- 复杂场景下的物体计数精度提升，对仓储和制造场景关键；(3) Multi-view Success Detection -- 多视角判断任务是否完成，减少单一视角的遮挡盲区；(4) Instrument Reading -- 全新能力，可读取工业仪表盘（如压力表、液位计）的数值；(5) Safety Compliance -- 在对抗性空间推理任务中展现最佳安全策略合规性。</p>
+        <div class="highlight">技术架构要点：ER 1.6 是「推理优先」（reasoning-first）而非「动作优先」（action-first）模型。它不直接控制机器人执行动作，而是为上游规划层提供精确的环境理解。这种分层设计让 ER 1.6 可以与不同厂商的机器人硬件解耦，提高了适配灵活性。波士顿动力的 AIVI-Learning 系统已集成 Gemini Robotics 作为感知后端。</div>
+        <table class="tech-table">
+          <tr><th>能力维度</th><th>ER 1.5</th><th>ER 1.6</th><th>提升方向</th></tr>
+          <tr><td>空间定位</td><td>基线</td><td>显著提升</td><td>亚像素级定位精度</td></tr>
+          <tr><td>物体计数</td><td>基线</td><td>显著提升</td><td>密集场景鲁棒性</td></tr>
+          <tr><td>多视角检测</td><td>基线</td><td>显著提升</td><td>遮挡场景处理</td></tr>
+          <tr><td>仪表读数</td><td>不支持</td><td>新增</td><td>工业场景拓展</td></tr>
+          <tr><td>安全合规</td><td>基线</td><td>最优</td><td>对抗性场景鲁棒性</td></tr>
+        </table>
+        <a href="https://deepmind.google/blog/gemini-robotics-er-1-6/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Google DeepMind
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">分析</span>
+          Claude effort 调控机制解析：token 经济学与用户体验的结构性冲突
+        </div>
+        <p>Anthropic 被曝降低 Claude 默认 effort 级别，这涉及推理服务的核心架构设计。所谓 effort 调控，本质是控制模型在生成响应时消耗的 token 数量 -- 更低的 effort 意味着更短的思考链（chain-of-thought）、更少的内部推理步骤、更快的响应速度，但也意味着复杂任务上的准确率下降。</p>
+        <div class="subsection-title">技术机制推测</div>
+        <ul class="detail-list">
+          <li>系统级 token budget 调整：通过 system prompt 或 API 层面的 max_thinking_tokens 参数，限制模型内部推理的 token 上限。</li>
+          <li>动态 effort 分配：可能基于请求复杂度的初步判断，自动分配不同级别的 effort，但分类器的准确率直接影响用户体验。</li>
+          <li>经济动因：按 Claude Opus 4.6 的 $15/M 输出 token 定价，每减少 1000 个思考 token 相当于节约 $0.015。在 $300 亿 ARR 的规模下，整体 effort 下调 20% 可能意味着数十亿美元级的成本节约。</li>
+        </ul>
+        <div class="highlight">对开发者的启示：如果你的工作流依赖 Claude 的深度推理能力，显式设置 effort 参数（如 extended thinking 的 budget_tokens）是目前最可靠的应对策略。不要依赖默认行为 -- 默认值可能随时因商业决策而调整。</div>
+        <a href="https://fortune.com/2026/04/14/anthropic-claude-performance-decline-user-complaints-backlash-lack-of-transparency-accusations-compute-crunch/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Fortune
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">追踪</span>
+          Spud 时间线分析：从预训练到发布的关键窗口
+        </div>
+        <p>基于 OpenAI 历史发布节奏的量化分析：GPT-4 从预训练完成到公开发布约 6 个月（包含 RLHF 和红队），GPT-4o 约 3 个月，GPT-5.4 约 5 周。假设 Spud 遵循最近的加速趋势（5-6 周），3 月 24 日完成预训练意味着 4 月 28 日至 5 月 5 日是最高概率发布窗口。</p>
+        <p>值得注意的是 OpenAI 关停 Sora 释放 GPU 的决策信号 -- Sora 日均烧 $1500 万算力，用户数暴跌至 50 万以下。这意味着 OpenAI 正在将所有推理算力集中到 Spud 的安全评估和早期部署准备上。如果 Spud 性能跃升足够大（GPT-6 命名），可能需要额外的安全审查时间，将发布窗口推迟到 5 月中旬。</p>
+        <a href="https://lifearchitect.ai/gpt-6/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Life Architect
+        </a>
+      </div>
+    </div>
+
+    <!-- 具身 AI 产业分析 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon research">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="3"/><path d="M7 22v-2"/><path d="M17 22v-2"/></svg>
+        </div>
+        <div class="section-title">具身 AI 产业链深度</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">分析</span>
+          人形机器人 B2C 转型可行性评估：定价、产能与用户场景
+        </div>
+        <p>2026 年 4 月第三周，人形机器人领域出现三个 B2C 信号：奇瑞 Aimoga Mornine M1 京东开售（28.58 万元）、UniX AI Panther 全球家庭交付、现代汽车 $260 亿美国投资（目标 2030 年年产 3 万台）。我们从定价、产能和用户场景三个维度评估 B2C 转型的成熟度：</p>
+        <div class="subsection-title">定价分析</div>
+        <ul class="detail-list">
+          <li>Mornine M1 定价 28.58 万元 -- 接近中国中端新能源汽车的价格区间。Aimoga 提供分期和租赁降低门槛，但实际购买力仍限于高净值人群或商业用户。</li>
+          <li>对标数据：Unitree G1 售价约 $16,000（教育/研究），Figure 02 仍为 B2B 定价（未公开），特斯拉 Optimus 目标 $20,000-$25,000 但尚未开售。</li>
+          <li>判断：当前 $40K+ 的定价尚不具备大规模消费级普及的条件，但已进入「早期采用者」区间。</li>
+        </ul>
+        <div class="subsection-title">产能对比</div>
+        <table class="tech-table">
+          <tr><th>厂商</th><th>2025 出货</th><th>2026 目标</th><th>2030 产能目标</th></tr>
+          <tr><td>Unitree 宇树</td><td>5,500</td><td>10,000-20,000</td><td>--</td></tr>
+          <tr><td>特斯拉 Optimus</td><td>~150</td><td>数千台</td><td>100 万+</td></tr>
+          <tr><td>Figure AI</td><td>~150</td><td>--</td><td>--</td></tr>
+          <tr><td>现代汽车</td><td>--</td><td>--</td><td>30,000/年</td></tr>
+          <tr><td>奇瑞 Aimoga</td><td>300（人形）</td><td>扩产中</td><td>--</td></tr>
+        </table>
+        <div class="highlight">关键洞察：中国企业（Unitree、Aimoga、UniX AI）在出货量和消费级定价上领先。但 B2C 转型的真正瓶颈不是定价或产能，而是用户场景的明确性 -- 消费者花 $40K 买一台人形机器人到底能做什么？目前最清晰的场景是「家务助手」，但现有机器人的灵巧操作能力仍远不及人类。GEN-1 的 99% 任务成功率令人印象深刻，但仅限于结构化重复任务（折叠、打包），距离非结构化家庭场景（做饭、清洁、照护）仍有显著差距。</div>
+        <a href="https://www.revolutioninai.com/2026/04/humanoid-robots-useful-2026-six-shifts.html" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Revolution in AI
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">速度</span>
+          Unitree H1 跑出 10 m/s：逼近人类极限的工程意义
+        </div>
+        <p>Unitree 宣布 H1 人形机器人达到 10 m/s 的奔跑速度，而博尔特 100 米纪录的峰值速度约 10.44 m/s。这一数据的工程意义远超速度本身：它验证了当前机器人的驱动系统（高扭矩关节电机）、电池续航（在极端功耗下的稳定输出）、实时控制算法（毫秒级步态规划）和结构强度（承受 10 m/s 冲击载荷）均已达到可工程化的水平。这为机器人在快递、巡逻、救援等需要快速移动的场景中部署提供了硬件基础。</p>
+        <a href="https://www.globaltimes.cn/page/202604/1358719.shtml" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Global Times
+        </a>
+      </div>
+    </div>
+
+    <!-- 政策 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="section-title">政策与合规工程</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-policy">分析</span>
+          AI Companion 监管矩阵：技术合规实现路径
+        </div>
+        <p>2026 Q1 的 AI 陪伴聊天机器人监管浪潮正在形成一个多维合规矩阵。从技术实现角度分析各州法规的合规要求：</p>
+        <div class="subsection-title">关键合规要求与技术映射</div>
+        <ul class="detail-list">
+          <li>华盛顿州（新通过）：强制 AI 身份前置声明 + 痛苦信号检测 + 危机服务自动连接。技术实现：对话开始前插入不可跳过的 AI 声明 UI；实时情感分析管道（基于 BERT/RoBERTa 微调的 distress classifier）；与全国 988 自杀预防热线 API 集成。</li>
+          <li>纽约州 S-3008C（已生效）：自杀检测协议 + 强制 AI 披露。技术实现：多信号融合检测（文本语义 + 对话频率 + 时间模式）；检测触发后的强制中断和转接流程。</li>
+          <li>缅因州（即将签署）：治疗类聊天机器人禁令。技术实现：需要在产品层面明确界定「治疗行为」边界，可能需要 NLP 分类器区分「聊天陪伴」与「心理治疗」的对话模式。</li>
+        </ul>
+        <div class="highlight">对 AI Companion 开发者的架构建议：构建中间件层处理多州合规差异 -- (1) 基于用户 IP/注册地址的州法规查找服务；(2) 可插拔的合规 hook 管道（声明、检测、干预、日志）；(3) 与 988 Lifeline API、各州危机服务的标准化集成接口。这实质上是 policy-as-code 在 AI 产品中的具体落地。</div>
+        <a href="https://www.roborhythms.com/ai-companion-chatbot-regulation-wave-2026/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          RoboRhythms
+        </a>
+      </div>
+    </div>
+
+    <div class="closing-card">
+      <div class="closing-title">深度总结</div>
+      <div class="closing-text">今日三个结构性信号值得深入跟踪：(1) 具身推理的分层架构趋势 -- Gemini Robotics-ER 1.6 选择「推理优先」而非端到端控制，这一设计哲学正在成为行业共识。具身 AI 的技术栈正在分化为感知层（ER 模型）、规划层（VLA 模型）和执行层（电机控制器），每层独立迭代。这种分层架构的好处是降低了单点优化的复杂度，但也引入了层间通信的延迟和信息损失问题。(2) AI 服务的 token 经济学拐点 -- Anthropic 的 effort 调控事件不是个案，而是整个行业即将面临的结构性挑战。当 AI 模型的能力与其推理成本强相关时，「更强的模型」和「更便宜的服务」之间存在根本性张力。未来可能出现的解法包括：推测性推理（speculative decoding）、自适应计算预算（adaptive compute budget）、或者更激进的 -- 让用户为不同 effort 级别付费的差异化定价模型。(3) 人形机器人的「iPhone 时刻」还有多远 -- 当前 $40K+ 的定价和有限的家务能力意味着 B2C 市场仍处于极早期。真正的消费级拐点需要三个条件同时满足：定价降至 $10K 以下（Unitree 最接近）、灵巧操作能力覆盖 80% 家务场景（目前仅覆盖结构化任务）、以及可靠的远程 OTA 更新能力（类似特斯拉的 FSD 模式）。乐观估计：2028-2029。</div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>AI Pulse Daily Report | 2026.04.15</p>
+    <p style="margin-top: 4px;">AI Pulse -- 由 AI 自动生成 -- 数据来源：Google DeepMind / Fortune / Robotics & Automation News / UPI / 9to5Mac / RoboRhythms</p>
+    <p style="margin-top: 8px;"><a href="/">返回 AI Pulse 主页</a></p>
+  </div>
+</div>
+
+<script>
+function switchTab(tabName) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  const tabMap = { casual: 0, intermediate: 1, expert: 2 };
+  document.getElementById('tab-' + tabName).classList.add('active');
+  document.querySelectorAll('.tab-btn')[tabMap[tabName]].classList.add('active');
+}
+</script>
+</body>
+</html>

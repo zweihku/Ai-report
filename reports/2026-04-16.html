@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily Report | 2026.04.16</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --claude-bg: #FAF9F7;
+    --claude-surface: #FFFFFF;
+    --claude-border: #E8E5E0;
+    --claude-text-primary: #1A1714;
+    --claude-text-secondary: #6B6560;
+    --claude-text-tertiary: #9B9590;
+    --claude-accent: #DA7756;
+    --claude-accent-light: #F5E6DF;
+    --claude-accent-dark: #C4623F;
+    --claude-tag-blue: #E8F0FE;
+    --claude-tag-blue-text: #3B6CB5;
+    --claude-tag-green: #E6F4EA;
+    --claude-tag-green-text: #2D7A3F;
+    --claude-tag-purple: #F0E6FA;
+    --claude-tag-purple-text: #7B3FAF;
+    --claude-tag-amber: #FEF3E2;
+    --claude-tag-amber-text: #B5752D;
+    --claude-tag-red: #FDE8E8;
+    --claude-tag-red-text: #B53B3B;
+    --claude-card-shadow: 0 1px 3px rgba(26, 23, 20, 0.06), 0 1px 2px rgba(26, 23, 20, 0.04);
+    --claude-card-shadow-hover: 0 4px 12px rgba(26, 23, 20, 0.08), 0 2px 4px rgba(26, 23, 20, 0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+    background: var(--claude-bg);
+    color: var(--claude-text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 8px;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--claude-accent-dark); }
+
+  .header {
+    text-align: center;
+    padding: 48px 0 40px;
+    border-bottom: 1px solid var(--claude-border);
+    margin-bottom: 32px;
+  }
+
+  .header-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--claude-accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .header .date {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    font-weight: 400;
+  }
+
+  .header .edition-note {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    margin-top: 8px;
+  }
+
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 36px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--claude-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .tab-btn:hover {
+    color: var(--claude-text-primary);
+    background: var(--claude-bg);
+  }
+
+  .tab-btn.active {
+    background: var(--claude-accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(218, 119, 86, 0.3);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .section { margin-bottom: 36px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .section-icon.gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .section-icon.model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .section-icon.product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .section-icon.research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .section-icon.industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .section-icon.policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .card {
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--claude-card-shadow);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .card:hover { box-shadow: var(--claude-card-shadow-hover); }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .card p {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.75;
+    margin-bottom: 8px;
+  }
+
+  .card p:last-child { margin-bottom: 0; }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .tag-gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .tag-model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .tag-product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .tag-research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .tag-industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .tag-policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .highlight {
+    background: var(--claude-accent-light);
+    border-left: 3px solid var(--claude-accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--claude-accent-dark);
+    line-height: 1.7;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .stat-item {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--claude-accent);
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--claude-text-tertiary);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 8px;
+    transition: color 0.15s;
+  }
+
+  .source-link:hover { color: var(--claude-accent-dark); text-decoration: underline; }
+
+  .tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .tech-table th, .tech-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .tech-table th {
+    font-weight: 600;
+    color: var(--claude-text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: var(--claude-bg);
+  }
+
+  .tech-table td { color: var(--claude-text-primary); }
+
+  .code-block {
+    background: #2D2A26;
+    color: #E8E5E0;
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    overflow-x: auto;
+    margin: 12px 0;
+  }
+
+  .code-block .comment { color: #9B9590; }
+  .code-block .keyword { color: #DA7756; }
+  .code-block .string { color: #7DB87D; }
+
+  .footer {
+    text-align: center;
+    padding: 32px 0;
+    border-top: 1px solid var(--claude-border);
+    margin-top: 48px;
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+  }
+
+  .footer a {
+    color: var(--claude-accent);
+    text-decoration: none;
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 20px 16px 60px; }
+    .header h1 { font-size: 24px; }
+    .tab-btn { font-size: 13px; padding: 10px 8px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+  }
+
+  .subsection-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin: 16px 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  ul.detail-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0;
+  }
+
+  ul.detail-list li {
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.7;
+    padding: 4px 0 4px 16px;
+    position: relative;
+  }
+
+  ul.detail-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--claude-border);
+  }
+
+  .mood-banner {
+    background: linear-gradient(135deg, #FFF5F0 0%, #FFF9F0 100%);
+    border: 1px solid #F0DDD0;
+    border-radius: 16px;
+    padding: 28px 24px;
+    margin-bottom: 32px;
+    text-align: center;
+  }
+
+  .mood-banner .mood-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin-bottom: 6px;
+  }
+
+  .mood-banner .mood-subtitle {
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.6;
+  }
+
+  .mood-meter {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    margin: 12px 0;
+  }
+
+  .mood-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    transition: transform 0.2s;
+  }
+
+  .mood-dot.active { transform: scale(1.4); }
+
+  .mood-label {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+
+  .tldr-box {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.6;
+  }
+
+  .closing-card {
+    background: linear-gradient(135deg, #FFF5F0 0%, #FFF9F0 100%);
+    border: 1px solid #F0DDD0;
+    border-radius: 16px;
+    padding: 28px 24px;
+    margin-top: 32px;
+    text-align: center;
+  }
+
+  .closing-card .closing-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin-bottom: 10px;
+  }
+
+  .closing-card .closing-text {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.8;
+    text-align: left;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <a href="/" class="back-link">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
+    返回 AI Pulse
+  </a>
+
+  <div class="header">
+    <div class="header-logo">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      AI PULSE DAILY
+    </div>
+    <h1>AI 日报 | 2026.04.16</h1>
+    <div class="date">2026 年 4 月 16 日 星期四</div>
+    <div class="edition-note">第 26 期 -- 量子 AI 元年：NVIDIA Ising 开源量子模型发布，Stanford AI Index 揭示全球 AI 格局剧变</div>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('casual')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+      轻松阅读
+    </button>
+    <button class="tab-btn" onclick="switchTab('intermediate')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      技术进阶
+    </button>
+    <button class="tab-btn" onclick="switchTab('expert')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      深度技术
+    </button>
+  </div>
+
+  <!-- ==================== 轻松阅读版 ==================== -->
+  <div id="tab-casual" class="tab-content active">
+
+    <div class="mood-banner">
+      <div class="mood-title">今日 AI 圈：量子计算遇上 AI，华尔街豪掷 60 亿押注算力</div>
+      <div class="mood-meter">
+        <div class="mood-dot" style="background:#4CAF50"></div>
+        <div class="mood-dot active" style="background:#8BC34A"></div>
+        <div class="mood-dot" style="background:#FFC107"></div>
+        <div class="mood-dot" style="background:#FF9800"></div>
+        <div class="mood-dot" style="background:#F44336"></div>
+      </div>
+      <div class="mood-label">市场情绪：乐观偏多</div>
+      <div class="mood-subtitle">NVIDIA 开源量子 AI 模型引爆量子概念股，Jane Street 砸 60 亿押注 CoreWeave，Stanford 年度报告称中美 AI 差距已消失</div>
+    </div>
+
+    <!-- 头条 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="section-title">头条速览</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">模型</span>
+          NVIDIA 发布 Ising：全球首个开源量子 AI 模型家族
+        </div>
+        <p>NVIDIA 发布了 Ising 系列模型，这是全球第一批专门用来加速量子计算的 AI 模型，而且完全开源。其中 Ising Calibration 是一个 350 亿参数的视觉语言模型，能帮量子计算机自动「校准」；Ising Decoding 则负责纠错，速度比传统方法快 2.5 倍、准确率高 3 倍。消息一出，量子概念股集体大涨。对普通人来说，这意味着量子计算机离「真正能用」又近了一大步。</p>
+        <a href="https://nvidianews.nvidia.com/news/nvidia-launches-ising-the-worlds-first-open-ai-models-to-accelerate-the-path-to-useful-quantum-computers" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          NVIDIA Newsroom
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">资本</span>
+          Jane Street 豪掷 60 亿美元签约 CoreWeave，再投 10 亿入股
+        </div>
+        <p>华尔街量化交易巨头 Jane Street 签下了约 60 亿美元的 AI 云服务合约，使用 CoreWeave 的 AI 算力平台（包括 NVIDIA 最新的 Vera Rubin 技术）。同时，Jane Street 还以每股 109 美元的价格向 CoreWeave 投资了 10 亿美元。这是金融行业对 AI 算力需求爆发的又一个里程碑信号。</p>
+        <a href="https://www.coreweave.com/news/jane-street-signs-6-billion-ai-cloud-agreement-with-coreweave" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          CoreWeave
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">报告</span>
+          Stanford AI 指数 2026：中美 AI 差距已经「消失」
+        </div>
+        <p>Stanford 大学发布了年度 AI 指数报告，12 个关键发现引发行业震动。最受关注的结论：中美之间的 AI 能力差距已经「实质性关闭」。此外，顶尖 AI 模型在「人类最后的考试」上得分从 8.8% 飙升至 50%+，代码能力测试接近满分。但报告也发出警告：AI 透明度评分大幅下降，美国公众对 AI 监管的信任度在所有调查国家中最低（仅 31%）。</p>
+        <a href="https://hai.stanford.edu/ai-index/2026-ai-index-report" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Stanford HAI
+        </a>
+      </div>
+    </div>
+
+    <!-- 企业与资本 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon gpu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        </div>
+        <div class="section-title">企业与资本</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-gpu">芯片</span>
+          Meta 与 Broadcom 扩大合作：定制 AI 芯片路线图延伸至 2029 年
+        </div>
+        <p>Meta 宣布与 Broadcom 扩大合作，共同研发多代 MTIA 定制 AI 芯片，计划持续到 2029 年。Meta 承诺部署 1 吉瓦的定制 AI 加速器算力，MTIA 将成为首个采用 2nm 制程的 AI 芯片。不过 Broadcom CEO Hock Tan 因此将从 Meta 董事会离任。这标志着大厂「自研芯片」趋势的进一步加速。</p>
+        <a href="https://about.fb.com/news/2026/04/meta-partners-with-broadcom-to-co-develop-custom-ai-silicon/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Meta Newsroom
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-product">产品</span>
+          美国运通推出 ACE 开发者工具包：AI Agent 也能刷信用卡了
+        </div>
+        <p>美国运通发布了 Agentic Commerce Experiences（ACE）开发者工具包，以及行业首创的「Agent 购物保护」-- 由 AI 代理完成的消费也享受消费者权益保障。合作伙伴包括 Stripe、PayPal、Delta、Expedia 等。这意味着 AI 助手帮你订酒店、买机票将不再是科幻场景，而是有正式金融保障的现实。</p>
+        <a href="https://www.americanexpress.com/en-us/newsroom/articles/innovation/american-express-debuts-agentic-commerce-experiences--ace--devel.html" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          American Express
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">趋势</span>
+          PwC 研究：74% 的 AI 经济收益被前 20% 的企业拿走
+        </div>
+        <p>普华永道发布 2026 年 AI 绩效研究报告，揭示了一个令人不安的事实：AI 带来的经济收益高度集中在少数头部企业。大多数公司仍然停留在「试点阶段」，而真正的 AI 赢家已经把重心从「提高效率」转向了「驱动增长」。这个差距还在持续扩大。</p>
+        <a href="https://www.pwc.com/gx/en/news-room/press-releases/2026/pwc-2026-ai-performance-study.html" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          PwC
+        </a>
+      </div>
+    </div>
+
+    <!-- 政策与监管 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="section-title">政策与监管</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-policy">监管</span>
+          科罗拉多州 AI 法案将于 6 月 30 日生效，算法歧视成监管重点
+        </div>
+        <p>科罗拉多州的 AI 法案确认将于 2026 年 6 月 30 日正式生效，要求 AI 开发者和部署者承担防止算法歧视的义务。这是美国目前最具体的州级 AI 监管法规之一，可能成为其他州效仿的模板。对于在美国运营 AI 产品的企业来说，合规准备的倒计时已经开始。</p>
+        <a href="https://www.gunder.com/en/news-insights/insights/2026-ai-laws-update-key-regulations-and-practical-guidance" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Gunderson Dettmer
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-policy">协作</span>
+          OpenAI、Anthropic、Google 联手打击中国 AI 模型抄袭
+        </div>
+        <p>三大美国 AI 公司通过 Frontier Model Forum 共享情报，联手对抗中国竞争对手通过蒸馏等手段从美国 AI 模型中提取能力的行为。这是大厂罕见地在竞争中搁置分歧、在知识产权保护上达成共识。</p>
+        <a href="https://www.bloomberg.com/news/articles/2026-04-06/openai-anthropic-google-unite-to-combat-model-copying-in-china" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Bloomberg
+        </a>
+      </div>
+    </div>
+
+    <!-- 机器人与具身 AI -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon product">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="3"/><path d="M12 8v3"/></svg>
+        </div>
+        <div class="section-title">机器人与具身 AI</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">模型</span>
+          NVIDIA Cosmos Reason 2：让机器人「想明白再动」
+        </div>
+        <p>NVIDIA 在全国机器人周期间发布了 Cosmos Reason 2，一个专门帮机器人「想清楚」的推理模型。它能让机器人先理解周围环境、规划行动路径，再开始执行任务。目前在多个机器人推理排行榜排名第一。对于关心机器人进入日常生活的人来说，「先想后做」的 AI 比「边做边改」的 AI 安全得多。</p>
+        <a href="https://blogs.nvidia.com/blog/national-robotics-week-2026/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          NVIDIA Blog
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-product">创业</span>
+          觅蜂科技（Maniformer）完成数亿融资，打造具身 AI 数据平台
+        </div>
+        <p>由智元机器人孵化的觅蜂科技（Maniformer）完成数亿人民币融资，红杉中国领投。公司正在打造一站式物理 AI 数据服务平台，今日在上海举行发布活动。2026 年被业界称为「具身智能元年」，中国企业正加速布局这一赛道。</p>
+        <a href="https://equalocean.com/news/2026021421749" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          EqualOcean
+        </a>
+      </div>
+    </div>
+
+    <!-- 研究动态 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon research">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        </div>
+        <div class="section-title">研究动态</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">突破</span>
+          新方法让 AI 能耗降低 100 倍，神经符号学习的逆袭
+        </div>
+        <p>研究人员发布了一种将神经网络与符号推理结合的新方法，在保持甚至提高准确性的同时，将 AI 能耗降低了最多 100 倍。这个成果对机器人应用尤为重要 -- 终于不需要一台服务器才能让机器人做简单的推理了。</p>
+        <a href="https://www.sciencedaily.com/releases/2026/04/260405003952.htm" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          ScienceDaily
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">研究</span>
+          Nature 研究：人类科学家在复杂任务上仍优于 AI Agent
+        </div>
+        <p>尽管 AI Agent 已广泛用于科研辅助，但 Stanford AI 指数引用的 Nature 研究表明，在复杂科学任务上，最好的 AI Agent 表现仅为 PhD 专家的一半。AI 目前更适合做「研究助理」而非「首席科学家」。</p>
+        <a href="https://www.nature.com/articles/d41586-026-01199-z" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Nature
+        </a>
+      </div>
+    </div>
+
+    <div class="closing-card">
+      <div class="closing-title">今日小结</div>
+      <div class="closing-text">今天的 AI 世界有三个关键信号：(1) NVIDIA 的 Ising 开源量子模型标志着 AI 正在加速攻克量子计算的实用化瓶颈，两个领域的融合可能带来指数级突破。(2) Jane Street 60 亿美元的 CoreWeave 合约说明金融行业正在从「试水 AI」转向「重仓 AI 基础设施」。(3) Stanford AI 指数关于中美差距消失的结论，可能重塑未来的 AI 产业政策和投资格局。</div>
+    </div>
+
+  </div>
+
+  <!-- ==================== 技术进阶版 ==================== -->
+  <div id="tab-intermediate" class="tab-content">
+
+    <div class="mood-banner">
+      <div class="mood-title">技术脉搏：量子纠错的 AI 解法、2nm AI 芯片、Agentic Commerce 基础设施</div>
+      <div class="mood-subtitle">NVIDIA Ising 用 VLM 重新定义量子校准流程，Meta MTIA 推进 2nm 制程，Amex ACE 为 Agent 经济搭建支付轨道</div>
+    </div>
+
+    <!-- 模型与架构 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="section-title">模型与架构</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">量子 AI</span>
+          NVIDIA Ising 家族：VLM 驱动的量子计算加速
+        </div>
+        <p>NVIDIA 发布 Ising 系列开源模型，包含两个核心组件：</p>
+        <ul class="detail-list">
+          <li>Ising Calibration：350 亿参数的视觉语言模型（VLM），专门用于量子处理器的自动化校准。它通过视觉理解量子设备的状态图像，取代了原本需要人工判读和调整的繁琐流程。</li>
+          <li>Ising Decoding：基于 CNN 的表面码量子纠错解码器，相比传统 MWPM（最小权重完美匹配）算法，速度提升 2.5x，准确率提升 3x。</li>
+        </ul>
+        <div class="highlight">技术意义：将 VLM 应用于量子校准是一个精妙的跨领域迁移。量子处理器的调优本质上是一个「看图判断状态」的问题 -- 工程师通过观察 IQ 平面散点图、谐振频率图等来调整参数。VLM 在这类视觉判读任务上已经超过人类专家，因此这个应用方向虽然听起来奇特，但技术逻辑非常扎实。</div>
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-value">35B</div>
+            <div class="stat-label">Calibration 参数量</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">2.5x</div>
+            <div class="stat-label">解码速度提升</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">3x</div>
+            <div class="stat-label">纠错准确率提升</div>
+          </div>
+        </div>
+        <a href="https://nvidianews.nvidia.com/news/nvidia-launches-ising-the-worlds-first-open-ai-models-to-accelerate-the-path-to-useful-quantum-computers" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          NVIDIA Newsroom
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">推理</span>
+          NVIDIA Cosmos Reason 2：具身推理的新标杆
+        </div>
+        <p>Cosmos Reason 2 是一个专为机器人和自动驾驶设计的推理 VLM，在全国机器人周期间发布。它的核心能力是「空间推理」-- 理解三维场景中物体的空间关系、预测物理运动轨迹、规划最优交互路径。</p>
+        <div class="highlight">Cosmos Reason 2 采用了分层推理架构：先通过视觉编码器构建场景表示，再通过物理模拟模块预测动力学，最后通过规划模块生成动作序列。这种「感知-模拟-规划」的流水线设计，与 Gemini Robotics-ER 的纯推理路线形成了有趣的对比。</div>
+        <a href="https://blogs.nvidia.com/blog/national-robotics-week-2026/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          NVIDIA Blog
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">效率</span>
+          Google TurboQuant：向量量化内存开销减少 6 倍
+        </div>
+        <p>Google 在 ICLR 2026 上发表了 TurboQuant 算法，针对向量量化（VQ）中长期存在的内存瓶颈问题提出了新解法。VQ 是大规模 AI 系统中检索和压缩的核心技术，TurboQuant 将其内存需求降低至原来的 1/6，同时保持量化质量。</p>
+        <div class="highlight">实际影响：VQ 广泛用于 embedding 检索、模型压缩和多模态对齐。内存降低 6x 意味着同样的硬件可以支撑更大的 codebook，直接提升检索精度和生成质量。这对 RAG 系统和向量数据库的性能有直接影响。</div>
+        <a href="https://www.devflokers.com/blog/ai-news-last-24-hours-april-2026-model-releases-breakthroughs" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          devFlokers
+        </a>
+      </div>
+    </div>
+
+    <!-- 基础设施与芯片 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon gpu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>
+        </div>
+        <div class="section-title">基础设施与芯片</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-gpu">芯片</span>
+          Meta MTIA x Broadcom：2nm 制程 AI 芯片路线图
+        </div>
+        <p>Meta 扩大与 Broadcom 的定制硅合作，关键技术细节：</p>
+        <ul class="detail-list">
+          <li>MTIA 芯片将成为首个采用 2nm 制程的 AI 加速器，预计 2027-2028 量产</li>
+          <li>Meta 承诺 1GW 初始部署规模 -- 这相当于约 50 万块高端 GPU 的等效算力</li>
+          <li>多代芯片路线图延伸至 2029 年，覆盖训练和推理两条产品线</li>
+          <li>Broadcom 提供 ASIC 设计服务和先进封装技术，Meta 负责架构定义和软件栈</li>
+        </ul>
+        <div class="highlight">这一合作背后的战略逻辑：Meta 每年在 NVIDIA GPU 上的支出已超过 200 亿美元。自研芯片即使只替换推理负载的 30-40%，也能节省数十亿美元运营成本。2nm 制程的选择意味着 Meta 不打算做「够用就好」的替代品，而是要在能效比上直接对标甚至超越 NVIDIA。</div>
+        <a href="https://about.fb.com/news/2026/04/meta-partners-with-broadcom-to-co-develop-custom-ai-silicon/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Meta Newsroom
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">资本</span>
+          Jane Street 60 亿美元 CoreWeave 合约与投资分析
+        </div>
+        <p>Jane Street 的 CoreWeave 交易分为两部分：60 亿美元长期云服务合约（包含 NVIDIA Vera Rubin 平台访问权）+ 10 亿美元股权投资（$109/股）。</p>
+        <div class="highlight">为什么量化交易公司需要这么多 AI 算力？Jane Street 的业务核心是高频量化交易和市场定价。随着金融市场中 AI 驱动的交易策略占比快速上升，算力需求从「毫秒级低延迟」转向「海量模型训练+实时推理」的双重需求。60 亿美元的合约规模暗示 Jane Street 可能在构建自己的大规模 AI 交易基础设施。</div>
+        <a href="https://www.coreweave.com/news/jane-street-signs-6-billion-ai-cloud-agreement-with-coreweave" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          CoreWeave
+        </a>
+      </div>
+    </div>
+
+    <!-- Agentic AI 生态 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon product">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="section-title">Agentic AI 生态</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-product">产品</span>
+          Amex ACE：Agentic Commerce 的基础设施层
+        </div>
+        <p>美国运通的 ACE 开发者工具包包含三个核心组件：</p>
+        <ul class="detail-list">
+          <li>Agent Identity Layer：AI Agent 的身份验证和注册体系</li>
+          <li>Transaction Protection：行业首创的 Agent Purchase Protection，覆盖 AI 代理完成的消费行为</li>
+          <li>Partner APIs：与 Stripe、PayPal、Adyen、Fiserv 的标准化集成接口</li>
+        </ul>
+        <div class="highlight">ACE 的深层意义：当 AI Agent 可以代替人类完成消费行为时，传统的消费者保护框架需要重新设计。Amex 的 Agent Purchase Protection 本质上是在回答一个法律和技术的交叉问题 -- 「当 AI 帮你买的东西不满意时，谁来负责？」答案是：交易平台通过 Agent 身份注册体系来承担。</div>
+        <a href="https://www.americanexpress.com/en-us/newsroom/articles/innovation/american-express-debuts-agentic-commerce-experiences--ace--devel.html" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          American Express
+        </a>
+      </div>
+    </div>
+
+    <!-- 行业洞察 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon research">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div class="section-title">行业洞察</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">报告</span>
+          Stanford AI Index 2026：技术细节深读
+        </div>
+        <p>Stanford HAI 年度 AI 指数报告的关键数据点：</p>
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-value">50%+</div>
+            <div class="stat-label">Humanity's Last Exam 得分</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">~100%</div>
+            <div class="stat-label">SWE-bench 代码得分</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">88%</div>
+            <div class="stat-label">企业 AI 采用率</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">-89%</div>
+            <div class="stat-label">AI 研究者赴美人数变化</div>
+          </div>
+        </div>
+        <ul class="detail-list">
+          <li>SWE-bench 编码得分从 60% 攀升至接近 100%（一年内），意味着 AI 在标准化软件工程任务上已接近人类水平</li>
+          <li>GenAI 采用速度超过 PC 和互联网：3 年内达到 53% 人口覆盖率</li>
+          <li>基础模型透明度指数从 58 分降至 40 分 -- 最强的模型反而最不透明</li>
+          <li>AI 研究者赴美移民人数较 2017 年下降 89%，仅过去一年就下降 80%</li>
+        </ul>
+        <a href="https://hai.stanford.edu/ai-index/2026-ai-index-report" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Stanford HAI
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">研究</span>
+          神经符号方法：AI 能耗降低 100x 的技术路径
+        </div>
+        <p>新发布的研究成果将神经网络与符号推理结合（neuro-symbolic approach），在机器人控制等任务上实现了能耗降低 100 倍。核心思路是让符号系统处理可逻辑推导的部分（如碰撞检测、路径规划），只将需要模式识别的部分交给神经网络。</p>
+        <div class="highlight">这个思路并不新，但此次突破在于找到了一种自动化的「任务分割」方法 -- 系统能自动判断哪些子任务适合符号推理、哪些适合神经网络，而不需要人工设计分割边界。这让 neuro-symbolic 方法首次具备了规模化应用的可能性。</div>
+        <a href="https://www.sciencedaily.com/releases/2026/04/260405003952.htm" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          ScienceDaily
+        </a>
+      </div>
+    </div>
+
+    <div class="closing-card">
+      <div class="closing-title">技术趋势总结</div>
+      <div class="closing-text">今日三条技术主线值得关注：(1) AI x 量子计算的交叉正在从理论走向工程 -- NVIDIA Ising 证明了大模型技术（VLM）可以直接迁移到量子计算领域的实际工程问题上，这种跨领域迁移能力是大模型最被低估的价值之一。(2) Agentic Commerce 基础设施开始成型 -- Amex ACE 不仅是一个支付产品，更是 Agent 经济运转所需的信任基础设施。当 AI Agent 可以持有身份、进行消费、享受权益保护时，Agent 经济的「飞轮」就开始转动了。(3) 效率突破正在重新定义 AI 的部署边界 -- 无论是 TurboQuant 的 6x 内存优化还是 neuro-symbolic 的 100x 能耗降低，都在说明同一件事：AI 能力的下一个跳跃可能不来自更大的模型，而来自更聪明的工程。</div>
+    </div>
+
+  </div>
+
+  <!-- ==================== 深度技术版 ==================== -->
+  <div id="tab-expert" class="tab-content">
+
+    <div class="mood-banner">
+      <div class="mood-title">深度视角：量子纠错 x AI、2nm ASIC 架构、Agentic Commerce Protocol Stack</div>
+      <div class="mood-subtitle">从 surface code 解码器到 Agent 身份层：今日技术进展的架构分析与工程影响</div>
+    </div>
+
+    <!-- 量子 AI 深度 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="section-title">量子 AI 深度分析</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">量子 AI</span>
+          NVIDIA Ising：量子纠错的 AI 解法 -- 架构与 Benchmark 详解
+        </div>
+        <p>Ising 家族的两个模型解决了量子计算实用化路径上的两个核心工程瓶颈：</p>
+        <div class="subsection-title">Ising Calibration（35B VLM）</div>
+        <ul class="detail-list">
+          <li>架构：基于 NVIDIA 的 VLM 框架（可能是 NVLM 系列的变体），针对量子设备图像（IQ 散点图、频谱图、能级图等）进行 domain-specific fine-tuning</li>
+          <li>训练数据：来自多个量子计算平台（超导、离子阱、光量子）的校准图像和对应的最优参数标注</li>
+          <li>核心能力：给定量子处理器当前状态的视觉输入，输出最优校准参数。传统方法需要物理学家手动判读图像并迭代调参（通常需要数小时），Ising 将这个过程压缩到分钟级</li>
+        </ul>
+        <div class="subsection-title">Ising Decoding（CNN-based）</div>
+        <ul class="detail-list">
+          <li>目标：实时解码量子表面码（surface code）中的错误综合征（syndrome），这是容错量子计算的核心环节</li>
+          <li>传统方法：最小权重完美匹配（MWPM）算法，时间复杂度 O(n^3)，在大规模码距下延迟成为瓶颈</li>
+          <li>Ising Decoding 方法：使用卷积神经网络直接将综合征模式映射到纠错操作，实现 O(1) 推理延迟（固定架构，不随码距增长）</li>
+          <li>性能：2.5x 速度提升，3x 准确率提升（在 distance-17 及以上的 surface code 上优势更明显）</li>
+        </ul>
+        <div class="highlight">深度技术评估：Ising Decoding 的关键创新在于用 CNN 的平移不变性来匹配 surface code 的拓扑结构。传统 MWPM 将纠错建模为图论问题，而 CNN 将其建模为图像分割问题 -- 综合征数据天然是 2D 网格结构，CNN 可以直接在其上进行局部模式匹配。限制：CNN 方法对非标准噪声模型（如 correlated errors）的泛化能力仍需验证。开源发布在 GitHub 和 Hugging Face，使用 Apache 2.0 许可证，这对量子计算社区是一个重大利好。</div>
+        <a href="https://nvidianews.nvidia.com/news/nvidia-launches-ising-the-worlds-first-open-ai-models-to-accelerate-the-path-to-useful-quantum-computers" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          NVIDIA Newsroom
+        </a>
+        <span style="margin-left: 16px;"></span>
+        <a href="https://www.tomshardware.com/tech-industry/artificial-intelligence/nvidia-releases-ising-open-ai-models" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Tom's Hardware
+        </a>
+      </div>
+    </div>
+
+    <!-- 芯片架构 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon gpu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>
+        </div>
+        <div class="section-title">芯片架构与基础设施</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-gpu">芯片</span>
+          Meta MTIA 2nm 路线图：自研 AI 芯片的架构策略
+        </div>
+        <p>Meta-Broadcom 扩大合作的技术背景和架构分析：</p>
+        <ul class="detail-list">
+          <li>MTIA v1（2023 年发布）是 7nm 推理专用芯片，INT8 算力约 102 TOPS。MTIA v2（2024）升级至 5nm，提升约 3x 性能</li>
+          <li>新路线图的 2nm 版本预计将采用 TSMC N2 制程，GAA（Gate-All-Around）晶体管结构，预估能效比再提升 25-30%</li>
+          <li>1GW 部署承诺的规模分析：假设每台服务器功耗 ~2kW，1GW 意味着约 50 万台服务器。以每台配置 8 块加速器计算，总计约 400 万块 MTIA 芯片</li>
+          <li>Broadcom 的角色：提供 CoWoS/InFO-SoW 级别的先进封装能力，以及 SerDes/HBM 控制器等 chiplet 接口 IP</li>
+        </ul>
+        <div class="highlight">架构决策分析：Meta 选择 Broadcom 而非自行从头设计（like Google TPU）或收购芯片公司（like Amazon Annapurna Labs），反映了一种务实的策略 -- 利用 Broadcom 在 ASIC 设计服务上的成熟流程（服务过 Google、Apple 等大客户），换取更快的上市速度。Hock Tan 离开 Meta 董事会是为了消除利益冲突，这暗示合作规模可能远超公开数字。值得关注的是 Meta 是否会像 Google 一样最终走向完全自主设计。</div>
+        <a href="https://about.fb.com/news/2026/04/meta-partners-with-broadcom-to-co-develop-custom-ai-silicon/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Meta Newsroom
+        </a>
+        <span style="margin-left: 16px;"></span>
+        <a href="https://www.cnbc.com/2026/04/14/meta-commits-to-one-gigawatt-of-custom-chips-with-broadcom-as-hock-tan-agrees-to-leave-board.html" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          CNBC
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">市场</span>
+          Jane Street-CoreWeave 交易的算力经济学
+        </div>
+        <p>60 亿美元合约的算力经济学分析：</p>
+        <table class="tech-table">
+          <tr><th>指标</th><th>估算值</th><th>说明</th></tr>
+          <tr><td>合约总额</td><td>$6B</td><td>多年期 AI 云服务合约</td></tr>
+          <tr><td>股权投资</td><td>$1B @ $109/股</td><td>CoreWeave 估值约 $35B</td></tr>
+          <tr><td>等效 GPU 小时</td><td>~10 亿 H100-hours</td><td>按 $6/GPU-hour 估算</td></tr>
+          <tr><td>Vera Rubin 访问</td><td>首批客户</td><td>NVIDIA 下一代平台</td></tr>
+        </table>
+        <div class="highlight">Jane Street 的 AI 算力需求来源分析：(1) 量化交易模型训练 -- 现代 quant 策略越来越依赖大规模 transformer 模型处理多模态市场数据（order book、新闻、卫星图像等）。(2) 实时推理 -- 交易执行需要毫秒级延迟的模型推理。CoreWeave 的地理分布式部署和裸金属 GPU 访问能满足延迟要求。(3) 合成数据生成 -- 用 diffusion 模型生成市场场景用于策略回测。这笔交易表明顶级金融机构正在将 AI 基础设施从「辅助工具」重新定位为「核心竞争力」。</div>
+        <a href="https://www.coreweave.com/news/jane-street-signs-6-billion-ai-cloud-agreement-with-coreweave" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          CoreWeave
+        </a>
+      </div>
+    </div>
+
+    <!-- 研究与效率 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon research">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        </div>
+        <div class="section-title">研究与效率突破</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">ICLR 2026</span>
+          TurboQuant：向量量化的内存效率革命
+        </div>
+        <p>Google 在 ICLR 2026 发表的 TurboQuant 解决了向量量化中的核心工程问题：</p>
+        <ul class="detail-list">
+          <li>问题定义：传统的 Product Quantization (PQ) 和 Residual Quantization (RQ) 在训练时需要维护完整的 codebook 副本，内存复杂度 O(K * D)，其中 K 是 codebook 大小，D 是向量维度</li>
+          <li>TurboQuant 方法：使用 codebook sharding + progressive refinement 策略，将训练时内存需求从 O(K * D) 降至 O(K * D / M)，其中 M 是分片数（论文取 M=6）</li>
+          <li>关键洞察：codebook 条目之间存在高度冗余（尤其在高维空间），可以通过低秩近似来压缩 codebook 的训练状态</li>
+          <li>适用场景：大规模 embedding 检索（如 Google Search）、模型压缩（weight quantization）、多模态对齐（CLIP-style models）</li>
+        </ul>
+        <div class="highlight">工程影响：对于运行 FAISS 或 ScaNN 等向量检索系统的团队，TurboQuant 意味着可以在同样的硬件上训练 6 倍大的 codebook，直接提升 top-k recall。对于 RAG 系统，这可能意味着在不增加成本的情况下显著提升检索质量。Google 预计会将这项技术集成到 Vertex AI Vector Search 中。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">论文</span>
+          Neuro-Symbolic 100x 能耗降低：自动任务分割方法
+        </div>
+        <p>新研究的技术方案详解：</p>
+        <ul class="detail-list">
+          <li>核心创新：提出了 Automated Symbolic-Neural Partitioning (ASNP) 方法，能自动将一个端到端的神经网络任务分解为符号推理和神经网络的混合流水线</li>
+          <li>方法：首先训练一个完整的神经网络作为 teacher，然后用 program synthesis 技术从 teacher 的行为中提取可符号化的子任务（如碰撞检测 -> SAT solver，路径规划 -> A* 算法），只保留不可符号化的部分（如视觉感知）由轻量神经网络处理</li>
+          <li>结果：在机器人导航任务上，100x 能耗降低，准确率持平或微升；在工业质检任务上，50x 能耗降低，准确率提升 2%</li>
+          <li>限制：ASNP 的 program synthesis 步骤本身计算量较大（一次性成本），适合部署场景固定的应用（如工厂、仓库），不适合需要频繁重新配置的场景</li>
+        </ul>
+        <a href="https://www.sciencedaily.com/releases/2026/04/260405003952.htm" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          ScienceDaily
+        </a>
+      </div>
+    </div>
+
+    <!-- Agentic Commerce 架构 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon product">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="section-title">Agentic Commerce 架构分析</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-product">架构</span>
+          Amex ACE Protocol Stack：Agent 经济的支付基础设施
+        </div>
+        <p>ACE 开发者工具包的技术架构分解：</p>
+        <div class="subsection-title">协议栈层次</div>
+        <ul class="detail-list">
+          <li>L1 - Agent Identity：Agent 注册、密钥管理、所有者绑定。类似于 OAuth 2.0 的 client credentials flow，但增加了 agent-specific 的权限范围和消费限额</li>
+          <li>L2 - Transaction Initiation：Agent 代表用户发起交易请求，包含商品描述、价格确认、偏好匹配等元数据。与 Stripe/PayPal 的标准 checkout 接口对接</li>
+          <li>L3 - Dispute Resolution：Agent Purchase Protection 的实现层。当交易出现争议时，系统回溯 Agent 的决策日志（reasoning trace）来判定责任归属</li>
+        </ul>
+        <div class="subsection-title">合作伙伴集成</div>
+        <table class="tech-table">
+          <tr><th>合作伙伴</th><th>角色</th><th>集成方式</th></tr>
+          <tr><td>Stripe / PayPal</td><td>支付网关</td><td>ACE Agent SDK 原生集成</td></tr>
+          <tr><td>Adyen / Fiserv</td><td>收单处理</td><td>ACE Merchant API</td></tr>
+          <tr><td>Delta / Expedia / Hilton</td><td>商户</td><td>ACE Commerce API</td></tr>
+        </table>
+        <div class="highlight">架构洞察：ACE 的 L3 Dispute Resolution 层是整个系统最有技术深度的部分。它要求 Agent 的每次消费决策都生成可审计的 reasoning trace -- 这与 MCP（Model Context Protocol）的 tool use logging 高度互补。可以预见，未来的 Agentic Commerce 标准会要求所有 AI Agent 在消费场景中保留完整的推理链记录，这既是法律合规要求，也是消费者信任的技术基础。Anthropic 的 MCP 已经有 9700 万安装量，如果 ACE 与 MCP 生态对接，Agent 经济的基础设施就基本完备了。</div>
+        <a href="https://www.americanexpress.com/en-us/newsroom/articles/innovation/american-express-debuts-agentic-commerce-experiences--ace--devel.html" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          American Express
+        </a>
+      </div>
+    </div>
+
+    <!-- Stanford 深度 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        </div>
+        <div class="section-title">Stanford AI Index 深度解读</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">报告</span>
+          AI Index 2026：12 个关键发现的技术分析
+        </div>
+        <p>对 Stanford HAI 年度报告中最值得深入探讨的发现进行技术层面的解析：</p>
+        <div class="subsection-title">SWE-bench：从 60% 到接近 100% 的跳跃</div>
+        <ul class="detail-list">
+          <li>2025 年初顶尖 AI 系统在 SWE-bench（标准化软件工程任务集）上的分数为 ~60%，到 2026 年初已接近 100%。这一年内的跳跃主要归因于 agentic coding workflow 的成熟（多步推理 + 工具调用 + 自我验证循环）</li>
+          <li>关键限制：SWE-bench 测试的是结构化的、有明确正确答案的编码任务。在需要架构决策、需求澄清、跨团队协调的真实软件工程场景中，AI 的表现仍远低于资深工程师</li>
+        </ul>
+        <div class="subsection-title">Humanity's Last Exam：8.8% -> 50%+</div>
+        <ul class="detail-list">
+          <li>Humanity's Last Exam 是一个由各领域顶尖专家设计的极难测试集，旨在衡量 AI 在「人类知识前沿」的表现</li>
+          <li>从 8.8% 到 50%+ 的跳跃意味着 AI 在专家级知识任务上的能力已从「随机猜测」进入「具备实质性理解」阶段</li>
+          <li>但 50% 仍然远低于人类专家（通常 85-95%），且 AI 的错误模式与人类不同 -- AI 倾向于在需要「跨领域直觉」的问题上失败</li>
+        </ul>
+        <div class="subsection-title">AI 透明度指数崩塌：58 -> 40</div>
+        <ul class="detail-list">
+          <li>Foundation Model Transparency Index 衡量模型开发者在数据来源、训练方法、安全测试等方面的信息公开程度</li>
+          <li>下降原因：(1) 新一代模型的训练数据来源越来越不透明（版权诉讼风险）；(2) 安全评估方法被视为竞争机密；(3) 模型能力的确切边界难以精确描述</li>
+          <li>悖论：最强的模型（GPT-6 级别）也是最不透明的，而完全开源的模型（Gemma 4、Llama 系列）透明度评分最高但能力略逊</li>
+        </ul>
+        <div class="subsection-title">AI 研究者赴美人数 -89%</div>
+        <ul class="detail-list">
+          <li>这是报告中最具长期影响的数据点。AI 研究者赴美移民人数较 2017 年峰值下降 89%，仅过去一年就下降 80%</li>
+          <li>直接影响：美国的 AI 研究人才优势正在快速消退，而中国、新加坡、阿联酋等国家的 AI 人才引进力度在加大</li>
+          <li>对产业的影响：硅谷 AI 公司的招聘池收缩，可能加速 remote-first 研究团队和全球分布式实验室的趋势</li>
+        </ul>
+        <a href="https://hai.stanford.edu/ai-index/2026-ai-index-report" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Stanford HAI
+        </a>
+        <span style="margin-left: 16px;"></span>
+        <a href="https://spectrum.ieee.org/state-of-ai-index-2026" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          IEEE Spectrum
+        </a>
+        <span style="margin-left: 16px;"></span>
+        <a href="https://www.nature.com/articles/d41586-026-01199-z" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Nature
+        </a>
+      </div>
+    </div>
+
+    <div class="closing-card">
+      <div class="closing-title">深度总结</div>
+      <div class="closing-text">今日三个结构性信号值得深入跟踪：(1) AI x 量子计算的工程化路径正在打开 -- NVIDIA Ising 的关键创新不在于算法本身（CNN 解码器已有大量学术工作），而在于工程化封装和开源发布。当量子纠错从学术论文变成可 pip install 的开源模型时，量子计算的应用探索成本会急剧下降。预计 6-12 个月内会看到大量基于 Ising 的量子应用实验。(2) AI 芯片的「三体问题」正在形成 -- NVIDIA（通用 GPU）、Google（自研 TPU）、Meta（ASIC 合作）三种路线各有取舍。Meta 选择 Broadcom 合作而非全自研，意味着它判断 time-to-market 比架构自主权更重要。但长期来看，最终赢家可能是能最快迭代软件栈（compiler + runtime + framework）的一方，因为硬件差异正在被编译器优化逐步抹平。(3) Agent 经济的基础设施堆栈正在快速完善 -- 从 Anthropic 的 MCP（Agent-工具交互标准）到 Amex 的 ACE（Agent-商业交互标准），再到各家的 Managed Agent 平台（Agent 运行时），一个完整的 Agent 经济技术栈正在成型。关键缺失的一环是跨 Agent 协作协议 -- 当多个来自不同供应商的 Agent 需要协作完成一笔复杂交易时，谁来协调？这可能是 2026 下半年最重要的技术标准化议题。</div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>AI Pulse Daily Report | 2026.04.16</p>
+    <p style="margin-top: 4px;">AI Pulse -- 由 AI 自动生成 -- 数据来源：NVIDIA / CoreWeave / Meta / Stanford HAI / American Express / Bloomberg / Nature / ScienceDaily / PwC</p>
+    <p style="margin-top: 8px;"><a href="/">返回 AI Pulse 主页</a></p>
+  </div>
+</div>
+
+<script>
+function switchTab(tabName) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  const tabMap = { casual: 0, intermediate: 1, expert: 2 };
+  document.getElementById('tab-' + tabName).classList.add('active');
+  document.querySelectorAll('.tab-btn')[tabMap[tabName]].classList.add('active');
+}
+</script>
+</body>
+</html>

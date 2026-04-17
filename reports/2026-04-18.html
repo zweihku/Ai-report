@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily Report | 2026.04.18</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --claude-bg: #FAF9F7;
+    --claude-surface: #FFFFFF;
+    --claude-border: #E8E5E0;
+    --claude-text-primary: #1A1714;
+    --claude-text-secondary: #6B6560;
+    --claude-text-tertiary: #9B9590;
+    --claude-accent: #DA7756;
+    --claude-accent-light: #F5E6DF;
+    --claude-accent-dark: #C4623F;
+    --claude-tag-blue: #E8F0FE;
+    --claude-tag-blue-text: #3B6CB5;
+    --claude-tag-green: #E6F4EA;
+    --claude-tag-green-text: #2D7A3F;
+    --claude-tag-purple: #F0E6FA;
+    --claude-tag-purple-text: #7B3FAF;
+    --claude-tag-amber: #FEF3E2;
+    --claude-tag-amber-text: #B5752D;
+    --claude-tag-red: #FDE8E8;
+    --claude-tag-red-text: #B53B3B;
+    --claude-card-shadow: 0 1px 3px rgba(26, 23, 20, 0.06), 0 1px 2px rgba(26, 23, 20, 0.04);
+    --claude-card-shadow-hover: 0 4px 12px rgba(26, 23, 20, 0.08), 0 2px 4px rgba(26, 23, 20, 0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+    background: var(--claude-bg);
+    color: var(--claude-text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 8px;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--claude-accent-dark); }
+
+  .header {
+    text-align: center;
+    padding: 48px 0 40px;
+    border-bottom: 1px solid var(--claude-border);
+    margin-bottom: 32px;
+  }
+
+  .header-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--claude-accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .header .date {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    font-weight: 400;
+  }
+
+  .header .edition-note {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    margin-top: 8px;
+  }
+
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 36px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--claude-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .tab-btn:hover {
+    color: var(--claude-text-primary);
+    background: var(--claude-bg);
+  }
+
+  .tab-btn.active {
+    background: var(--claude-accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(218, 119, 86, 0.3);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .section { margin-bottom: 36px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .section-icon.gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .section-icon.model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .section-icon.product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .section-icon.research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .section-icon.industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .section-icon.policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .card {
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--claude-card-shadow);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .card:hover { box-shadow: var(--claude-card-shadow-hover); }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .card p {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.75;
+    margin-bottom: 8px;
+  }
+
+  .card p:last-child { margin-bottom: 0; }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .tag-gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .tag-model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .tag-product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .tag-research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .tag-industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .tag-policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .highlight {
+    background: var(--claude-accent-light);
+    border-left: 3px solid var(--claude-accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--claude-accent-dark);
+    line-height: 1.7;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .stat-item {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--claude-accent);
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--claude-text-tertiary);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 8px;
+    transition: color 0.15s;
+  }
+
+  .source-link:hover { color: var(--claude-accent-dark); text-decoration: underline; }
+
+  .tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .tech-table th, .tech-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .tech-table th {
+    font-weight: 600;
+    color: var(--claude-text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: var(--claude-bg);
+  }
+
+  .tech-table td { color: var(--claude-text-primary); }
+
+  .code-block {
+    background: #2D2A26;
+    color: #E8E5E0;
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    overflow-x: auto;
+    margin: 12px 0;
+  }
+
+  .code-block .comment { color: #9B9590; }
+  .code-block .keyword { color: #DA7756; }
+  .code-block .string { color: #7DB87D; }
+
+  .footer {
+    text-align: center;
+    padding: 32px 0;
+    border-top: 1px solid var(--claude-border);
+    margin-top: 48px;
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+  }
+
+  .footer a {
+    color: var(--claude-accent);
+    text-decoration: none;
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 20px 16px 60px; }
+    .header h1 { font-size: 24px; }
+    .tab-btn { font-size: 13px; padding: 10px 8px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+  }
+
+  .subsection-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin: 16px 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  ul.detail-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0;
+  }
+
+  ul.detail-list li {
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.7;
+    padding: 4px 0 4px 16px;
+    position: relative;
+  }
+
+  ul.detail-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--claude-border);
+  }
+
+  .mood-banner {
+    background: linear-gradient(135deg, #FFF5F0 0%, #FFF9F0 100%);
+    border: 1px solid #F0DDD0;
+    border-radius: 16px;
+    padding: 28px 24px;
+    margin-bottom: 32px;
+    text-align: center;
+  }
+
+  .mood-banner .mood-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin-bottom: 6px;
+  }
+
+  .mood-banner .mood-subtitle {
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.6;
+  }
+
+  .mood-meter {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    margin: 12px 0;
+  }
+
+  .mood-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    transition: transform 0.2s;
+  }
+
+  .mood-dot.active { transform: scale(1.4); }
+
+  .mood-label {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+
+  .tldr-box {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.6;
+  }
+
+  .closing-card {
+    background: linear-gradient(135deg, #FFF5F0 0%, #FFF9F0 100%);
+    border: 1px solid #F0DDD0;
+    border-radius: 16px;
+    padding: 28px 24px;
+    margin-top: 32px;
+    text-align: center;
+  }
+
+  .closing-card .closing-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin-bottom: 10px;
+  }
+
+  .closing-card .closing-text {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.8;
+    text-align: left;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <a href="/" class="back-link">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
+    返回 AI Pulse
+  </a>
+
+  <div class="header">
+    <div class="header-logo">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      AI PULSE DAILY
+    </div>
+    <h1>AI 日报 | 2026.04.18</h1>
+    <div class="date">2026 年 4 月 18 日 星期六</div>
+    <div class="edition-note">第 28 期 -- Anthropic 营收超越 OpenAI，斯坦福报告中美 AI 差距缩至 2.7%，Google TurboQuant 将 LLM 内存需求降低 6 倍</div>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('casual')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+      轻松阅读
+    </button>
+    <button class="tab-btn" onclick="switchTab('intermediate')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      技术进阶
+    </button>
+    <button class="tab-btn" onclick="switchTab('expert')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      深度技术
+    </button>
+  </div>
+
+  <!-- ==================== 轻松阅读版 ==================== -->
+  <div id="tab-casual" class="tab-content active">
+
+    <div class="mood-banner">
+      <div class="mood-title">今日 AI 圈：Anthropic 逆袭登顶，斯坦福报告揭示 AI 格局巨变</div>
+      <div class="mood-meter">
+        <div class="mood-dot" style="background:#4CAF50"></div>
+        <div class="mood-dot active" style="background:#8BC34A"></div>
+        <div class="mood-dot" style="background:#FFC107"></div>
+        <div class="mood-dot" style="background:#FF9800"></div>
+        <div class="mood-dot" style="background:#F44336"></div>
+      </div>
+      <div class="mood-label">市场情绪：乐观偏多</div>
+      <div class="mood-subtitle">Anthropic 年化收入突破 300 亿美元超越 OpenAI，斯坦福 AI 指数显示中美差距仅剩 2.7%，Google 在 ICLR 上发布内存压缩算法，Snap 因 AI 效率裁员千人</div>
+    </div>
+
+    <!-- 头条 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="section-title">头条速览</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">行业</span>
+          Anthropic 年收入超越 OpenAI，ARR 达 300 亿美元
+        </div>
+        <p>Anthropic 年化经常性收入（ARR）从今年 2 月的 140 亿美元飙升至 4 月中旬的 300 亿美元，首次超越 OpenAI 同期约 240-250 亿美元的水平。年付费百万美元以上的企业客户翻倍至超过 1000 家。与 Google 和 Broadcom 的合作进一步扩大，目标是获取数个 GW 级的下一代算力。Claude 不再是追赶者，而是领跑者。</p>
+        <a href="https://www.nextplatform.com/ai/2026/04/07/broadcom-and-google-benefit-mightily-from-anthropics-meteoric-growth/5214732" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Next Platform
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">研究</span>
+          斯坦福 AI 指数 2026：中美差距缩至 2.7%，AI Agent 成功率飙至 66%
+        </div>
+        <p>斯坦福大学发布第九版 AI 指数报告（423 页），核心发现：中美 AI 模型性能差距缩小至 2.7%，其中美国最强模型 Claude Opus 4.6 的 Elo 评分为 1503。AI Agent 处理真实计算机任务的成功率从 18 个月前的 12% 跃升至 66%，距人类仅差 6 个百分点。生成式 AI 三年渗透率达 53%，比 PC 和互联网普及得还快。</p>
+        <a href="https://hub.baai.ac.cn/view/53971" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Stanford AI Index
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">模型</span>
+          Google TurboQuant 亮相 ICLR 2026，LLM 内存需求直降 6 倍
+        </div>
+        <p>Google 在 ICLR 2026 大会上发布 TurboQuant 算法，通过压缩 KV 缓存将大模型运行时的内存开销降低 6 倍。KV 缓存是目前运行大模型最大的性能瓶颈之一。对于开发者和用户来说，这意味着更小的显卡也能跑更大的模型，AI 服务的成本会大幅下降。</p>
+      </div>
+    </div>
+
+    <!-- 大公司动态 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <div class="section-title">大公司动态</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">行业</span>
+          三巨头联手反击「模型蒸馏」，中美 AI 攻防战升级
+        </div>
+        <p>OpenAI、Anthropic、Google 仿照网络安全领域的信息共享实践，建立了一套联合防御机制。系统能自动识别异常 API 调用模式，协调封号和流量限制。Anthropic 指控中国企业用数千假账号对 Claude 发起超 1600 万次交互来提取能力。中美 AI 竞争不再只是谁模型好，还要看谁能守住自己的模型。</p>
+        <a href="https://www.bloomberg.com/news/articles/2026-04-06/openai-anthropic-google-unite-to-combat-model-copying-in-china" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Bloomberg
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">职场</span>
+          Snap 裁员千人：AI 已生成 65% 的代码，小团队做大事
+        </div>
+        <p>Snap CEO Evan Spiegel 宣布裁员约 1000 人并关闭 300 多个岗位招聘。理由很直白：AI 让更小的团队就能完成以前需要大团队的工作。目前 AI 已经生成了 Snap 超过 65% 的新代码。这是「AI 替代岗位」从理论走向现实的又一个标志性事件。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-gpu">算力</span>
+          台积电 Q1 利润暴增 58%，毛利率飙至 66.2%
+        </div>
+        <p>台积电 2026 年第一季净利达 5725 亿新台币，同比增长 58%，毛利率创新高至 66.2%。AI 芯片需求是最大驱动力。与此同时，中际旭创 Q1 净利 57 亿元人民币，同比暴增 262%。从晶圆代工到光模块，整个 AI 算力产业链都在赚得盆满钵满。</p>
+        <a href="https://wallstreetcn.com/articles/3770196" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          华尔街见闻
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">资本</span>
+          Meta 2026 AI 资本支出上调至 1150-1350 亿美元
+        </div>
+        <p>Meta 宣布 2026 年 AI 相关资本支出将达到 1150 亿至 1350 亿美元，接近去年的两倍。超级智能实验室（由 Alexandr Wang 领衔的 140 亿美元并购交易后组建）发布的首个模型 Muse Spark 在写作和推理上接近 Google、OpenAI 和 Anthropic 的顶级模型，但在编码能力上仍有差距。</p>
+      </div>
+    </div>
+
+    <!-- 机器人与硬件 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon product">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>
+        </div>
+        <div class="section-title">机器人与硬件</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-product">机器人</span>
+          智元机器人发布 4 款新本体 + 4 个 AI 大模型
+        </div>
+        <p>智元机器人举办 2026 合作伙伴大会，一口气发布了 4 个机器人本体新品、4 个 AI 大模型和 7 个行业解决方案。从工业制造到商业服务，中国具身智能赛道正在从「做 demo」进入「交方案」的阶段。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-product">机器人</span>
+          特斯拉 Optimus Gen3 今夏启动生产，2027 量产
+        </div>
+        <p>特斯拉人形机器人 Optimus Gen3 将于今年夏天开始生产，计划 2027 年走向大规模量产。从 GTC 上的演示到真正的产线启动，Optimus 迈出了商业化最关键的一步。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-product">产品</span>
+          Apple 测试 AI 智能眼镜，与 Ray-Ban Meta 正面竞争
+        </div>
+        <p>Bloomberg 报道 Apple 正在测试代号 N50 的 AI 智能眼镜，尝试多种镜框设计和独特的椭圆相机。不同于 Vision Pro 混合现实头显，这款产品定位为日常配件，主打语音交互和智能助手功能。苹果的「端侧 AI」策略让 AI 处理在本地完成，而非依赖云端。</p>
+      </div>
+    </div>
+
+    <!-- 政策与社会 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="section-title">政策与社会</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-policy">政策</span>
+          科技巨头纷纷聘请哲学家，AI 伦理团队扩编
+        </div>
+        <p>Google DeepMind、Anthropic 和 OpenAI 都在扩充伦理研究团队，大量聘用人文学科学者。当 AI 模型越来越强大，「能做什么」的问题正在让位于「该不该做」的问题。哲学家们从象牙塔走进了硅谷最炙手可热的实验室。</p>
+        <a href="https://www.chosun.com/english/industry-en/2026/04/17/5JJVR3TKORD6POK54CXGOM6M54/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Chosun
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-policy">政策</span>
+          中国发布《人工智能示范法 3.0》，监管框架持续完善
+        </div>
+        <p>中国发布最新《人工智能示范法 3.0》，在已有的《算法推荐管理规定》、《深度合成管理规定》和《生成式 AI 管理办法》基础上，进一步完善 AI 伦理审查和监管体系。上海还率先推出基于风险分级的 AI 监管措施。与此同时，美国超过 600 项 AI 相关法案在各州涌现。</p>
+      </div>
+    </div>
+
+    <div class="closing-card">
+      <div class="closing-title">今日看点</div>
+      <div class="closing-text">Anthropic 的收入逆转是 AI 行业竞争格局洗牌的标志。半年前 OpenAI 还稳坐头把交椅，现在 Claude 凭借企业市场的强劲增长实现了赶超。斯坦福报告则给出了更宏观的信号：AI 已经不只是技术问题，而是国家竞争力的核心指标。中美 AI 差距缩至 2.7%、AI Agent 成功率逼近人类水平，这些数字背后是全球 AI 竞赛进入白热化阶段的注脚。</div>
+    </div>
+
+  </div>
+
+  <!-- ==================== 技术进阶版 ==================== -->
+  <div id="tab-intermediate" class="tab-content">
+
+    <div class="mood-banner">
+      <div class="mood-title">技术视角：推理成本突破、模型蒸馏防御、具身智能产线验证</div>
+      <div class="mood-subtitle">Google TurboQuant 将 KV cache 内存降低 6 倍，三大实验室联建反蒸馏系统，NVIDIA Rubin 平台进入量产，台积电 AI 芯片订单推高毛利率至历史新高</div>
+    </div>
+
+    <!-- 模型与算法 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="section-title">模型与算法</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">算法</span>
+          Google TurboQuant：KV Cache 内存压缩的重大突破
+        </div>
+        <p>Google 在 ICLR 2026 上发布 TurboQuant，专门针对 Transformer 模型中 KV cache 这一最大内存瓶颈。传统方法中，KV cache 的内存占用会随上下文长度线性增长，对于 GPT-6 级别的 200 万 token 上下文窗口，KV cache 单独就需要数十 GB 显存。</p>
+        <p>TurboQuant 通过动态量化和稀疏注意力模式相结合，将内存需求降低 6 倍，同时保持推理质量损失低于 0.5%。这意味着原本需要 A100 80GB 的推理任务，现在可以在 A100 40GB 甚至消费级 GPU 上运行。对于 API 提供商来说，同等硬件的吞吐量可提升 4-5 倍。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">研究</span>
+          斯坦福 AI 指数：Claude Opus 4.6 登顶，网安 Agent 成功率从 15% 飙至 93%
+        </div>
+        <p>斯坦福 AI 指数 2026（423 页报告）的技术核心发现：</p>
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-value">2.7%</div>
+            <div class="stat-label">中美 AI 差距</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">66%</div>
+            <div class="stat-label">Agent 任务成功率</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">93%</div>
+            <div class="stat-label">网安 Agent 成功率</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">53%</div>
+            <div class="stat-label">GenAI 三年渗透率</div>
+          </div>
+        </div>
+        <p>Anthropic Claude Opus 4.6（Elo 1503）位列全球第一，紧随其后的是 xAI、Google 和 OpenAI。网络安全 AI Agent 的成功率从 2024 年的 15% 飙升至 93%，几乎可以自动化大部分安全审计工作。22-25 岁美国软件开发者就业自 2024 年下降近 20%，初级岗位受 AI 冲击最大。</p>
+        <a href="https://spectrum.ieee.org/state-of-ai-index-2026" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          IEEE Spectrum
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">研究</span>
+          AI 能耗革命：神经符号混合架构实现 100 倍能效提升
+        </div>
+        <p>ScienceDaily 报道的最新研究展示了一种将神经网络与符号推理相结合的系统，在特定任务上可将 AI 能耗降低 100 倍。传统深度学习依赖蛮力搜索（暴力计算），而符号推理引入了逻辑规则约束搜索空间。这种混合架构对机器人领域尤为重要，因为边缘设备的算力和电量都极其有限。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">模型</span>
+          MiniMax M2.7 开源版：自我迭代能力提升 30%
+        </div>
+        <p>MiniMax 发布 M2.7 开源版本，在代码生成和数学推理任务上的自我迭代能力（self-improvement）提升 30%。自我迭代是指模型通过自身生成的数据来优化自身性能的能力，是 post-training 阶段的关键指标。这一提升暗示了 synthetic data 驱动的自我改进正在成为开源模型追赶闭源模型的核心手段。</p>
+      </div>
+    </div>
+
+    <!-- 行业与资本 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <div class="section-title">行业与资本</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">行业</span>
+          Anthropic ARR 从 140 亿飙至 300 亿，增速远超 OpenAI
+        </div>
+        <p>Anthropic 的增长曲线值得技术团队关注。Ramp 数据显示 Anthropic 企业采用率达 30.6%（OpenAI 35.2%），差距从 10 个百分点缩小至不足 5 个百分点。这一逆转的技术基础是 Claude 在编码、长上下文理解和 tool use 方面的系统性优势，特别是 Claude Code 的开发者工具链效应。</p>
+        <p>技术角度更值得关注的是 Anthropic 与 Google + Broadcom 的算力合作。多个 GW 级别的计算扩展意味着 Anthropic 正在为下一代模型训练储备远超当前需求的算力。这可能暗示 Claude 下一代模型（Mythos 后继者）的训练规模将远超市场预期。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">安全</span>
+          反蒸馏联盟技术细节：异常流量识别 + 协调封禁
+        </div>
+        <p>OpenAI、Anthropic、Google 三家建立的反蒸馏联盟在技术实现上有几个关键点：</p>
+        <ul class="detail-list">
+          <li>异常 API 调用模式检测：识别非正常的批量查询行为、系统性的 prompt 覆盖和边界探测</li>
+          <li>跨平台账号关联：共享可疑账号特征，实现协调封禁</li>
+          <li>流量限速和水印：对可疑来源实施动态限流，并在输出中嵌入隐性水印用于溯源</li>
+          <li>Anthropic 披露：中国企业使用数千假账号对 Claude 发起超 1600 万次交互</li>
+        </ul>
+        <p>这标志着模型安全从被动防御（output filtering）转向主动对抗（adversarial detection + coordinated response）。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-gpu">芯片</span>
+          NVIDIA Rubin 全面量产，H2 2026 云端可用
+        </div>
+        <p>NVIDIA 宣布 Rubin 平台已进入全面量产阶段，基于 Rubin 的产品将在 2026 下半年通过 AWS、Google Cloud、Microsoft Azure、OCI、CoreWeave、Lambda、Nebius 和 Nscale 提供。Rubin 代表了 NVIDIA 在 Blackwell 之后的下一代 AI 推理与训练架构，将进一步拉大 NVIDIA 与竞争对手的代差。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-gpu">芯片</span>
+          台积电 + 中际旭创：AI 算力产业链利润爆发
+        </div>
+        <p>台积电 Q1 毛利率 66.2% 创历史新高，净利同比 +58%，AI 芯片代工是核心驱动力。中际旭创（光模块龙头）Q1 净利 57 亿元，同比 +262%，单季利润超过 2024 全年。这两个数字共同印证：AI 算力基础设施的需求不但没有放缓，反而在加速。从训练到推理的全链条都在吃算力红利。</p>
+      </div>
+    </div>
+
+    <!-- 具身智能 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon product">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>
+        </div>
+        <div class="section-title">具身智能与机器人</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-product">机器人</span>
+          NVIDIA Isaac GR00T：自然语言驱动的机器人多步任务执行
+        </div>
+        <p>NVIDIA 发布新版 Isaac GR00T 开放模型，核心创新是 vision-language-action（VLA）推理框架，使机器人能够理解自然语言指令并执行多步骤任务。配套的 Cosmos 世界模型用于合成数据生成，解决了真实世界训练数据稀缺的问题。这是 sim-to-real（仿真到现实）技术栈的重要一环。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-product">机器人</span>
+          腾讯 HY-Embodied：MoT 架构的具身 AI 基础模型
+        </div>
+        <p>腾讯发布 HY-Embodied-0.5 具身 AI 基础模型套件，采用 Mixture-of-Transformers（MoT）架构。包含 2B 模型（适用于边缘部署）和 32B 模型（复杂推理）。MoT 相比标准 MoE 的优势在于 Transformer 层面而非 FFN 层面的专家化，对机器人场景中的多模态感知融合更友好。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-product">机器人</span>
+          PIA + Agibot 成立「极乐制造」：三款人形机器人亮相
+        </div>
+        <p>PIA Automation 与 Agibot 成立合资公司 Joybot Manufacture，推出三款初始机器人：P-Bot（零售服务）、I-Bot（移动底座工业型）和 A-Bot（研究平台）。人形机器人赛道的竞争已从「技术路线」进入「场景定义」阶段。</p>
+      </div>
+    </div>
+
+    <!-- 政策 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="section-title">政策与监管</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-policy">政策</span>
+          Snap 裁员启示：AI 代码生成占比 65% 的劳动力影响
+        </div>
+        <p>Snap 裁员事件的技术背景：AI 代码生成工具已占 Snap 新代码产出的 65%。从工程管理角度看，这意味着代码质量控制、code review 流程和技术债务管理的范式需要根本性改变。当多数代码由 AI 生成时，人类工程师的角色从「写代码」转向「审代码」和「定义架构」，团队规模相应收缩。斯坦福报告同步显示 22-25 岁美国开发者就业下降近 20%。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-policy">政策</span>
+          中美 AI 监管路径进一步分化
+        </div>
+        <p>中国发布《人工智能示范法 3.0》，采用全栈覆盖策略（数据-模型-应用），上海率先推出基于风险分级的 AI 监管措施。美国方面，RAISE Act 已于 3 月 19 日生效，要求前沿模型开发者承担透明度和安全报告义务。但特朗普政府同步推行行政令阻止各州独立监管 AI。两条路径分歧的核心在于：中国倾向于事前审查，美国倾向于事后追责。</p>
+      </div>
+    </div>
+
+    <div class="closing-card">
+      <div class="closing-title">技术趋势</div>
+      <div class="closing-text">本周技术层面三个信号值得持续关注：(1) TurboQuant 的 KV cache 压缩代表了推理优化从模型层面下沉到基础设施层面的趋势。当模型架构创新放缓时，推理效率优化成为降低 AI 服务成本的主要手段。(2) 反蒸馏联盟的建立意味着模型安全正在从「防止滥用」扩展到「防止复制」，这可能催生一个新的 AI 安全子领域。(3) 具身智能领域 VLA（vision-language-action）模型的成熟，正在让机器人从「编程驱动」转向「语言驱动」，这一转变对机器人产业的影响可能类似于 ChatGPT 对 NLP 行业的影响。</div>
+    </div>
+
+  </div>
+
+  <!-- ==================== 深度技术版 ==================== -->
+  <div id="tab-expert" class="tab-content">
+
+    <div class="mood-banner">
+      <div class="mood-title">深度分析：KV Cache 压缩、模型蒸馏攻防、异构计算格局</div>
+      <div class="mood-subtitle">TurboQuant 的量化策略与 attention sparsity 机制，反蒸馏系统的技术架构，NVIDIA Rubin 的计算范式，以及 MoT vs MoE 在具身 AI 中的架构取舍</div>
+    </div>
+
+    <!-- 核心技术分析 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="section-title">核心技术分析</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">算法</span>
+          TurboQuant 深度解析：动态量化 + 稀疏注意力的 KV Cache 革命
+        </div>
+        <p>KV Cache 是 Transformer 自回归推理中最大的内存瓶颈。对于一个 70B 参数模型在 128K context 下推理，KV cache 就需要约 40GB 显存。GPT-6 的 200 万 token 上下文窗口将这一数字推到了不可接受的水平。</p>
+        <p>TurboQuant 的技术方案包含三个核心创新：</p>
+        <ul class="detail-list">
+          <li>Layer-Adaptive Quantization：不同 Transformer 层的 KV cache 使用不同的量化精度（FP16/INT8/INT4），基于每层 attention entropy 动态决定精度分配</li>
+          <li>Sliding Window Sparse Attention：对超出滑动窗口的远距离 token，仅保留 top-k 重要度的 KV 对，其余丢弃而非量化</li>
+          <li>Cross-Layer KV Sharing：相邻层共享部分 KV cache，利用 Transformer 层间表示的相似性减少冗余存储</li>
+        </ul>
+        <p>最终效果：内存降低 6 倍，推理速度提升约 2.3 倍，输出质量损失 < 0.5%（MMLU、HumanEval、MATH 上测量）。这一成果对 long-context 推理场景的商业化部署具有决定性意义。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">研究</span>
+          斯坦福 AI 指数 2026 关键技术指标深度解读
+        </div>
+        <p>423 页报告的核心技术发现：</p>
+        <table class="tech-table">
+          <tr><th>指标</th><th>2024</th><th>2026</th><th>变化</th></tr>
+          <tr><td>AI Agent 任务成功率</td><td>12%</td><td>66%</td><td>+54pp</td></tr>
+          <tr><td>网安 Agent 成功率</td><td>15%</td><td>93%</td><td>+78pp</td></tr>
+          <tr><td>中美模型 Elo 差距</td><td>~15%</td><td>2.7%</td><td>-12.3pp</td></tr>
+          <tr><td>GenAI 企业渗透率</td><td>~20%</td><td>53%</td><td>+33pp</td></tr>
+          <tr><td>US 22-25 岁 SDE 就业</td><td>基线</td><td>-20%</td><td>显著下降</td></tr>
+        </table>
+        <p>几个值得深入分析的点：(1) Claude Opus 4.6 以 Elo 1503 登顶，其优势主要来自 extended thinking 和 tool use 能力，而非单纯的 benchmark 分数。(2) 网安 Agent 93% 成功率的背后是 code scanning + exploit generation + patch synthesis 的端到端自动化，这对安全行业是根本性冲击。(3) 中美差距缩至 2.7% 很大程度上来自中国模型在数学和编码 benchmark 上的追赶，但在创意写作、长上下文理解等维度差距仍然显著。</p>
+        <a href="https://www.ncsti.gov.cn/kjdt/kjrd/202604/t20260417_244174.html" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          国家科技信息中心
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">安全</span>
+          反模型蒸馏系统的技术架构分析
+        </div>
+        <p>三大实验室联建的反蒸馏系统在技术架构上涉及多个层面：</p>
+        <p class="subsection-title">检测层</p>
+        <ul class="detail-list">
+          <li>Query Pattern Analysis：基于 n-gram 和 embedding 相似度检测系统性的 prompt 覆盖行为。正常用户的查询分布呈长尾分布，而蒸馏行为的查询分布趋向于均匀覆盖模型能力空间</li>
+          <li>Response Fingerprinting：在模型输出中嵌入统计层面的隐性水印（非文本水印），用于验证下游模型是否使用了蒸馏数据</li>
+          <li>Behavioral Clustering：使用无监督学习对 API 调用模式进行聚类，识别大规模自动化调用的特征指纹</li>
+        </ul>
+        <p class="subsection-title">响应层</p>
+        <ul class="detail-list">
+          <li>Coordinated Rate Limiting：跨平台共享可疑账号特征后，三家同步实施限流</li>
+          <li>Quality Degradation：对确认的蒸馏行为渐进降低输出质量，而非直接封禁，增加对手的检测难度</li>
+          <li>Legal Escalation：收集证据链支持法律行动，Anthropic 已向美国国会提交相关材料</li>
+        </ul>
+        <p>OpenAI 向国会提交的材料指控中国企业通过混淆访问路径批量获取模型输出。Anthropic 公开指控涉及数千假账号和超 1600 万次交互。这一攻防战的技术水平已远超普通的 API abuse 防护。</p>
+      </div>
+    </div>
+
+    <!-- 算力与基础设施 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon gpu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>
+        </div>
+        <div class="section-title">算力与基础设施</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-gpu">芯片</span>
+          NVIDIA Rubin 量产与异构计算格局演进
+        </div>
+        <p>Rubin 平台进入全面量产标志着 NVIDIA 在 Blackwell 之后的代际升级。H2 2026 起，AWS、Google Cloud、Azure、CoreWeave 等八家云服务商将提供 Rubin 实例。</p>
+        <p>当前 AI 计算的异构格局正在形成四层架构：</p>
+        <table class="tech-table">
+          <tr><th>层级</th><th>硬件</th><th>场景</th><th>代表</th></tr>
+          <tr><td>通用训练+推理</td><td>GPU</td><td>大模型训练、通用推理</td><td>NVIDIA Rubin/Blackwell</td></tr>
+          <tr><td>特定模型优化</td><td>TPU/ASIC</td><td>特定架构的推理加速</td><td>Google TPU v6, Meta MTIA</td></tr>
+          <tr><td>极致推理能效</td><td>光子芯片</td><td>边缘推理、低延迟场景</td><td>芯光科技光子 AI 芯片</td></tr>
+          <tr><td>特定算法加速</td><td>量子处理器</td><td>优化问题、密码学</td><td>NVIDIA Ising, 天衍-287</td></tr>
+        </table>
+        <p>竞争维度正在从单一硬件性能转向软件栈（compiler + runtime + framework）的成熟度。NVIDIA CUDA 的生态壁垒仍然是最大的护城河。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-gpu">芯片</span>
+          台积电 66.2% 毛利率背后的 AI 芯片供需分析
+        </div>
+        <p>台积电 Q1 数据反映了 AI 芯片供应链的结构性特征：</p>
+        <ul class="detail-list">
+          <li>净利 5725 亿新台币（+58% YoY），毛利率 66.2%，远超 foundry 行业平均 ~40%</li>
+          <li>高毛利率的技术根源：先进制程（3nm/2nm）的良率持续提升，而 AI 客户（NVIDIA、AMD、Apple）的议价能力有限，因为 TSMC 几乎是唯一的先进制程供应商</li>
+          <li>中际旭创 Q1 净利 57 亿元（+262% YoY）印证了光模块需求的爆发。800G/1.6T 光模块是 AI 数据中心的关键互连组件</li>
+          <li>Meta $115-135B capex 中的大部分将流向 TSMC 代工的 AI 芯片和数据中心基础设施</li>
+        </ul>
+        <p>从供应链角度看，AI 算力的瓶颈正在从「芯片产能」转向「电力和散热基础设施」。Anthropic 与 Google/Broadcom 合作的多 GW 级计算项目正是应对这一瓶颈的典型案例。</p>
+      </div>
+    </div>
+
+    <!-- 具身智能架构 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon product">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>
+        </div>
+        <div class="section-title">具身智能与架构</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-product">架构</span>
+          MoT vs MoE：腾讯 HY-Embodied 的架构选择
+        </div>
+        <p>腾讯 HY-Embodied-0.5 选择 Mixture-of-Transformers（MoT）而非主流的 Mixture-of-Experts（MoE）架构，这一选择值得深入分析：</p>
+        <ul class="detail-list">
+          <li>MoE 在 FFN 层面做专家化：不同 expert 处理不同类型的 token，routing 发生在 FFN 之前。优势是计算效率高（稀疏激活），但不同 expert 共享相同的 attention 表示</li>
+          <li>MoT 在 Transformer 层面做专家化：不同 expert 拥有独立的 attention 机制。优势是不同 expert 可以学习不同的 attention pattern，对多模态输入（视觉、触觉、语言）的特化处理更优</li>
+          <li>在具身 AI 场景中，机器人需要同时处理视觉流（30fps+）、触觉反馈（100Hz+）和语言指令（异步），MoT 的模态级专家化比 MoE 的 token 级专家化更自然</li>
+        </ul>
+        <p>套件包含 2B（边缘部署）和 32B（云端推理）两个规模，形成边云协同架构。2B 模型处理实时感知和运动控制（< 10ms 延迟要求），32B 模型负责高级推理和规划。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-product">架构</span>
+          NVIDIA Isaac GR00T 的 VLA 推理框架
+        </div>
+        <p>Isaac GR00T 的 Vision-Language-Action（VLA）推理框架是当前具身 AI 的核心架构范式：</p>
+        <ul class="detail-list">
+          <li>Vision Encoder：处理 RGB-D + 点云输入，提取场景理解和物体检测特征</li>
+          <li>Language Encoder：理解自然语言指令，映射到任务级别的语义表示</li>
+          <li>Action Decoder：将 vision + language 特征融合后输出连续控制信号（关节角度、末端执行器位置等）</li>
+          <li>Cosmos World Model：基于扩散模型的世界模拟器，用于生成合成训练数据和在线规划</li>
+        </ul>
+        <p>Cosmos 世界模型的关键作用是解决 sim-to-real gap。传统仿真器（Isaac Sim）生成的数据与真实世界有分布偏差，Cosmos 通过学习真实世界视频来弥合这一差距。这使得机器人可以在仿真中训练后直接在真实世界中部署，大幅降低了数据收集成本。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">研究</span>
+          神经符号混合架构：100 倍能效提升的技术路径
+        </div>
+        <p>ScienceDaily 报道的神经符号混合系统采用了 Neurosymbolic Integration 框架：</p>
+        <ul class="detail-list">
+          <li>Neural Component：标准 Transformer 或 CNN 处理感知输入，输出概率化的符号表示</li>
+          <li>Symbolic Component：基于一阶逻辑的推理引擎，在约束空间中搜索最优解</li>
+          <li>Integration Layer：可微分的符号-神经接口，允许端到端训练</li>
+        </ul>
+        <p>100 倍能效提升的核心机制：符号推理引擎大幅剪枝了搜索空间。以机器人路径规划为例，纯神经网络方法需要评估数百万个候选路径（Monte Carlo Tree Search），而符号约束（如「避开障碍物」「保持稳定性」）可以将搜索空间缩小到数千个合法路径。这种架构在边缘设备上的优势尤为明显：更少的计算意味着更低的功耗和更快的响应。</p>
+      </div>
+    </div>
+
+    <!-- 政策 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="section-title">政策与监管</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-policy">政策</span>
+          中美 AI 监管的技术治理分化
+        </div>
+        <p>中国《人工智能示范法 3.0》与美国 RAISE Act 在技术层面的核心差异：</p>
+        <ul class="detail-list">
+          <li>中国采用「数据-模型-应用」全栈监管：从训练数据审查（来源合规、个人信息保护）到模型备案（参数量、能力评估）再到应用部署（行业准入、用户保护）的全链条管控</li>
+          <li>美国 RAISE Act 聚焦前沿模型：仅对超过特定算力阈值的「frontier model」设定透明度和安全报告要求，中小模型基本不受影响</li>
+          <li>上海的风险分级制度借鉴了 EU AI Act 的思路，将 AI 应用分为「不可接受风险」「高风险」「有限风险」「最低风险」四级，不同级别适用不同监管强度</li>
+          <li>特朗普政府的联邦优先（federal preemption）策略意图是阻止加州等州的强监管法律成为事实标准，为 AI 企业创造统一的合规环境</li>
+        </ul>
+        <p>600+ 州级 AI 法案的涌现意味着即使联邦优先生效，过渡期的合规成本也将非常高昂。对于 AI 工程团队来说，模型部署的「合规即代码」（compliance-as-code）能力正在成为必备技能。</p>
+      </div>
+    </div>
+
+    <div class="closing-card">
+      <div class="closing-title">深度总结</div>
+      <div class="closing-text">今日三个结构性技术信号：(1) TurboQuant 代表了推理优化从模型架构创新转向系统工程优化的拐点。当 scaling law 在训练端接近收益递减时，推理端的系统优化（KV cache 压缩、speculative decoding、dynamic batching）成为降本增效的主战场。6 倍内存压缩意味着同等硬件投资的推理服务能力提升 4-5 倍，直接影响 AI API 的定价策略。(2) 反蒸馏联盟的技术架构揭示了一个趋势：模型安全正在从「output safety」（防止有害输出）扩展到「model security」（防止模型复制）。这两个子领域的技术栈完全不同 -- 前者依赖 RLHF 和 constitutional AI，后者依赖 adversarial detection 和 information-theoretic watermarking。(3) MoT vs MoE 的架构选择反映了具身 AI 领域正在形成独立于 NLP 的架构范式。当输入从单一模态（文本）扩展到多模态实时流（视觉+触觉+语音+本体感知）时，attention 机制本身也需要模态级别的专家化。这一架构趋势将深刻影响未来 2-3 年的机器人基础模型设计。</div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>AI Pulse Daily Report | 2026.04.18</p>
+    <p style="margin-top: 4px;">AI Pulse -- 由 AI 自动生成 -- 数据来源：Stanford HAI / Bloomberg / Next Platform / IEEE Spectrum / Reuters / ScienceDaily / Fortune / NVIDIA / TSMC</p>
+    <p style="margin-top: 8px;"><a href="/">返回 AI Pulse 主页</a></p>
+  </div>
+</div>
+
+<script>
+function switchTab(tabName) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  const tabMap = { casual: 0, intermediate: 1, expert: 2 };
+  document.getElementById('tab-' + tabName).classList.add('active');
+  document.querySelectorAll('.tab-btn')[tabMap[tabName]].classList.add('active');
+}
+</script>
+</body>
+</html>

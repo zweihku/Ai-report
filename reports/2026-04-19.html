@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily Report | 2026.04.19</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --claude-bg: #FAF9F7;
+    --claude-surface: #FFFFFF;
+    --claude-border: #E8E5E0;
+    --claude-text-primary: #1A1714;
+    --claude-text-secondary: #6B6560;
+    --claude-text-tertiary: #9B9590;
+    --claude-accent: #DA7756;
+    --claude-accent-light: #F5E6DF;
+    --claude-accent-dark: #C4623F;
+    --claude-tag-blue: #E8F0FE;
+    --claude-tag-blue-text: #3B6CB5;
+    --claude-tag-green: #E6F4EA;
+    --claude-tag-green-text: #2D7A3F;
+    --claude-tag-purple: #F0E6FA;
+    --claude-tag-purple-text: #7B3FAF;
+    --claude-tag-amber: #FEF3E2;
+    --claude-tag-amber-text: #B5752D;
+    --claude-tag-red: #FDE8E8;
+    --claude-tag-red-text: #B53B3B;
+    --claude-card-shadow: 0 1px 3px rgba(26, 23, 20, 0.06), 0 1px 2px rgba(26, 23, 20, 0.04);
+    --claude-card-shadow-hover: 0 4px 12px rgba(26, 23, 20, 0.08), 0 2px 4px rgba(26, 23, 20, 0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+    background: var(--claude-bg);
+    color: var(--claude-text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 8px;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--claude-accent-dark); }
+
+  .header {
+    text-align: center;
+    padding: 48px 0 40px;
+    border-bottom: 1px solid var(--claude-border);
+    margin-bottom: 32px;
+  }
+
+  .header-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--claude-accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .header .date {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    font-weight: 400;
+  }
+
+  .header .edition-note {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    margin-top: 8px;
+  }
+
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 36px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--claude-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .tab-btn:hover {
+    color: var(--claude-text-primary);
+    background: var(--claude-bg);
+  }
+
+  .tab-btn.active {
+    background: var(--claude-accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(218, 119, 86, 0.3);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .section { margin-bottom: 36px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .section-icon.gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .section-icon.model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .section-icon.product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .section-icon.research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .section-icon.industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .section-icon.policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .card {
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--claude-card-shadow);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .card:hover { box-shadow: var(--claude-card-shadow-hover); }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .card p {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.75;
+    margin-bottom: 8px;
+  }
+
+  .card p:last-child { margin-bottom: 0; }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .tag-gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .tag-model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .tag-product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .tag-research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .tag-industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .tag-policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .highlight {
+    background: var(--claude-accent-light);
+    border-left: 3px solid var(--claude-accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--claude-accent-dark);
+    line-height: 1.7;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .stat-item {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--claude-accent);
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--claude-text-tertiary);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 8px;
+    transition: color 0.15s;
+  }
+
+  .source-link:hover { color: var(--claude-accent-dark); text-decoration: underline; }
+
+  .tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .tech-table th, .tech-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .tech-table th {
+    font-weight: 600;
+    color: var(--claude-text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: var(--claude-bg);
+  }
+
+  .tech-table td { color: var(--claude-text-primary); }
+
+  .code-block {
+    background: #2D2A26;
+    color: #E8E5E0;
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    overflow-x: auto;
+    margin: 12px 0;
+  }
+
+  .code-block .comment { color: #9B9590; }
+  .code-block .keyword { color: #DA7756; }
+  .code-block .string { color: #7DB87D; }
+
+  .footer {
+    text-align: center;
+    padding: 32px 0;
+    border-top: 1px solid var(--claude-border);
+    margin-top: 48px;
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+  }
+
+  .footer a {
+    color: var(--claude-accent);
+    text-decoration: none;
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 20px 16px 60px; }
+    .header h1 { font-size: 24px; }
+    .tab-btn { font-size: 13px; padding: 10px 8px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+  }
+
+  .subsection-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin: 16px 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  ul.detail-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0;
+  }
+
+  ul.detail-list li {
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.7;
+    padding: 4px 0 4px 16px;
+    position: relative;
+  }
+
+  ul.detail-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--claude-border);
+  }
+
+  .mood-banner {
+    background: linear-gradient(135deg, #FFF5F0 0%, #FFF9F0 100%);
+    border: 1px solid #F0DDD0;
+    border-radius: 16px;
+    padding: 28px 24px;
+    margin-bottom: 32px;
+    text-align: center;
+  }
+
+  .mood-banner .mood-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin-bottom: 6px;
+  }
+
+  .mood-banner .mood-subtitle {
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.6;
+  }
+
+  .mood-meter {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    margin: 12px 0;
+  }
+
+  .mood-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    transition: transform 0.2s;
+  }
+
+  .mood-dot.active { transform: scale(1.4); }
+
+  .mood-label {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+
+  .tldr-box {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.6;
+  }
+
+  .closing-card {
+    background: linear-gradient(135deg, #FFF5F0 0%, #FFF9F0 100%);
+    border: 1px solid #F0DDD0;
+    border-radius: 16px;
+    padding: 28px 24px;
+    margin-top: 32px;
+    text-align: center;
+  }
+
+  .closing-card .closing-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin-bottom: 10px;
+  }
+
+  .closing-card .closing-text {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.8;
+    text-align: left;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <a href="/" class="back-link">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
+    返回 AI Pulse
+  </a>
+
+  <div class="header">
+    <div class="header-logo">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      AI PULSE DAILY
+    </div>
+    <h1>AI 日报 | 2026.04.19</h1>
+    <div class="date">2026 年 4 月 19 日 星期日</div>
+    <div class="edition-note">第 29 期 -- PwC 研究揭示 AI 经济价值马太效应，Nature 证实人类科学家仍胜 AI Agent，智谱 GLM-5.1 开源模型首登代码能力全球第一</div>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('casual')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+      轻松阅读
+    </button>
+    <button class="tab-btn" onclick="switchTab('intermediate')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      技术进阶
+    </button>
+    <button class="tab-btn" onclick="switchTab('expert')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      深度技术
+    </button>
+  </div>
+
+  <!-- ==================== 轻松阅读版 ==================== -->
+  <div id="tab-casual" class="tab-content active">
+
+    <div class="mood-banner">
+      <div class="mood-title">今日 AI 圈：AI 赚钱只属于少数人，但人类科学家还没输</div>
+      <div class="mood-meter">
+        <div class="mood-dot" style="background:#4CAF50"></div>
+        <div class="mood-dot" style="background:#8BC34A"></div>
+        <div class="mood-dot active" style="background:#FFC107"></div>
+        <div class="mood-dot" style="background:#FF9800"></div>
+        <div class="mood-dot" style="background:#F44336"></div>
+      </div>
+      <div class="mood-label">市场情绪：谨慎乐观</div>
+      <div class="mood-subtitle">PwC 发现 74% 的 AI 经济收益被 20% 的公司拿走，Nature 证实人类科学家在复杂任务上仍远超 AI，中国智谱 GLM-5.1 代码能力首次超越 Claude，诺和诺德牵手 OpenAI 加速新药研发</div>
+    </div>
+
+    <!-- 头条 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="section-title">头条速览</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">研究</span>
+          PwC：74% 的 AI 经济价值被 20% 的公司吃掉了
+        </div>
+        <p>PwC 发布全球 AI 绩效研究，调查 1217 位高管后得出结论：AI 的赚钱效应严重不均。前 20% 的公司从 AI 中获得的收入和效率提升是普通公司的 7.2 倍。关键区别不在于用了多少 AI 工具，而在于怎么用 -- 领先公司把 AI 当增长引擎开拓新收入，而大多数公司还在用 AI 省成本。</p>
+        <a href="https://www.pwc.com/gx/en/news-room/press-releases/2026/pwc-2026-ai-performance-study.html" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          PwC
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">研究</span>
+          Nature：人类科学家在复杂任务上仍远胜 AI Agent
+        </div>
+        <p>Nature 发文指出，尽管 AI Agent 处理真实任务的成功率已从 12% 飙升至 66%，但在真正复杂的科学任务中，拥有博士学位的人类专家的表现仍是最佳 AI Agent 的两倍。AI 在日常工作中越来越好用，但科学发现的最前沿，人类仍然不可替代。</p>
+        <a href="https://www.nature.com/articles/d41586-026-01199-z" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Nature
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">模型</span>
+          智谱 GLM-5.1：中国开源模型首次登顶代码能力全球第一
+        </div>
+        <p>智谱 AI 发布旗舰模型 GLM-5.1，在 SWE-Bench Pro 基准上拿到 58.4 分，超越 GPT-5.4（57.7）和 Claude Opus 4.6（57.3），首次让开源模型坐上代码能力的头把交椅。更亮眼的是它能连续自主工作 8 小时，自动形成「实验 - 分析 - 优化」的闭环。采用 MIT 许可证，商用完全免费。</p>
+        <a href="https://www.ithome.com/0/936/851.htm" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          IT之家
+        </a>
+      </div>
+    </div>
+
+    <!-- 大公司动态 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <div class="section-title">大公司动态</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">医药</span>
+          诺和诺德牵手 OpenAI，用 AI 加速减肥药和新药研发
+        </div>
+        <p>丹麦制药巨头诺和诺德宣布与 OpenAI 达成战略合作，将 AI 能力部署到从药物发现到商业运营的全流程。在 Wegovy 减肥药市场与礼来的激烈竞争中，诺和诺德寄望 AI 能帮助识别有潜力的新药物、缩短从研发到上市的时间。试点项目已启动，计划年底前完成全面整合。</p>
+        <a href="https://www.cnbc.com/2026/04/14/novo-nordisk-openai-ai-drug-discovery-healthcare-nvo.html" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          CNBC
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">观点</span>
+          微软 AI 掌门人 Suleyman：AI 发展不会撞墙
+        </div>
+        <p>微软 AI CEO Mustafa Suleyman（DeepMind 联合创始人）在 MIT Technology Review 撰文表示，过去 15 年训练数据量增长了一万亿倍，预测 AI 发展会遇到瓶颈的人一直在犯同样的错误 -- 他们低估了行业同时拉动多根杠杆的能力。不过他也坦言，微软目前还处于「中级水平」，真正的前沿模型能力要到今年晚些时候才能具备。</p>
+        <a href="https://www.technologyreview.com/2026/04/08/1135398/mustafa-suleyman-ai-future/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          MIT Technology Review
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">资本</span>
+          Q1 全球风投 3000 亿美元创纪录，AI 吃掉 80%
+        </div>
+        <p>Crunchbase 数据显示，2026 年第一季度全球风险投资达到 3000 亿美元，同比暴增超 150%。其中 AI 占了 2420 亿美元（80%）。更惊人的是集中度：OpenAI（1220 亿）、Anthropic（300 亿）、xAI（200 亿）、Waymo（160 亿）四家就吃掉了 65% 的全球风投。美国独占 83% 的全球 VC 资金。</p>
+        <a href="https://news.crunchbase.com/venture/record-breaking-funding-ai-global-q1-2026/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Crunchbase
+        </a>
+      </div>
+    </div>
+
+    <!-- 技术与产品 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon product">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>
+        </div>
+        <div class="section-title">技术与产品</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-product">安全</span>
+          Claude Mythos Preview 与 Glasswing 联盟持续引发讨论
+        </div>
+        <p>Anthropic 发布的 Claude Mythos Preview 仍是行业焦点。这个号称发现了「所有主流操作系统和浏览器」漏洞的模型引发了安全界的两极评价。英国 AISI 已完成独立评估，Anthropic 与 40 多家大企业组建的 Glasswing 联盟正在利用 Mythos 帮助修补漏洞。模型本身暂不公开发布。</p>
+        <a href="https://www.aisi.gov.uk/blog/our-evaluation-of-claude-mythos-previews-cyber-capabilities" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          UK AISI
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">产品</span>
+          多模态成标配：4 月成 LLM 发布最密集月份
+        </div>
+        <p>2026 年 4 月已成为史上 LLM 发布最密集的月份。GPT-5.4（三个变体）、Gemini 3.1 Ultra（原生多模态推理）、Grok 4.20（实时联网）接连登场。一个明显趋势：纯文本模型已经消失，每个主要发布都至少支持文本、图像和另一种模态。</p>
+      </div>
+    </div>
+
+    <!-- 政策与社会 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="section-title">政策与社会</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-policy">政策</span>
+          白宫 AI 国家政策框架：主张联邦统一、取代各州自行立法
+        </div>
+        <p>白宫 3 月发布的国家 AI 政策框架在 4 月持续发酵。框架最具争议的内容是建议联邦法律优先于州法，用一套全国标准取代目前 50 个州各自为政的 AI 监管。同时建议设立监管沙盒、开放联邦数据集供 AI 训练，并明确反对成立新的 AI 监管机构。多个州已在医疗保险领域禁止 AI 独立做出理赔拒绝决定。</p>
+        <a href="https://www.consumerfinancemonitor.com/2026/04/08/the-white-houses-national-policy-framework-for-artificial-intelligence-what-it-means-and-what-comes-next/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Consumer Finance Monitor
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-policy">社会</span>
+          专家与公众对 AI 看法分裂：73% vs 23%
+        </div>
+        <p>MIT Technology Review 基于斯坦福报告指出，73% 的美国 AI 专家对 AI 对就业的影响持乐观态度，而公众中只有 23% 这样认为。88% 的组织已在使用 AI，三年渗透率达 53%，比 PC 和互联网普及还快。但 22-25 岁美国程序员就业人数自 2024 年已下降近 20%，初级岗位受冲击最大。</p>
+        <a href="https://www.technologyreview.com/2026/04/13/1135720/why-opinion-on-ai-is-so-divided/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          MIT Technology Review
+        </a>
+      </div>
+    </div>
+
+    <div class="closing-card">
+      <div class="closing-title">今日看点</div>
+      <div class="closing-text">PwC 的研究给了一个清醒的信号：AI 确实在创造巨大经济价值，但这份红利正在被极少数公司独占。与此同时，Nature 的研究则给了人类一颗定心丸 -- 在真正需要深度思考的科学前沿，人类专家依然具有不可替代的优势。智谱 GLM-5.1 登顶 SWE-Bench Pro 代表了中国开源模型的里程碑式突破，开源阵营正在迅速缩小与闭源前沿的差距。接下来值得关注的是 PwC 所揭示的 AI 贫富分化是否会催生新的政策回应。</div>
+    </div>
+
+  </div>
+
+  <!-- ==================== 技术进阶版 ==================== -->
+  <div id="tab-intermediate" class="tab-content">
+
+    <div class="mood-banner">
+      <div class="mood-title">技术视角：AI 经济马太效应量化、科学推理天花板、开源代码模型突破</div>
+      <div class="mood-subtitle">PwC 量化 AI 领先者与落后者的 7.2 倍差距，Nature 揭示 AI Agent 科学推理瓶颈，GLM-5.1 用长程自主编程能力改写 SWE-Bench Pro 排行榜</div>
+    </div>
+
+    <!-- 模型与算法 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="section-title">模型与算法</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">模型</span>
+          GLM-5.1 技术解析：长程自主编程的三大创新
+        </div>
+        <p>GLM-5.1 在 SWE-Bench Pro 上以 58.4 分超越 GPT-5.4（57.7）和 Claude Opus 4.6（57.3），成为首个在代码能力上登顶的开源模型。其核心创新不在单次代码生成质量，而在长程任务的自主迭代能力：</p>
+        <ul class="detail-list">
+          <li>自主闭环迭代：模型在长程任务中自动形成「实验 - 分析 - 优化」循环，不是一次性生成代码就结束，而是主动运行 benchmark、定位瓶颈、调整策略并持续改进</li>
+          <li>8 小时持续工作：单次任务可连续自主运行超过 8 小时，完成从规划、执行到迭代优化的完整工程级交付</li>
+          <li>MIT 开源许可：采用 MIT License，商业使用完全免费，是开源社区的重大里程碑</li>
+        </ul>
+        <p>值得注意的是，智谱同时上调了 API 定价 10%，缓存 token 价格在编码场景下已接近 Claude Sonnet 4.6，这是国产模型首次在核心场景与海外顶级模型对齐定价。</p>
+        <a href="https://dataconomy.com/2026/04/08/z-ais-glm-5-1-tops-swe-bench-pro-beating-major-ai-rivals/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Dataconomy
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">研究</span>
+          Nature：AI Agent 科学推理能力仍有结构性短板
+        </div>
+        <p>Nature 的最新报告深入分析了 AI Agent 在科学任务中的表现。尽管斯坦福 AI 指数显示 Agent 整体任务成功率从 12% 飙升至 66%，但在需要跨领域推理和假设检验的复杂科学任务中，博士级人类专家的表现仍是最佳 AI 的两倍。</p>
+        <p>报告同时指出了 AI 科学 Agent 的两个积极趋势：(1) 科学基础模型（science foundation models）正在从通用模型中分化出来，针对特定科学领域进行专门训练；(2) BioMedAgent 等自进化框架正在学习使用生物信息学专业工具，弥补多步推理的短板。</p>
+        <a href="https://www.nature.com/articles/d41586-026-01199-z" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Nature
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">趋势</span>
+          4 月 LLM 发布潮：多模态统一架构成标配
+        </div>
+        <p>4 月已成为 LLM 发布最密集月份。GPT-5.4 引入 Standard/Thinking/Pro 三变体架构，在 GDPVal 基准（覆盖 44 个职业的真实工作测试）上达到 83%。Gemini 3.1 Ultra 实现原生多模态推理。Claude Mythos Preview 在 SWE-bench Verified 上达到 93.9%、GPQA Diamond 上达到 94.6%。</p>
+        <p>趋势判断：纯文本模型时代已经终结。每个主要发布至少覆盖文本 + 图像 + 第三模态。竞争焦点从 benchmark 分数转向成本、可靠性和真实世界实用性。</p>
+      </div>
+    </div>
+
+    <!-- 行业与资本 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <div class="section-title">行业与资本</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">研究</span>
+          PwC：AI 经济马太效应 -- 领先者收益是同行 7.2 倍
+        </div>
+        <p>PwC 调查 25 个行业、1217 位总监级以上高管后发现：AI 领先企业使用自主决策 AI 的概率是同行的 2.8 倍，部署多任务自主执行 AI 的概率是 1.8 倍。AI 驱动的收益 74% 集中在 20% 的公司手中。</p>
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-value">7.2x</div>
+            <div class="stat-label">领先者 vs 平均收益</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">74%</div>
+            <div class="stat-label">价值集中度</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">2.8x</div>
+            <div class="stat-label">自主决策部署率</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">1.9x</div>
+            <div class="stat-label">自优化系统部署率</div>
+          </div>
+        </div>
+        <p>关键洞察：领先企业的差异化策略是利用 AI 进行行业融合（cross-industry convergence），这是最强的收益预测因子，而非单纯的效率提升。这意味着 AI 战略的核心应从「做得更快」转向「做不一样的事」。</p>
+        <a href="https://www.pwc.com/gx/en/news-room/press-releases/2026/pwc-2026-ai-performance-study.html" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          PwC
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">医药</span>
+          诺和诺德 x OpenAI：AI 驱动的药物发现新范式
+        </div>
+        <p>诺和诺德与 OpenAI 的合作涵盖四大领域：(1) 药物发现 -- 用 AI 分析复杂数据集识别候选药物；(2) 临床试验 -- 优化试验设计和患者匹配；(3) 生产制造 -- 提升供应链和分销效率；(4) 企业运营 -- 全员 AI 素养提升。</p>
+        <p>战略背景：诺和诺德在 Wegovy 减肥药市场失去先发优势后，正通过口服版 Wegovy 和下一代药物反击礼来。9000 人裁员与 AI 合作同时推进，标志着制药巨头从「AI 实验」转向「AI 优先」的战略转型。</p>
+        <a href="https://www.fiercepharma.com/pharma/novo-taps-openai-deploy-ai-across-rd-manufacturing-and-corporate-functions" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Fierce Pharma
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">资本</span>
+          Q1 风投深度：AI 基础设施公司融资额是 2025 全年的两倍
+        </div>
+        <p>Crunchbase 详细数据显示，Q1 基础 AI 公司（foundational AI）的融资额达到 2025 全年的两倍。四大巨轮 -- OpenAI（$122B）、Anthropic（$30B）、xAI（$20B）、Waymo（$16B）-- 吸走了全球 65% 的 VC 资金。另有 10 家公司完成了 $1B+ 的融资，覆盖生成式 AI、物理 AI、自动驾驶、半导体、数据中心、机器人和国防领域。美国占全球 VC 资金的 83%，远高于 2025 年的 71%。</p>
+      </div>
+    </div>
+
+    <!-- 政策与安全 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="section-title">政策与安全</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-policy">政策</span>
+          白宫 AI 框架的技术影响：联邦优先权与数据开放
+        </div>
+        <p>白宫国家 AI 政策框架的技术政策影响正在显现。框架建议：(1) 联邦法律优先于州 AI 法，终结 50 个州各自监管的碎片化格局；(2) 建立监管沙盒支持 AI 开发部署；(3) 将联邦数据集以「AI-ready」格式开放用于模型训练；(4) 明确反对设立新的 AI 监管机构，主张通过现有行业监管机构和行业标准治理 AI。</p>
+        <p>对开发者的影响：如果联邦优先权最终通过，合规负担将大幅降低。但过渡期 -- 尤其是已通过 AI 法律的州（如印第安纳、犹他、华盛顿）-- 仍需遵守现有州法。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-policy">安全</span>
+          Agentic AI Foundation 成立，MCP / AGENTS.md / Goose 三足鼎立
+        </div>
+        <p>Linux 基金会下设立 Agentic AI Foundation，由 Anthropic 的 Model Context Protocol（MCP）、OpenAI 的 AGENTS.md 和 Block 的 Goose 框架共同锚定。这标志着 AI Agent 互操作性标准从各家自建走向行业统一。对开发者来说，Agent 生态正在形成类似「HTTP 协议」级别的基础设施标准。</p>
+      </div>
+    </div>
+
+    <div class="closing-card">
+      <div class="closing-title">技术趋势</div>
+      <div class="closing-text">本周技术层面三个信号值得关注：(1) GLM-5.1 登顶 SWE-Bench Pro 不仅是开源模型的胜利，更代表了「长程自主编程」这一新能力维度的竞争开始。8 小时自主迭代意味着 AI 编程正在从「辅助代码补全」走向「自主工程交付」。(2) PwC 的数据量化了 AI 应用中的马太效应 -- 领先者用 AI 做行业融合和收入创新，落后者只用 AI 降成本。战略差异比技术差异更决定 AI 投资回报。(3) Nature 关于人类科学家仍胜 AI 的发现，暗示当前 AI Agent 的瓶颈不在单步推理能力，而在跨领域假设生成和长链因果推理 -- 这恰恰是 GLM-5.1 类模型试图突破的方向。</div>
+    </div>
+
+  </div>
+
+  <!-- ==================== 深度技术版 ==================== -->
+  <div id="tab-expert" class="tab-content">
+
+    <div class="mood-banner">
+      <div class="mood-title">深度分析：AI Agent 推理瓶颈、长程编程范式、经济价值分配机制</div>
+      <div class="mood-subtitle">Nature 揭示 AI Agent 科学推理的结构性短板，GLM-5.1 的自主闭环架构解析，PwC 量化 AI ROI 的行业融合效应，白宫框架的联邦优先权技术影响</div>
+    </div>
+
+    <!-- 核心技术分析 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="section-title">核心技术分析</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">研究</span>
+          AI Agent 科学推理瓶颈：Nature 的结构性分析
+        </div>
+        <p>Nature 的分析揭示了 AI Agent 在科学任务中的一个根本矛盾：在可形式化的任务（代码生成、数学证明、网络安全扫描）中 Agent 表现接近甚至超越人类，但在需要假设生成（hypothesis generation）和跨域类比推理（cross-domain analogical reasoning）的任务中，表现仅为博士级专家的一半。</p>
+        <p>从技术架构角度看，这个差距来自三个层面：</p>
+        <ul class="detail-list">
+          <li>World Model 缺失：当前 LLM-based Agent 缺乏科学领域的因果世界模型（causal world model），只能做相关性推理而非因果推理。在药物发现、材料科学等需要反事实推理的场景中，这一短板尤为突出</li>
+          <li>长链推理衰减：Transformer 架构在超过 10-15 步的推理链中准确率快速衰减。科学实验设计通常涉及 20-50 步的推理链，远超当前模型的可靠推理边界</li>
+          <li>工具使用碎片化：Nature 引用的 BioMedAgent 框架通过自进化学习使用生物信息学工具（BLAST、PyMOL、分子对接软件），但工具调用链的错误累积问题尚未解决 -- 每步 95% 的准确率在 20 步后累积准确率降至 36%</li>
+        </ul>
+        <p>积极信号：科学基础模型（domain-specific foundation models）正在从通用 LLM 中分化，针对蛋白质结构、化学合成路径、基因组分析等领域进行专门预训练。这种专业化可能是突破科学推理瓶颈的关键路径。</p>
+        <a href="https://www.nature.com/articles/d41586-026-01199-z" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Nature
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">模型</span>
+          GLM-5.1 架构深度解析：长程自主编程的技术范式
+        </div>
+        <p>GLM-5.1 在 SWE-Bench Pro 上登顶（58.4 vs GPT-5.4 的 57.7 和 Claude Opus 4.6 的 57.3）的核心技术贡献不在于单步代码生成质量的提升，而在于一个全新的能力维度 -- 长程自主编程（long-horizon autonomous programming）。</p>
+        <p>技术架构分析：</p>
+        <ul class="detail-list">
+          <li>自主实验循环（Autonomous Experiment Loop）：模型在接收到编程任务后，自动将其分解为可验证的子任务，为每个子任务生成代码并运行测试，基于测试结果自动分析瓶颈并调整策略。这个循环可以持续运行 8 小时以上</li>
+          <li>动态策略调整：与传统的 one-shot 代码生成不同，GLM-5.1 在迭代过程中会主动运行 benchmark、profiler 和 static analyzer，基于反馈调整编码策略。这种 test-driven 的自主迭代能力是其在 SWE-Bench Pro 上超越闭源模型的关键</li>
+          <li>上下文管理：8 小时连续工作意味着模型需要管理极长的上下文链。虽然智谱未公开具体实现细节，但推测采用了类似 sliding window + hierarchical summary 的上下文压缩策略</li>
+        </ul>
+        <table class="tech-table">
+          <tr><th>模型</th><th>SWE-Bench Pro</th><th>许可</th><th>最长自主工作时长</th></tr>
+          <tr><td>GLM-5.1</td><td>58.4</td><td>MIT</td><td>8+ 小时</td></tr>
+          <tr><td>GPT-5.4</td><td>57.7</td><td>闭源</td><td>未公开</td></tr>
+          <tr><td>Claude Opus 4.6</td><td>57.3</td><td>闭源</td><td>未公开</td></tr>
+          <tr><td>Claude Mythos Preview</td><td>93.9 (Verified)</td><td>受限</td><td>未公开</td></tr>
+        </table>
+        <p>值得注意的是，Claude Mythos Preview 在 SWE-bench Verified（标准版，非 Pro）上的得分（93.9%）远超所有其他模型。Pro 版本是更接近真实工程的测试集，分数普遍较低。GLM-5.1 在 Pro 版上的登顶具有更强的工程实践意义。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">研究</span>
+          PwC AI 绩效研究：行业融合效应的定量分析
+        </div>
+        <p>PwC 的研究方法论值得技术团队关注。AI 驱动绩效的衡量方式是「归因于 AI 的收入和效率增益，经行业中位数调整」。</p>
+        <p>研究的最关键发现是行业融合（industry convergence）效应：</p>
+        <ul class="detail-list">
+          <li>行业融合是 AI 财务绩效最强的预测因子，强于技术成熟度、AI 投入规模或组织规模。行业融合指的是企业利用 AI 进入相邻行业或创造跨行业产品</li>
+          <li>领先企业无人干预决策增速是同行的 2.8 倍。这意味着它们不仅在用 AI 辅助决策，而是在建设 AI 自主决策管线（autonomous decision pipeline）</li>
+          <li>1.9 倍的自优化系统部署率表明领先企业已经在生产环境中运行 self-optimizing AI 系统 -- 这与 GLM-5.1 的自主迭代能力形成了呼应</li>
+        </ul>
+        <p>对技术架构的启示：AI 系统的 ROI 不取决于模型能力的强弱，而取决于自主性的深度（从辅助到自主）和应用域的广度（从单一业务到跨行业融合）。这可能解释了为什么 Agentic AI 成为当前最热门的技术方向。</p>
+        <a href="https://www.pwc.com/gx/en/news-room/press-releases/2026/pwc-2026-ai-performance-study.html" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          PwC
+        </a>
+      </div>
+    </div>
+
+    <!-- 基础设施与生态 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon gpu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>
+        </div>
+        <div class="section-title">基础设施与生态</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-gpu">资本</span>
+          Q1 风投的深层结构：AI 基础设施融资 vs 应用层融资
+        </div>
+        <p>$300B 的 Q1 风投总额中，结构性分布比总量更值得关注：</p>
+        <table class="tech-table">
+          <tr><th>层级</th><th>代表公司</th><th>融资规模</th><th>趋势</th></tr>
+          <tr><td>前沿模型</td><td>OpenAI, Anthropic, xAI</td><td>~$172B</td><td>高度集中</td></tr>
+          <tr><td>物理 AI / 自动驾驶</td><td>Waymo, 机器人公司</td><td>~$30B</td><td>加速增长</td></tr>
+          <tr><td>AI 基础设施</td><td>半导体, 数据中心</td><td>~$25B</td><td>稳步增长</td></tr>
+          <tr><td>AI 应用层</td><td>垂直应用, SaaS</td><td>~$15B</td><td>相对冷淡</td></tr>
+        </table>
+        <p>基础 AI 公司（foundational AI）Q1 融资额是 2025 全年的两倍。美国占全球 VC 的 83%（vs 2025 年 71%），资本正在加速向美国前沿实验室集中。中国以 $16.1B 位居第二，英国以 $7.4B 第三。这种极端集中度引发了「AI 寡头化」的担忧。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-product">标准</span>
+          Agentic AI Foundation：Agent 互操作性标准的技术架构
+        </div>
+        <p>Linux 基金会下设立的 Agentic AI Foundation 整合了三大 Agent 协议：</p>
+        <ul class="detail-list">
+          <li>Anthropic MCP（Model Context Protocol）：定义了 Agent 与外部工具/数据源的标准接口。核心思想是将工具调用抽象为「资源 + 工具 + 提示」三元组，让 Agent 可以即插即用地连接任何兼容服务</li>
+          <li>OpenAI AGENTS.md：定义了 Agent 行为规范的声明式格式，类似于 robots.txt 对爬虫的规范。核心是通过自然语言约束定义 Agent 的权限边界和行为准则</li>
+          <li>Block Goose：面向开发者的开源 Agent 框架，提供多 Agent 编排和状态管理能力。侧重于 Agent 间协作的工程实践</li>
+        </ul>
+        <p>三者的互补性较强：MCP 解决「Agent 怎么调用工具」，AGENTS.md 解决「Agent 应该做什么」，Goose 解决「多个 Agent 怎么协作」。这一组合正在形成 AI Agent 领域的事实标准栈。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-policy">政策</span>
+          白宫框架的技术深层影响：数据开放与合规即代码
+        </div>
+        <p>白宫国家 AI 政策框架对技术生态的三层影响：</p>
+        <ul class="detail-list">
+          <li>数据层：将联邦数据集以「AI-ready」格式开放，意味着政府正在主动为模型训练提供高质量、合规的数据源。这对减轻训练数据的版权和隐私风险具有重要意义</li>
+          <li>合规层：联邦优先权一旦通过，compliance-as-code 将从可选变为必需。模型部署需要内嵌联邦标准的合规检查，特别是在儿童隐私保护和年龄验证方面</li>
+          <li>治理层：明确反对设立新的 AI 监管机构，主张通过 NIST 标准和现有行业监管机构治理 AI。这与欧盟设立专门 AI Office 的方向形成鲜明对比</li>
+        </ul>
+        <p>过渡期风险：印第安纳（HB 1271）、犹他（SB 319）、华盛顿（SB 5395）等州已通过禁止 AI 独立拒绝医保理赔的法律。在联邦优先权确立前，跨州运营的 AI 健康科技公司面临复杂的合规矩阵。</p>
+      </div>
+    </div>
+
+    <div class="closing-card">
+      <div class="closing-title">深度总结</div>
+      <div class="closing-text">今日三个结构性信号：(1) GLM-5.1 的「长程自主编程」范式标志着 AI 编程能力的竞争维度正在从「单次生成质量」转向「自主迭代能力」。8 小时连续自主工作意味着模型需要具备元认知能力 -- 知道自己做得好不好、该换什么策略。这种能力的评测标准也需要从静态 benchmark 进化为动态工程交付评估。(2) PwC 的研究量化了一个直觉：AI 投资的 ROI 不遵循正态分布，而遵循幂律分布。行业融合效应是最强的 ROI 预测因子，这解释了为什么诺和诺德（制药 x AI）、Snap（社交 x AI 效率）等跨界应用案例比纯 AI 工具公司更具经济价值。(3) Nature 的科学推理研究揭示了当前 AI 的一个根本局限：缺乏因果世界模型。Transformer 的注意力机制擅长发现相关性，但不擅长构建因果链。科学基础模型的分化和 BioMedAgent 式的自进化框架可能是两条并行的解决路径 -- 前者通过领域预训练注入因果知识，后者通过工具使用弥补推理短板。</div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>AI Pulse Daily Report | 2026.04.19</p>
+    <p style="margin-top: 4px;">AI Pulse -- 由 AI 自动生成 -- 数据来源：PwC / Nature / Crunchbase / MIT Technology Review / CNBC / Dataconomy / IT之家 / UK AISI</p>
+    <p style="margin-top: 8px;"><a href="/">返回 AI Pulse 主页</a></p>
+  </div>
+</div>
+
+<script>
+function switchTab(tabName) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  const tabMap = { casual: 0, intermediate: 1, expert: 2 };
+  document.getElementById('tab-' + tabName).classList.add('active');
+  document.querySelectorAll('.tab-btn')[tabMap[tabName]].classList.add('active');
+}
+</script>
+</body>
+</html>

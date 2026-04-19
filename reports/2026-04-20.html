@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily Report | 2026.04.20</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --claude-bg: #FAF9F7;
+    --claude-surface: #FFFFFF;
+    --claude-border: #E8E5E0;
+    --claude-text-primary: #1A1714;
+    --claude-text-secondary: #6B6560;
+    --claude-text-tertiary: #9B9590;
+    --claude-accent: #DA7756;
+    --claude-accent-light: #F5E6DF;
+    --claude-accent-dark: #C4623F;
+    --claude-tag-blue: #E8F0FE;
+    --claude-tag-blue-text: #3B6CB5;
+    --claude-tag-green: #E6F4EA;
+    --claude-tag-green-text: #2D7A3F;
+    --claude-tag-purple: #F0E6FA;
+    --claude-tag-purple-text: #7B3FAF;
+    --claude-tag-amber: #FEF3E2;
+    --claude-tag-amber-text: #B5752D;
+    --claude-tag-red: #FDE8E8;
+    --claude-tag-red-text: #B53B3B;
+    --claude-card-shadow: 0 1px 3px rgba(26, 23, 20, 0.06), 0 1px 2px rgba(26, 23, 20, 0.04);
+    --claude-card-shadow-hover: 0 4px 12px rgba(26, 23, 20, 0.08), 0 2px 4px rgba(26, 23, 20, 0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+    background: var(--claude-bg);
+    color: var(--claude-text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 8px;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--claude-accent-dark); }
+
+  .header {
+    text-align: center;
+    padding: 48px 0 40px;
+    border-bottom: 1px solid var(--claude-border);
+    margin-bottom: 32px;
+  }
+
+  .header-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--claude-accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .header .date {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    font-weight: 400;
+  }
+
+  .header .edition-note {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    margin-top: 8px;
+  }
+
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 36px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--claude-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .tab-btn:hover {
+    color: var(--claude-text-primary);
+    background: var(--claude-bg);
+  }
+
+  .tab-btn.active {
+    background: var(--claude-accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(218, 119, 86, 0.3);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .section { margin-bottom: 36px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .section-icon.gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .section-icon.model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .section-icon.product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .section-icon.research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .section-icon.industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .section-icon.policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .card {
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--claude-card-shadow);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .card:hover { box-shadow: var(--claude-card-shadow-hover); }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .card p {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.75;
+    margin-bottom: 8px;
+  }
+
+  .card p:last-child { margin-bottom: 0; }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .tag-gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .tag-model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .tag-product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .tag-research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .tag-industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .tag-policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .highlight {
+    background: var(--claude-accent-light);
+    border-left: 3px solid var(--claude-accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--claude-accent-dark);
+    line-height: 1.7;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .stat-item {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--claude-accent);
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--claude-text-tertiary);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 8px;
+    transition: color 0.15s;
+  }
+
+  .source-link:hover { color: var(--claude-accent-dark); text-decoration: underline; }
+
+  .tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .tech-table th, .tech-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .tech-table th {
+    font-weight: 600;
+    color: var(--claude-text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: var(--claude-bg);
+  }
+
+  .tech-table td { color: var(--claude-text-primary); }
+
+  .code-block {
+    background: #2D2A26;
+    color: #E8E5E0;
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    overflow-x: auto;
+    margin: 12px 0;
+  }
+
+  .code-block .comment { color: #9B9590; }
+  .code-block .keyword { color: #DA7756; }
+  .code-block .string { color: #7DB87D; }
+
+  .footer {
+    text-align: center;
+    padding: 32px 0;
+    border-top: 1px solid var(--claude-border);
+    margin-top: 48px;
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+  }
+
+  .footer a {
+    color: var(--claude-accent);
+    text-decoration: none;
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 20px 16px 60px; }
+    .header h1 { font-size: 24px; }
+    .tab-btn { font-size: 13px; padding: 10px 8px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+  }
+
+  .subsection-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin: 16px 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  ul.detail-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0;
+  }
+
+  ul.detail-list li {
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.7;
+    padding: 4px 0 4px 16px;
+    position: relative;
+  }
+
+  ul.detail-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--claude-border);
+  }
+
+  .mood-banner {
+    background: linear-gradient(135deg, #FFF5F0 0%, #FFF9F0 100%);
+    border: 1px solid #F0DDD0;
+    border-radius: 16px;
+    padding: 28px 24px;
+    margin-bottom: 32px;
+    text-align: center;
+  }
+
+  .mood-banner .mood-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin-bottom: 6px;
+  }
+
+  .mood-banner .mood-subtitle {
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.6;
+  }
+
+  .mood-meter {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    margin: 12px 0;
+  }
+
+  .mood-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    transition: transform 0.2s;
+  }
+
+  .mood-dot.active { transform: scale(1.4); }
+
+  .mood-label {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+
+  .tldr-box {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.6;
+  }
+
+  .closing-card {
+    background: linear-gradient(135deg, #FFF5F0 0%, #FFF9F0 100%);
+    border: 1px solid #F0DDD0;
+    border-radius: 16px;
+    padding: 28px 24px;
+    margin-top: 32px;
+    text-align: center;
+  }
+
+  .closing-card .closing-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin-bottom: 10px;
+  }
+
+  .closing-card .closing-text {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.8;
+    text-align: left;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <a href="/" class="back-link">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
+    返回 AI Pulse
+  </a>
+
+  <div class="header">
+    <div class="header-logo">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      AI PULSE DAILY
+    </div>
+    <h1>AI 日报 | 2026.04.20</h1>
+    <div class="date">2026 年 4 月 20 日 星期一</div>
+    <div class="edition-note">第 30 期 -- OpenAI 斥资 200 亿美元入股 Cerebras 芯片，Grok 4.3 万亿参数模型开放测试，Perplexity 推出 AI 个人电脑，AI Agent 身份安全危机浮出水面</div>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('casual')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+      轻松阅读
+    </button>
+    <button class="tab-btn" onclick="switchTab('intermediate')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      技术进阶
+    </button>
+    <button class="tab-btn" onclick="switchTab('expert')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      深度技术
+    </button>
+  </div>
+
+  <!-- ==================== 轻松阅读版 ==================== -->
+  <div id="tab-casual" class="tab-content active">
+
+    <div class="mood-banner">
+      <div class="mood-title">今日 AI 圈：芯片军备竞赛升级，AI Agent 无处不在</div>
+      <div class="mood-meter">
+        <div class="mood-dot" style="background:#4CAF50"></div>
+        <div class="mood-dot active" style="background:#8BC34A"></div>
+        <div class="mood-dot" style="background:#FFC107"></div>
+        <div class="mood-dot" style="background:#FF9800"></div>
+        <div class="mood-dot" style="background:#F44336"></div>
+      </div>
+      <div class="mood-label">市场情绪：积极乐观</div>
+      <div class="mood-subtitle">OpenAI 砸 200 亿美元买 Cerebras 芯片「去 NVIDIA 化」，Grok 4.3 万亿参数模型上线，Perplexity 把 Mac 变成 AI 个人电脑，微软把 AI Agent 塞进 Windows 任务栏，但 88% 的企业已遭遇 AI Agent 安全事件</div>
+    </div>
+
+    <!-- 头条 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="section-title">头条速览</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-gpu">芯片</span>
+          OpenAI 砸 200 亿美元买 Cerebras 芯片，要摆脱 NVIDIA 依赖
+        </div>
+        <p>OpenAI 与芯片初创公司 Cerebras 签下三年 200 亿美元的大单，比今年 1 月披露的 100 亿美元协议翻了一倍。作为交换，OpenAI 将获得 Cerebras 最高 10% 的股份。这笔交易的背后是 OpenAI 对算力供应链的焦虑 -- 当你一年要花 300 亿美元买芯片时，不能把鸡蛋都放在 NVIDIA 一个篮子里。Cerebras 正借此势头准备 IPO，目标估值 350 亿美元。</p>
+        <a href="https://www.theinformation.com/articles/openai-spend-20-billion-cerebras-chips-receive-equity-stake" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          The Information
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">模型</span>
+          Grok 4.3 Beta：xAI 发布万亿参数模型，月费 300 美元
+        </div>
+        <p>Elon Musk 的 xAI 发布 Grok 4.3 测试版，目前仅开放给 SuperGrok Heavy 订阅用户（每月 300 美元）。当前上线的是 5000 亿参数版本，完整的万亿参数版本还在训练中。新功能包括 PDF 生成、PPT 制作、表格处理和视频输入 -- Musk 表示将「几乎每天」推送改进。这是 Grok 4.20 之后的最新大模型，参数量是前代的两倍。</p>
+        <a href="https://piunikaweb.com/2026/04/17/xai-grok-4-3-beta-supergrok-heavy/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          PiunikaWeb
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-product">产品</span>
+          Perplexity「个人电脑」：把你的 Mac 变成 AI 管家
+        </div>
+        <p>Perplexity 正式推出 Personal Computer for Mac，这不是一个聊天机器人，而是一个能操控你电脑的 AI 助手。它可以搜索本地文件、操作 iMessage 和邮件、管理日历，背后调度大约 20 个 AI 模型。最推荐的使用方式是在 Mac mini 上 24 小时运行，相当于给你配了一个不用睡觉的私人助理。月费 200 美元（Perplexity Max 订阅），内置紧急关停开关和操作审计日志。</p>
+        <a href="https://www.perplexity.ai/hub/blog/introducing-perplexity-computer" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Perplexity
+        </a>
+      </div>
+    </div>
+
+    <!-- 大公司动态 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon product">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <div class="section-title">大公司动态</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-product">产品</span>
+          微软把 AI Agent 塞进 Windows 11 任务栏
+        </div>
+        <p>微软在最新的 Windows 11 预览版中推出任务栏 AI Agent 集成。用户可以在搜索框中用「@」符号呼叫 Agent，支持第三方开发者接入。技术上采用了 MCP（Model Context Protocol）标准 -- 这意味着同一套协议已经串联了从 Claude Code 到 Windows 桌面的整个生态。Agent 可以自主完成研究、规划和执行，无需持续干预。</p>
+        <a href="https://www.windowslatest.com/2026/04/18/microsoft-confirms-ai-agents-are-still-coming-to-the-windows-11-taskbar-as-it-prepares-for-public-rollout/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Windows Latest
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">资本</span>
+          Cerebras 冲刺 IPO，目标估值 350 亿美元
+        </div>
+        <p>拿到 OpenAI 大单后，AI 芯片公司 Cerebras 宣布重启 IPO 计划，目标在今年第二季度上市，估值约 350 亿美元（上轮估值 231 亿），计划在 IPO 中融资 30 亿美元。去年 Cerebras 曾因 CFIUS 审查搁置 IPO，这次有 OpenAI 的订单背书，情况完全不同了。</p>
+        <a href="https://www.cnbc.com/2026/04/17/cerebras-new-ipo-ai-chips.html" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          CNBC
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">财报</span>
+          OpenAI 年化收入突破 250 亿美元，Anthropic 逼近 190 亿
+        </div>
+        <p>AI 双雄的营收增速继续加速。OpenAI 年化收入已超 250 亿美元，正在为可能最早于 2026 年底的 IPO 做准备。Anthropic 年化收入逼近 190 亿美元。两家加起来几乎占了全球 AI 模型 API 收入的一半。与此同时，OpenAI 整体估值已达 8520 亿美元，是全球最值钱的非上市公司。</p>
+      </div>
+    </div>
+
+    <!-- 安全与治理 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="section-title">安全与政策</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-policy">安全</span>
+          88% 企业遭遇 AI Agent 安全事件，身份管理成最大漏洞
+        </div>
+        <p>一份新报告显示，88% 的企业在过去一年中确认或怀疑发生过 AI Agent 安全事件，医疗行业更是高达 93%。核心问题是：大多数企业还在用共享 API 密钥来管理 Agent（45.6%），而不是把 Agent 当作独立的「身份实体」。微软已开源 Agent Governance Toolkit，提供加密身份认证方案，但行业整体仍严重落后于部署速度。</p>
+        <a href="https://www.gravitee.io/blog/state-of-ai-agent-security-2026-report-when-adoption-outpaces-control" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Gravitee
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-policy">政策</span>
+          EU 行业协会请求延长 AI Act 标注宽限期
+        </div>
+        <p>以 EuroISPA 为首的 15 个行业协会联名请求欧盟将生成式 AI 内容标注的宽限期从 6 个月延长至 12 个月。企业抱怨现有时间表不现实 -- 光是搞清楚哪些内容需要标注、用什么技术标注，就够忙半年了。与此同时，美国已有超过 600 项 AI 法案在各州议会推进。</p>
+        <a href="https://www.eversheds-sutherland.com/en/united-states/insights/gloabl-ai-bulletin-april-2026" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Eversheds Sutherland
+        </a>
+      </div>
+    </div>
+
+    <!-- 技术前沿 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon research">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+        </div>
+        <div class="section-title">技术前沿</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">研究</span>
+          AI 能耗降低 100 倍：神经符号混合架构突破
+        </div>
+        <p>ScienceDaily 报道，研究人员发布了一种结合神经网络和符号推理的混合架构，能让 AI 能耗降低最高 100 倍，同时提升准确率。核心思路是让机器人像人类一样「逻辑思考」而非暴力穷举。这项技术对于在边缘设备上运行 AI 尤为重要 -- 你的手机和机器人可能很快就能跑复杂 AI 而不会发烫了。</p>
+        <a href="https://www.sciencedaily.com/releases/2026/04/260405003952.htm" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          ScienceDaily
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">研究</span>
+          AI 加速量子计算突破，互联网加密或面临挑战
+        </div>
+        <p>Time 杂志报道，Google 和 Oratomic 的新研究表明，能够破解互联网加密的量子计算机可能比预期更早到来 -- 而 AI 正在加速这一进程。研究者警告「世界还没有准备好」。目前的 RSA 和 ECC 加密体系可能需要提前迁移到后量子密码学方案，这将是一场涉及全球互联网基础设施的大工程。</p>
+        <a href="https://time.com/article/2026/04/07/ai-quantum-computing-advance/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Time
+        </a>
+      </div>
+    </div>
+
+    <div class="closing-card">
+      <div class="closing-title">今日总结</div>
+      <div class="closing-text">今天的主线是「AI Agent 走向现实世界」。从 Perplexity 把整台 Mac 变成 AI 管家，到微软在 Windows 任务栏嵌入 Agent 入口，再到 88% 企业因 Agent 安全问题翻车 -- AI 不再只是聊天框里的对话伙伴，而是真正能操控你电脑、管理你日程、代你发邮件的数字员工。与此同时，OpenAI 用 200 亿美元芯片大单释放了一个信号：NVIDIA 的算力垄断正在被打破，芯片竞争的下半场已经开始。</div>
+    </div>
+
+  </div>
+
+  <!-- ==================== 技术进阶版 ==================== -->
+  <div id="tab-intermediate" class="tab-content">
+
+    <div class="mood-banner">
+      <div class="mood-title">技术视角：推理芯片多元化、万亿参数竞赛、Agentic OS 元年</div>
+      <div class="mood-subtitle">OpenAI 用 Cerebras 晶圆级芯片对冲 NVIDIA 依赖，Grok 4.3 开启 1T 参数时代，MCP 成为桌面 Agent 标准协议，AI Agent 身份治理从实验走向必需品</div>
+    </div>
+
+    <!-- 基础设施与芯片 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon gpu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>
+        </div>
+        <div class="section-title">基础设施与芯片</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-gpu">芯片</span>
+          OpenAI-Cerebras 交易解析：从 100 亿到 200 亿的战略升级
+        </div>
+        <p>OpenAI 将在三年内向 Cerebras 支付超过 200 亿美元，这是 1 月份 100 亿美元协议的翻倍。交易结构值得关注：OpenAI 不仅购买芯片算力，还获得 Cerebras 最高 10% 股权的认股权证，并提供约 10 亿美元帮助 Cerebras 建设数据中心。</p>
+        <p>Cerebras 的技术路线与 NVIDIA 截然不同 -- 使用「晶圆级引擎」（Wafer Scale Engine），整颗晶圆做成一个巨型芯片，在推理场景下有显著的延迟和吞吐量优势。OpenAI 的算盘是：用 Cerebras 处理推理负载，用 NVIDIA GPU 处理训练负载，实现供应链风险分散和成本优化。</p>
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-value">$200亿+</div>
+            <div class="stat-label">三年合同总额</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">10%</div>
+            <div class="stat-label">最高认股权证份额</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">$350亿</div>
+            <div class="stat-label">Cerebras IPO 目标估值</div>
+          </div>
+        </div>
+        <a href="https://www.theinformation.com/articles/openai-spend-20-billion-cerebras-chips-receive-equity-stake" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          The Information
+        </a>
+      </div>
+    </div>
+
+    <!-- 模型与算法 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="section-title">模型与算法</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">模型</span>
+          Grok 4.3 Beta 技术细节：0.5T 上线，1T 版本训练中
+        </div>
+        <p>xAI 于 4 月 17 日发布 Grok 4.3 Beta，面向 SuperGrok Heavy 用户（$300/月）。当前部署的是约 0.5T 参数的 checkpoint，完整的 1T 参数版本预计约 5 天后完成初始训练。相比 Grok 4.20，参数量翻倍。</p>
+        <p>新增的多模态能力包括原生视频输入理解和长上下文处理优化。xAI 采用「持续交付」策略，承诺几乎每天推送改进到同一模型节点 -- 这与传统的大版本发布模式截然不同，更接近 SaaS 产品的迭代节奏。</p>
+        <ul class="detail-list">
+          <li>当前版本：约 0.5T 参数，1T 版本训练中</li>
+          <li>新增能力：PDF/PPT/表格生成、原生视频输入</li>
+          <li>定价：SuperGrok Heavy $300/月独占</li>
+          <li>发布策略：每日迭代推送</li>
+        </ul>
+        <a href="https://www.buildfastwithai.com/blogs/grok-4-3-beta-features-review" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          BuildFast with AI
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">趋势</span>
+          4 月模型竞赛格局：万亿参数时代正式开启
+        </div>
+        <p>4 月成为大模型发布最密集的月份。Anthropic 的 Claude Mythos 5 以 10 万亿参数打破纪录；xAI 的 Grok 4.3 以 1 万亿参数跟进。与此同时，Google 的 Gemma 4 走小而精路线，在单张 80GB H100 上跑出了 20 倍大模型的性能。</p>
+        <p>趋势判断：模型竞争正在分化为两条路线 -- 「万亿参数暴力路线」（Mythos、Grok）和「高效压缩路线」（Gemma 4、TurboQuant）。长期来看，后者可能更有商业价值，因为推理成本才是决定 AI 大规模普及的关键变量。</p>
+      </div>
+    </div>
+
+    <!-- 产品与生态 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon product">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <div class="section-title">产品与生态</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-product">产品</span>
+          Perplexity Personal Computer：从搜索引擎到操作系统级 Agent
+        </div>
+        <p>Perplexity 的 Personal Computer for Mac 是一个操作系统级 AI Agent，能够读写本地文件、操控原生应用（iMessage、Mail、Calendar）和执行浏览器操作。技术架构上使用约 20 个模型的路由系统，将不同任务分配给最合适的模型处理。</p>
+        <p>关键设计决策：推荐在专用 Mac mini 上全天候运行，定位为「always-on AI agent」。安全方面实现了三重防护 -- 紧急关停开关、操作前用户确认、完整审计日志。这是继 Claude Computer Use、Operator 之后，又一家推出「能操控电脑的 AI」的公司。</p>
+        <a href="https://www.perplexity.ai/hub/blog/introducing-perplexity-computer" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Perplexity
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-product">平台</span>
+          Windows 11 Agentic Taskbar：MCP 成为桌面 Agent 标准
+        </div>
+        <p>微软在 Windows 11 Release Preview Channel 推出 Agent 任务栏集成（Build 26200.8313），技术核心是 Model Context Protocol（MCP）。MCP 在 3 月已累计超 9700 万次安装，现在正式成为桌面操作系统级的 Agent 通信标准。</p>
+        <p>开发者视角：任何遵循 MCP 协议的 Agent 都可以注册到 Windows 任务栏，通过「@」前缀被用户调用。微软 365 Copilot 图标提供 Agent 监控入口。这标志着 Agentic AI 从云端 API 走向桌面操作系统的关键一步。</p>
+        <a href="https://wccftech.com/microsoft-continues-with-its-plan-to-bring-ai-agents-to-windows-11/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          WCCFTech
+        </a>
+      </div>
+    </div>
+
+    <!-- 安全与治理 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="section-title">安全与治理</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-policy">安全</span>
+          AI Agent 身份治理：从「附属账号」到「独立实体」的转型
+        </div>
+        <p>多份行业报告揭示了 AI Agent 安全的系统性短板。核心数据：88% 的组织在过去一年遭遇 Agent 安全事件；仅 21.9% 的团队将 Agent 视为独立的身份实体；45.6% 仍依赖共享 API 密钥。</p>
+        <p>微软开源的 Agent Governance Toolkit 提出了一套解决方案：使用去中心化标识符（DID）配合 Ed25519 加密提供身份证明，通过 Inter-Agent Trust Protocol（IATP）实现 Agent 间的安全通信。Okta 也发布了 AI Agent 身份管理蓝图，计划 4 月底上线。这标志着 Agent 安全正从「可选附件」变为「基础设施必需品」。</p>
+        <a href="https://opensource.microsoft.com/blog/2026/04/02/introducing-the-agent-governance-toolkit-open-source-runtime-security-for-ai-agents/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Microsoft Open Source Blog
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">研究</span>
+          神经符号 AI：能耗降 100 倍的混合推理架构
+        </div>
+        <p>ScienceDaily 发表的研究展示了一种将传统神经网络与符号推理结合的混合架构。相比纯深度学习方案，该架构在机器人任务中能耗降低最高 100 倍，同时准确率更高。技术思路是将高层规划交给符号推理引擎处理（消耗极低），仅在感知层使用神经网络。</p>
+        <p>这与当前主流的 end-to-end 深度学习路线形成鲜明对比。如果这一方向得到验证，对边缘 AI、机器人和 IoT 场景的影响将是根本性的 -- 意味着复杂 AI 推理可以在低功耗设备上本地运行。</p>
+        <a href="https://www.sciencedaily.com/releases/2026/04/260405003952.htm" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          ScienceDaily
+        </a>
+      </div>
+    </div>
+
+    <div class="closing-card">
+      <div class="closing-title">技术总结</div>
+      <div class="closing-text">今日两条主线交织：(1) 算力供应链重构 -- OpenAI 的 Cerebras 交易标志着推理芯片市场从 NVIDIA 单极走向多元，训练用 GPU、推理用 WSE 的分工模式开始成型。Cerebras 的晶圆级架构在推理延迟上有结构性优势，如果 IPO 成功，将加速非 NVIDIA 方案的资本化进程。(2) Agentic OS 元年 -- Perplexity 的 Personal Computer、微软的 Agentic Taskbar 和 MCP 协议的 9700 万次安装共同描绘了一幅图景：AI Agent 正在从 API 走向操作系统层。但 88% 的安全事件率提醒我们，Agent 的部署速度远超安全基础设施的建设速度。DID + IATP 等协议标准的出现是积极信号，但从发布到行业普及还需要 12-18 个月。</div>
+    </div>
+
+  </div>
+
+  <!-- ==================== 深度技术版 ==================== -->
+  <div id="tab-expert" class="tab-content">
+
+    <div class="mood-banner">
+      <div class="mood-title">深度分析：推理芯片架构分化、Agent 身份安全栈、神经符号混合推理范式</div>
+      <div class="mood-subtitle">Cerebras WSE 推理架构的技术经济学分析，万亿参数模型的训练与部署挑战，MCP 驱动的 Agentic OS 技术栈，DID/IATP Agent 身份认证框架深度解析</div>
+    </div>
+
+    <!-- 核心技术分析 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon gpu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>
+        </div>
+        <div class="section-title">核心技术分析</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-gpu">芯片</span>
+          Cerebras WSE vs NVIDIA GPU：推理芯片架构的结构性分化
+        </div>
+        <p>OpenAI 的 200 亿美元 Cerebras 交易背后是一个技术经济学判断：推理工作负载与训练工作负载对芯片架构的需求根本不同。</p>
+        <p>Cerebras 的 Wafer Scale Engine（WSE）将整颗 300mm 晶圆制成单个芯片，包含约 4 万亿个晶体管和数十万个 AI 优化核心。相比 NVIDIA H100/B200 的 die-level 设计，WSE 的架构优势在推理场景中体现为三个维度：</p>
+        <ul class="detail-list">
+          <li>内存带宽：WSE 的片上 SRAM 总量远超 GPU 的 HBM 方案，消除了推理时的内存墙瓶颈。对于大批量推理请求，吞吐量优势可达 5-10 倍</li>
+          <li>延迟特征：由于计算和存储在同一硅片上，WSE 消除了 GPU 架构中的 PCIe/NVLink 通信开销，首 token 延迟（TTFT）显著降低</li>
+          <li>能效比：单位推理的功耗更低，在 OpenAI 每年数十亿美元的电力支出中，这是一个显著的成本杠杆</li>
+        </ul>
+        <p>交易结构本身也具有技术含义：OpenAI 提供 10 亿美元帮助 Cerebras 建设数据中心，说明 WSE 需要定制的冷却和电力基础设施 -- 这是晶圆级芯片的固有约束。认股权证设计则将 OpenAI 从纯客户关系升级为战略投资者，绑定了长期技术路线。</p>
+        <table class="tech-table">
+          <tr><th>维度</th><th>Cerebras WSE</th><th>NVIDIA B200</th></tr>
+          <tr><td>架构</td><td>晶圆级单芯片</td><td>Die-level + HBM</td></tr>
+          <tr><td>优势场景</td><td>大批量推理</td><td>训练 + 通用推理</td></tr>
+          <tr><td>内存方式</td><td>片上分布式 SRAM</td><td>HBM3e</td></tr>
+          <tr><td>生态成熟度</td><td>早期</td><td>成熟（CUDA）</td></tr>
+          <tr><td>部署约束</td><td>定制数据中心</td><td>标准机架</td></tr>
+        </table>
+        <a href="https://www.theinformation.com/articles/openai-spend-20-billion-cerebras-chips-receive-equity-stake" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          The Information
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">模型</span>
+          万亿参数模型的训练经济学：Grok 4.3 案例分析
+        </div>
+        <p>Grok 4.3 的 1T 参数规模揭示了当前大模型训练的几个关键工程挑战：</p>
+        <ul class="detail-list">
+          <li>训练集群规模：1T 参数模型的训练通常需要 10,000+ H100/B200 GPU 的集群，xAI 的 Memphis 超级计算中心（10 万颗 H100）提供了这一能力。训练周期以月计算，当前 0.5T checkpoint 已上线，1T 版本约需额外 5 天完成初始训练</li>
+          <li>持续交付策略：xAI 选择在训练过程中持续部署中间 checkpoint（如当前的 0.5T），而非等待完整训练完成。这意味着需要成熟的在线评估和自动化回滚机制。技术上可能采用了 checkpoint 质量评估 pipeline + 灰度发布</li>
+          <li>成本结构：粗估训练单次成本 $1-5 亿级别，加上每日推理成本。$300/月的定价意味着 xAI 需要大量高付费用户来覆盖基础设施成本，或者依赖训练后的优化（蒸馏、量化）来降低推理成本</li>
+        </ul>
+        <p>值得注意的是，xAI 的模型发布策略正在从竞争对手的「大版本发布」转向「持续集成/持续部署」（CI/CD）范式。这在模型迭代效率上可能建立优势，但也引入了版本管理和 API 一致性的挑战。</p>
+        <a href="https://piunikaweb.com/2026/04/17/xai-grok-4-3-beta-supergrok-heavy/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          PiunikaWeb
+        </a>
+      </div>
+    </div>
+
+    <!-- Agent 安全架构 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="section-title">Agent 安全架构</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-policy">安全</span>
+          AI Agent 身份安全栈深度解析：DID + IATP 架构
+        </div>
+        <p>88% 的 Agent 安全事件率不是部署失误的结果，而是架构层面的缺陷 -- 现有的身份管理体系（IAM/PAM）是为人类和服务账号设计的，缺少 Agent 所需的动态权限、上下文感知和生命周期管理能力。</p>
+        <p>微软 Agent Governance Toolkit 提出的架构值得深入分析：</p>
+        <ul class="detail-list">
+          <li>身份层：使用 W3C DID（Decentralized Identifiers）标准，每个 Agent 拥有独立的密码学身份，基于 Ed25519 椭圆曲线签名。DID 的去中心化特性意味着 Agent 身份不依赖中心化 IdP，适合跨组织 Agent 协作场景</li>
+          <li>信任层：Inter-Agent Trust Protocol（IATP）定义了 Agent 间通信的认证和授权框架。包括 mutual TLS + DID-based credential exchange，确保 Agent-to-Agent 通信的不可伪造性</li>
+          <li>审计层：完整的操作审计日志，支持按 Agent 粒度的权限回溯和事件溯源。对于金融和医疗等受监管行业，这是合规的基础要求</li>
+        </ul>
+        <p>当前的差距：45.6% 的团队仍使用共享 API 密钥 -- 这意味着一个 Agent 被入侵，攻击者可以冒充该组织的所有 Agent。从「共享密钥」迁移到「独立 DID」需要重构 Agent 的身份注入和凭证轮换机制，这在大规模部署中是一个 6-12 个月的工程项目。</p>
+        <a href="https://opensource.microsoft.com/blog/2026/04/02/introducing-the-agent-governance-toolkit-open-source-runtime-security-for-ai-agents/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Microsoft Open Source Blog
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-product">平台</span>
+          Agentic OS 技术栈：从 MCP 到桌面 Agent 的完整链路
+        </div>
+        <p>将 Perplexity Personal Computer、微软 Agentic Taskbar 和 MCP 协议放在一起看，一个新的技术栈正在成型：</p>
+        <ul class="detail-list">
+          <li>协议层 - MCP（Model Context Protocol）：9700 万次安装后已成为事实标准。定义了 Agent 如何发现、连接和使用工具，从 CLI（Claude Code）到桌面（Windows Taskbar）到独立设备（Perplexity Mac mini）都采用同一协议</li>
+          <li>路由层 - Multi-model orchestration：Perplexity 使用约 20 个模型的路由系统，根据任务类型动态选择最优模型。这种 MoE（Mixture of Experts）的系统级实现，可能是 Agentic OS 的标准模式 -- 不是一个模型做所有事，而是一个编排系统调度多个专精模型</li>
+          <li>执行层 - OS-level integration：Agent 需要读写文件系统、调用原生应用、管理系统权限。Perplexity 的方案是通过 macOS 的 Accessibility API 和 AppleScript，微软则通过原生的 Windows Agent API。两者的差异反映了不同 OS 对 Agent 的支持成熟度</li>
+          <li>安全层 - Agent Governance：kill switch、操作确认、审计日志、DID 身份认证。这一层目前是最薄弱的环节，也是行业最急需标准化的部分</li>
+        </ul>
+        <div class="highlight">关键观察：MCP 正在成为 AI Agent 的 TCP/IP -- 一个跨平台、跨设备、跨厂商的基础通信协议。微软在 Windows 中原生支持 MCP 是一个里程碑事件，意味着这个协议有机会成为操作系统级标准而非仅仅是开发工具级标准。</div>
+      </div>
+    </div>
+
+    <!-- 前沿研究 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon research">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+        </div>
+        <div class="section-title">前沿研究</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">研究</span>
+          神经符号混合架构：100 倍能效提升的技术机制
+        </div>
+        <p>ScienceDaily 报道的研究提出了一种分层混合推理架构，核心思路是将 AI 系统的推理过程拆解为两个异质层：</p>
+        <ul class="detail-list">
+          <li>感知层（Neural）：使用传统深度学习处理感官输入（视觉、语音、触觉），负责将原始信号转化为结构化表示。这一层的计算密集型特征保持不变</li>
+          <li>推理层（Symbolic）：使用符号逻辑引擎处理高层规划、因果推理和约束满足问题。符号推理的计算复杂度远低于神经网络的矩阵运算，且天然具备可解释性</li>
+        </ul>
+        <p>100 倍能效提升的来源：高层规划和决策消耗了纯神经网络方案中超过 90% 的计算量，但这些任务恰恰是符号推理的强项。将这部分工作从 GPU 密集计算迁移到逻辑推理引擎，计算量降至原来的 1%。准确率提升则来自符号推理的确定性 -- 不会出现神经网络的「幻觉」问题。</p>
+        <p>与当前行业趋势的关联：这一方向与 Nature 此前报道的「AI Agent 科学推理瓶颈」互为因果 -- 纯神经网络在长链因果推理中的衰减问题，可能通过混合架构根本性解决。如果这一研究成功落地，对 Physical AI（机器人、自动驾驶）和边缘 AI 的影响将是颠覆性的。</p>
+        <a href="https://www.sciencedaily.com/releases/2026/04/260405003952.htm" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          ScienceDaily
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">研究</span>
+          AI 辅助量子计算突破：后量子密码学迁移紧迫性上升
+        </div>
+        <p>Google 和 Oratomic 的研究论文显示，AI 正在加速量子纠错码的优化，使得「密码学相关量子计算机」（CRQC）的到来时间可能大幅提前。具体而言：</p>
+        <ul class="detail-list">
+          <li>AI 优化的量子纠错方案将所需的物理量子比特数降低了约 3 倍，意味着现有硬件路线图上的量子计算机可能比预期更早达到破解 RSA-2048 的能力</li>
+          <li>当前互联网加密的 RSA 和 ECC 体系在 CRQC 面前将完全失效。NIST 的后量子密码学标准（CRYSTALS-Kyber、CRYSTALS-Dilithium）已于 2024 年发布，但全球互联网基础设施的迁移进度远远落后</li>
+          <li>实际时间线评估：乐观估计 CRQC 可能在 2030-2035 年间出现，悲观估计可能更早。考虑到大规模基础设施迁移需要 5-10 年，「现在就开始」已不是超前规划而是必要行动</li>
+        </ul>
+        <p>对 AI 行业的直接影响：如果后量子迁移加速，所有涉及加密通信的 AI 系统（包括 Agent 身份认证、模型权重保护、API 通信加密）都需要升级。今天讨论的 DID + Ed25519 方案也需要迁移到后量子签名算法。</p>
+        <a href="https://time.com/article/2026/04/07/ai-quantum-computing-advance/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Time
+        </a>
+      </div>
+    </div>
+
+    <div class="closing-card">
+      <div class="closing-title">深度总结</div>
+      <div class="closing-text">今日三个结构性信号：(1) 推理芯片架构分化正式开始。OpenAI 的 Cerebras 交易不仅仅是供应链多元化 -- 它反映了一个更深层的技术判断：训练和推理的硬件需求正在根本性分离。WSE 的晶圆级架构在推理延迟和能效上的结构性优势，使得「训练用 GPU + 推理用 WSE」的异构计算模式有望成为下一代 AI 基础设施的标准配置。如果 Cerebras IPO 成功，将催生一批专注推理芯片的竞争者。(2) Agentic OS 技术栈正在收敛。MCP 在桌面操作系统的集成是一个关键转折点 -- 当一个协议同时被 Anthropic（Claude Code）、Microsoft（Windows Taskbar）和独立开发者采用时，它就从「协议」变成了「基础设施」。Perplexity 的多模型路由架构暗示了未来的标准模式：不是一个全能模型，而是一个智能调度系统管理一组专精模型，通过 MCP 与 OS 和应用交互。(3) Agent 安全的技术债务正在快速累积。88% 的安全事件率和 45.6% 的共享密钥使用率表明，行业的部署速度远超安全基础设施的建设速度。DID + IATP 的出现提供了一个技术可行的解决方案，但从标准发布到行业普及的窗口期（12-18 个月）恰恰是攻击面最大的时期。讽刺的是，今天讨论的 Ed25519 签名方案可能在量子计算突破后也需要迁移 -- 安全基础设施的建设永远在追赶威胁的进化。</div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>AI Pulse Daily Report | 2026.04.20</p>
+    <p style="margin-top: 4px;">AI Pulse -- 由 AI 自动生成 -- 数据来源：The Information / CNBC / Perplexity / Microsoft / PiunikaWeb / ScienceDaily / Time / Gravitee / Eversheds Sutherland</p>
+    <p style="margin-top: 8px;"><a href="/">返回 AI Pulse 主页</a></p>
+  </div>
+</div>
+
+<script>
+function switchTab(tabName) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  const tabMap = { casual: 0, intermediate: 1, expert: 2 };
+  document.getElementById('tab-' + tabName).classList.add('active');
+  document.querySelectorAll('.tab-btn')[tabMap[tabName]].classList.add('active');
+}
+</script>
+</body>
+</html>

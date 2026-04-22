@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily Report | 2026.04.23</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --claude-bg: #FAF9F7;
+    --claude-surface: #FFFFFF;
+    --claude-border: #E8E5E0;
+    --claude-text-primary: #1A1714;
+    --claude-text-secondary: #6B6560;
+    --claude-text-tertiary: #9B9590;
+    --claude-accent: #DA7756;
+    --claude-accent-light: #F5E6DF;
+    --claude-accent-dark: #C4623F;
+    --claude-tag-blue: #E8F0FE;
+    --claude-tag-blue-text: #3B6CB5;
+    --claude-tag-green: #E6F4EA;
+    --claude-tag-green-text: #2D7A3F;
+    --claude-tag-purple: #F0E6FA;
+    --claude-tag-purple-text: #7B3FAF;
+    --claude-tag-amber: #FEF3E2;
+    --claude-tag-amber-text: #B5752D;
+    --claude-tag-red: #FDE8E8;
+    --claude-tag-red-text: #B53B3B;
+    --claude-card-shadow: 0 1px 3px rgba(26, 23, 20, 0.06), 0 1px 2px rgba(26, 23, 20, 0.04);
+    --claude-card-shadow-hover: 0 4px 12px rgba(26, 23, 20, 0.08), 0 2px 4px rgba(26, 23, 20, 0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+    background: var(--claude-bg);
+    color: var(--claude-text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 8px;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--claude-accent-dark); }
+
+  .header {
+    text-align: center;
+    padding: 48px 0 40px;
+    border-bottom: 1px solid var(--claude-border);
+    margin-bottom: 32px;
+  }
+
+  .header-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--claude-accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .header .date {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    font-weight: 400;
+  }
+
+  .header .edition-note {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    margin-top: 8px;
+  }
+
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 36px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--claude-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .tab-btn:hover {
+    color: var(--claude-text-primary);
+    background: var(--claude-bg);
+  }
+
+  .tab-btn.active {
+    background: var(--claude-accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(218, 119, 86, 0.3);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .section { margin-bottom: 36px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .section-icon.gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .section-icon.model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .section-icon.product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .section-icon.research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .section-icon.industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .section-icon.policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .card {
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--claude-card-shadow);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .card:hover { box-shadow: var(--claude-card-shadow-hover); }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .card p {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.75;
+    margin-bottom: 8px;
+  }
+
+  .card p:last-child { margin-bottom: 0; }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .tag-gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .tag-model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .tag-product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .tag-research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .tag-industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .tag-policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .highlight {
+    background: var(--claude-accent-light);
+    border-left: 3px solid var(--claude-accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--claude-accent-dark);
+    line-height: 1.7;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .stat-item {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--claude-accent);
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--claude-text-tertiary);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 8px;
+    transition: color 0.15s;
+  }
+
+  .source-link:hover { color: var(--claude-accent-dark); text-decoration: underline; }
+
+  .tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .tech-table th, .tech-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .tech-table th {
+    font-weight: 600;
+    color: var(--claude-text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: var(--claude-bg);
+  }
+
+  .tech-table td { color: var(--claude-text-primary); }
+
+  .code-block {
+    background: #2D2A26;
+    color: #E8E5E0;
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    overflow-x: auto;
+    margin: 12px 0;
+  }
+
+  .code-block .comment { color: #9B9590; }
+  .code-block .keyword { color: #DA7756; }
+  .code-block .string { color: #7DB87D; }
+
+  .footer {
+    text-align: center;
+    padding: 32px 0;
+    border-top: 1px solid var(--claude-border);
+    margin-top: 48px;
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+  }
+
+  .footer a {
+    color: var(--claude-accent);
+    text-decoration: none;
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 20px 16px 60px; }
+    .header h1 { font-size: 24px; }
+    .tab-btn { font-size: 13px; padding: 10px 8px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+  }
+
+  .subsection-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin: 16px 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  ul.detail-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0;
+  }
+
+  ul.detail-list li {
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.7;
+    padding: 4px 0 4px 16px;
+    position: relative;
+  }
+
+  ul.detail-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--claude-border);
+  }
+
+  .mood-banner {
+    background: linear-gradient(135deg, #FFF5F0 0%, #FFF9F0 100%);
+    border: 1px solid #F0DDD0;
+    border-radius: 16px;
+    padding: 28px 24px;
+    margin-bottom: 32px;
+    text-align: center;
+  }
+
+  .mood-banner .mood-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin-bottom: 6px;
+  }
+
+  .mood-banner .mood-subtitle {
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.6;
+  }
+
+  .mood-meter {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    margin: 12px 0;
+  }
+
+  .mood-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    transition: transform 0.2s;
+  }
+
+  .mood-dot.active { transform: scale(1.4); }
+
+  .mood-label {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+
+  .tldr-box {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.6;
+  }
+
+  .closing-card {
+    background: linear-gradient(135deg, #FFF5F0 0%, #FFF9F0 100%);
+    border: 1px solid #F0DDD0;
+    border-radius: 16px;
+    padding: 28px 24px;
+    margin-top: 32px;
+    text-align: center;
+  }
+
+  .closing-card .closing-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin-bottom: 10px;
+  }
+
+  .closing-card .closing-text {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.8;
+    text-align: left;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <a href="/" class="back-link">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
+    返回 AI Pulse
+  </a>
+
+  <div class="header">
+    <div class="header-logo">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      AI PULSE DAILY
+    </div>
+    <h1>AI 日报 | 2026.04.23</h1>
+    <div class="date">2026 年 4 月 23 日 星期四</div>
+    <div class="edition-note">第 33 期 -- SpaceX 600 亿美元锁定 Cursor 收购权，Google Cloud Next 发布 7.5 亿美元 Agentic AI 基金，Mira Murati 实验室获 Google 数十亿美元算力，Kimi K2.6 开源编程称王，量子计算破解加密时间表大幅提前</div>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('casual')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+      轻松阅读
+    </button>
+    <button class="tab-btn" onclick="switchTab('intermediate')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      技术进阶
+    </button>
+    <button class="tab-btn" onclick="switchTab('expert')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      深度技术
+    </button>
+  </div>
+
+  <!-- ==================== 轻松阅读版 ==================== -->
+  <div id="tab-casual" class="tab-content active">
+
+    <div class="mood-banner">
+      <div class="mood-title">今日 AI 圈：巨额交易频飞，开源新王登基，量子威胁逼近</div>
+      <div class="mood-meter">
+        <div class="mood-dot active" style="background:#4CAF50"></div>
+        <div class="mood-dot" style="background:#8BC34A"></div>
+        <div class="mood-dot" style="background:#FFC107"></div>
+        <div class="mood-dot" style="background:#FF9800"></div>
+        <div class="mood-dot" style="background:#F44336"></div>
+      </div>
+      <div class="mood-label">市场情绪：强烈乐观</div>
+      <div class="mood-subtitle">SpaceX 斥 600 亿抢购 Cursor，Google Cloud Next 撒 7.5 亿催化 Agentic AI，Mira Murati 的 Thinking Machines 获 Google 数十亿算力加持，中国月之暗面 Kimi K2.6 在编程基准测试中击败 GPT-5.4，量子计算破解加密的时间表从遥远变为十年内</div>
+    </div>
+
+    <!-- 头条 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="section-title">头条速览</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">并购</span>
+          SpaceX 锁定 600 亿美元 Cursor 收购权 -- Musk 的 AI 编程野心浮出水面
+        </div>
+        <p>SpaceX 宣布已与 AI 编程初创公司 Cursor 达成协议，获得今年晚些时候以 600 亿美元收购的选择权，或者支付 100 亿美元合作费。Cursor 是当前最火的 AI 编程工具之一，日活开发者数百万。这笔交易将与今年 2 月 SpaceX 并入的 xAI（Grok 母公司）形成互补 -- Grok 做对话，Cursor 做编程。Musk 的 AI 版图正在从对话延伸到开发者工具。SpaceX 即将以接近 1.75 万亿美元的估值 IPO。</p>
+        <a href="https://www.cnbc.com/2026/04/21/spacex-says-it-can-buy-cursor-later-this-year-for-60-billion-or-pay-10-billion-for-our-work-together.html" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          CNBC
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">基建</span>
+          Google Cloud Next '26：7.5 亿美元基金点燃 Agentic AI 部署
+        </div>
+        <p>Google Cloud 在年度大会 Cloud Next '26 上宣布设立 7.5 亿美元合作伙伴基金，专门加速 Agentic AI 的企业落地。McKinsey、Accenture、Deloitte、PwC 等全球顶级咨询公司都将获得资金支持。Google 还将派驻前沿工程师团队（FDE）嵌入客户现场，DeepMind 将向合作伙伴提前开放 Gemini 模型测试。此外 Google 透露，公司内部 75% 的新代码已由 AI 生成，人类工程师仅负责审查。</p>
+        <a href="https://www.googlecloudpresscorner.com/2026-04-22-Google-Cloud-Commits-750-Million-to-Accelerate-Partners-Agentic-AI-Development" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Google Cloud
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">算力</span>
+          Mira Murati 的 Thinking Machines Lab 获 Google 数十亿美元算力
+        </div>
+        <p>前 OpenAI 首席技术官 Mira Murati 创立的 Thinking Machines Lab 与 Google Cloud 签署了数十亿美元的算力协议。这家成立仅一年多的公司将成为首批使用 NVIDIA 最新 GB300 芯片的 Google Cloud 客户之一。早期测试显示，使用 A4X Max 虚拟机的训练和推理速度比上一代 GPU 提升了 2 倍。Murati 去年从 OpenAI 离职后以 120 亿美元估值融资 20 亿美元创办了这家公司。</p>
+        <a href="https://techcrunch.com/2026/04/22/exclusive-google-deepens-thinking-machines-lab-ties-with-new-multi-billion-dollar-deal/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          TechCrunch
+        </a>
+      </div>
+    </div>
+
+    <!-- 模型与产品 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        </div>
+        <div class="section-title">模型与产品</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">模型</span>
+          Kimi K2.6 正式发布 -- 中国开源模型首次在编程基准测试中登顶
+        </div>
+        <p>中国 AI 公司月之暗面（Moonshot AI）正式发布 Kimi K2.6，从预览版升级为正式版。这个拥有 1 万亿参数的开源模型在 SWE-Bench Pro 编程基准测试中得分 58.6，超过了 GPT-5.4 的 57.7 和 Claude Opus 4.6 的 53.4。更令人印象深刻的是，它支持 300 个子 Agent 并行工作、4000 个协作步骤，能持续编程长达 13 小时。在 Kimi.com、App、API 和 Kimi Code CLI 全面上线。</p>
+        <a href="https://siliconangle.com/2026/04/20/moonshot-ai-releases-kimi-k2-6-model-1t-parameters-attention-optimizations/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          SiliconANGLE
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-product">产品</span>
+          GPT-Image 2 正式上线 -- AI 图像生成迎来「会思考」时代
+        </div>
+        <p>OpenAI 正式发布 GPT-Image 2（ChatGPT Images 2.0），这是首个内置推理能力的图像生成模型。它能准确渲染文字（从小字到 UI 元素）、支持 2K 高分辨率、多图一致性风格。上线仅 12 小时就在 Image Arena 排行榜上以 242 分的史上最大优势登顶。目前所有 ChatGPT 用户可用，API 将于 5 月初向开发者开放。</p>
+        <a href="https://openai.com/index/introducing-chatgpt-images-2-0/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          OpenAI
+        </a>
+      </div>
+    </div>
+
+    <!-- 前沿研究 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon research">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </div>
+        <div class="section-title">前沿研究与突破</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">机器人</span>
+          北京机器人半马：Honor「闪电」50 分 26 秒完赛，击碎人类世界纪录
+        </div>
+        <p>在 4 月 19 日的北京亦庄人形机器人半程马拉松上，荣耀（Honor）开发的「闪电」机器人以 50 分 26 秒完赛 21 公里，不仅赢过了全部 12000 名人类选手，还打破了人类男子半马世界纪录（57 分 20 秒）。相比去年首届比赛冠军机器人 2 小时 40 分的成绩，进步超过 3 倍。今年有超过 100 台机器人参赛，40% 为全自主操控。</p>
+        <a href="https://www.npr.org/2026/04/20/g-s1-118086/humanoid-robot-half-marathon" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          NPR
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">量子</span>
+          AI 加速量子突破：加密被破解的时间表从「遥远」变成「十年内」
+        </div>
+        <p>Google 与量子计算初创公司 Oratomic 联合发布研究显示，只需 10000 个原子量子比特就能构建具有密码学意义的量子计算机 -- 此前业界估计需要 100 万个。AI 在算法开发中发挥了关键作用。这意味着能破解当前互联网加密的量子计算机可能在 2030 年代初就会出现。Cloudflare 已将后量子安全的准备截止日期提前到 2029 年。</p>
+        <a href="https://time.com/article/2026/04/07/ai-quantum-computing-advance/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          TIME
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">效率</span>
+          AI 能耗降低 100 倍：神经-符号混合推理重大突破
+        </div>
+        <p>研究人员发布了一种将神经网络与人类式符号推理相结合的新方法，能在提高准确率的同时将 AI 能耗降低 100 倍。传统 AI 靠暴力计算试错，这套系统让机器人学会了「逻辑思考」。如果这项技术能大规模应用，将显著缓解当前 AI 行业令人担忧的能耗问题。</p>
+        <a href="https://www.sciencedaily.com/releases/2026/04/260405003952.htm" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          ScienceDaily
+        </a>
+      </div>
+    </div>
+
+    <!-- 行业动态 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon gpu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        </div>
+        <div class="section-title">行业动态</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-gpu">财务</span>
+          AI 巨头收入里程碑：OpenAI $250 亿，Anthropic $190 亿年化营收
+        </div>
+        <p>OpenAI 年化营收已突破 250 亿美元，正考虑最快今年底上市。Anthropic 年化营收接近 190 亿美元。两家公司的收入增速远超传统科技公司。Q1 2026 全球风投总额达 3000 亿美元的历史新高，其中 AI 占了 80%（2420 亿美元）。四笔有史以来最大的风投轮全部在 Q1 完成：OpenAI（1220 亿）、Anthropic（300 亿）、xAI（200 亿）和 Waymo（160 亿）。</p>
+        <a href="https://news.crunchbase.com/venture/record-breaking-funding-ai-global-q1-2026/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Crunchbase
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-gpu">趋势</span>
+          Google：公司 75% 新代码由 AI 生成，人类只做审查
+        </div>
+        <p>Google 透露，目前公司内部 75% 的新代码是由 AI 生成的，人类工程师主要负责审查。这一数字从去年秋天的 50% 大幅提升。这意味着一个重大趋势：开发者的角色正在从「写代码的人」变成「审代码的人」。结合 SpaceX-Cursor 的 600 亿美元交易，AI 编程赛道已经成为整个 AI 行业最有商业价值的方向之一。</p>
+        <a href="https://www.crescendo.ai/news/latest-ai-news-and-updates" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Crescendo AI
+        </a>
+      </div>
+    </div>
+
+    <!-- 政策 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="section-title">政策与监管</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-policy">监管</span>
+          2026 年全美已提交 600+ AI 法案 -- 医疗保险 AI 限制率先落地
+        </div>
+        <p>2026 年美国各州议会已提交超过 600 项 AI 相关法案。印第安纳州、犹他州和华盛顿州已率先立法，禁止健康保险公司将 AI 作为拒绝或修改理赔的唯一依据。与此同时，白宫国家 AI 政策框架建议国会统一立法以取代各州分散规定，RAISE 法案已于 3 月 19 日生效，对大型前沿模型开发者施加透明度和安全报告要求。</p>
+        <a href="https://www.alston.com/en/insights/publications/2026/04/ai-quarterly-april-2026" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Alston & Bird
+        </a>
+      </div>
+    </div>
+
+    <div class="closing-card">
+      <div class="closing-title">今日观察</div>
+      <div class="closing-text">
+        资本的流向透露了行业最诚实的判断。SpaceX 愿意花 600 亿买一个编程工具公司，Google 一天之内发布两笔数十亿级别的 AI 基建投资 -- 「AI Agent + 编程」正在成为继「搜索」和「社交」之后的下一个万亿级赛道。与此同时，Kimi K2.6 在编程基准测试中击败 GPT-5.4，说明中国在这个新赛道上并没有掉队。而量子计算破解加密的时间表大幅提前，或许是今天最需要认真对待的信号。
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 技术进阶版 ==================== -->
+  <div id="tab-intermediate" class="tab-content">
+
+    <div class="mood-banner">
+      <div class="mood-title">技术脉搏：Agentic AI 基础设施竞赛白热化，开源模型突破编程天花板</div>
+      <div class="mood-subtitle">Google Cloud Next 密集发布 Agentic AI 平台和基金，SpaceX-Cursor 交易重塑 AI 编程格局，Kimi K2.6 的 MoE 架构在 SWE-Bench Pro 登顶，量子计算安全时间表需重新评估</div>
+    </div>
+
+    <!-- 基建与平台 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="section-title">基建与平台</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">并购</span>
+          SpaceX-Cursor $600 亿交易：AI 编程赛道的估值逻辑
+        </div>
+        <p>SpaceX 获得以 600 亿美元收购 Cursor 的选择权，或支付 100 亿美元的合作费。Cursor 此前已融资超过 30 亿美元，最近还在与 Andreessen Horowitz、NVIDIA 和 Thrive Capital 洽谈 20 亿美元新一轮融资（估值 500 亿以上）。</p>
+        <div class="highlight">交易结构值得关注：这是一个「选择权」而非直接收购，给了 SpaceX 在 IPO 前灵活选择的余地。Cursor 目前使用 OpenAI、Anthropic、xAI 和 Google 的模型，同时也有自研的 Composer LLM。与 xAI 合并后的 SpaceX 如果收购 Cursor，将形成「模型层（Grok）+ 工具层（Cursor）」的垂直整合。</div>
+        <a href="https://techcrunch.com/2026/04/21/spacex-is-working-with-cursor-and-has-an-option-to-buy-the-startup-for-60-billion/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          TechCrunch
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">云计算</span>
+          Google Cloud Next '26：$7.5 亿 Agentic AI 基金 + Thinking Machines 算力协议
+        </div>
+        <p>Google Cloud 在 Cloud Next '26 上发布两项重大举措：</p>
+        <ul class="detail-list">
+          <li><strong>$7.5 亿合作伙伴基金</strong> -- 面向 120,000 家合作伙伴，支持 Agentic AI 的价值识别、原型开发、Agent 构建部署、技能培训。McKinsey、Deloitte、Accenture、PwC、Cognizant、HCLTech、TCS 等大型咨询公司将获得 Google 派驻的前沿部署工程师（FDE）。DeepMind 将向合作伙伴提前开放 Gemini 模型。</li>
+          <li><strong>Thinking Machines Lab 数十亿算力协议</strong> -- Mira Murati 的实验室将成为首批使用 NVIDIA GB300 NVL72（Blackwell 架构）的 Google Cloud 客户。使用 GKE 进行大规模编排，Spanner、Cloud Storage 和 Anywhere Cache 支持前沿模型训练。早期测试：A4X Max 虚拟机训练和推理速度比上一代 GPU 提升 2x。</li>
+        </ul>
+        <a href="https://www.googlecloudpresscorner.com/2026-04-22-Google-Cloud-Commits-750-Million-to-Accelerate-Partners-Agentic-AI-Development" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Google Cloud
+        </a>
+      </div>
+    </div>
+
+    <!-- 模型技术 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        </div>
+        <div class="section-title">模型技术</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">开源</span>
+          Kimi K2.6：MoE 架构 + Multi-head Latent Attention 的编程新标杆
+        </div>
+        <p>月之暗面发布的 Kimi K2.6 采用 Mixture of Experts（MoE）架构，总参数 1T，每 token 仅激活 32B。384 个专家中每次选择 8 个加 1 个始终激活的共享专家。注意力机制使用 Multi-head Latent Attention（MLA），上下文窗口 256K tokens。</p>
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-value">58.6</div>
+            <div class="stat-label">SWE-Bench Pro</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">1T</div>
+            <div class="stat-label">总参数</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">32B</div>
+            <div class="stat-label">激活参数</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">256K</div>
+            <div class="stat-label">上下文长度</div>
+          </div>
+        </div>
+        <div class="highlight">关键技术点：Agent 集群支持 300 个子 Agent 并行、4000 步协作；持续编程最长 13 小时；兼容 OpenClaw 和 Hermes Agent 框架；SWE-Bench Pro 58.6 分超越 GPT-5.4（57.7）、Gemini 3.1 Pro（54.2）和 Claude Opus 4.6（53.4）。</div>
+        <a href="https://www.marktechpost.com/2026/04/20/moonshot-ai-releases-kimi-k2-6-with-long-horizon-coding-agent-swarm-scaling-to-300-sub-agents-and-4000-coordinated-steps/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          MarkTechPost
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-product">图像</span>
+          GPT-Image 2：首个内置推理的图像生成模型
+        </div>
+        <p>OpenAI 发布的 GPT-Image 2 是第一个在架构中原生内置「思考」（reasoning）能力的图像生成模型。模型在生成图像前会进行推理规划，从而实现精准的文字渲染、UI 元素设计和多图风格一致性。</p>
+        <ul class="detail-list">
+          <li><strong>文字渲染精度</strong> -- 能生成含准确文字、价格格式和多语言标签的可打印菜单</li>
+          <li><strong>分辨率</strong> -- 最高 2K，细节层次远超前代</li>
+          <li><strong>排行榜表现</strong> -- 12 小时内在 Image Arena 所有类别登顶，领先幅度 +242 分（历史最大）</li>
+          <li><strong>API 定价</strong> -- 输入文本 $5/M tokens，输出文本 $10/M，输入图像 $8/M，输出图像 $30/M tokens</li>
+        </ul>
+        <a href="https://openai.com/index/introducing-chatgpt-images-2-0/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          OpenAI
+        </a>
+      </div>
+    </div>
+
+    <!-- 研究突破 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon research">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </div>
+        <div class="section-title">研究突破</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">量子</span>
+          Oratomic/Google 量子突破：10K 量子比特可达密码学级别
+        </div>
+        <p>Oratomic 与 Caltech、Google 的联合研究表明，构建具有密码学意义的量子计算机只需 10,000 个原子量子比特，远低于此前 100 万的估计。AI 被用于加速量子纠错算法的开发，大幅降低了硬件门槛。</p>
+        <div class="highlight">安全影响评估：Cloudflare 已将后量子安全迁移截止日提前至 2029 年。NIST 后量子密码标准（ML-KEM、ML-DSA）的部署现在从「建议」变为「紧急」。使用 RSA-2048 和 ECC P-256 的系统需要开始规划迁移。「Harvest Now, Decrypt Later」攻击的窗口期显著缩短。</div>
+        <a href="https://www.nature.com/articles/d41586-026-01054-1" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Nature
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">机器人</span>
+          北京亦庄机器人半马：具身智能的「iPhone 时刻」？
+        </div>
+        <p>Honor 的「闪电」机器人在北京亦庄半马中跑出 50 分 26 秒，比人类世界纪录快了近 7 分钟。技术进步关键：从去年 2 小时 40 分到今年 50 分钟，运动控制和能量管理在一年内实现了 3.2 倍的效率提升。</p>
+        <ul class="detail-list">
+          <li>参赛机器人超 100 台（去年仅 21 台），40% 全自主操控</li>
+          <li>CVPR 2026 即将举办 ManipArena 真实机器人操控竞赛，测试 20 项现实世界任务</li>
+          <li>腾讯 HY-Embodied-0.5 发布：Mixture-of-Transformers 架构，2B（边缘）和 32B（复杂推理）两个版本</li>
+          <li>NVIDIA Isaac GR00T + Cosmos 世界模型 + Cadence 多物理仿真形成端到端具身 AI 工作流</li>
+        </ul>
+        <a href="https://techcrunch.com/2026/04/19/robots-beat-human-records-at-beijing-half-marathon/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          TechCrunch
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">效率</span>
+          神经-符号混合推理：能耗降 100 倍，精度反升
+        </div>
+        <p>新发布的研究将深度神经网络与符号推理系统结合，让机器人从暴力计算试错转向逻辑推理。这种混合架构在机器人任务规划中实现了 100 倍的能效提升，同时准确率也有所提高。这可能为解决 AI 数据中心能耗困境提供一条实际可行的路径。</p>
+        <a href="https://www.sciencedaily.com/releases/2026/04/260405003952.htm" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          ScienceDaily
+        </a>
+      </div>
+    </div>
+
+    <!-- 政策 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="section-title">政策与监管</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-policy">法规</span>
+          美国 AI 立法浪潮：联邦框架 vs 600+ 州法案
+        </div>
+        <p>白宫国家 AI 政策框架建议国会通过联邦法律取代各州分散的 AI 监管，主张通过现有监管机构而非新建专门 AI 监管机构来治理。但各州并未等待联邦行动：2026 年已提交超 600 项 AI 法案。</p>
+        <ul class="detail-list">
+          <li><strong>已生效</strong> -- RAISE 法案（3 月 19 日）：要求前沿模型开发者履行透明度、合规、安全和报告义务</li>
+          <li><strong>医疗 AI</strong> -- 印第安纳州（HB 1271）、犹他州（SB 319）、华盛顿州（SB 5395）：禁止保险公司仅以 AI 为依据拒绝或修改理赔</li>
+          <li><strong>联邦优先权</strong> -- 白宫建议国会抢占对 AI 施加「不当负担」的州法律</li>
+          <li><strong>重点领域</strong> -- 儿童安全、年龄验证、隐私保护、监管沙箱、反对开放式责任</li>
+        </ul>
+        <a href="https://www.eversheds-sutherland.com/en/united-states/insights/gloabl-ai-bulletin-april-2026" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Eversheds Sutherland
+        </a>
+      </div>
+    </div>
+
+    <div class="closing-card">
+      <div class="closing-title">技术趋势总结</div>
+      <div class="closing-text">
+        本周的技术趋势可以归结为三个关键词：<strong>Agentic Infrastructure</strong>（Google 的 $7.5 亿基金和 Thinking Machines 算力协议表明 Agentic AI 的基础设施竞赛已进入实质部署阶段）、<strong>Open-Source Parity</strong>（Kimi K2.6 在 SWE-Bench Pro 上击败所有闭源模型，MoE + MLA 的架构组合证明开源模型在编程任务上已达到甚至超越闭源前沿水平）、<strong>Quantum Urgency</strong>（从 100 万量子比特降到 1 万的突破性进展，意味着后量子密码迁移不再是「早做准备」而是「必须立即开始」）。
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 深度技术版 ==================== -->
+  <div id="tab-expert" class="tab-content">
+
+    <div class="mood-banner">
+      <div class="mood-title">深度分析：MoE 架构的编程能力突破，量子计算安全范式转移，Agentic AI 商业化基建</div>
+      <div class="mood-subtitle">Kimi K2.6 的 384-expert MoE + MLA 架构验证了稀疏激活在代码生成场景的优越性；Oratomic 的 10K-qubit 密码学突破要求企业立即启动 PQC 迁移计划；Google Cloud Next 标志着 Agentic AI 从概念验证进入大规模企业部署</div>
+    </div>
+
+    <!-- 模型架构深度 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        </div>
+        <div class="section-title">模型架构深度分析</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-model">架构</span>
+          Kimi K2.6 技术剖析：稀疏 MoE + MLA 如何在编程任务中登顶
+        </div>
+        <p>月之暗面 Kimi K2.6 的架构选择值得深入分析。1T 总参数、32B 激活参数的 MoE 设计在推理效率和模型容量之间取得了显著平衡。</p>
+
+        <div class="subsection-title">架构规格</div>
+        <table class="tech-table">
+          <tr><th>参数</th><th>规格</th></tr>
+          <tr><td>总参数量</td><td>1T (1 万亿)</td></tr>
+          <tr><td>激活参数量</td><td>32B / token</td></tr>
+          <tr><td>专家数量</td><td>384 experts, 8 selected/token + 1 shared</td></tr>
+          <tr><td>注意力机制</td><td>Multi-head Latent Attention (MLA)</td></tr>
+          <tr><td>激活函数</td><td>SwiGLU</td></tr>
+          <tr><td>词表大小</td><td>160K tokens</td></tr>
+          <tr><td>上下文长度</td><td>256K tokens</td></tr>
+        </table>
+
+        <div class="subsection-title">SWE-Bench Pro 对比</div>
+        <table class="tech-table">
+          <tr><th>模型</th><th>得分</th><th>配置</th></tr>
+          <tr><td>Kimi K2.6</td><td><strong>58.6</strong></td><td>default</td></tr>
+          <tr><td>GPT-5.4</td><td>57.7</td><td>xhigh</td></tr>
+          <tr><td>Gemini 3.1 Pro</td><td>54.2</td><td>thinking high</td></tr>
+          <tr><td>Claude Opus 4.6</td><td>53.4</td><td>max effort</td></tr>
+          <tr><td>Kimi K2.5</td><td>50.7</td><td>default</td></tr>
+        </table>
+
+        <div class="subsection-title">Agent 能力分析</div>
+        <p>K2.6 的 Agent 集群能力是其编程优势的关键差异化因素：</p>
+        <ul class="detail-list">
+          <li><strong>Agent Swarm</strong> -- 最多 300 个子 Agent 并行，4000 步协作，支持持续执行最长 13 小时</li>
+          <li><strong>框架兼容</strong> -- 原生支持 OpenClaw 和 Hermes Agent 框架</li>
+          <li><strong>MLA 的效率优势</strong> -- Multi-head Latent Attention 通过压缩 KV cache 降低推理时的内存占用，这对长时间编程会话尤其关键</li>
+          <li><strong>开源策略</strong> -- 模型权重开源，API 可用，CLI 工具已上线，直接对标商业闭源模型</li>
+        </ul>
+        <a href="https://kimi-k2.org/blog/24-kimi-k2-6-release" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Kimi K2.6 Official Blog
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-product">图像</span>
+          GPT-Image 2 技术架构：Reasoning-native 图像生成
+        </div>
+        <p>GPT-Image 2 最核心的技术创新是将推理（reasoning）能力原生嵌入图像生成流程。模型在生成像素之前会先进行「思考」，规划布局、文字位置和风格一致性。</p>
+        <ul class="detail-list">
+          <li><strong>文字渲染</strong> -- 从架构层面解决了扩散模型长期以来的文字生成难题。能处理多语言、小字号、密集排版场景</li>
+          <li><strong>多图一致性</strong> -- 同一 prompt 生成的多张图片可保持风格、角色和场景的一致性</li>
+          <li><strong>2K 原生分辨率</strong> -- 无需超分辨率后处理</li>
+          <li><strong>Image Arena 表现</strong> -- 上线 12h 即以 +242 分差距登顶所有类别，为该排行榜历史最大领先幅度</li>
+          <li><strong>API Token 化定价</strong> -- 输入文本 $5/M，输出文本 $10/M，输入图像 $8/M，输出图像 $30/M tokens</li>
+        </ul>
+        <a href="https://thenewstack.io/chatgpt-images-20-openai/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          The New Stack
+        </a>
+      </div>
+    </div>
+
+    <!-- 量子安全 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon research">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </div>
+        <div class="section-title">量子安全范式转移</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">密码学</span>
+          Oratomic/Google/Caltech：10K 原子量子比特密码学突破的技术细节
+        </div>
+        <p>此前业界共识是需要约 100 万个物理量子比特才能运行 Shor 算法破解 RSA-2048。Oratomic 与 Caltech 的研究通过新型量子纠错码和 AI 辅助算法优化，将这一门槛降低到 10,000 个原子量子比特。</p>
+
+        <div class="subsection-title">技术突破要点</div>
+        <ul class="detail-list">
+          <li><strong>量子比特类型</strong> -- 中性原子（Neutral Atom）量子比特，非超导量子比特。中性原子方案的优势在于可扩展性和室温操作潜力</li>
+          <li><strong>AI 角色</strong> -- AI 被用于发现新的量子纠错码和优化容错量子计算的资源需求。论文作者明确表示「AI 在加速开发中发挥了不可替代的作用」</li>
+          <li><strong>100x 降低</strong> -- 从 ~1M 物理量子比特降至 ~10K，本质上是通过更高效的纠错方案减少了所需的冗余量子比特数</li>
+          <li><strong>Oratomic</strong> -- 2026 年 3 月 31 日成立，目标是在 2030 年前构建实用级量子计算机</li>
+        </ul>
+
+        <div class="subsection-title">企业安全影响</div>
+        <table class="tech-table">
+          <tr><th>当前算法</th><th>风险等级</th><th>建议行动</th></tr>
+          <tr><td>RSA-2048</td><td>高</td><td>迁移至 ML-KEM / CRYSTALS-Kyber</td></tr>
+          <tr><td>ECC P-256</td><td>高</td><td>迁移至 ML-DSA / CRYSTALS-Dilithium</td></tr>
+          <tr><td>AES-256</td><td>中低</td><td>密钥长度足够，Grover 算法仅降低至 128-bit 安全</td></tr>
+          <tr><td>SHA-256</td><td>低</td><td>暂无量子威胁</td></tr>
+        </table>
+
+        <div class="highlight">Cloudflare 已将后量子迁移截止日提前至 2029 年。建议：(1) 立即进行加密资产盘点；(2) 评估 TLS 1.3 + ML-KEM 混合模式；(3) 对长期数据（医疗、政府、金融记录）优先启用后量子加密，因为「先收集后解密」（Harvest Now, Decrypt Later）攻击的窗口期已大幅缩短。</div>
+        <a href="https://time.com/article/2026/04/07/ai-quantum-computing-advance/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          TIME
+        </a>
+      </div>
+    </div>
+
+    <!-- 基建竞赛 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="section-title">AI 基建竞赛与商业化</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">战略</span>
+          SpaceX-Cursor 交易的架构含义：垂直整合 vs 水平平台
+        </div>
+        <p>SpaceX/xAI 收购 Cursor 的潜在战略意义需要从 AI 编程工具的技术架构角度理解：</p>
+        <ul class="detail-list">
+          <li><strong>Cursor 当前架构</strong> -- 多模型后端（OpenAI、Anthropic、xAI、Google）+ 自研 Composer LLM + IDE 前端。这种架构的优势在于模型无关性，劣势在于无法深度优化特定模型</li>
+          <li><strong>xAI 整合后</strong> -- 如果 Grok 成为 Cursor 的首选后端，可以实现端到端优化：从模型训练目标到 IDE 交互的全链路调优。类似 Apple Silicon + macOS 的垂直整合逻辑</li>
+          <li><strong>竞争格局变化</strong> -- Microsoft（GitHub Copilot + GPT）、Google（Gemini Code Assist）、Anthropic（Claude Code）都在做编程工具。SpaceX/xAI + Cursor 将是第一个由独立公司而非云厂商主导的垂直整合方案</li>
+          <li><strong>$600 亿估值基础</strong> -- Cursor 日活开发者数百万；Google 内部 75% 代码由 AI 生成；Q1 2026 AI 风投 $2420 亿的 80% 流向了基础模型和开发者工具</li>
+        </ul>
+        <a href="https://www.bloomberg.com/news/articles/2026-04-21/spacex-says-has-agreement-to-acquire-cursor-for-60-billion" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Bloomberg
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-industry">基建</span>
+          Google Cloud Next '26 Agentic AI 平台技术栈
+        </div>
+        <p>Google 在 Cloud Next '26 发布的 Agentic AI 基建布局：</p>
+        <ul class="detail-list">
+          <li><strong>$7.5 亿合作伙伴基金</strong> -- 面向 120K 合作伙伴，涵盖 AI 价值识别、Agent 原型、构建部署、upskilling</li>
+          <li><strong>Thinking Machines 算力</strong> -- 首批 NVIDIA GB300 NVL72（Blackwell 架构）客户；GKE 大规模编排 + Spanner + Cloud Storage + Anywhere Cache；A4X Max VM 2x 性能提升</li>
+          <li><strong>DeepMind 模型提前开放</strong> -- Gemini 模型将向合作伙伴提前开放测试，形成反馈闭环</li>
+          <li><strong>企业 Agentic AI 平台</strong> -- Google 正在将 Agentic AI 从概念验证推向大规模企业部署，$7.5 亿基金本质上是 GTM 补贴</li>
+        </ul>
+        <a href="https://www.pymnts.com/google/2026/google-accelerates-agentic-ai-shift-with-new-enterprise-platform/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          PYMNTS
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-research">具身智能</span>
+          具身 AI 全栈工作流：从仿真到边缘部署
+        </div>
+        <p>本周多项发展共同推进了具身智能的全栈能力：</p>
+        <ul class="detail-list">
+          <li><strong>腾讯 HY-Embodied-0.5</strong> -- Mixture-of-Transformers（MoT）架构，专攻时空视觉感知和复杂具身推理（预测、交互、规划）。2B 边缘版 + 32B 复杂推理版</li>
+          <li><strong>NVIDIA 端到端工作流</strong> -- Isaac GR00T（自然语言指令 → 视觉语言动作推理）+ Cosmos（合成数据 + 世界模型训练）+ Cadence 多物理仿真（高保真 sim-to-real）</li>
+          <li><strong>CVPR 2026 ManipArena</strong> -- 真实机器人操控竞赛，20 项现实世界任务评估物理推理、泛化和决策能力</li>
+          <li><strong>北京半马数据点</strong> -- 从去年 2h40m 到今年 50m26s 的 3.2x 效率提升，运动控制的进步速度已超越大多数软件 benchmark 的年度增长率</li>
+        </ul>
+        <a href="https://blogs.nvidia.com/blog/national-robotics-week-2026/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          NVIDIA Blog
+        </a>
+      </div>
+    </div>
+
+    <!-- 政策 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="section-title">监管与合规技术分析</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="tag tag-policy">合规</span>
+          RAISE 法案生效 + 白宫框架 + 600 州法案：AI 合规技术栈的构建窗口
+        </div>
+        <p>美国 AI 监管格局正在快速成型，对 AI 开发者和部署者的合规要求日益具体化：</p>
+        <ul class="detail-list">
+          <li><strong>RAISE 法案（已生效 3/19）</strong> -- 要求前沿模型开发者提供：模型训练细节报告、安全测试结果、能力评估、持续监控。重点关注「双用途」（dual-use）风险</li>
+          <li><strong>白宫框架（3/20）</strong> -- 建议联邦立法抢占施加「不当负担」的州法；反对新建 AI 专门监管机构；推动监管沙箱；重点保护儿童安全和隐私</li>
+          <li><strong>州级立法浪潮</strong> -- 2026 年 600+ AI 法案。印第安纳、犹他、华盛顿三州率先限制保险 AI；更多州法聚焦就业歧视、深度伪造、选举安全</li>
+          <li><strong>对开发者的意味</strong> -- 需要构建 AI 合规技术栈：模型卡（Model Cards）、Red-teaming 流程、数据溯源追踪、部署监控仪表板、审计日志</li>
+        </ul>
+        <a href="https://www.jdsupra.com/legalnews/ai-legal-watch-april-2026-4174658/" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          JD Supra
+        </a>
+      </div>
+    </div>
+
+    <div class="closing-card">
+      <div class="closing-title">Expert Take</div>
+      <div class="closing-text">
+        三条主线值得持续跟踪：(1) <strong>MoE-as-default</strong> -- Kimi K2.6 在 SWE-Bench Pro 的登顶进一步验证了 MoE 架构在代码生成场景的优势。384 专家、32B 激活参数的设计在推理成本和任务表现之间找到了当前的帕累托前沿。预计 Q3 将看到更多采用类似架构的模型；(2) <strong>Post-Quantum Clock</strong> -- Oratomic 的 10K-qubit 结果意味着「Harvest Now, Decrypt Later」攻击的经济性已经成立。建议对任何 shelf life > 5 年的加密数据立即评估 PQC 迁移，不要等待 2029 年的 Cloudflare 截止日；(3) <strong>Agentic GTM</strong> -- Google 的 $7.5 亿基金本质上是用真金白银购买 Agentic AI 的 PMF 反馈。嵌入 FDE + DeepMind 提前开放模型的组合拳说明他们判断 Agentic AI 的 bottleneck 已从模型能力转向部署整合。
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>AI Pulse Daily #33 | 2026.04.23</p>
+    <p style="margin-top:4px;">数据来源: TechCrunch, CNBC, Bloomberg, OpenAI, Google Cloud, Nature, NPR, TIME, SiliconANGLE, MarkTechPost, ScienceDaily</p>
+    <p style="margin-top:8px;"><a href="/">返回 AI Pulse 主页</a></p>
+  </div>
+</div>
+
+<script>
+function switchTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(function(el) { el.classList.remove('active'); });
+  document.querySelectorAll('.tab-btn').forEach(function(el) { el.classList.remove('active'); });
+  document.getElementById('tab-' + tab).classList.add('active');
+  var tabs = ['casual', 'intermediate', 'expert'];
+  var idx = tabs.indexOf(tab);
+  document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>

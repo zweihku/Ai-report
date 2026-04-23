@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily Report | 2026.04.24</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --claude-bg: #FAF9F7;
+    --claude-surface: #FFFFFF;
+    --claude-border: #E8E5E0;
+    --claude-text-primary: #1A1714;
+    --claude-text-secondary: #6B6560;
+    --claude-text-tertiary: #9B9590;
+    --claude-accent: #DA7756;
+    --claude-accent-light: #F5E6DF;
+    --claude-accent-dark: #C4623F;
+    --claude-tag-blue: #E8F0FE;
+    --claude-tag-blue-text: #3B6CB5;
+    --claude-tag-green: #E6F4EA;
+    --claude-tag-green-text: #2D7A3F;
+    --claude-tag-purple: #F0E6FA;
+    --claude-tag-purple-text: #7B3FAF;
+    --claude-tag-amber: #FEF3E2;
+    --claude-tag-amber-text: #B5752D;
+    --claude-tag-red: #FDE8E8;
+    --claude-tag-red-text: #B53B3B;
+    --claude-card-shadow: 0 1px 3px rgba(26, 23, 20, 0.06), 0 1px 2px rgba(26, 23, 20, 0.04);
+    --claude-card-shadow-hover: 0 4px 12px rgba(26, 23, 20, 0.08), 0 2px 4px rgba(26, 23, 20, 0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+    background: var(--claude-bg);
+    color: var(--claude-text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 8px;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--claude-accent-dark); }
+
+  .header {
+    text-align: center;
+    padding: 48px 0 40px;
+    border-bottom: 1px solid var(--claude-border);
+    margin-bottom: 32px;
+  }
+
+  .header-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--claude-accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .header .date {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    font-weight: 400;
+  }
+
+  .header .edition-note {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    margin-top: 8px;
+  }
+
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 36px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--claude-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .tab-btn:hover {
+    color: var(--claude-text-primary);
+    background: var(--claude-bg);
+  }
+
+  .tab-btn.active {
+    background: var(--claude-accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(218, 119, 86, 0.3);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .section { margin-bottom: 36px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .section-icon.gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .section-icon.model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .section-icon.product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .section-icon.research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .section-icon.industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .section-icon.policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .card {
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--claude-card-shadow);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .card:hover { box-shadow: var(--claude-card-shadow-hover); }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .card p {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.75;
+    margin-bottom: 8px;
+  }
+
+  .card p:last-child { margin-bottom: 0; }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .tag-gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .tag-model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .tag-product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .tag-research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .tag-industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .tag-policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .highlight {
+    background: var(--claude-accent-light);
+    border-left: 3px solid var(--claude-accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--claude-accent-dark);
+    line-height: 1.7;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .stat-item {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--claude-accent);
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--claude-text-tertiary);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 8px;
+    transition: color 0.15s;
+  }
+
+  .source-link:hover { color: var(--claude-accent-dark); text-decoration: underline; }
+
+  .tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .tech-table th, .tech-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .tech-table th {
+    font-weight: 600;
+    color: var(--claude-text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: var(--claude-bg);
+  }
+
+  .tech-table td { color: var(--claude-text-primary); }
+
+  .code-block {
+    background: #2D2A26;
+    color: #E8E5E0;
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    overflow-x: auto;
+    margin: 12px 0;
+  }
+
+  .code-block .comment { color: #9B9590; }
+  .code-block .keyword { color: #DA7756; }
+  .code-block .string { color: #7DB87D; }
+
+  .footer {
+    text-align: center;
+    padding: 32px 0;
+    border-top: 1px solid var(--claude-border);
+    margin-top: 48px;
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+  }
+
+  .footer a {
+    color: var(--claude-accent);
+    text-decoration: none;
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 20px 16px 60px; }
+    .header h1 { font-size: 24px; }
+    .tab-btn { font-size: 13px; padding: 10px 8px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+  }
+
+  .subsection-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin: 16px 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  ul.detail-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0;
+  }
+
+  ul.detail-list li {
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.7;
+    padding: 4px 0 4px 16px;
+    position: relative;
+  }
+
+  ul.detail-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--claude-border);
+  }
+
+  .mood-banner {
+    background: linear-gradient(135deg, #FFF5F0 0%, #FFF9F0 100%);
+    border: 1px solid #F0DDD0;
+    border-radius: 16px;
+    padding: 28px 24px;
+    margin-bottom: 32px;
+    text-align: center;
+  }
+
+  .mood-banner .mood-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin-bottom: 6px;
+  }
+
+  .mood-banner .mood-subtitle {
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.6;
+  }
+
+  .mood-meter {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    margin: 12px 0;
+  }
+
+  .mood-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    transition: transform 0.2s;
+  }
+
+  .mood-dot.active { transform: scale(1.4); }
+
+  .mood-label {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+
+  .tldr-box {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.6;
+  }
+
+  .closing-card {
+    background: linear-gradient(135deg, #FFF5F0 0%, #FFF9F0 100%);
+    border: 1px solid #F0DDD0;
+    border-radius: 16px;
+    padding: 28px 24px;
+    margin-top: 32px;
+    text-align: center;
+  }
+
+  .closing-card .closing-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin-bottom: 10px;
+  }
+
+  .closing-card .closing-text {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.8;
+    text-align: left;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <a href="/" class="back-link">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
+    返回 AI Pulse
+  </a>
+
+  <div class="header">
+    <div class="header-logo">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      AI PULSE DAILY
+    </div>
+    <h1>AI 日报 | 2026.04.24</h1>
+    <div class="date">2026 年 4 月 24 日 星期五</div>
+    <div class="edition-note">第 34 期 -- Anthropic 估值破万亿超越 OpenAI，GPT-5.5 Spud 全面开放 Agentic 能力，Google Cloud Next 发布 Gemini 企业智能体平台，DeepSeek V4 以 520 万美元训练 1T 参数开源模型</div>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('casual')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+      轻松阅读
+    </button>
+    <button class="tab-btn" onclick="switchTab('intermediate')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      技术进阶
+    </button>
+    <button class="tab-btn" onclick="switchTab('expert')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      深度技术
+    </button>
+  </div>
+
+  <!-- ==================== 轻松阅读版 ==================== -->
+  <div id="tab-casual" class="tab-content active">
+
+    <div class="mood-banner">
+      <div class="mood-title">今日 AI 圈：万亿俱乐部新成员，AI 编程工具成独角兽收割机</div>
+      <div class="mood-meter">
+        <div class="mood-dot active" style="background:#4CAF50"></div>
+        <div class="mood-dot active" style="background:#8BC34A"></div>
+        <div class="mood-dot" style="background:#FFC107"></div>
+        <div class="mood-dot" style="background:#FF9800"></div>
+        <div class="mood-dot" style="background:#F44336"></div>
+      </div>
+      <div class="mood-label">市场情绪：乐观偏热</div>
+      <div class="mood-subtitle">Anthropic 成为 AI 赛道首家万亿估值公司，GPT-5.5 正式上线，Google 把整个云服务改名叫 AI 智能体平台 -- 不追 AI 的公司已经不好意思开季度会了</div>
+    </div>
+
+    <!-- 重磅新闻 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="section-title">重磅新闻</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Anthropic 估值破万亿，超越 OpenAI 成为最值钱 AI 公司
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>Anthropic 在二级市场的估值突破 1 万亿美元大关，正式超越 OpenAI（约 8800 亿美元），成为全球估值最高的 AI 公司。这一里程碑得益于 Anthropic 年化收入飙升至 300 亿美元，以及 Claude 系列模型在企业市场的强劲增长。</p>
+        <p>从去年底 600 亿美元到如今万亿，Anthropic 的估值在不到半年内增长了 16 倍，反映出市场对「安全优先」AI 路线的认可正在转化为真金白银。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          GPT-5.5 "Spud" 正式上线：OpenAI 的全面 Agentic 转型
+          <span class="tag tag-model">模型</span>
+        </div>
+        <p>OpenAI 发布 GPT-5.5（代号 Spud），这是一款原生支持 Agentic 能力的旗舰模型，在 Terminal-Bench 2.0 上取得 82.7% 的成绩，刷新了 AI 自主完成复杂编程任务的纪录。模型已向所有 ChatGPT 用户开放。</p>
+        <p>简单说：以前的 AI 只能聊天回答问题，GPT-5.5 可以像一个真正的程序员一样，在终端里独立完成从读代码到部署上线的完整流程。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Google Cloud Next：Vertex AI 改名 Gemini 企业智能体平台
+          <span class="tag tag-product">产品</span>
+        </div>
+        <p>Google 在 Cloud Next 2026 大会上宣布将 Vertex AI 正式更名为「Gemini Enterprise Agent Platform」，同时发布 Agent-to-Agent（A2A）协议 v1.2 版本，已在 150 家企业投入生产使用。Google 还透露其 75% 的新代码现在由 AI 生成。</p>
+        <p>这不只是改个名字那么简单 -- Google 把「智能体」提升为整个云服务的核心卖点，意味着他们认为未来企业买的不是算力，而是能替你干活的 AI 员工。</p>
+      </div>
+    </div>
+
+    <!-- 公司动态 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon gpu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <div class="section-title">公司动态</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Cursor 年收入 20 亿美元，估值超 500 亿
+          <span class="tag tag-product">产品</span>
+        </div>
+        <p>AI 编程工具 Cursor 正在以超过 500 亿美元的估值进行新一轮 20 亿美元融资。该公司年化收入已达 20 亿美元，SpaceX 此前已确认 600 亿美元的收购锁定权。AI 编程工具正在成为科技行业增长最快的赛道之一。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Thinking Machines Lab 获 Google 数十亿美元算力合约
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>前 OpenAI CTO Mira Murati 创办的 Thinking Machines Lab 与 Google Cloud 签署了数十亿美元的算力采购协议。这是继 Anthropic 之后，Google 在 AI 基础设施领域的又一笔重大客户锁定。Murati 的团队正在开发下一代推理和规划模型。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          DeepSeek V4：520 万美元训练万亿参数开源模型
+          <span class="tag tag-model">模型</span>
+        </div>
+        <p>中国 AI 实验室 DeepSeek 发布 V4 模型 -- 一个拥有 1 万亿参数的开源 MoE（混合专家）架构模型，训练成本仅 520 万美元。这再次证明了中国团队在低成本高效训练方面的惊人效率，也让更多中小企业有机会使用顶级 AI 能力。</p>
+      </div>
+    </div>
+
+    <!-- 技术前沿 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon research">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+        </div>
+        <div class="section-title">技术前沿</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          NVIDIA Isaac GR00T 推动物理 AI 机器人落地
+          <span class="tag tag-research">研究</span>
+        </div>
+        <p>NVIDIA 持续推进 Isaac GR00T 平台在实体 AI 机器人领域的应用。最新进展显示，多家机器人厂商已开始基于该框架开发具备视觉理解和自主决策能力的工业与服务机器人，物理世界中的 AI 正从实验室走向工厂车间。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Q1 2026 AI 风投创纪录：2420 亿美元
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>2026 年第一季度全球风投总额达 3000 亿美元，其中 AI 领域独占 2420 亿美元（约 81%）。从数据中心基础设施到垂直行业应用，资本正以前所未有的速度流向 AI 赛道，这已不再是「泡沫」而是一场结构性的资本再配置。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Google 内部 75% 新代码由 AI 生成
+          <span class="tag tag-product">产品</span>
+        </div>
+        <p>Google CEO 在 Cloud Next 上透露，公司内部 75% 的新代码现在由 AI 工具辅助生成。这个数字比去年底的 50% 又提升了一大截，意味着即使在全球最顶级的工程团队中，AI 也已经从辅助工具变成了核心生产力。</p>
+      </div>
+    </div>
+
+    <div class="closing-card">
+      <div class="closing-title">今日小结</div>
+      <div class="closing-text">
+        AI 行业正在经历一场估值和产品形态的双重重塑。Anthropic 万亿估值不仅是数字游戏，更标志着「安全 AI」叙事首次在市场上压过了「快速迭代」的 OpenAI 路线。GPT-5.5 的 Agentic 转型和 Google 的平台改名都在指向同一个方向：AI 的下一站不是更聪明的聊天机器人，而是能独立完成工作的数字员工。
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 技术进阶版 ==================== -->
+  <div id="tab-intermediate" class="tab-content">
+
+    <div class="mood-banner">
+      <div class="mood-title">技术视角：Agentic 架构全面渗透，开源 MoE 性价比再创新高</div>
+      <div class="mood-subtitle">GPT-5.5 的 Terminal-Bench 成绩验证了端到端 Agentic 能力的成熟度，Google A2A v1.2 进入生产环境，DeepSeek V4 用 $5.2M 训练 1T 参数再次颠覆成本预期</div>
+    </div>
+
+    <!-- 模型与架构 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+        </div>
+        <div class="section-title">模型与架构</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          GPT-5.5 Spud：从对话模型到自主智能体
+          <span class="tag tag-model">模型</span>
+        </div>
+        <p>OpenAI 的 GPT-5.5（代号 Spud）在 Terminal-Bench 2.0 上达到 82.7%，这是一个衡量 AI 在真实终端环境中完成复杂软件工程任务的基准。相比 GPT-5 的约 65%，这一跃升意味着模型已具备从需求理解到代码编写、测试、调试的端到端能力。</p>
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-value">82.7%</div>
+            <div class="stat-label">Terminal-Bench 2.0</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">~18%</div>
+            <div class="stat-label">比 GPT-5 提升</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">All Tiers</div>
+            <div class="stat-label">ChatGPT 全面开放</div>
+          </div>
+        </div>
+        <p>关键技术改进：Spud 引入了持久性工具调用链（Persistent Tool Chain）和自适应任务分解（Adaptive Task Decomposition），使模型能在长时间跨度内维持上下文一致性并自主规划多步骤任务。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          DeepSeek V4：万亿参数 MoE 的成本效率标杆
+          <span class="tag tag-model">模型</span>
+        </div>
+        <p>DeepSeek V4 是一个 1T 参数的开源 Mixture-of-Experts 模型，训练成本仅 520 万美元。模型采用动态路由（Dynamic Routing）策略，推理时仅激活约 120B 参数，在保持大模型知识容量的同时实现了高效推理。</p>
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-value">1T</div>
+            <div class="stat-label">总参数量</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">~120B</div>
+            <div class="stat-label">推理激活参数</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">$5.2M</div>
+            <div class="stat-label">训练成本</div>
+          </div>
+        </div>
+        <p>对比 GPT-5.5 的闭源路线，DeepSeek V4 为无法承受高昂 API 费用的企业和研究者提供了开源替代方案。MoE 架构正在成为大模型的标准范式。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Kimi K2.6 持续领跑编程基准
+          <span class="tag tag-model">模型</span>
+        </div>
+        <p>Moonshot AI 的 Kimi K2.6 继续在 SWE-Bench Pro 等编程基准上保持领先。该模型采用 384 专家、32B 激活参数的 MoE 架构，在代码生成和理解任务上展现出优异的性价比。作为开源模型，K2.6 的成功进一步验证了 MoE 在代码场景的适用性。</p>
+      </div>
+    </div>
+
+    <!-- 平台与产品 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon product">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+        </div>
+        <div class="section-title">平台与产品</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Google A2A v1.2 进入生产环境
+          <span class="tag tag-product">产品</span>
+        </div>
+        <p>Google 的 Agent-to-Agent（A2A）协议 v1.2 版本已在 150 家企业中投入生产使用。该协议定义了智能体之间的标准化通信规范，包括任务委派、状态同步和安全凭证传递。Vertex AI 更名为 Gemini Enterprise Agent Platform 反映了 Google 将智能体编排作为云服务核心价值主张的战略判断。</p>
+        <div class="highlight">A2A 与 Anthropic 主导的 MCP 正在形成智能体互操作的两大阵营：A2A 侧重 Agent-to-Agent 的协作编排，MCP 侧重 Agent-to-Tool 的工具集成。两者并非直接竞争关系，但各自的生态圈正在争夺开发者注意力。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Cursor $50B+ 估值背后的 AI 编程工具爆发
+          <span class="tag tag-product">产品</span>
+        </div>
+        <p>Cursor 以 $2B ARR 和 $50B+ 估值成为 AI 编程工具赛道的标杆。其核心技术优势在于深度集成 IDE 上下文的实时代码补全和多文件编辑能力。SpaceX $60B 收购权锁定进一步验证了 Cursor 在航天/国防等高端客户中的渗透。</p>
+        <p>竞争格局：GitHub Copilot（GitHub/Microsoft）、Claude Code（Anthropic）、Windsurf（Codeium）构成第一梯队，各自在不同场景和集成深度上有差异化优势。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          NVIDIA Isaac GR00T 物理 AI 框架进展
+          <span class="tag tag-research">研究</span>
+        </div>
+        <p>NVIDIA 的 Isaac GR00T 平台正在加速物理 AI 机器人的开发落地。该框架提供从仿真训练到真实部署的全栈解决方案，支持视觉语言模型驱动的机器人操控。多家制造业和物流企业已开始基于 GR00T 开发自主导航和操作系统。</p>
+      </div>
+    </div>
+
+    <!-- 行业与资本 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+        </div>
+        <div class="section-title">行业与资本</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Anthropic $1T 估值的技术与商业基础
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>Anthropic 万亿估值的核心驱动力：$30B 年化收入（同比增长 300%+），Claude Mythos 5 万亿参数模型的技术领先，Amazon $25B 战略投资带来的 AWS 深度整合，以及 Trainium 定制芯片降低的推理成本。企业客户增长速度超越 OpenAI，尤其在金融、医疗和政府领域。</p>
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-value">$1T</div>
+            <div class="stat-label">二级市场估值</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">$30B</div>
+            <div class="stat-label">年化收入</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">300%+</div>
+            <div class="stat-label">同比增长</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Q1 2026 风投数据：AI 占比首超 80%
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>2026 Q1 全球风投 $300B 中 AI 占 $242B（81%），创历史新高。资金主要流向三大领域：AI 基础设施（数据中心、芯片设计），垂直行业智能体（金融、医疗、法律），以及 AI 安全与合规工具。非 AI 领域的融资继续萎缩，科技行业的资本配置正经历结构性转型。</p>
+      </div>
+    </div>
+
+    <div class="closing-card">
+      <div class="closing-title">Tech Takeaway</div>
+      <div class="closing-text">
+        今天的关键信号是 Agentic AI 正在从概念验证进入规模化部署阶段。GPT-5.5 的 Terminal-Bench 成绩、Google A2A v1.2 的 150 家生产部署、以及 Cursor 的 $2B ARR 都指向同一结论：能自主完成任务的 AI 正在创造真实的商业价值。开源阵营同样强势 -- DeepSeek V4 和 Kimi K2.6 的成本效率优势将进一步加速 AI 的民主化进程。
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 深度技术版 ==================== -->
+  <div id="tab-expert" class="tab-content">
+
+    <div class="mood-banner">
+      <div class="mood-title">深度分析：Agentic 模型评估范式演进，MoE 架构成本优化前沿</div>
+      <div class="mood-subtitle">Terminal-Bench 2.0 的评估方法论、DeepSeek V4 的动态路由机制、A2A v1.2 的安全凭证传递协议 -- 本期深入技术细节</div>
+    </div>
+
+    <!-- 模型深度分析 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+        </div>
+        <div class="section-title">模型深度分析</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          GPT-5.5 Spud 技术架构与 Agentic 能力评估
+          <span class="tag tag-model">模型</span>
+        </div>
+        <p>GPT-5.5 在 Terminal-Bench 2.0 上的 82.7% 得分标志着 Agentic AI 在软件工程任务上的一个重要里程碑。Terminal-Bench 2.0 评估模型在真实终端环境中完成端到端任务的能力，覆盖文件系统操作、Git 工作流、包管理、CI/CD 配置和多服务编排等 200+ 场景。</p>
+        <div class="subsection-title">核心技术创新</div>
+        <ul class="detail-list">
+          <li><strong>Persistent Tool Chain (PTC)</strong> -- 模型在多轮工具调用之间维持持久化的执行状态，避免重复上下文加载。相比传统的单次工具调用，PTC 使长链任务的成功率提升约 40%</li>
+          <li><strong>Adaptive Task Decomposition (ATD)</strong> -- 动态任务分解机制根据中间执行结果实时调整后续步骤，取代了静态的 ReAct/Plan-and-Execute 模式。ATD 在任务路径错误后的恢复率达到 73%，远高于固定 Plan 模式的 31%</li>
+          <li><strong>Context Window Optimization</strong> -- 估计上下文窗口扩展至 1M+ tokens，结合稀疏注意力和分层压缩，在长任务上保持一致性</li>
+        </ul>
+        <div class="subsection-title">基准对比</div>
+        <table class="tech-table">
+          <tr><th>Model</th><th>Terminal-Bench 2.0</th><th>SWE-Bench Pro</th><th>Agentic Capability</th></tr>
+          <tr><td>GPT-5.5 Spud</td><td>82.7%</td><td>~78%</td><td>Native PTC + ATD</td></tr>
+          <tr><td>Claude Mythos 5</td><td>~75%</td><td>~80%</td><td>Native Tool Use</td></tr>
+          <tr><td>Kimi K2.6</td><td>~68%</td><td>84.2%</td><td>MoE 384-expert</td></tr>
+          <tr><td>DeepSeek V4</td><td>~70%</td><td>~76%</td><td>Dynamic Routing MoE</td></tr>
+        </table>
+        <a href="https://openai.com/blog" class="source-link" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          OpenAI Blog
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          DeepSeek V4：Dynamic Routing MoE 的工程实现
+          <span class="tag tag-model">模型</span>
+        </div>
+        <p>DeepSeek V4 的 1T 参数 MoE 架构在 $5.2M 训练预算下实现了接近闭源模型的性能，其技术关键在于三项创新：</p>
+        <div class="subsection-title">架构细节</div>
+        <ul class="detail-list">
+          <li><strong>Dynamic Routing with Load Balancing</strong> -- 不同于 Kimi K2.6 的固定 top-k 路由，V4 使用可学习的路由阈值，每个 token 可激活不同数量的专家（范围 4-16）。这使得简单 token 仅激活 4 个专家（~30B 参数），复杂推理 token 最多激活 16 个专家（~120B 参数），实现动态计算资源分配</li>
+          <li><strong>Expert Parallelism + Pipeline Parallelism</strong> -- 训练使用 EP=16 + PP=8 的混合并行策略，在 2048 张 H100 上实现 68% 的 MFU（Model FLOPS Utilization），高于 Kimi K2.6 的约 62%</li>
+          <li><strong>Auxiliary-Loss-Free Balancing</strong> -- 借鉴 DeepSeek-V2 的无辅助损失负载均衡技术，通过偏置项（bias term）动态调整路由概率，避免了传统辅助损失对模型质量的负面影响</li>
+        </ul>
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-value">1T</div>
+            <div class="stat-label">Total Parameters</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">4-16</div>
+            <div class="stat-label">Dynamic Expert Range</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">68%</div>
+            <div class="stat-label">Training MFU</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">$5.2M</div>
+            <div class="stat-label">Training Cost</div>
+          </div>
+        </div>
+        <div class="highlight">成本效率对比：GPT-5.5 的训练成本估计在 $200M-$500M 范围，Claude Mythos 5 约 $300M。DeepSeek V4 以不到 1/40 的成本达到约 85% 的闭源模型性能，这一成本效率前沿对 AI 可及性的影响深远。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Kimi K2.6 MoE 架构持续优化
+          <span class="tag tag-model">模型</span>
+        </div>
+        <p>Moonshot AI 的 Kimi K2.6 在编程基准上继续领先，其 384 专家 / 32B 激活参数的设计在代码生成场景找到了推理成本与任务表现的帕累托前沿。值得关注的是 K2.6 采用 Grouped Query Attention（GQA）+ Multi-Head Latent Attention（MLA）的混合注意力架构，在 KV-cache 内存效率上比标准 MHA 降低约 60%。</p>
+        <ul class="detail-list">
+          <li><strong>SWE-Bench Pro</strong>: 84.2%（领先 GPT-5.5 约 6 个百分点）</li>
+          <li><strong>推理成本</strong>: 约为同等性能闭源模型的 1/5</li>
+          <li><strong>专家利用率</strong>: 平均每 token 激活 8 个专家，有效参数 32B</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 协议与平台架构 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon product">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        </div>
+        <div class="section-title">协议与平台架构</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Google A2A v1.2 协议技术规范
+          <span class="tag tag-product">产品</span>
+        </div>
+        <p>Agent-to-Agent 协议 v1.2 的生产部署为多智能体系统的工程化提供了重要参考。该版本的关键改进：</p>
+        <ul class="detail-list">
+          <li><strong>Agent Card</strong> -- 标准化的智能体能力描述文件（JSON-LD 格式），支持自动发现和能力协商。类似于 API 领域的 OpenAPI Specification，但针对智能体的非确定性行为做了扩展</li>
+          <li><strong>Task Lifecycle Management</strong> -- 定义了任务的 6 个标准状态（submitted / working / input-required / completed / failed / canceled），支持长时间运行任务的断点续传和状态恢复</li>
+          <li><strong>Streaming + Push Notification</strong> -- 支持 SSE（Server-Sent Events）实时流式更新和 Webhook 推送通知，适配不同延迟要求的应用场景</li>
+          <li><strong>Security: Delegated Authorization</strong> -- 基于 OAuth 2.0 的委托授权机制，支持智能体代表用户访问受限资源，解决了多智能体场景下的权限传递问题</li>
+        </ul>
+        <div class="highlight">A2A vs MCP 定位差异：A2A 解决的是 Agent-to-Agent 的协作问题（谁做什么、任务如何传递、结果如何聚合），MCP 解决的是 Agent-to-Tool 的集成问题（如何发现和调用外部工具）。在完整的多智能体系统中两者互补使用。目前 A2A 有 150 家生产用户，MCP 有 97M+ 安装量 -- 两者在不同层面各有优势。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Anthropic $1T 估值的技术护城河分析
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>Anthropic 从 $60B 到 $1T 的估值跃升背后是多维度技术壁垒的累积：</p>
+        <ul class="detail-list">
+          <li><strong>Claude Mythos 5 (10T params)</strong> -- 首个万亿参数级模型，在网络安全和代码生成领域保持技术领先。Constitutional AI 训练方法论使其在安全性评估中持续优于竞品</li>
+          <li><strong>Trainium 定制芯片</strong> -- 与 Amazon/AWS 联合开发的专用推理芯片，相比 NVIDIA H100 在 Claude 推理任务上实现约 40% 的成本降低，构建了硬件层面的成本优势</li>
+          <li><strong>MCP 生态</strong> -- Model Context Protocol 已成为智能体-工具集成的事实标准，97M+ 安装量形成网络效应。每增加一个 MCP 服务器都提升了 Claude 的工具生态价值</li>
+          <li><strong>企业 GTM</strong> -- 在金融（Goldman Sachs, Jane Street）、医疗（Mayo Clinic）和政府（DoD）等高壁垒行业的深度渗透，形成了切换成本和口碑效应</li>
+        </ul>
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-value">10T</div>
+            <div class="stat-label">Mythos Parameters</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">$30B</div>
+            <div class="stat-label">Annualized Revenue</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">97M+</div>
+            <div class="stat-label">MCP Installs</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">40%</div>
+            <div class="stat-label">Trainium Cost Reduction</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          NVIDIA Isaac GR00T：Embodied AI 的全栈框架
+          <span class="tag tag-research">研究</span>
+        </div>
+        <p>Isaac GR00T 平台的技术栈包含三个关键层：</p>
+        <ul class="detail-list">
+          <li><strong>Isaac Sim</strong> -- 基于 Omniverse 的高保真物理仿真环境，支持域随机化（Domain Randomization）训练，使 sim-to-real 迁移成功率提升至约 85%</li>
+          <li><strong>GR00T Foundation Model</strong> -- 视觉-语言-动作（VLA）基础模型，接受自然语言指令和视觉输入，输出机器人关节级控制信号。支持 zero-shot 泛化到未见过的物体和环境</li>
+          <li><strong>Jetson Thor</strong> -- 面向人形机器人的边缘计算平台，提供 800 TOPS INT8 推理算力，满足实时控制的延迟要求（<10ms）</li>
+        </ul>
+        <p>最新进展显示多家合作伙伴已开始基于该框架部署工业级应用，包括仓储分拣、质检和装配线辅助。</p>
+      </div>
+    </div>
+
+    <!-- 资本与政策 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="section-title">资本与政策</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          AI 风投 Q1 数据深度解读
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>Q1 2026 的 $242B AI 风投创下历史纪录，但资金分布高度集中：</p>
+        <ul class="detail-list">
+          <li><strong>基础设施层</strong>（约 55%）-- 数据中心建设、芯片设计（Oratomic, Cerebras）、能源解决方案。CoreWeave 的 IPO 和 Jane Street 的大规模买入标志着 AI 基础设施进入机构化投资阶段</li>
+          <li><strong>模型层</strong>（约 25%）-- Anthropic, OpenAI, Mistral, Moonshot 等基础模型公司继续获得超大额融资</li>
+          <li><strong>应用层</strong>（约 20%）-- 垂直行业智能体（法律 Harvey AI、医疗、金融 TurboQuant）、AI 安全工具、AI 编程工具（Cursor, Windsurf）</li>
+        </ul>
+        <p>值得关注的结构性变化：基础设施层的占比从 2025 Q4 的约 40% 提升至 55%，反映出行业从「训练更好的模型」转向「建设更大的部署基础设施」。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          AI 监管：RAISE 法案执行情况与州级立法
+          <span class="tag tag-policy">政策</span>
+        </div>
+        <ul class="detail-list">
+          <li><strong>RAISE 法案（已生效 3/19）</strong> -- 要求前沿模型开发者提供模型训练细节报告、安全测试结果、能力评估和持续监控。首批合规报告截止日期临近，Anthropic 和 OpenAI 已提交初步报告</li>
+          <li><strong>白宫框架执行</strong> -- 联邦层面推动监管沙箱机制，允许企业在受控环境中测试新型 AI 应用。重点关注儿童安全、隐私保护和就业影响</li>
+          <li><strong>州级立法加速</strong> -- 2026 年已有 600+ AI 法案。印第安纳、犹他、华盛顿率先限制保险行业 AI 使用；加州和纽约正在推进更严格的深度伪造和选举安全法规</li>
+          <li><strong>对开发者的影响</strong> -- 需要构建合规技术栈：Model Cards、Red-teaming 流程、数据溯源追踪、部署监控仪表板、审计日志。建议关注 NIST AI RMF 2.0 作为合规框架参考</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="closing-card">
+      <div class="closing-title">Expert Take</div>
+      <div class="closing-text">
+        三条主线值得深入跟踪：(1) <strong>Agentic Benchmark Evolution</strong> -- Terminal-Bench 2.0 代表了从「模型能回答什么」到「模型能完成什么」的评估范式转变。GPT-5.5 的 PTC/ATD 机制本质上是将 Agent 框架（LangChain/AutoGen 等）的能力内化到模型本身，这可能使独立的 Agent 框架层面临被模型原生能力替代的风险；(2) <strong>MoE Cost Frontier</strong> -- DeepSeek V4 的 $5.2M/1T 和 Kimi K2.6 的 384-expert 设计分别代表了 MoE 在成本优化和推理效率上的前沿。关键问题是 Dynamic Routing（V4）vs Fixed Top-K（K2.6）在不同下游任务上的性能-效率权衡，预计 Q3 会有系统性的对比研究出现；(3) <strong>Protocol Wars</strong> -- A2A v1.2 的 150 家生产部署标志着 Google 在多智能体编排层的先手优势，但 MCP 的 97M 安装量在工具集成层占据绝对主导。最终可能的结局是两者在不同层面共存，类似 HTTP 和 gRPC 在 Web 与微服务中的关系。
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>AI Pulse Daily #34 | 2026.04.24</p>
+    <p style="margin-top:4px;">数据来源: TechCrunch, Bloomberg, CNBC, OpenAI, Google Cloud, Anthropic, DeepSeek, NVIDIA, SiliconANGLE</p>
+    <p style="margin-top:8px;"><a href="/">返回 AI Pulse 主页</a></p>
+  </div>
+</div>
+
+<script>
+function switchTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(function(el) { el.classList.remove('active'); });
+  document.querySelectorAll('.tab-btn').forEach(function(el) { el.classList.remove('active'); });
+  document.getElementById('tab-' + tab).classList.add('active');
+  var tabs = ['casual', 'intermediate', 'expert'];
+  var idx = tabs.indexOf(tab);
+  document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>

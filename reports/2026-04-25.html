@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily Report | 2026.04.25</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --claude-bg: #FAF9F7;
+    --claude-surface: #FFFFFF;
+    --claude-border: #E8E5E0;
+    --claude-text-primary: #1A1714;
+    --claude-text-secondary: #6B6560;
+    --claude-text-tertiary: #9B9590;
+    --claude-accent: #DA7756;
+    --claude-accent-light: #F5E6DF;
+    --claude-accent-dark: #C4623F;
+    --claude-tag-blue: #E8F0FE;
+    --claude-tag-blue-text: #3B6CB5;
+    --claude-tag-green: #E6F4EA;
+    --claude-tag-green-text: #2D7A3F;
+    --claude-tag-purple: #F0E6FA;
+    --claude-tag-purple-text: #7B3FAF;
+    --claude-tag-amber: #FEF3E2;
+    --claude-tag-amber-text: #B5752D;
+    --claude-tag-red: #FDE8E8;
+    --claude-tag-red-text: #B53B3B;
+    --claude-card-shadow: 0 1px 3px rgba(26, 23, 20, 0.06), 0 1px 2px rgba(26, 23, 20, 0.04);
+    --claude-card-shadow-hover: 0 4px 12px rgba(26, 23, 20, 0.08), 0 2px 4px rgba(26, 23, 20, 0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+    background: var(--claude-bg);
+    color: var(--claude-text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 8px;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--claude-accent-dark); }
+
+  .header {
+    text-align: center;
+    padding: 48px 0 40px;
+    border-bottom: 1px solid var(--claude-border);
+    margin-bottom: 32px;
+  }
+
+  .header-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--claude-accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .header .date {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    font-weight: 400;
+  }
+
+  .header .edition-note {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    margin-top: 8px;
+  }
+
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 36px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--claude-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .tab-btn:hover {
+    color: var(--claude-text-primary);
+    background: var(--claude-bg);
+  }
+
+  .tab-btn.active {
+    background: var(--claude-accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(218, 119, 86, 0.3);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .section { margin-bottom: 36px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .section-icon.gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .section-icon.model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .section-icon.product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .section-icon.research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .section-icon.industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .section-icon.policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .card {
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--claude-card-shadow);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .card:hover { box-shadow: var(--claude-card-shadow-hover); }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .card p {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.75;
+    margin-bottom: 8px;
+  }
+
+  .card p:last-child { margin-bottom: 0; }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .tag-gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .tag-model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .tag-product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .tag-research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .tag-industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .tag-policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .highlight {
+    background: var(--claude-accent-light);
+    border-left: 3px solid var(--claude-accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--claude-accent-dark);
+    line-height: 1.7;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .stat-item {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--claude-accent);
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--claude-text-tertiary);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 8px;
+    transition: color 0.15s;
+  }
+
+  .source-link:hover { color: var(--claude-accent-dark); text-decoration: underline; }
+
+  .tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .tech-table th, .tech-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .tech-table th {
+    font-weight: 600;
+    color: var(--claude-text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: var(--claude-bg);
+  }
+
+  .tech-table td { color: var(--claude-text-primary); }
+
+  .code-block {
+    background: #2D2A26;
+    color: #E8E5E0;
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    overflow-x: auto;
+    margin: 12px 0;
+  }
+
+  .code-block .comment { color: #9B9590; }
+  .code-block .keyword { color: #DA7756; }
+  .code-block .string { color: #7DB87D; }
+
+  .footer {
+    text-align: center;
+    padding: 32px 0;
+    border-top: 1px solid var(--claude-border);
+    margin-top: 48px;
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+  }
+
+  .footer a {
+    color: var(--claude-accent);
+    text-decoration: none;
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 20px 16px 60px; }
+    .header h1 { font-size: 24px; }
+    .tab-btn { font-size: 13px; padding: 10px 8px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+  }
+
+  .subsection-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin: 16px 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  ul.detail-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0;
+  }
+
+  ul.detail-list li {
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.7;
+    padding: 4px 0 4px 16px;
+    position: relative;
+  }
+
+  ul.detail-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--claude-border);
+  }
+
+  .mood-banner {
+    background: linear-gradient(135deg, #FFF5F0 0%, #FFF9F0 100%);
+    border: 1px solid #F0DDD0;
+    border-radius: 16px;
+    padding: 28px 24px;
+    margin-bottom: 32px;
+    text-align: center;
+  }
+
+  .mood-banner .mood-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin-bottom: 6px;
+  }
+
+  .mood-banner .mood-subtitle {
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.6;
+  }
+
+  .mood-meter {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    margin: 12px 0;
+  }
+
+  .mood-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    transition: transform 0.2s;
+  }
+
+  .mood-dot.active { transform: scale(1.4); }
+
+  .mood-label {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+
+  .tldr-box {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.6;
+  }
+
+  .closing-card {
+    background: linear-gradient(135deg, #FFF5F0 0%, #FFF9F0 100%);
+    border: 1px solid #F0DDD0;
+    border-radius: 16px;
+    padding: 28px 24px;
+    margin-top: 32px;
+    text-align: center;
+  }
+
+  .closing-card .closing-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin-bottom: 10px;
+  }
+
+  .closing-card .closing-text {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.8;
+    text-align: left;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <a href="/" class="back-link">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
+    返回 AI Pulse
+  </a>
+
+  <div class="header">
+    <div class="header-logo">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      AI PULSE DAILY
+    </div>
+    <h1>AI 日报 | 2026.04.25</h1>
+    <div class="date">2026 年 4 月 25 日 星期六</div>
+    <div class="edition-note">第 35 期 -- DeepSeek V4 以百万 token 上下文和超低价震撼开源界，Meta 裁员 8000 人加码 AI 基建投入，白宫指控中国「工业级」窃取 AI 技术，全球 AI 监管框架加速落地</div>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('casual')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+      轻松阅读
+    </button>
+    <button class="tab-btn" onclick="switchTab('intermediate')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      技术进阶
+    </button>
+    <button class="tab-btn" onclick="switchTab('expert')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      深度技术
+    </button>
+  </div>
+
+  <!-- ==================== 轻松阅读版 ==================== -->
+  <div id="tab-casual" class="tab-content active">
+
+    <div class="mood-banner">
+      <div class="mood-title">今日 AI 圈：开源逆袭与裁员风暴并行，地缘博弈加剧</div>
+      <div class="mood-meter">
+        <div class="mood-dot" style="background:#4CAF50"></div>
+        <div class="mood-dot active" style="background:#8BC34A"></div>
+        <div class="mood-dot active" style="background:#FFC107"></div>
+        <div class="mood-dot" style="background:#FF9800"></div>
+        <div class="mood-dot" style="background:#F44336"></div>
+      </div>
+      <div class="mood-label">市场情绪：谨慎乐观</div>
+      <div class="mood-subtitle">DeepSeek V4 开源模型性能媲美闭源巨头但价格仅为 1/10，Meta 宣布裁员 8000 人腾出资金投 AI，白宫公开指控中国系统性窃取美国 AI 技术 -- AI 行业的「热钱」和「冷风」同时吹来</div>
+    </div>
+
+    <!-- 重磅新闻 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="section-title">重磅新闻</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          DeepSeek V4 正式发布：520 万美元训练出媲美 GPT-5.4 的开源模型
+          <span class="tag tag-model">模型</span>
+        </div>
+        <p>中国 AI 公司 DeepSeek 发布了旗舰模型 V4 系列，包括 V4 Pro（1.6 万亿参数）和 V4 Flash（2840 亿参数），性能在多个基准测试中与 Claude Opus 4.6、GPT-5.4 和 Gemini 3.1 Pro 相当。</p>
+        <p>最让人吃惊的是价格：V4 Flash 输入仅 $0.14/百万 token，比主流闭源模型便宜 10 倍以上。这意味着很多中小企业终于用得起「顶级 AI」了，而且代码完全开源，谁都可以下载使用。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Meta 裁员 8000 人，省下来的钱全砸 AI
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>Meta 宣布将裁减约 10% 的员工（约 8000 人），同时冻结 6000 个招聘名额，裁员将于 5 月 20 日生效。被裁员工将获得 16 周基本工资加每工作一年额外 2 周的补偿。</p>
+        <p>裁员的直接原因：Meta 今年的 AI 基建预算高达 1150-1350 亿美元，几乎是去年的两倍。简单来说，公司选择了用更少的人、更多的 AI 来运转业务 -- 而这正是很多科技公司正在走的路。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          白宫公开指控中国「工业级」窃取美国 AI 技术
+          <span class="tag tag-policy">政策</span>
+        </div>
+        <p>白宫科技政策办公室主任 Michael Kratsios 发布备忘录，指控中国实体正在进行「蓄意的、工业规模的」行动，通过数万个代理账户和越狱技术从美国 AI 公司「蒸馏」前沿模型。</p>
+        <p>中国驻美大使馆否认了这些指控。这份备忘录发布的时间很微妙 -- 就在特朗普计划访问北京会见习近平的前几周，AI 正在成为中美关系新的敏感议题。</p>
+      </div>
+    </div>
+
+    <!-- 公司动态 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon gpu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <div class="section-title">公司动态</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Thinking Machines Lab 与 Google Cloud 签署数十亿美元基建协议
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>前 OpenAI 首席技术官 Mira Murati 创立的 Thinking Machines Lab 与 Google Cloud 签署了一项价值数十亿美元的 AI 基础设施合作协议，获得了 Google 最新 AI 系统（基于 NVIDIA GB300 芯片）的使用权。</p>
+        <p>这标志着 AI 领域的人才和资本正在加速重新洗牌 -- 顶级人才离开大公司后，能迅速撬动数十亿美元的资源。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          2026 年科技裁员潮：AI 投资与人力缩减同步进行
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>今年以来全球科技行业已裁员超过 9.2 万人。除了 Meta 的 8000 人外，微软也在进行大规模买断裁员。四大科技巨头（Alphabet、Microsoft、Meta、Amazon）今年 AI 基建总投入预计接近 7000 亿美元。</p>
+        <p>一边大量裁人，一边疯狂投 AI -- 这种「用机器替代人」的趋势正在从科幻变成现实。自 2020 年以来，科技行业累计裁员已接近 90 万人。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          中国 AI 产业：腾讯阿里同日发布世界模型，人形机器人跑赢人类
+          <span class="tag tag-product">产品</span>
+        </div>
+        <p>腾讯和阿里巴巴在同一天发布了各自的「世界模型」新品，AI 竞争焦点从文字对话正式转向空间智能。与此同时，2026 年北京亦庄人形机器人半程马拉松赛上，「闪电」机器人以 50 分 26 秒完赛，首次在马拉松中跑赢人类选手。</p>
+        <p>中国电网更是开启了近 100 亿元的具身智能设备采购，机器人从实验室走向大规模实际应用。</p>
+      </div>
+    </div>
+
+    <!-- 技术前沿 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon research">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2z"/></svg>
+        </div>
+        <div class="section-title">技术前沿</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          新型 AI 方法能耗降低 100 倍，精度反而更高
+          <span class="tag tag-research">研究</span>
+        </div>
+        <p>研究人员公布了一种将神经网络与人类式符号推理相结合的新方法，能让 AI 系统的能耗降低高达 100 倍，同时精度还有所提升。这项技术特别适用于机器人领域，让机器人能像人一样「逻辑思考」而非靠蛮力试错。</p>
+        <p>在 AI 越来越耗电的今天，这类突破可能比新模型发布更有长远价值。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Star Robotics 发布 Watchbot 2 安防机器人
+          <span class="tag tag-product">产品</span>
+        </div>
+        <p>Star Robotics 发布了第二代安防巡逻机器人 Watchbot 2，续航 16 小时，可在 -25°C 至 50°C 极端温度下工作，计算能力是上一代的 6 倍。新增 GPS 室外定位和 360 度摄像头模组。</p>
+        <p>从数据中心到公共场所，安防机器人正在从「新奇玩意儿」变成真正实用的工具。</p>
+      </div>
+    </div>
+
+    <!-- 政策监管 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="section-title">政策监管</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          白宫 AI 国家政策框架推进，州级立法超 600 项
+          <span class="tag tag-policy">政策</span>
+        </div>
+        <p>白宫 3 月发布的《AI 国家政策框架》正在推动联邦层面统一监管，建议建立「监管沙箱」机制，反对成立新的 AI 监管机构，主张通过现有机构管理。同时建议国会在联邦层面统一 AI 法律，避免 50 个州各搞一套。</p>
+        <p>但地方立法热情不减：2026 年各州已提出超过 600 项 AI 法案，其中多个州已立法限制保险公司单独依靠 AI 决定理赔。欧盟方面，15 个行业协会要求延长 AI 法案的执行宽限期。</p>
+      </div>
+    </div>
+
+    <div class="closing-card">
+      <div class="closing-title">今日小结</div>
+      <div class="closing-text">
+        今天的 AI 新闻呈现出鲜明的「冰火两重天」格局：一边是 DeepSeek V4 让顶级 AI 变得人人可用，开源力量持续缩小与闭源模型的差距；另一边是大公司裁员规模不断扩大，AI 投资正在重塑劳动力市场。而中美之间围绕 AI 技术的博弈也在升级，从芯片禁运扩展到了模型蒸馏领域。对普通人来说，AI 工具的门槛在快速降低 -- 但如何在 AI 时代保持竞争力，正在成为每个人都需要认真思考的问题。
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 技术进阶版 ==================== -->
+  <div id="tab-intermediate" class="tab-content">
+
+    <div class="mood-banner">
+      <div class="mood-title">技术视角：开源 MoE 新标杆、百万 token 上下文、AI 劳动力替代加速</div>
+      <div class="mood-meter">
+        <div class="mood-dot" style="background:#4CAF50"></div>
+        <div class="mood-dot active" style="background:#8BC34A"></div>
+        <div class="mood-dot active" style="background:#FFC107"></div>
+        <div class="mood-dot" style="background:#FF9800"></div>
+        <div class="mood-dot" style="background:#F44336"></div>
+      </div>
+      <div class="mood-label">技术方向：MoE 架构创新 + 能效突破 + 具身智能落地</div>
+      <div class="mood-subtitle">DeepSeek V4 的 Hybrid Attention 架构和极致定价重新定义开源前沿，Meta/微软裁员背后是 AI capex 的全面挤压人力 opex 的战略转型，神经-符号混合推理在能效上取得数量级突破</div>
+    </div>
+
+    <!-- 模型发布 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        </div>
+        <div class="section-title">模型与架构</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          DeepSeek V4：Hybrid Attention + 1M Context 的 MoE 新标杆
+          <span class="tag tag-model">模型</span>
+        </div>
+        <p>DeepSeek V4 系列包含两个变体：V4 Pro（1.6T 总参数 / 49B 激活）和 V4 Flash（284B 总参数 / 13B 激活），均为 Mixture of Experts 架构，支持 100 万 token 上下文窗口。</p>
+        <div class="highlight">核心创新：Hybrid Attention Architecture -- 在长对话场景中显著提升跨轮次记忆能力，允许模型在超长上下文中更有效地检索和利用远端信息。</div>
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-value">1.6T</div>
+            <div class="stat-label">Pro 总参数量</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">1M</div>
+            <div class="stat-label">上下文窗口</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">$0.14</div>
+            <div class="stat-label">Flash 输入/M tokens</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">~$5.2M</div>
+            <div class="stat-label">估算训练成本</div>
+          </div>
+        </div>
+        <p>在编码基准测试中表现优异，Agentic 任务推理能力有明显提升。定价策略极具攻击性：Flash 输入 $0.14/M tokens、输出 $0.28/M tokens；Pro 输入 $1.74/M tokens、输出 $3.48/M tokens。模型权重在 Hugging Face 开源。</p>
+        <a href="https://www.cnbc.com/2026/04/24/deepseek-v4-llm-preview-open-source-ai-competition-china.html" class="source-link" target="_blank">CNBC 详细报道 &rarr;</a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          中国大模型密集更新：Hy3-Preview、MiMo-2.5、Qwen3.6-Max-Preview
+          <span class="tag tag-model">模型</span>
+        </div>
+        <p>本周中国 AI 实验室集中发布新模型：腾讯混元推出通用模型 Hy3-Preview；小米 MiMo 团队更新了 Agent 模型 MiMo-2.5-Pro 和通用模型 MiMo-2.5；阿里通义千问发布 Qwen3.6-Max-Preview。</p>
+        <p>值得关注的是腾讯和阿里同步发力「世界模型」赛道，竞争重心从纯语言能力向空间理解和物理世界建模转移。字节跳动的 Seedance 视频生成模型也在火山引擎正式上线。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          神经-符号混合推理：AI 能耗降低 100 倍
+          <span class="tag tag-research">研究</span>
+        </div>
+        <p>研究人员提出将传统神经网络与符号推理系统结合的新框架，在机器人控制任务中实现了 100 倍的能耗降低，同时精度有所提升。核心思路是让 AI 在高层决策时使用逻辑推理（低能耗），仅在感知层面使用神经网络（高能耗）。</p>
+        <p>这一方向对边缘部署和机器人应用意义重大 -- 目前大模型推理的能耗问题日益严峻，Alphabet/Microsoft/Meta/Amazon 四家公司今年 AI 基建支出预计接近 7000 亿美元，其中相当部分用于电力和散热。</p>
+        <a href="https://www.sciencedaily.com/releases/2026/04/260405003952.htm" class="source-link" target="_blank">ScienceDaily 原文 &rarr;</a>
+      </div>
+    </div>
+
+    <!-- 产业与基础设施 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon gpu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <div class="section-title">产业与基础设施</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Meta 裁员 8000 人：AI capex 挤压 opex 的典型案例
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>Meta 宣布裁减 10% 员工（约 8000 人）和冻结 6000 个职位，同时将 2026 年资本支出指引设为 1150-1350 亿美元，几乎翻倍。这是 AI 时代「资本替代劳动」的典型案例：企业将人力运营支出（opex）转向 AI 基础设施资本支出（capex）。</p>
+        <p>微软同期也在进行大规模买断裁员。2026 年全球科技裁员已超 9.2 万人，四大科技巨头 AI 基建总投入预计接近 7000 亿美元。自 2020 年以来，科技行业累计裁员接近 90 万人。</p>
+        <a href="https://www.cnbc.com/2026/04/24/20k-job-cuts-at-meta-microsoft-raise-concern-of-ai-labor-crisis-.html" class="source-link" target="_blank">CNBC 报道 &rarr;</a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Thinking Machines Lab 签约 Google Cloud：GB300 + Ironwood 组合
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>Mira Murati 的 Thinking Machines Lab 与 Google Cloud 签署数十亿美元级基础设施协议，获得基于 NVIDIA GB300 芯片的最新 AI 系统使用权。此前 Google 的第七代 TPU Ironwood 已展示 4.6 petaFLOPS/芯片的性能，9216 芯片 Superpod 可达 42.5 exaFLOPS。</p>
+        <p>Google Cloud 正在成为 AI 初创公司的首选基础设施平台 -- 既提供 NVIDIA GPU 又提供自研 TPU，形成双轨计算资源供给。Anthropic 此前已承诺使用多达 100 万个 Ironwood 单元。</p>
+        <a href="https://techcrunch.com/2026/04/22/exclusive-google-deepens-thinking-machines-lab-ties-with-new-multi-billion-dollar-deal/" class="source-link" target="_blank">TechCrunch 独家 &rarr;</a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          具身智能落地：安防机器人、电网采购、人形机器人竞速
+          <span class="tag tag-product">产品</span>
+        </div>
+        <p>Star Robotics 发布 Watchbot 2 安防机器人（续航 16h、6 倍计算力提升、IP67 级防护）。中国电网启动近 100 亿元具身智能设备采购。北京亦庄人形机器人马拉松中，「闪电」机器人以 50 分 26 秒完赛。</p>
+        <p>NVIDIA 在 National Robotics Week 期间展示了 Isaac GR00T 开放模型与 NemoClaw + Isaac Sim 的全栈工作流，支持用自然语言指令控制 Nova Carter 自主导航机器人。Physical AI 正从演示走向部署。</p>
+      </div>
+    </div>
+
+    <!-- 政策监管 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="section-title">政策与监管</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          白宫指控中国「工业级」AI 模型蒸馏窃取
+          <span class="tag tag-policy">政策</span>
+        </div>
+        <p>白宫 OSTP 主任 Kratsios 在备忘录中指控中国实体使用数万个代理账户和越狱技术，系统性地从美国前沿 AI 模型中蒸馏知识产权。「蒸馏」是指用大模型的输出来训练小模型，从而以低成本获得类似能力。</p>
+        <p>此举在技术社区引发讨论：蒸馏本身是公开的机器学习技术，但大规模自动化蒸馏商用模型可能违反服务条款和 IP 保护。OpenAI、Anthropic、Google 此前已联合应对模型复制问题。</p>
+        <a href="https://www.cnbc.com/2026/04/23/trump-china-ai-technology.html" class="source-link" target="_blank">CNBC 报道 &rarr;</a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          AI 监管全景：联邦框架 vs 州级碎片化
+          <span class="tag tag-policy">政策</span>
+        </div>
+        <p>白宫 AI 国家政策框架建议通过现有监管机构管理 AI，反对设立新的 AI 专属监管部门，推动建立监管沙箱机制。关键争议点：联邦层面主张「preemption」即统一标准取代各州法律，以避免 50 个州各自为政带来的合规碎片化。</p>
+        <p>RAISE 法案（3/19 已生效）要求前沿模型开发者提交安全测试、能力评估和持续监控报告。2026 年各州已提出 600+ AI 法案。EU 方面 15 个行业协会要求延长 AI Act 执行宽限期。</p>
+      </div>
+    </div>
+
+    <div class="closing-card">
+      <div class="closing-title">技术趋势观察</div>
+      <div class="closing-text">
+        三个值得关注的趋势：(1) <strong>开源追平闭源</strong> -- DeepSeek V4 的基准测试成绩与 Claude Opus 4.6 / GPT-5.4 相当，且定价极低，开源模型在能力上正在缩小与闭源模型的差距，API 定价战将进一步加剧；(2) <strong>AI 投资的「挤出效应」</strong> -- Meta、微软等公司的裁员与 AI 投资增长高度同步，企业正在系统性地将人力成本转化为 AI 基建投资，这一趋势短期内不会逆转；(3) <strong>AI 地缘政治化</strong> -- 从芯片禁运到模型蒸馏指控，AI 技术的地缘博弈正在从硬件层扩展到软件层和知识层，这可能导致全球 AI 生态进一步分裂。
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 深度技术版 ==================== -->
+  <div id="tab-expert" class="tab-content">
+
+    <div class="mood-banner">
+      <div class="mood-title">深度分析：MoE 架构演进、注意力机制创新、能效-精度 Pareto 前沿</div>
+      <div class="mood-meter">
+        <div class="mood-dot" style="background:#4CAF50"></div>
+        <div class="mood-dot active" style="background:#8BC34A"></div>
+        <div class="mood-dot active" style="background:#FFC107"></div>
+        <div class="mood-dot" style="background:#FF9800"></div>
+        <div class="mood-dot" style="background:#F44336"></div>
+      </div>
+      <div class="mood-label">技术深度：架构创新 + 定价博弈 + 系统级优化</div>
+      <div class="mood-subtitle">DeepSeek V4 的 Hybrid Attention Architecture 在 MHA/GQA/MLA 谱系中开辟新路径，神经-符号混合推理在能效上取得两个数量级突破，具身智能从 VLA 模型到全栈部署工作流的完整链路正在成型</div>
+    </div>
+
+    <!-- 模型架构深度 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        </div>
+        <div class="section-title">模型架构与训练</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          DeepSeek V4 架构剖析：Hybrid Attention + Dynamic Expert Routing
+          <span class="tag tag-model">模型</span>
+        </div>
+        <p>V4 系列延续 DeepSeek 在 MoE 架构上的深度优化，核心创新集中在注意力机制和专家路由两个维度：</p>
+
+        <div class="subsection-title">Hybrid Attention Architecture</div>
+        <p>在传统 Multi-Head Attention (MHA) 和 Grouped Query Attention (GQA) 之外，V4 引入混合注意力机制，在不同层使用不同粒度的 KV 共享策略。底层使用完整 MHA 保持细粒度特征捕获，中层过渡到 GQA 减少 KV cache 开销，顶层采用类 MLA（Multi-Head Latent Attention）压缩方案。这种分层策略在 1M token 上下文中显著降低内存占用。</p>
+
+        <div class="subsection-title">模型规格对比</div>
+        <table class="tech-table">
+          <tr><th>指标</th><th>V4 Pro</th><th>V4 Flash</th><th>Claude Opus 4.6</th><th>GPT-5.4</th></tr>
+          <tr><td>总参数</td><td>1.6T</td><td>284B</td><td>未公开</td><td>未公开</td></tr>
+          <tr><td>激活参数</td><td>49B</td><td>13B</td><td>未公开</td><td>未公开</td></tr>
+          <tr><td>上下文窗口</td><td>1M tokens</td><td>1M tokens</td><td>200K</td><td>1M tokens</td></tr>
+          <tr><td>输入价格/M tokens</td><td>$1.74</td><td>$0.14</td><td>$15.00</td><td>$10.00</td></tr>
+          <tr><td>输出价格/M tokens</td><td>$3.48</td><td>$0.28</td><td>$75.00</td><td>$30.00</td></tr>
+          <tr><td>开源</td><td>是</td><td>是</td><td>否</td><td>否</td></tr>
+        </table>
+
+        <div class="subsection-title">训练效率分析</div>
+        <p>DeepSeek V4 的估算训练成本约 $5.2M（基于 Huawei Ascend 910B 集群），相比闭源竞品的数亿美元训练投入低了两个数量级。这得益于：(1) MoE 架构减少每 token 的激活计算量；(2) Hybrid Attention 降低 KV cache 内存占用；(3) 华为昇腾芯片的低成本计算资源。</p>
+        <p>关键技术问题：V4 的 Hybrid Attention 如何在 1M context 下保持 Needle-in-a-Haystack 检索精度？目前公开的 benchmark 主要覆盖 128K 以内，1M 级别的长上下文能力需要独立验证。</p>
+        <a href="https://fortune.com/2026/04/24/deepseek-v4-ai-model-price-performance-china-open-source/" class="source-link" target="_blank">Fortune 深度报道 &rarr;</a>
+        <a href="https://simonwillison.net/2026/Apr/24/deepseek-v4/" class="source-link" target="_blank" style="margin-left:12px;">Simon Willison 技术分析 &rarr;</a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          中国大模型矩阵更新：Hy3-Preview / MiMo-2.5 / Qwen3.6-Max-Preview
+          <span class="tag tag-model">模型</span>
+        </div>
+        <ul class="detail-list">
+          <li><strong>腾讯 Hy3-Preview</strong> -- 混元系列通用模型新版本，具体架构细节尚未公开。腾讯同期发布世界模型产品，标志着从 LLM 向空间智能的战略扩展</li>
+          <li><strong>小米 MiMo-2.5-Pro</strong> -- Agent 专用模型，在 MoT (Mixture of Transformers) 架构基础上优化工具调用和多步推理能力。MiMo-2.5 通用版本同步发布</li>
+          <li><strong>阿里 Qwen3.6-Max-Preview</strong> -- 通义千问最新预览版，与腾讯在世界模型赛道形成正面竞争</li>
+          <li><strong>字节 Seedance</strong> -- 视频生成模型正式在火山引擎上线商用，在文生视频质量上对标 Sora 和 Veo</li>
+        </ul>
+        <p>当前中国 AI 生态格局：DeepSeek 专注基础模型和开源路线，BAT + 字节在应用层和垂直场景展开竞争，小米走 Agent 专用模型差异化路线。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          神经-符号混合推理：能效 Pareto 前沿突破
+          <span class="tag tag-research">研究</span>
+        </div>
+        <p>新发表的研究提出了一种将符号推理（symbolic reasoning）与神经网络（neural network）在不同抽象层级进行混合的框架。具体做法：</p>
+        <ul class="detail-list">
+          <li><strong>感知层</strong> -- 保留传统神经网络进行视觉/触觉/声音等传感器数据处理（高能耗但必要）</li>
+          <li><strong>决策层</strong> -- 替换为符号推理引擎，使用形式化逻辑规则进行任务规划和行为决策（低能耗）</li>
+          <li><strong>接口层</strong> -- 设计 neural-to-symbolic 和 symbolic-to-neural 的双向转换接口</li>
+        </ul>
+        <p>实验结果：在机器人导航和操作任务中，能耗降低 100 倍，决策精度提升 3-5%。关键局限：符号推理层需要手工设计领域知识（domain knowledge），通用化程度有限。但在特定垂直场景（如工业机器人、自动驾驶决策层）具有显著的部署优势。</p>
+        <a href="https://www.sciencedaily.com/releases/2026/04/260405003952.htm" class="source-link" target="_blank">论文报道 &rarr;</a>
+      </div>
+    </div>
+
+    <!-- 基础设施与计算 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon gpu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <div class="section-title">基础设施与计算经济学</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          AI 基建支出 vs 劳动力成本：科技巨头的结构性转换
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-value">$700B</div>
+            <div class="stat-label">四大巨头 2026 AI capex</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">92K+</div>
+            <div class="stat-label">2026 科技裁员人数</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">~900K</div>
+            <div class="stat-label">2020-2026 累计裁员</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">$115-135B</div>
+            <div class="stat-label">Meta 2026 capex 指引</div>
+          </div>
+        </div>
+        <ul class="detail-list">
+          <li><strong>Meta</strong> -- 裁员 8000 人（10%）+ 冻结 6000 职位。2026 capex 指引 $115-135B，同比翻倍（2025: $72B）。受影响员工获 16 周底薪 + 每年工龄 2 周的补偿方案</li>
+          <li><strong>Microsoft</strong> -- 同期进行大规模自愿买断（voluntary buyouts），具体人数未公开</li>
+          <li><strong>Block (Square/Cash App)</strong> -- 此前已裁减 4000 人（40% 员工），CEO Jack Dorsey 明确表示这些岗位已被 AI 替代</li>
+          <li><strong>Oracle</strong> -- 计划裁减 20,000-30,000 人，重新分配 $8-10B 至 AI 基建</li>
+        </ul>
+        <p>底层逻辑：当 AI inference cost 持续下降（如 DeepSeek V4 Flash 的 $0.14/M tokens），用 AI 替代知识型劳动力的 ROI 拐点正在跨越越来越多的职能领域。2026 年可能是这一结构性转换的加速年。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Thinking Machines Lab x Google Cloud：GB300 + TPU Ironwood 双轨架构
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>Mira Murati 的初创公司获得 Google Cloud 数十亿美元级计算资源，包括基于 NVIDIA GB300 的 GPU 集群和 Google 自研 TPU Ironwood。Ironwood 规格：4.6 petaFLOPS/chip，9216-chip superpod 达 42.5 exaFLOPS。</p>
+        <p>技术选择分析：GB300 用于灵活的研究实验和模型探索，TPU Ironwood 用于大规模训练的成本优化。双轨策略允许在不同工作负载间动态调度，兼顾灵活性和效率。Google Cloud 正在构建「NVIDIA GPU + 自研 TPU + 第三方模型 Hub（200+ 模型含 Anthropic Claude）」的全栈 AI 平台差异化优势。</p>
+      </div>
+    </div>
+
+    <!-- 具身智能 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon product">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a5 5 0 0 1 5 5v3a5 5 0 0 1-10 0V7a5 5 0 0 1 5-5z"/><path d="M2 21a10 10 0 0 1 20 0"/></svg>
+        </div>
+        <div class="section-title">具身智能与机器人</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Physical AI 全栈部署：从 VLA 模型到产线落地
+          <span class="tag tag-product">产品</span>
+        </div>
+        <ul class="detail-list">
+          <li><strong>NVIDIA Isaac GR00T</strong> -- Vision-Language-Action (VLA) 开放模型，支持自然语言指令理解和多步骤复杂任务执行。NemoClaw + Isaac Sim 工作流实现 sim-to-real 无缝迁移</li>
+          <li><strong>腾讯 HY-Embodied-0.5</strong> -- 基于 Mixture-of-Transformers (MoT) 架构 + latent tokens 的具身基础模型，MoT-2B 权重已在 Hugging Face 开源。专注空间-时间视觉感知和复杂具身推理</li>
+          <li><strong>Star Robotics Watchbot 2</strong> -- 安防机器人量产版：16h 续航、6x 计算力、IP67 防护等级、-25°C~50°C 工作温度、GPS 室外定位、「Watchbot Intelligence」导航感知系统</li>
+          <li><strong>中国电网采购</strong> -- 近 100 亿元具身智能设备采购，标志着电力行业成为 Physical AI 的首批大规模落地场景</li>
+          <li><strong>人形机器人马拉松</strong> -- 北京亦庄赛事中「闪电」机器人 50 分 26 秒完成半程马拉松，在运动能力上首次超越人类参赛者</li>
+        </ul>
+        <p>产业观察：具身智能正在从三条路径并行推进 -- (1) 大模型驱动的通用 VLA 框架（NVIDIA、腾讯）；(2) 特定场景的量产机器人（Star Robotics、Watchbot）；(3) 国家级基础设施采购拉动市场规模（中国电网）。2026 年可能是 Physical AI 从 demo 走向 deployment 的转折年。</p>
+      </div>
+    </div>
+
+    <!-- 政策与地缘 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="section-title">政策、监管与地缘博弈</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          AI 模型蒸馏与知识产权：技术合法性 vs 商业使用边界
+          <span class="tag tag-policy">政策</span>
+        </div>
+        <ul class="detail-list">
+          <li><strong>白宫备忘录核心指控</strong> -- 中国实体使用数万个代理账户规避检测，通过 jailbreaking 技术暴露模型内部知识，进行大规模自动化蒸馏（distillation）。备忘录由 OSTP 主任 Michael Kratsios 发布</li>
+          <li><strong>技术背景</strong> -- Model distillation 是合法的 ML 技术（Hinton et al., 2015），通过 teacher model 的 logits/outputs 训练 student model。争议在于：(1) 大规模 API 调用蒸馏商用模型是否违反 ToS；(2) 使用 jailbreak 获取受保护的内部表征是否构成 IP 侵权</li>
+          <li><strong>行业应对</strong> -- OpenAI/Anthropic/Google 此前已联合声明反对未授权模型复制。技术防御手段包括：输出水印、API 调用模式检测、模型指纹识别</li>
+          <li><strong>地缘影响</strong> -- 备忘录发布于特朗普访华前夕，可能作为贸易谈判筹码。AI 技术博弈从芯片层（出口管制）扩展到模型层（蒸馏管控）和数据层（跨境流动限制）</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          AI 监管：RAISE 法案执行与全球框架演进
+          <span class="tag tag-policy">政策</span>
+        </div>
+        <ul class="detail-list">
+          <li><strong>RAISE 法案（已生效 3/19）</strong> -- 要求前沿模型开发者提供训练细节报告、安全测试结果、能力评估和持续监控。首批合规报告截止日期临近</li>
+          <li><strong>白宫国家政策框架</strong> -- 反对设立新监管机构，主张「sector-specific regulation」通过现有机构管理。推动监管沙箱和联邦 preemption（联邦法律优先于州法律），避免 50 州碎片化</li>
+          <li><strong>州级立法</strong> -- 2026 年已提出 600+ AI 法案。印第安纳 HB 1271、犹他 SB 319、华盛顿 SB 5395 已立法限制保险行业 AI 使用（禁止 AI 作为拒赔唯一依据）</li>
+          <li><strong>EU AI Act</strong> -- 15 个行业协会（EuroISPA 牵头）要求延长 generative AI 标签合规宽限期（从 6 个月延至 12 个月），反映行业实施难度超出预期</li>
+          <li><strong>对开发者的合规影响</strong> -- 需要建设：Model Cards、Red-teaming pipeline、数据溯源系统、部署监控仪表板、审计日志。NIST AI RMF 2.0 可作为合规框架参考</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="closing-card">
+      <div class="closing-title">Expert Take</div>
+      <div class="closing-text">
+        三条主线值得深入跟踪：(1) <strong>Hybrid Attention 的可推广性</strong> -- DeepSeek V4 在 MHA/GQA/MLA 谱系中开辟了分层混合路径，核心问题是这种设计在不同模态（vision, audio）和不同任务（generation vs retrieval）上是否具有通用优势，还是仅在超长上下文文本场景中有效。预计 Q3 会有第三方复现和消融实验发表；(2) <strong>AI capex/opex 替代率的量化拐点</strong> -- Meta 的数据提供了一个具体案例：$115-135B capex 对应 8000 人 opex 削减。如果以平均 $200K/人年全成本计算，裁员节省约 $1.6B/年 -- 仅占 capex 增量的 2-3%。这意味着当前的 capex 增长更多是「投资未来收入增长」而非「替代当前人力成本」，裁员更像是信号而非核心驱动；(3) <strong>模型蒸馏的法律灰区</strong> -- 蒸馏本身是公开技术，但商用模型的 ToS 通常禁止 competitive use。技术防御（watermarking、API pattern detection）和法律框架（IP 扩展解释）将同步演进，这可能催生一个新的「AI IP 保护」细分赛道。
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>AI Pulse Daily #35 | 2026.04.25</p>
+    <p style="margin-top:4px;">数据来源: Bloomberg, CNBC, Fortune, TechCrunch, CNN, Axios, ScienceDaily, Simon Willison, Euronews</p>
+    <p style="margin-top:8px;"><a href="/">返回 AI Pulse 主页</a></p>
+  </div>
+</div>
+
+<script>
+function switchTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(function(el) { el.classList.remove('active'); });
+  document.querySelectorAll('.tab-btn').forEach(function(el) { el.classList.remove('active'); });
+  document.getElementById('tab-' + tab).classList.add('active');
+  var tabs = ['casual', 'intermediate', 'expert'];
+  var idx = tabs.indexOf(tab);
+  document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>

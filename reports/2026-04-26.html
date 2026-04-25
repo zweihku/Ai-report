@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily Report | 2026.04.26</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --claude-bg: #FAF9F7;
+    --claude-surface: #FFFFFF;
+    --claude-border: #E8E5E0;
+    --claude-text-primary: #1A1714;
+    --claude-text-secondary: #6B6560;
+    --claude-text-tertiary: #9B9590;
+    --claude-accent: #DA7756;
+    --claude-accent-light: #F5E6DF;
+    --claude-accent-dark: #C4623F;
+    --claude-tag-blue: #E8F0FE;
+    --claude-tag-blue-text: #3B6CB5;
+    --claude-tag-green: #E6F4EA;
+    --claude-tag-green-text: #2D7A3F;
+    --claude-tag-purple: #F0E6FA;
+    --claude-tag-purple-text: #7B3FAF;
+    --claude-tag-amber: #FEF3E2;
+    --claude-tag-amber-text: #B5752D;
+    --claude-tag-red: #FDE8E8;
+    --claude-tag-red-text: #B53B3B;
+    --claude-card-shadow: 0 1px 3px rgba(26, 23, 20, 0.06), 0 1px 2px rgba(26, 23, 20, 0.04);
+    --claude-card-shadow-hover: 0 4px 12px rgba(26, 23, 20, 0.08), 0 2px 4px rgba(26, 23, 20, 0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+    background: var(--claude-bg);
+    color: var(--claude-text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 8px;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--claude-accent-dark); }
+
+  .header {
+    text-align: center;
+    padding: 48px 0 40px;
+    border-bottom: 1px solid var(--claude-border);
+    margin-bottom: 32px;
+  }
+
+  .header-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--claude-accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .header .date {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    font-weight: 400;
+  }
+
+  .header .edition-note {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    margin-top: 8px;
+  }
+
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 36px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--claude-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .tab-btn:hover {
+    color: var(--claude-text-primary);
+    background: var(--claude-bg);
+  }
+
+  .tab-btn.active {
+    background: var(--claude-accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(218, 119, 86, 0.3);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .section { margin-bottom: 36px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .section-icon.gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .section-icon.model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .section-icon.product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .section-icon.research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .section-icon.industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .section-icon.policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .card {
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--claude-card-shadow);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .card:hover { box-shadow: var(--claude-card-shadow-hover); }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .card p {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.75;
+    margin-bottom: 8px;
+  }
+
+  .card p:last-child { margin-bottom: 0; }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .tag-gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .tag-model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .tag-product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .tag-research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .tag-industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .tag-policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .highlight {
+    background: var(--claude-accent-light);
+    border-left: 3px solid var(--claude-accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--claude-accent-dark);
+    line-height: 1.7;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .stat-item {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--claude-accent);
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--claude-text-tertiary);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 8px;
+    transition: color 0.15s;
+  }
+
+  .source-link:hover { color: var(--claude-accent-dark); text-decoration: underline; }
+
+  .tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .tech-table th, .tech-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .tech-table th {
+    font-weight: 600;
+    color: var(--claude-text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: var(--claude-bg);
+  }
+
+  .tech-table td { color: var(--claude-text-primary); }
+
+  .code-block {
+    background: #2D2A26;
+    color: #E8E5E0;
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    overflow-x: auto;
+    margin: 12px 0;
+  }
+
+  .code-block .comment { color: #9B9590; }
+  .code-block .keyword { color: #DA7756; }
+  .code-block .string { color: #7DB87D; }
+
+  .footer {
+    text-align: center;
+    padding: 32px 0;
+    border-top: 1px solid var(--claude-border);
+    margin-top: 48px;
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+  }
+
+  .footer a {
+    color: var(--claude-accent);
+    text-decoration: none;
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 20px 16px 60px; }
+    .header h1 { font-size: 24px; }
+    .tab-btn { font-size: 13px; padding: 10px 8px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+  }
+
+  .subsection-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin: 16px 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  ul.detail-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0;
+  }
+
+  ul.detail-list li {
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.7;
+    padding: 4px 0 4px 16px;
+    position: relative;
+  }
+
+  ul.detail-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--claude-border);
+  }
+
+  .mood-banner {
+    background: linear-gradient(135deg, #FFF5F0 0%, #FFF9F0 100%);
+    border: 1px solid #F0DDD0;
+    border-radius: 16px;
+    padding: 28px 24px;
+    margin-bottom: 32px;
+    text-align: center;
+  }
+
+  .mood-banner .mood-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin-bottom: 6px;
+  }
+
+  .mood-banner .mood-subtitle {
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.6;
+  }
+
+  .mood-meter {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    margin: 12px 0;
+  }
+
+  .mood-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    transition: transform 0.2s;
+  }
+
+  .mood-dot.active { transform: scale(1.4); }
+
+  .mood-label {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+
+  .tldr-box {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.6;
+  }
+
+  .closing-card {
+    background: linear-gradient(135deg, #FFF5F0 0%, #FFF9F0 100%);
+    border: 1px solid #F0DDD0;
+    border-radius: 16px;
+    padding: 28px 24px;
+    margin-top: 32px;
+    text-align: center;
+  }
+
+  .closing-card .closing-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin-bottom: 10px;
+  }
+
+  .closing-card .closing-text {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.8;
+    text-align: left;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <a href="/" class="back-link">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
+    返回 AI Pulse
+  </a>
+
+  <div class="header">
+    <div class="header-logo">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      AI PULSE DAILY
+    </div>
+    <h1>AI 日报 | 2026.04.26</h1>
+    <div class="date">2026 年 4 月 26 日 星期日</div>
+    <div class="edition-note">第 36 期 -- Cohere 与 Aleph Alpha 合并打造 $200 亿跨大西洋 AI 巨头，Google DeepMind 组建精英「突击队」追赶 Anthropic 编程能力，Sony AI 机器人登上 Nature 封面击败职业乒乓球手，Hinton 在联合国呼吁为 AI 装上「方向盘」</div>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('casual')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+      轻松阅读
+    </button>
+    <button class="tab-btn" onclick="switchTab('intermediate')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      技术进阶
+    </button>
+    <button class="tab-btn" onclick="switchTab('expert')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      深度技术
+    </button>
+  </div>
+
+  <!-- ==================== 轻松阅读版 ==================== -->
+  <div id="tab-casual" class="tab-content active">
+
+    <div class="mood-banner">
+      <div class="mood-title">今日 AI 圈：并购整合潮起，编程 AI 成兵家必争之地</div>
+      <div class="mood-meter">
+        <div class="mood-dot" style="background:#4CAF50"></div>
+        <div class="mood-dot active" style="background:#8BC34A"></div>
+        <div class="mood-dot active" style="background:#FFC107"></div>
+        <div class="mood-dot" style="background:#FF9800"></div>
+        <div class="mood-dot" style="background:#F44336"></div>
+      </div>
+      <div class="mood-label">市场情绪：积极进取</div>
+      <div class="mood-subtitle">Cohere 收购 Aleph Alpha 组建 $200 亿跨大西洋 AI 联盟，Google 创始人亲自挂帅追赶 Claude 编程能力，Sony 机器人击败职业乒乓球手登上 Nature 封面 -- 整合加速、竞争白热化</div>
+    </div>
+
+    <!-- 重磅新闻 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="section-title">重磅新闻</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Cohere 收购 Aleph Alpha，打造 $200 亿跨大西洋 AI 巨头
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>加拿大 AI 公司 Cohere 宣布收购德国 AI 公司 Aleph Alpha，合并后估值达 200 亿美元。德国零售巨头 Schwarz 集团承诺向新公司注资 5 亿欧元（约 8 亿美元）。</p>
+        <p>这是 AI 领域最大的跨国并购之一。合并后的公司将聚焦「主权 AI」-- 帮助欧洲政府和企业在本土运行 AI 模型，不依赖美国云服务商。对普通人来说，这意味着你在欧洲使用的 AI 服务，数据可能不再需要送到美国处理。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Google 创始人组建「突击队」追赶 Anthropic 编程能力
+          <span class="tag tag-model">模型</span>
+        </div>
+        <p>Google 联合创始人 Sergey Brin 亲自在 DeepMind 内部组建了一支精英团队，目标只有一个：让 Gemini 的编程能力追上 Anthropic 的 Claude。</p>
+        <p>Brin 在内部备忘录中写道：「我们必须紧急弥补在智能体执行力上的差距，把我们的模型变成主力开发者。」据报道，Google 内部工程师普遍认为 Claude 在代码编写方面强于 Gemini -- 这对 Google 来说是不能接受的。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Sony AI 机器人击败职业乒乓球手，登上 Nature 封面
+          <span class="tag tag-research">研究</span>
+        </div>
+        <p>Sony AI 的 Project Ace 创造了历史：一个自主机器人系统首次在真实比赛中击败职业乒乓球选手。研究成果发表在 Nature 封面。</p>
+        <p>这不是「慢动作表演赛」-- 机器人的回球速度、落点精度都超过了之前的记录，在今年 3 月的比赛中击败了所有三位职业选手至少一次。这标志着 AI 从虚拟世界（下棋、打游戏）正式进入了高速物理竞技领域。</p>
+      </div>
+    </div>
+
+    <!-- 公司动态 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon product">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
+        </div>
+        <div class="section-title">公司动态</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Cognition AI 寻求 $250 亿估值融资，AI 编程赛道估值狂飙
+          <span class="tag tag-product">产品</span>
+        </div>
+        <p>AI 编程工具 Devin 的开发商 Cognition AI 正在洽谈新一轮融资，目标估值 250 亿美元，是去年 9 月估值（102 亿）的 2.5 倍。加上 Cursor 的 500 亿估值，AI 编程已成为今年最炙手可热的赛道。</p>
+        <p>有趣的背景是，Cognition 的年化收入从 2024 年 9 月的 100 万美元飙升到 2025 年 6 月的 7300 万美元 -- 增长了 73 倍。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Snap 裁员 1000 人，CEO 称 AI 让小团队也能做大事
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>Snapchat 母公司 Snap 宣布裁减 16% 员工（约 1000 人），CEO Evan Spiegel 直接把原因归结为「AI 的快速进步」让更少的人能完成同样的工作量。裁员消息发布后，Snap 股价反而跳涨了 7%。</p>
+        <p>这不是个案 -- Oracle 裁员 3 万人、Meta 裁员 8000 人、Atlassian、Block、Pinterest 和 Salesforce 也都在瘦身，理由几乎都是「AI 提高了效率」。</p>
+      </div>
+    </div>
+
+    <!-- 研究与技术 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon research">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+        <div class="section-title">研究与技术</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          AI 能耗降低 100 倍的突破性研究
+          <span class="tag tag-research">研究</span>
+        </div>
+        <p>研究人员发现了一种将神经网络与人类式符号推理相结合的方法，可以将 AI 能耗降低 100 倍，同时实际上还提高了准确性。这对帮助机器人更高效地「思考」尤其重要。</p>
+        <p>当前 AI 模型的高能耗一直是行业痛点 -- 训练一个大模型的碳排放相当于五辆汽车的终生排放量。这项研究指出了一条更可持续的发展路径。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          中国 AI 密集更新：MiMo-2.5、Qwen3.6-Max、Hunyuan Hy3
+          <span class="tag tag-model">模型</span>
+        </div>
+        <p>本周中国 AI 模型集中发布：字节跳动推出 MiMo-2.5-Pro（智能体模型）和 MiMo-2.5（通用模型），阿里巴巴发布 Qwen3.6-Max-Preview，腾讯更新 Hunyuan Hy3-Preview。</p>
+        <p>在北京亦庄举办的人形机器人半程马拉松中，「闪电」机器人以 50 分 26 秒完赛，真正跑赢了人类选手 -- 科幻电影的画面正在变成现实。</p>
+      </div>
+    </div>
+
+    <!-- 政策监管 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="section-title">政策与监管</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Hinton 在联合国呼吁为 AI 装上「方向盘」
+          <span class="tag tag-policy">政策</span>
+        </div>
+        <p>诺贝尔奖得主、AI 教父 Geoffrey Hinton 在联合国数字世界大会上发出警告：AI 就像一辆「没有方向盘的快车」，如果下坡时既没有刹车又没有方向盘，后果不堪设想。</p>
+        <p>他呼吁各国政府加快建立 AI 治理框架，确保超级智能的发展方向受到人类的引导和控制。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Idaho 通过四项 AI 法案，7 月 1 日生效
+          <span class="tag tag-policy">政策</span>
+        </div>
+        <p>美国 Idaho 州通过了四项 AI 相关法案，涉及公共教育中的 AI 使用规范和聊天机器人安全标准，将于 2026 年 7 月 1 日生效。</p>
+        <p>美国各州的 AI 立法正在加速 -- 2026 年已提出超过 600 项 AI 法案，而白宫则推动联邦法律优先于州法律，避免出现「50 州各管各的」混乱局面。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 技术进阶版 ==================== -->
+  <div id="tab-intermediate" class="tab-content">
+
+    <div class="mood-banner">
+      <div class="mood-title">技术视角：AI 编程赛道进入军备竞赛，跨国整合重塑竞争格局</div>
+      <div class="mood-meter">
+        <div class="mood-dot" style="background:#4CAF50"></div>
+        <div class="mood-dot active" style="background:#8BC34A"></div>
+        <div class="mood-dot active" style="background:#FFC107"></div>
+        <div class="mood-dot" style="background:#FF9800"></div>
+        <div class="mood-dot" style="background:#F44336"></div>
+      </div>
+      <div class="mood-label">技术趋势：编程 AI 白热化竞争</div>
+      <div class="mood-subtitle">Brin 亲自挂帅 DeepMind 突击队追赶 Claude Code，Cognition 估值翻 2.5 倍至 $250 亿，Cohere-Aleph Alpha 合并开辟主权 AI 新战场，Sony Ace 机器人在 Nature 验证了物理 AI 可行性</div>
+    </div>
+
+    <!-- 模型与架构 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        </div>
+        <div class="section-title">模型与竞争格局</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Google DeepMind「突击队」：从 CFO 数据看 Anthropic 的编程领先优势
+          <span class="tag tag-model">模型</span>
+        </div>
+        <p>Google CFO 在财报中透露，Anthropic 用 AI 完成了接近 100% 的代码编写辅助，而 Google 目前仅约 50%。这个数据差距直接触发了 Sergey Brin 组建专门团队的决策。</p>
+        <p>突击队由此前负责 Gemini 预训练的 Sebastian Borgeaud 领导，直接向 DeepMind CTO Koray Kavukcuoglu 和 Brin 汇报。重点方向是提升模型在长期编程任务中的表现 -- 需要模型能够阅读大量文件、理解开发者意图并自主执行复杂操作。</p>
+        <div class="highlight">
+          Brin 内部备忘录原文：「To win the final sprint, we must urgently bridge the gap in agentic execution and turn our models into primary developers.」这标志着 AI 编程能力已从「nice-to-have」变成了「战略级必争之地」。
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          AI 编程工具估值爆发：Cognition $250 亿、Cursor $500 亿
+          <span class="tag tag-product">产品</span>
+        </div>
+        <p>Cognition AI（Devin 开发商）正在洽谈新一轮融资，估值从去年 9 月的 $102 亿翻倍至 $250 亿。与此同时，Cursor 在洽谈 $20 亿融资，估值超过 $500 亿。两家公司在短短一年内估值均增长了数倍。</p>
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-value">$250 亿</div>
+            <div class="stat-label">Cognition 目标估值</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">$500 亿</div>
+            <div class="stat-label">Cursor 当前估值</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">73x</div>
+            <div class="stat-label">Cognition 收入增长</div>
+          </div>
+        </div>
+        <p>从技术栈角度看，Cursor 主打 IDE 集成的 AI pair programming（代码补全、重构、对话），而 Devin 则定位为端到端的自主软件工程师（从需求分析到部署）。两种模式代表了 AI 编程的两个方向：人机协作 vs. AI 全自动。</p>
+      </div>
+    </div>
+
+    <!-- 行业并购 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="section-title">行业并购与融资</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Cohere + Aleph Alpha：$200 亿主权 AI 联盟的战略逻辑
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>Cohere（加拿大企业 AI 独角兽）收购 Aleph Alpha（德国 AI 公司），合并后估值 $200 亿。Aleph Alpha 的大股东 Schwarz 集团（欧洲最大零售商之一，旗下有 Lidl）承诺注资 5 亿欧元。合并后保留 Cohere 品牌，CEO Aidan Gomez 继续领导。</p>
+        <p>战略核心是「主权 AI」（Sovereign AI）-- 让政府和企业在自己管辖范围内运行 AI 模型和处理数据。这对欧洲尤为重要，因为 EU AI Act 和 GDPR 对数据跨境有严格限制。Aleph Alpha 此前已与德国联邦政府和多个州政府建立合作关系。</p>
+        <p>交易仍需 Aleph Alpha 股东和德国政府审批。如果完成，将成为 AI 领域最大的跨大西洋并购案。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          AI 裁员潮加速：Snap 裁 16%，Oracle 裁 3 万人
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>Snap 裁员 1000 人（16% 全职员工），CEO Spiegel 明确将原因归结为 AI 效率提升。裁员预计年省 $5 亿，消息公布后股价跳涨 7%。这一轮 AI 驱动的裁员潮已波及 Oracle（3 万人）、Meta（8000 人）、Atlassian、Block、Pinterest 和 Salesforce。</p>
+        <p>值得关注的趋势：市场对「AI 替代人力」给出了正面反馈（股价上涨），这形成了一个正反馈循环 -- 裁员越多，股价越高，管理层越有动力继续裁员。软件工程、内容审核和客服是受冲击最大的岗位。</p>
+      </div>
+    </div>
+
+    <!-- 研究突破 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon research">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        </div>
+        <div class="section-title">研究突破</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Sony Project Ace：Nature 封面论文的技术要点
+          <span class="tag tag-research">研究</span>
+        </div>
+        <p>Sony AI 的 Project Ace 登上 Nature 封面，成为首个在真实竞技运动中击败职业级人类选手的自主机器人系统。核心技术栈包括：事件驱动传感（event-based sensing）、深度强化学习（DRL）、高度灵活的机器人平台。</p>
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-value">200 Hz</div>
+            <div class="stat-label">球体 3D 定位频率</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">3.0 mm</div>
+            <div class="stat-label">定位精度</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">10.2 ms</div>
+            <div class="stat-label">平均延迟</div>
+          </div>
+        </div>
+        <p>系统使用 9 个搭载 Sony IMX273 传感器的主动像素相机，以 200 Hz 频率进行 3D 球体追踪。强化学习策略在模拟环境中训练后通过 sim-to-real 迁移部署到物理机器人上。与 2025 年 12 月评估相比，2026 年 3 月的版本展示了更高的击球速度、更激进的落点控制和更快的节奏。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          神经-符号融合：AI 能耗降低 100 倍
+          <span class="tag tag-research">研究</span>
+        </div>
+        <p>新研究将神经网络与符号推理（symbolic reasoning）相结合，在保持甚至提高准确性的前提下将 AI 能耗降低了 100 倍。关键创新在于：让神经网络处理感知任务（识别环境），符号系统处理规划和决策，两者通过可微分接口（differentiable interface）协同工作。</p>
+        <p>这对机器人领域尤其重要 -- 边缘设备上的功耗限制一直是部署障碍。该方法使机器人能以类似人类的方式「先理解再行动」，而非对所有输入都用完整的神经网络推理。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          腾讯 HY-Embodied：面向具身智能的基础模型套件
+          <span class="tag tag-model">模型</span>
+        </div>
+        <p>腾讯开源 HY-Embodied-0.5，一套面向真实世界具身智能的基础模型。采用创新的 Mixture-of-Transformers（MoT）架构，包含 2B 参数的边缘部署版和 32B 参数的复杂推理版。</p>
+        <p>MoT 架构的核心思想是为不同模态（视觉、语言、动作）使用不同的专家 Transformer 模块，在推理时只激活相关模块，降低计算开销的同时保持多模态理解能力。这与 DeepSeek 的 MoE 策略类似，但在模态维度而非 token 维度做路由。</p>
+      </div>
+    </div>
+
+    <!-- 政策监管 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="section-title">政策与监管</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Hinton 联合国演讲与全球 AI 治理走向
+          <span class="tag tag-policy">政策</span>
+        </div>
+        <p>Geoffrey Hinton 在联合国数字世界大会上发表主旨演讲，将 AI 比作「没有方向盘的快车」，呼吁建立有效的治理机制。这是他获得诺贝尔奖后在国际政策舞台上最高调的一次亮相。</p>
+        <p>监管动态方面：美国 2026 年已提出 600+ AI 法案，Idaho 通过的四项法案聚焦公共教育 AI 使用和聊天机器人安全标准。白宫国家政策框架则推动联邦 preemption，避免各州碎片化立法。RAISE 法案已生效，首批前沿模型合规报告截止日期临近。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 深度技术版 ==================== -->
+  <div id="tab-expert" class="tab-content">
+
+    <div class="mood-banner">
+      <div class="mood-title">Expert View: AI Coding Arms Race Intensifies as Industry Consolidation Accelerates</div>
+      <div class="mood-meter">
+        <div class="mood-dot" style="background:#4CAF50"></div>
+        <div class="mood-dot active" style="background:#8BC34A"></div>
+        <div class="mood-dot active" style="background:#FFC107"></div>
+        <div class="mood-dot" style="background:#FF9800"></div>
+        <div class="mood-dot" style="background:#F44336"></div>
+      </div>
+      <div class="mood-label">Signal Strength: High</div>
+      <div class="mood-subtitle">Three converging signals today: (1) Google's desperation move on coding AI validates Anthropic's flywheel thesis, (2) Cohere-Aleph Alpha merger crystallizes sovereign AI as a real market segment, (3) Sony Ace's Nature cover paper proves physical AI has crossed the expert-human threshold in dynamic tasks.</div>
+    </div>
+
+    <!-- AI 编程竞争 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        </div>
+        <div class="section-title">AI 编程军备竞赛</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Google DeepMind 突击队：Anthropic 编程飞轮效应的验证
+          <span class="tag tag-model">模型</span>
+        </div>
+        <ul class="detail-list">
+          <li><strong>核心差距量化</strong> -- Google CFO 披露 Anthropic AI 代码辅助率接近 100%，Google 约 50%。DeepMind 内部研究员评估中 Claude 编程能力优于 Gemini，直接触发 Brin 干预</li>
+          <li><strong>团队架构</strong> -- 由前 Gemini 预训练负责人 Sebastian Borgeaud 领队，直接向 CTO Koray Kavukcuoglu 和 Brin 汇报。聚焦长期编程任务（long-horizon coding tasks）：跨文件理解、意图推断、自主多步执行</li>
+          <li><strong>飞轮效应分析</strong> -- Anthropic 的竞争优势不仅是模型质量，更是「dogfooding loop」：Claude 写 Claude 的代码 -> 更好的编程数据 -> 更强的编程能力 -> 更多内部使用 -> 更多数据。Google 需要同时解决模型能力和数据飞轮两个问题</li>
+          <li><strong>战略含义</strong> -- Brin 备忘录使用了「primary developers」而非「coding assistants」，暗示目标是 AI 系统作为独立开发者而非辅助工具。这与 Cognition/Devin 的定位一致，表明行业正在从「copilot 模式」转向「autonomous agent 模式」</li>
+        </ul>
+        <a href="https://sherwood.news/tech/google-deepmind-builds-strike-team-to-catch-up-to-anthropic-models/" class="source-link" target="_blank">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Sherwood News: Google DeepMind builds strike team
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          AI 编程估值泡沫还是新范式？Cognition vs Cursor 技术路径对比
+          <span class="tag tag-product">产品</span>
+        </div>
+        <ul class="detail-list">
+          <li><strong>Cognition AI</strong> -- 目标估值 $250 亿（前轮 $102 亿），ARR 从 $1M（2024/09）到 $73M（2025/06）。产品定位为 autonomous software engineer：task decomposition -> code generation -> testing -> deployment。收购了 Windsurf 以补充 IDE 集成能力</li>
+          <li><strong>Cursor</strong> -- 洽谈 $20 亿融资，估值 $500 亿+。定位为 AI-native IDE：实时补全、上下文感知重构、对话式编程。SpaceX $600 亿收购期权侧面验证了其在工程组织中的渗透率</li>
+          <li><strong>架构差异</strong> -- Cursor 采用 LSP（Language Server Protocol）深度集成 + streaming completion 架构，强调低延迟的人机交互循环。Devin 采用 agent loop 架构（plan -> execute -> verify -> iterate），强调任务完成的自主性。两者分别代表了 System 1（快速直觉）和 System 2（慢速推理）的编程范式</li>
+          <li><strong>估值合理性</strong> -- 以 Cognition $250B/$73M ARR 计算，P/S ratio 约 342x。即使考虑 100%+ 年增长率，这仍然是极端估值。但 AI coding TAM（全球开发者 ~30M，企业软件开发支出 ~$750B/年）足够大，如果 AI 能替代 20% 开发成本，市场规模就是 $150B/年</li>
+        </ul>
+        <a href="https://www.bloomberg.com/news/articles/2026-04-23/ai-coding-firm-cognition-in-funding-talks-at-25-billion-value" class="source-link" target="_blank">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Bloomberg: AI Coding Firm Cognition in Funding Talks at $25B
+        </a>
+      </div>
+    </div>
+
+    <!-- 行业整合 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="section-title">行业整合与主权 AI</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Cohere-Aleph Alpha 合并：主权 AI 市场的结构性机会
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <ul class="detail-list">
+          <li><strong>交易结构</strong> -- Cohere 收购 Aleph Alpha，合并估值 $200 亿。Schwarz Group（Lidl 母公司）作为 lead investor 承诺投资 EUR 5 亿（~$8 亿）。保留 Cohere 品牌，CEO Aidan Gomez 领导。锚定德国和加拿大双总部</li>
+          <li><strong>主权 AI 定义</strong> -- Sovereign AI 指在本国司法管辖范围内训练、部署和运行 AI 模型，数据不跨境流动。核心价值主张：满足 GDPR/EU AI Act 合规要求、政府数据安全需求、地缘政治风险对冲</li>
+          <li><strong>Aleph Alpha 的政府关系资产</strong> -- Aleph Alpha 此前已与德国联邦政府、Baden-Württemberg 等州政府和多个欧洲企业建立合作，拥有欧洲政府客户关系网络。这是 Cohere 短期内无法自建的核心资产</li>
+          <li><strong>市场规模估算</strong> -- 欧洲政府 IT 支出约 $500 亿/年，其中 AI 占比从 2024 年的 ~5% 快速增长。如果 sovereign AI 要求推动 20% 的 AI 工作负载回流本土，仅欧洲市场就是 $50 亿+/年的增量机会</li>
+          <li><strong>竞争格局</strong> -- Mistral（法国）仍然是独立竞争者，但聚焦开源模型而非企业部署。AWS/Azure/GCP 的欧洲区域也提供本地部署选项，但不满足最严格的主权要求。合并后 Cohere 在企业级主权 AI 赛道占据有利位置</li>
+        </ul>
+        <a href="https://techcrunch.com/2026/04/24/cohere-acquires-merges-with-german-based-startup-to-create-a-transatlantic-ai-powerhouse/" class="source-link" target="_blank">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          TechCrunch: Cohere acquires Aleph Alpha
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          AI 驱动裁员的经济学分析
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <ul class="detail-list">
+          <li><strong>Snap 案例</strong> -- 裁员 1000 人（16% FTE），关闭 300+ 开放职位。预计年省 $5 亿。CEO Spiegel：AI 减少 repetitive work，小团队能完成大团队的工作量。股价当日涨 7%</li>
+          <li><strong>行业裁员规模</strong> -- Oracle 3 万人、Meta 8000 人、Snap 1000 人、Atlassian/Block/Pinterest/Salesforce 各裁百人级别。理由一致：AI efficiency gains</li>
+          <li><strong>市场反馈循环</strong> -- 裁员 -> 成本降低 -> 利润率提升预期 -> 股价上涨 -> 管理层 incentive 对齐 -> 更多裁员。这种正反馈循环在 Q2 2026 加速，因为 AI 工具的实际 ROI 开始在财报中体现</li>
+          <li><strong>受影响岗位分布</strong> -- 最先受冲击的不是低端岗位，而是中等复杂度的重复性知识工作：QA 测试、基础代码编写、内容审核、客服脚本、数据标注、初级分析。这与 2023 年预测的「AI 先替代体力劳动」形成反转</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 物理 AI 研究 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon research">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        </div>
+        <div class="section-title">研究与技术深度</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Sony Project Ace: Nature 封面论文技术解析
+          <span class="tag tag-research">研究</span>
+        </div>
+        <ul class="detail-list">
+          <li><strong>感知系统</strong> -- 9x Sony IMX273 APS cameras, 200 Hz 3D ball tracking, 3.0 mm 平均定位误差, 10.2 ms 平均端到端延迟。使用立体视觉 + Kalman filter 融合多相机数据，实现亚厘米级实时追踪</li>
+          <li><strong>决策系统</strong> -- 基于 Deep Reinforcement Learning（DRL）训练，在 sim 环境中完成策略学习后 sim-to-real 迁移。策略网络输入包括球体轨迹预测、对手位置估计和机器人本体状态，输出 6-DOF 末端执行器轨迹</li>
+          <li><strong>性能进化</strong> -- 2025/12 评估：击败 2 elite + 1 professional（共 4 名对手）。2026/03 评估：击败所有 3 名 professional 至少一次。关键改进：更高击球速度、更激进的边线落点、更快的来回节奏</li>
+          <li><strong>意义</strong> -- 首个在常规竞技体育中达到专家人类水平的自主机器人系统。与 AlphaGo（围棋）、AlphaStar（StarCraft）不同，乒乓球要求实时物理感知和 millisecond 级反应，验证了 physical AI 在高动态环境中的可行性</li>
+          <li><strong>局限性</strong> -- 机器人平台固定在桌端，不涉及全身移动。球台范围有限（不测试远台对拉）。对手适应时间有限，长期对弈可能暴露策略单一性</li>
+        </ul>
+        <a href="https://www.nature.com/articles/s41586-026-10338-5" class="source-link" target="_blank">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Nature: Outplaying elite table tennis players with an autonomous robot
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          神经-符号融合 100x 能效提升：架构与 implications
+          <span class="tag tag-research">研究</span>
+        </div>
+        <ul class="detail-list">
+          <li><strong>核心架构</strong> -- 将任务分为感知层（neural network）和推理层（symbolic engine）。感知层负责特征提取和环境建模，推理层负责规划和逻辑决策。两层通过 differentiable interface 连接，支持端到端优化</li>
+          <li><strong>能效机制</strong> -- 传统方法对所有输入执行全推理（neural forward pass 全量计算）。新方法的符号推理层只在需要时触发 neural 子模块，类似于 early-exit / conditional computation，但在更高的语义粒度上操作</li>
+          <li><strong>适用场景</strong> -- 机器人导航、工业检测、边缘 AI 部署等受功耗约束的场景。100x 能效提升意味着原本需要 GPU 的推理任务可以在嵌入式 SoC 上运行</li>
+          <li><strong>与 MoE 的关系</strong> -- 概念上类似 Mixture-of-Experts 的条件计算，但粒度更大（模块级 vs token 级），且引入了显式符号推理层而非纯 neural routing。可视为 neurosymbolic AI 方向的工程化突破</li>
+        </ul>
+        <a href="https://www.sciencedaily.com/releases/2026/04/260405003952.htm" class="source-link" target="_blank">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          ScienceDaily: AI breakthrough cuts energy use by 100x
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          腾讯 HY-Embodied-0.5：MoT 架构的技术细节
+          <span class="tag tag-model">模型</span>
+        </div>
+        <ul class="detail-list">
+          <li><strong>Mixture-of-Transformers (MoT)</strong> -- 与 MoE 在 FFN 层做 expert routing 不同，MoT 在 Transformer block 级别做模态路由。视觉、语言、动作各有专属 Transformer 模块，共享 attention 层但独立 FFN</li>
+          <li><strong>双版本策略</strong> -- 2B 模型用于边缘部署（机器人本体），32B 模型用于云端复杂推理（任务规划、场景理解）。可通过 speculative decoding 实现 2B 模型快速推理 + 32B 模型质量校验的混合部署</li>
+          <li><strong>与 NVIDIA Isaac GR00T 对比</strong> -- GR00T 采用 foundation model + task-specific head 的架构，HY-Embodied 采用 MoT 的模态路由架构。GR00T 依赖 NVIDIA 硬件生态（Isaac Sim + Jetson），HY-Embodied 是开源的且硬件无关</li>
+          <li><strong>开源策略</strong> -- GitHub 开源（Tencent-Hunyuan/HY-Embodied），遵循与 Hunyuan 系列一致的开放路线。对于没有 NVIDIA 全栈资源的团队，提供了一个可替代的具身智能基础模型方案</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          AI 监管：RAISE 法案合规要求与 Idaho 立法分析
+          <span class="tag tag-policy">政策</span>
+        </div>
+        <ul class="detail-list">
+          <li><strong>Hinton 联合国演讲</strong> -- 在 UNRISD 主办的 Digital World Conference 上，Hinton 将 AI 比作「没有方向盘和刹车的汽车」，呼吁建立国际协调的治理框架。他对超级智能的长期风险表达了深切担忧，认为当前治理速度远低于技术进步速度</li>
+          <li><strong>RAISE 法案执行进展</strong> -- 已于 3/19 生效，要求前沿模型开发者提交：训练细节报告、安全测试结果（red-teaming）、能力评估（dangerous capabilities scan）、持续监控计划。首批合规报告截止日期临近</li>
+          <li><strong>Idaho 四项 AI 法案</strong> -- 涉及公共教育中 AI 使用规范（教师指导下的 AI 辅助学习）和聊天机器人安全标准（明确标注 AI 身份、未成年人保护）。7/1/2026 生效</li>
+          <li><strong>联邦 vs 州冲突</strong> -- 白宫 National Policy Framework 推动联邦 preemption，但 600+ 州法案反映了地方立法者的「等不及」情绪。预计 2026 年下半年联邦立法进程将加速，以避免 patchwork regulation</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="closing-card">
+      <div class="closing-title">Expert Take</div>
+      <div class="closing-text">
+        三条值得深入跟踪的主线：(1) <strong>AI 编程的 copilot vs agent 分野</strong> -- Brin 备忘录中「primary developers」和 Cognition 的「autonomous engineer」定位表明，行业共识正在从「AI 辅助编程」转向「AI 自主编程」。关键技术瓶颈是 long-horizon task completion rate -- 目前最好的模型在 SWE-bench 等基准上的完整任务完成率仍低于 50%，但 Anthropic 的 dogfooding loop 可能已经在内部数据上拉开差距。Google 突击队能否打破这个飞轮，取决于他们能否找到替代的高质量 coding data source；(2) <strong>主权 AI 的商业化验证</strong> -- Cohere-Aleph Alpha 合并是 sovereign AI 从概念到 $200 亿估值实体的第一次大规模验证。核心假设是：欧洲政府和企业愿意为「数据不出境」支付溢价。如果首年收入增速能达到 3-5x，将证明这不只是政治概念而是真实市场需求；(3) <strong>Physical AI 的 sim-to-real gap</strong> -- Sony Ace 证明了 DRL + event-based sensing 在高动态任务中可行，但从乒乓球到工业应用仍有两个 gap 需要弥合：(a) 环境复杂度跃升（固定球台 vs 非结构化环境），(b) 安全约束引入（机器人与人类共存的碰撞避免）。腾讯 HY-Embodied 的 MoT 架构和 NVIDIA Isaac GR00T 都在试图通过更好的基础模型来弥合这些 gap。
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>AI Pulse Daily #36 | 2026.04.26</p>
+    <p style="margin-top:4px;">数据来源: Bloomberg, CNBC, TechCrunch, Nature, ScienceDaily, UN News, Fortune, Sherwood News</p>
+    <p style="margin-top:8px;"><a href="/">返回 AI Pulse 主页</a></p>
+  </div>
+</div>
+
+<script>
+function switchTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(function(el) { el.classList.remove('active'); });
+  document.querySelectorAll('.tab-btn').forEach(function(el) { el.classList.remove('active'); });
+  document.getElementById('tab-' + tab).classList.add('active');
+  var tabs = ['casual', 'intermediate', 'expert'];
+  var idx = tabs.indexOf(tab);
+  document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>

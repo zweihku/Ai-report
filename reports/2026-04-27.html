@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily Report | 2026.04.27</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --claude-bg: #FAF9F7;
+    --claude-surface: #FFFFFF;
+    --claude-border: #E8E5E0;
+    --claude-text-primary: #1A1714;
+    --claude-text-secondary: #6B6560;
+    --claude-text-tertiary: #9B9590;
+    --claude-accent: #DA7756;
+    --claude-accent-light: #F5E6DF;
+    --claude-accent-dark: #C4623F;
+    --claude-tag-blue: #E8F0FE;
+    --claude-tag-blue-text: #3B6CB5;
+    --claude-tag-green: #E6F4EA;
+    --claude-tag-green-text: #2D7A3F;
+    --claude-tag-purple: #F0E6FA;
+    --claude-tag-purple-text: #7B3FAF;
+    --claude-tag-amber: #FEF3E2;
+    --claude-tag-amber-text: #B5752D;
+    --claude-tag-red: #FDE8E8;
+    --claude-tag-red-text: #B53B3B;
+    --claude-card-shadow: 0 1px 3px rgba(26, 23, 20, 0.06), 0 1px 2px rgba(26, 23, 20, 0.04);
+    --claude-card-shadow-hover: 0 4px 12px rgba(26, 23, 20, 0.08), 0 2px 4px rgba(26, 23, 20, 0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+    background: var(--claude-bg);
+    color: var(--claude-text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 8px;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--claude-accent-dark); }
+
+  .header {
+    text-align: center;
+    padding: 48px 0 40px;
+    border-bottom: 1px solid var(--claude-border);
+    margin-bottom: 32px;
+  }
+
+  .header-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--claude-accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .header .date {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    font-weight: 400;
+  }
+
+  .header .edition-note {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    margin-top: 8px;
+  }
+
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 36px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--claude-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .tab-btn:hover {
+    color: var(--claude-text-primary);
+    background: var(--claude-bg);
+  }
+
+  .tab-btn.active {
+    background: var(--claude-accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(218, 119, 86, 0.3);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .section { margin-bottom: 36px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .section-icon.gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .section-icon.model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .section-icon.product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .section-icon.research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .section-icon.industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .section-icon.policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .card {
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--claude-card-shadow);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .card:hover { box-shadow: var(--claude-card-shadow-hover); }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .card p {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.75;
+    margin-bottom: 8px;
+  }
+
+  .card p:last-child { margin-bottom: 0; }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .tag-gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .tag-model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .tag-product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .tag-research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .tag-industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .tag-policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .highlight {
+    background: var(--claude-accent-light);
+    border-left: 3px solid var(--claude-accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--claude-accent-dark);
+    line-height: 1.7;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .stat-item {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--claude-accent);
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--claude-text-tertiary);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 8px;
+    transition: color 0.15s;
+  }
+
+  .source-link:hover { color: var(--claude-accent-dark); text-decoration: underline; }
+
+  .tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .tech-table th, .tech-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .tech-table th {
+    font-weight: 600;
+    color: var(--claude-text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: var(--claude-bg);
+  }
+
+  .tech-table td { color: var(--claude-text-primary); }
+
+  .code-block {
+    background: #2D2A26;
+    color: #E8E5E0;
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    overflow-x: auto;
+    margin: 12px 0;
+  }
+
+  .code-block .comment { color: #9B9590; }
+  .code-block .keyword { color: #DA7756; }
+  .code-block .string { color: #7DB87D; }
+
+  .footer {
+    text-align: center;
+    padding: 32px 0;
+    border-top: 1px solid var(--claude-border);
+    margin-top: 48px;
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+  }
+
+  .footer a {
+    color: var(--claude-accent);
+    text-decoration: none;
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 20px 16px 60px; }
+    .header h1 { font-size: 24px; }
+    .tab-btn { font-size: 13px; padding: 10px 8px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+  }
+
+  .subsection-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin: 16px 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  ul.detail-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0;
+  }
+
+  ul.detail-list li {
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.7;
+    padding: 4px 0 4px 16px;
+    position: relative;
+  }
+
+  ul.detail-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--claude-border);
+  }
+
+  .mood-banner {
+    background: linear-gradient(135deg, #FFF5F0 0%, #FFF9F0 100%);
+    border: 1px solid #F0DDD0;
+    border-radius: 16px;
+    padding: 28px 24px;
+    margin-bottom: 32px;
+    text-align: center;
+  }
+
+  .mood-banner .mood-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin-bottom: 6px;
+  }
+
+  .mood-banner .mood-subtitle {
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.6;
+  }
+
+  .mood-meter {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    margin: 12px 0;
+  }
+
+  .mood-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    transition: transform 0.2s;
+  }
+
+  .mood-dot.active { transform: scale(1.4); }
+
+  .mood-label {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+
+  .tldr-box {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.6;
+  }
+
+  .closing-card {
+    background: linear-gradient(135deg, #FFF5F0 0%, #FFF9F0 100%);
+    border: 1px solid #F0DDD0;
+    border-radius: 16px;
+    padding: 28px 24px;
+    margin-top: 32px;
+    text-align: center;
+  }
+
+  .closing-card .closing-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin-bottom: 10px;
+  }
+
+  .closing-card .closing-text {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.8;
+    text-align: left;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <a href="/" class="back-link">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
+    返回 AI Pulse
+  </a>
+
+  <div class="header">
+    <div class="header-logo">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      AI PULSE DAILY
+    </div>
+    <h1>AI 日报 | 2026.04.27</h1>
+    <div class="date">2026 年 4 月 27 日 星期一</div>
+    <div class="edition-note">第 37 期 -- Google 豪掷 $400 亿投资 Anthropic 对抗 OpenAI，NVIDIA 市值突破 $5 万亿成芯片业首家，Google 第八代 TPU 首次拆分训练与推理芯片，Meta AI 资本支出翻倍至 $1350 亿并裁员 8000 人</div>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('casual')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+      轻松阅读
+    </button>
+    <button class="tab-btn" onclick="switchTab('intermediate')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      技术进阶
+    </button>
+    <button class="tab-btn" onclick="switchTab('expert')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      深度技术
+    </button>
+  </div>
+
+  <!-- ==================== 轻松阅读版 ==================== -->
+  <div id="tab-casual" class="tab-content active">
+
+    <div class="mood-banner">
+      <div class="mood-title">今日 AI 圈：资本竞赛白热化，芯片巨头创历史</div>
+      <div class="mood-meter">
+        <div class="mood-dot active" style="background:#4CAF50"></div>
+        <div class="mood-dot active" style="background:#8BC34A"></div>
+        <div class="mood-dot" style="background:#FFC107"></div>
+        <div class="mood-dot" style="background:#FF9800"></div>
+        <div class="mood-dot" style="background:#F44336"></div>
+      </div>
+      <div class="mood-label">市场情绪：强烈看多</div>
+      <div class="mood-subtitle">Google 向 Anthropic 砸下 $400 亿巨额投资，NVIDIA 市值历史性突破 $5 万亿大关，Meta 宣布 AI 支出翻倍至 $1350 亿并裁员 8000 人 -- 巨头们正在用前所未有的力度押注 AI</div>
+    </div>
+
+    <!-- 重磅新闻 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="section-title">重磅新闻</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Google 向 Anthropic 投资 $400 亿，估值达 $3500 亿
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>Google 母公司 Alphabet 宣布将向 AI 公司 Anthropic 投资高达 400 亿美元，其中 100 亿美元现金即刻到账，剩余 300 亿美元在达成业绩目标后分批注入。Anthropic 的估值由此攀升至 3500 亿美元。</p>
+        <p>就在几天前，Amazon 也向 Anthropic 承诺了 250 亿美元投资。Anthropic 今年收入已突破 300 亿美元年化，是去年底的 3 倍多。两大科技巨头同时重金押注同一家公司，在科技史上极为罕见 -- 这说明 AI 的战略地位已经上升到了和云计算、移动互联网同等甚至更高的级别。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          NVIDIA 市值突破 $5 万亿，成芯片行业第一家
+          <span class="tag tag-gpu">芯片</span>
+        </div>
+        <p>NVIDIA 股价上周五收于历史新高 $208.27，涨幅 4.3%，市值正式突破 5 万亿美元大关 -- 这是半导体行业历史上从未有过的高度。NVIDIA 现在比排名第二的公司（Alphabet）市值高出整整 1 万亿美元。</p>
+        <p>驱动力很简单：全球科技公司今年计划在 AI 基础设施上投入超过 6500 亿美元，而 NVIDIA 的 GPU 芯片是绝大多数 AI 系统的核心。从 2022 年底至今，NVIDIA 股价翻了 14 倍 -- 如果当时买了 1 万块钱的股票，现在值 14 万。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Meta AI 支出翻倍至 $1350 亿，同时裁员 8000 人
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>Meta（Facebook 母公司）宣布 2026 年 AI 资本支出将达到 1150-1350 亿美元，几乎是去年的两倍。与此同时，公司将裁减约 8000 名员工（占总人数 10%），并取消 6000 个招聘计划。</p>
+        <p>简单理解就是：公司把省下来的人力成本，全部投入到了 AI 基础设施建设中。消息公布后 Meta 股价反而大涨 10% -- 华尔街显然认为这笔钱花得值。</p>
+      </div>
+    </div>
+
+    <!-- 技术与产品 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon gpu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>
+        </div>
+        <div class="section-title">技术与芯片</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Google 第八代 TPU 首次拆成「训练版」和「推理版」
+          <span class="tag tag-gpu">芯片</span>
+        </div>
+        <p>Google 在 Cloud Next 大会上发布了第八代 TPU 芯片，但这次做了一件以前从没做过的事 -- 把一颗芯片拆成了两颗：TPU 8t（代号「太阳鱼」）专门用来训练 AI 模型，TPU 8i（代号「斑马鱼」）专门用来运行已经训练好的模型。</p>
+        <p>这就好比以前一辆卡车既拉货又载客，现在分成了专用货车和专用客车。拆分后效率大幅提升：训练性能提高 2.7 倍，推理能耗降低近一半。Google 此举是在正面挑战 NVIDIA 在 AI 芯片领域的垄断地位。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          NVIDIA 开源 Sonic 人形机器人控制器
+          <span class="tag tag-research">研究</span>
+        </div>
+        <p>NVIDIA 开源了名为 Sonic 的人形机器人控制系统。这个只有 4200 万参数的轻量模型，能让机器人实现自然的全身运动 -- 走路、爬行、跟随语音和音乐甚至远程操控，全都只需一个统一模型。</p>
+        <p>最厉害的是，这个模型轻到可以在手机上运行。NVIDIA 已经在 GitHub 上完全开放了代码和模型权重，任何人都能拿来用。这意味着造一个能做复杂动作的机器人，门槛大幅降低。</p>
+      </div>
+    </div>
+
+    <!-- 行业动态 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon product">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
+        </div>
+        <div class="section-title">行业动态</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          AI 写代码比例创新高：Google 75%，Snap 65%
+          <span class="tag tag-product">产品</span>
+        </div>
+        <p>Google 透露，公司内部 75% 的新代码现在由 AI 生成（工程师审核后提交），较去年秋天的 50% 大幅提升。Snap 则表示 AI 产出了 65% 的新代码，每月自动回答超过 100 万个技术问题并发现 7500+ 个代码缺陷。</p>
+        <p>这个趋势的直接后果是大规模裁员。Snap 已经裁了 1000 人（16%），股价当天反涨 8%。Oracle 裁 3 万人、Meta 裁 8000 人 -- 理由无一例外都是「AI 提高了效率」。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          4 月 VC 报告：每 5 笔投资就有 3 笔投给了 AI
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>4 月全球共有 3700 家初创公司获得融资，其中 764 家（近六成）涉及 AI 或机器学习。Q1 全球风投总额打破历史纪录达 3000 亿美元，其中 AI 占了 2420 亿美元（80%）。</p>
+        <p>最大的四笔融资都给了 AI 公司：OpenAI（$1220 亿）、Anthropic（$300 亿）、xAI（$200 亿）和 Waymo（$160 亿），合计占了全球风投的 65%。资金集中度之高前所未见。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          广东省人工智能应用对接大会在深圳召开
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>2026 广东省人工智能应用对接大会今日在深圳福田会展中心举行，主题为「智联千行、赋能百业」。上午主大会展示了 AI+制造、医疗、政务、农业等 20 多个应用案例，下午分设 5 场专题对接会。</p>
+        <p>广东是中国 AI 产业的重要高地。本次大会是广东省首次召开的人工智能专题应用对接大会，旨在加速 AI 在实体经济中的落地。全省各市同步设视频分会场并线上直播。</p>
+      </div>
+    </div>
+
+    <!-- 政策监管 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="section-title">政策与监管</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          美国 2026 年已提出 600+ 项 AI 法案
+          <span class="tag tag-policy">政策</span>
+        </div>
+        <p>截至 4 月底，美国各州在 2026 年已提出超过 600 项 AI 相关法案，涵盖教育、医疗、就业、隐私等多个领域。与此同时，白宫的国家政策框架推动联邦法律优先于各州法律，避免出现「50 州各管各的」碎片化局面。</p>
+        <p>RAISE 法案已于 3 月 19 日生效，要求前沿 AI 模型开发者提交安全测试和能力评估报告。首批合规报告截止日期正在临近，这将是美国历史上首次对 AI 模型实施系统性监管。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 技术进阶版 ==================== -->
+  <div id="tab-intermediate" class="tab-content">
+
+    <div class="mood-banner">
+      <div class="mood-title">技术视角：AI 基础设施投资刷新历史，芯片架构迎来分水岭</div>
+      <div class="mood-meter">
+        <div class="mood-dot active" style="background:#4CAF50"></div>
+        <div class="mood-dot active" style="background:#8BC34A"></div>
+        <div class="mood-dot" style="background:#FFC107"></div>
+        <div class="mood-dot" style="background:#FF9800"></div>
+        <div class="mood-dot" style="background:#F44336"></div>
+      </div>
+      <div class="mood-label">技术趋势：基础设施军备竞赛</div>
+      <div class="mood-subtitle">Google $400 亿投资 Anthropic + TPU 8 训推分离，NVIDIA $5 万亿市值验证 AI 芯片需求持续性，Meta $1350 亿 capex 推动超算基础设施规模化，NVIDIA Sonic 开源降低机器人开发门槛</div>
+    </div>
+
+    <!-- 投融资与基础设施 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="section-title">投融资与基础设施</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Google $400 亿投资 Anthropic：现金 + 算力的双轮驱动
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>Alphabet 宣布向 Anthropic 投资高达 $400 亿，结构为 $100 亿现金（估值 $3500 亿）+ $300 亿业绩对赌。此前 Google 已承诺向 Anthropic 提供 100 万颗 TPU 芯片的算力。加上 Amazon 同周宣布的 $250 亿投资，Anthropic 在一周内获得了 $650 亿融资承诺。</p>
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-value">$3500 亿</div>
+            <div class="stat-label">Anthropic 估值</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">$300 亿</div>
+            <div class="stat-label">年化收入</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">~12x</div>
+            <div class="stat-label">P/S 倍数</div>
+          </div>
+        </div>
+        <p>从技术战略角度看，Google 同时是 Anthropic 的投资者和竞争对手（DeepMind 突击队正在追赶 Claude）。这种「竞合关系」的逻辑在于：即使 Anthropic 在某些领域胜出，Google 作为算力供应商仍能获利，同时通过 Anthropic 的数据和模型提升自身云平台竞争力。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Meta AI 资本支出 $1150-1350 亿：超级计算机时代来临
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>Meta 2026 年 AI capex 指导区间 $1150-1350 亿，较 2025 年的 $722 亿近乎翻倍。主要用于数据中心建设、第三方云服务和 AI 加速器采购。Meta Superintelligence Labs 是资金主要流向。</p>
+        <p>伴随 capex 翻倍的是 headcount 缩减：裁员 8000 人（10% FTE），取消 6000 个招聘名额。Management 信号明确 -- 用 AI 基础设施投入替代人力投入。Q4 2025 财报显示收入同比增长 24%，证明公司有能力在不牺牲盈利的情况下大规模投资 AI。</p>
+        <p>对行业的启示：全球 hyperscaler 2026 年 AI 基础设施总支出预计超过 $6500 亿。这个数字意味着 AI 芯片（尤其是 NVIDIA GPU）在未来 12-18 个月内仍将处于严重供不应求的状态。</p>
+      </div>
+    </div>
+
+    <!-- 芯片架构演进 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon gpu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>
+        </div>
+        <div class="section-title">芯片架构演进</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Google TPU 8 训推分离：Sunfish vs Zebrafish 技术对比
+          <span class="tag tag-gpu">芯片</span>
+        </div>
+        <p>Google 在 Cloud Next 2026 上发布第八代 TPU 家族，首次将训练和推理拆分为独立芯片。TPU 8t（Sunfish）由 Broadcom 协助设计，专注大规模模型训练；TPU 8i（Zebrafish）由 MediaTek 协助设计，优化推理和实时 agent 工作负载。</p>
+        <table class="tech-table">
+          <tr><th>规格</th><th>TPU 8t (Sunfish)</th><th>TPU 8i (Zebrafish)</th></tr>
+          <tr><td>定位</td><td>训练 + 推荐</td><td>推理 + Agent</td></tr>
+          <tr><td>设计合作方</td><td>Broadcom</td><td>MediaTek</td></tr>
+          <tr><td>Compute Dies</td><td>2 dies + 1 I/O chiplet</td><td>1 die</td></tr>
+          <tr><td>内存</td><td>8x 12-high HBM3e</td><td>384 MB SRAM cache</td></tr>
+          <tr><td>性能提升（vs v7e）</td><td>2.7x 训练性价比</td><td>1.8x 推理性能/瓦</td></tr>
+          <tr><td>SuperPod 规模</td><td>9600 chips, 121 ExaFLOPS (FP4)</td><td>--</td></tr>
+          <tr><td>制程</td><td>TSMC 2nm</td><td>TSMC 2nm</td></tr>
+          <tr><td>预计可用</td><td>2027 年底</td><td>2027 年底</td></tr>
+        </table>
+        <p>训推分离的战略意义：随着 agentic AI 的兴起，推理工作负载（需要低延迟、高并发）和训练工作负载（需要高吞吐、大内存）的特性差异越来越大。通用芯片在两者之间的妥协已经不再高效。Google 此举也建立了独立于 NVIDIA 的四方芯片供应链（Broadcom + MediaTek + Marvell + Google 自研）。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          NVIDIA $5 万亿市值：AI 芯片需求的持续性验证
+          <span class="tag tag-gpu">芯片</span>
+        </div>
+        <p>NVIDIA 收于 $208.27（+4.3%），市值突破 $5 万亿，成为芯片行业首家。自 2022 年底以来股价翻 14 倍。催化因素包括：Intel 强劲财报带动整个半导体板块、hyperscaler AI 支出承诺持续上调、下周科技巨头密集发财报预期利好。</p>
+        <p>市场定价反映的关键假设：AI 算力需求不是一次性投资，而是持续性支出。全球算力面临结构性短缺，多家投行预计供需缺口要到 2029 年才能缓解。NVIDIA 当前 forward P/E 约 40x，相对于 30%+ 的预期收入增速，估值在历史分位数上并不极端。</p>
+      </div>
+    </div>
+
+    <!-- 机器人与开源 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon research">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        </div>
+        <div class="section-title">机器人与开源</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          NVIDIA Sonic：42M 参数的人形机器人全身控制基础模型
+          <span class="tag tag-research">研究</span>
+        </div>
+        <p>NVIDIA 完全开源了 SONIC（Supersizing mOtion tracking for Natural humanoId Control），一个 42M 参数的行为基础模型。核心创新是将 motion tracking 作为可扩展的训练任务，从 1 亿帧人类运动捕捉数据中学习，产出一个统一策略覆盖行走、爬行、远程操控和多模态控制等多种行为。</p>
+        <p>开源内容包括：ONNX 模型权重、C++ 推理栈（支持 Jetson 部署）、VR 远程操控代码和运动规划器。模型轻量到可以在智能手机上运行，极大降低了机器人开发的算力门槛。</p>
+        <p>Sonic 与 NVIDIA 的 GR00T Whole-Body Control（WBC）框架和 GEAR-SONIC 研究相集成，支持 Isaac Sim 仿真环境中的训练和 sim-to-real 迁移。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          AI 代码生成率攀升：自动化正在重塑软件工程
+          <span class="tag tag-product">产品</span>
+        </div>
+        <p>两个标志性数据点：Google 内部 AI 生成代码比例从去年秋天的 50% 升至 75%（工程师审核后提交），Snap CEO 披露 AI 产出 65% 新代码、每月自动发现 7500+ bug。</p>
+        <p>这些数据直接推动了 AI 效率替代的裁员潮。Snap 裁 1000 人（16% FTE，预计年省 $5 亿，股价涨 8%），叠加 Oracle 3 万人、Meta 8000 人、Atlassian/Block/Pinterest/Salesforce 各百人级别裁员。受影响最大的不是初级岗位，而是中等复杂度的重复性工作：QA 测试、基础代码编写、内容审核、数据标注。</p>
+      </div>
+    </div>
+
+    <!-- 政策 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="section-title">政策与监管</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          RAISE 法案合规倒计时与州级立法加速
+          <span class="tag tag-policy">政策</span>
+        </div>
+        <p>RAISE 法案自 3 月 19 日生效以来，要求前沿模型开发者提交训练细节、安全测试（red-teaming）、能力评估（dangerous capabilities scan）和持续监控计划。首批合规报告截止日期临近。</p>
+        <p>各州方面，2026 年已提出 600+ AI 法案。白宫国家政策框架推动联邦 preemption，试图建立统一最低标准而非 50 州各行其是。Colorado AI Act 将在今年晚些时候生效，California CCPA 的自动决策修正案也在推进中。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 深度技术版 ==================== -->
+  <div id="tab-expert" class="tab-content">
+
+    <div class="mood-banner">
+      <div class="mood-title">Expert View: Infrastructure Capex Supercycle Meets Chip Architecture Divergence</div>
+      <div class="mood-meter">
+        <div class="mood-dot active" style="background:#4CAF50"></div>
+        <div class="mood-dot active" style="background:#8BC34A"></div>
+        <div class="mood-dot" style="background:#FFC107"></div>
+        <div class="mood-dot" style="background:#FF9800"></div>
+        <div class="mood-dot" style="background:#F44336"></div>
+      </div>
+      <div class="mood-label">Signal Strength: Very High</div>
+      <div class="mood-subtitle">Four converging signals: (1) Google's $40B Anthropic bet is a hedge-and-compete strategy unique in tech history, (2) TPU 8 train/infer split signals the end of general-purpose AI accelerators, (3) NVIDIA at $5T validates the structural demand thesis for AI compute, (4) $650B hyperscaler capex commitments guarantee supply-demand imbalance through 2028.</div>
+    </div>
+
+    <!-- 投资格局深度分析 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="section-title">AI 资本结构深度分析</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Google-Anthropic $400 亿交易：Hedge-and-Compete 战略解构
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <ul class="detail-list">
+          <li><strong>交易结构</strong> -- $100 亿现金即时到账（估值 $3500 亿），$300 亿条件承诺（performance milestone-based）。此前已承诺 100 万颗 TPU 芯片供应合同。Amazon 同周承诺 $250 亿，两笔合计 $650 亿融资承诺</li>
+          <li><strong>估值合理性</strong> -- $3500 亿估值 / $300 亿 ARR = ~12x P/S。相比 OpenAI 最后一轮 ~8x P/S，Anthropic 享有溢价。溢价来源：(a) Claude Code 在开发者中的渗透率导致 retention 极高，(b) enterprise revenue mix 高于 OpenAI（ChatGPT consumer 占比更大），(c) 双巨头同时投资提供了独特的算力保障</li>
+          <li><strong>Google 的竞合逻辑</strong> -- 即使 Claude 在某些领域胜出 Gemini，Google 作为 TPU 供应商仍可获利。Anthropic 使用 Google Cloud TPU 越多，Google Cloud 收入越高。这是典型的 platform-plays-both-sides 策略，类似 Microsoft 同时拥有 Azure 和投资 OpenAI</li>
+          <li><strong>Anthropic 的独特位置</strong> -- 成为历史上同时获得两家万亿美元公司（Amazon + Alphabet）深度投资的唯一 AI 公司。$300 亿 ARR 较 2025 年底的 ~$90 亿增长 3.3x，增速在这个规模下极为罕见。runway 理论上无限 -- 算力约束（而非资金约束）才是瓶颈</li>
+        </ul>
+        <a href="https://www.cnbc.com/2026/04/24/google-to-invest-up-to-40-billion-in-anthropic-as-search-giant-spreads-its-ai-bets.html" class="source-link" target="_blank">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          CNBC: Google to invest up to $40 billion in Anthropic
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          AI 基础设施 Supercycle：$6500 亿 Hyperscaler Capex 的供应链含义
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <ul class="detail-list">
+          <li><strong>Capex 总量</strong> -- 2026 年 hyperscaler AI 基础设施总支出预计超过 $6500 亿。Meta $1150-1350 亿，Amazon ~$1000 亿，Microsoft ~$800 亿，Google ~$750 亿，加上 Oracle/ByteDance/Apple 等</li>
+          <li><strong>供需缺口</strong> -- 多家投行共识：全球 AI 算力面临结构性短缺，2026 年是供需缺口最严重的峰值年，预计持续至 2029 年。NVIDIA Blackwell GPU 产能已被预订至 2027 年。TSMC 2nm 产能分配是新瓶颈</li>
+          <li><strong>Meta 的 capex 结构</strong> -- $1350 亿中约 60% 用于数据中心建设和扩容，25% 用于 GPU/TPU 采购，15% 用于网络设备和冷却系统。Meta Superintelligence Labs 是主要消费方。裁员 8000 人（10% FTE）+ 取消 6000 招聘的人力节省约 $50-80 亿/年，直接转化为 AI infra 投入</li>
+          <li><strong>NVIDIA $5T 估值含义</strong> -- forward P/E ~40x，基于 FY2027 EPS 预期。如果 AI capex 保持增长，P/E 将快速压缩。真正的风险不是估值，而是 GPU-to-ASIC 替代速度 -- Google TPU 8、Amazon Trainium、Tesla Dojo 都在试图减少 NVIDIA 依赖。但短期内（2-3 年）NVIDIA CUDA 生态的 switching cost 仍然极高</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 芯片架构深度 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon gpu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>
+        </div>
+        <div class="section-title">芯片架构分水岭</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          TPU 8 训推分离：通用 AI 加速器时代的终结
+          <span class="tag tag-gpu">芯片</span>
+        </div>
+        <ul class="detail-list">
+          <li><strong>架构设计哲学</strong> -- TPU 8t (Sunfish) 优化 training throughput：2 compute dies + 1 I/O chiplet + 8x 12-high HBM3e stacks。高内存带宽满足大 batch 梯度计算需求。TPU 8i (Zebrafish) 优化 inference latency：单 die + 384 MB SRAM cache。大 on-chip cache 减少 off-chip memory access，降低 first-token latency</li>
+          <li><strong>性能数据</strong> -- TPU 8t SuperPod：9600 chips，121 FP4 ExaFLOPS peak，2 PB shared HBM。vs v7e Ironwood：2.7x better training $/perf，2x better perf/watt。TPU 8i vs v7e：1.8x inference perf/watt</li>
+          <li><strong>供应链策略</strong> -- Google 建立四方芯片供应链：Broadcom（TPU 8t 设计）、MediaTek（TPU 8i 设计）、Marvell（网络互联）、TSMC（2nm 代工）。这是对 NVIDIA 单一供应商风险的系统性对冲</li>
+          <li><strong>对 NVIDIA 的威胁评估</strong> -- 中期（2-3 年）：威胁有限。TPU 8 要到 2027 年底 GA，期间 NVIDIA Blackwell/Rubin 将持续迭代。Google 的 TPU 生态仅限 GCP 客户。长期（5+ 年）：训推分离趋势一旦确立，NVIDIA 的通用 GPU 策略面临架构层面挑战。但 NVIDIA 也可以跟进分离策略（已有 Hopper inference-optimized SKU 先例）</li>
+          <li><strong>Agentic AI 推动推理需求激增</strong> -- Agent 工作负载特征：高并发、低延迟、长 context window、频繁 tool-calling。这些特征与 training workload（高吞吐、大 batch、容忍延迟）截然不同。TPU 8i 的 384 MB SRAM cache 正是针对 long-context inference 的 KV cache 优化</li>
+        </ul>
+        <a href="https://www.nextplatform.com/compute/2026/04/24/with-tpu-8-google-makes-genai-systems-much-better-not-just-bigger/5218834" class="source-link" target="_blank">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Next Platform: With TPU 8, Google Makes GenAI Systems Much Better
+        </a>
+      </div>
+    </div>
+
+    <!-- 机器人技术 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon research">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        </div>
+        <div class="section-title">机器人技术与开源</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          NVIDIA SONIC：从 Motion Tracking 到通用人形控制的架构路径
+          <span class="tag tag-research">研究</span>
+        </div>
+        <ul class="detail-list">
+          <li><strong>核心创新</strong> -- 将 motion tracking 作为可扩展训练任务（而非预定义动作集合）。从 1 亿帧 human mocap 数据训练 42M 参数模型，产出 unified whole-body control policy。支持：locomotion、crawling、teleoperation、text/voice/music-driven motion</li>
+          <li><strong>架构细节</strong> -- Foundation model 架构基于 Transformer，输入为 proprioceptive state + reference motion trajectory，输出为 joint-level torque commands。模型以 ONNX 格式发布，C++ inference stack 支持 Jetson 和 x86 平台</li>
+          <li><strong>与 GR00T 生态集成</strong> -- SONIC 是 GR00T Whole-Body Control (WBC) 框架的核心策略网络。GR00T N1.5/N1.6 使用 SONIC 作为低层运动控制器，上层由 VLA（Vision-Language-Action）模型提供任务级指令。GEAR-SONIC 在 HuggingFace 上发布训练代码和 checkpoint</li>
+          <li><strong>可部署性</strong> -- 42M 参数足够轻量，可在移动端推理。这与 LLM 领域的 SLM 趋势一致 -- 大模型用于训练获取能力，小模型用于边缘部署。从 sim-to-real 迁移成功率看，SONIC 在标准人形平台上的 zero-shot transfer 成功率显著高于此前的 reinforcement learning baselines</li>
+          <li><strong>竞争对比</strong> -- vs Tesla Optimus：闭源、硬件绑定；vs Tencent HY-Embodied：MoT 架构、侧重多模态感知理解（32B 参数）；vs Sony Project Ace：任务特定（乒乓球），非通用控制。SONIC 的差异化在于：通用性 + 轻量 + 完全开源 + 与 NVIDIA 仿真生态无缝集成</li>
+        </ul>
+        <a href="https://nvlabs.github.io/SONIC/" class="source-link" target="_blank">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          NVIDIA Labs: SONIC Project Page
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          AI 代码生成的量化拐点与劳动力市场重构
+          <span class="tag tag-product">产品</span>
+        </div>
+        <ul class="detail-list">
+          <li><strong>量化数据</strong> -- Google：75% new code AI-generated（2025 秋 50% -> 2026 春 75%，半年内 +25pp）。Snap：65% new code AI-generated + 1M queries/month + 7500 bugs detected/month by code review agent。Anthropic：~100% coding assistance coverage（Google CFO 财报披露）</li>
+          <li><strong>裁员规模</strong> -- Oracle 3 万人、Meta 8000 人、Snap 1000 人（16% FTE）、Atlassian/Block/Pinterest/Salesforce 各百人级。市场给出正反馈：Snap 裁员当日股价 +8%，Meta 裁员 + capex 翻倍消息后股价 +10%</li>
+          <li><strong>正反馈循环分析</strong> -- AI efficiency gain -> headcount reduction -> cost savings -> margin expansion -> stock price increase -> management incentive alignment -> more AI investment + more layoffs。这个循环在 Q2 2026 加速，因为 AI 工具 ROI 开始在季度财报中体现为可量化的成本节省</li>
+          <li><strong>受影响岗位分布</strong> -- 与 2023 年预测（AI 先替代蓝领）相反，最先被替代的是中等复杂度白领工作：QA/testing、boilerplate code writing、content moderation、customer service scripting、data labeling、junior analysis。共同特征：任务结构化程度高、输出可验证、人工成本在 $60K-120K/年区间</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 监管深度 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="section-title">监管与合规</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          AI 监管格局：联邦 Preemption vs 州级碎片化
+          <span class="tag tag-policy">政策</span>
+        </div>
+        <ul class="detail-list">
+          <li><strong>RAISE 法案执行</strong> -- 3/19 生效，要求 frontier model 开发者提交：training details report、safety testing results (red-teaming)、dangerous capabilities scan、continuous monitoring plan。首批合规报告截止日期临近，将成为美国首次系统性 AI 模型监管实践</li>
+          <li><strong>州级立法爆发</strong> -- 2026 年已提出 600+ AI 法案（across all 50 states）。热点领域：automated decision-making transparency、AI in hiring/employment、deepfake regulation、child safety、AI in education。Colorado AI Act（本年晚些时候生效）是最全面的州级 AI 法之一</li>
+          <li><strong>白宫 National Policy Framework</strong> -- 核心主张：(a) 不设立新的联邦 AI 监管机构，由现有行业监管机构分管；(b) 推动联邦法律 preempt 州法律中「impose undue burdens」的部分；(c) 行业自律 + 政府引导的 co-regulation 模式。这与欧盟 AI Act 的集中式监管形成对比</li>
+          <li><strong>对开发者的实际影响</strong> -- 短期：RAISE 法案合规成本（safety testing、reporting）主要由 frontier labs（OpenAI/Anthropic/Google/Meta）承担。中期：州级法案的碎片化将增加企业级 AI 部署的合规复杂度。如果联邦 preemption 通过，将简化为单一标准但可能降低保护水平</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="closing-card">
+      <div class="closing-title">Expert Take</div>
+      <div class="closing-text">
+        三条需要持续追踪的信号：(1) <strong>AI 资本配置的集中度风险</strong> -- Anthropic 一周内获得 $650 亿融资承诺（Google $400 亿 + Amazon $250 亿），Q1 全球风投中 65% 流向四家公司。这种极端集中度意味着：如果 Anthropic/OpenAI 中任何一家的商业模式假设（AI 替代劳动力的速度和范围）被证伪，将引发连锁估值重估。关键验证时间窗口是 2026 H2 -- 各大 AI 公司的 enterprise contract renewal rate 和 net dollar retention 将首次在足够规模下被检验；(2) <strong>训推分离的架构范式转换</strong> -- Google TPU 8 的训推分离不是孤立事件，而是 agentic AI 工作负载特征（低延迟、高并发、长 context）与 training workload 特征（高吞吐、大 batch）分化到通用芯片无法高效覆盖的必然结果。NVIDIA 可能在 2027 年的 Rubin 系列中跟进类似策略。真正的赢家不是某一款芯片，而是能同时优化 training 和 inference TCO 的完整系统（芯片 + 互联 + 冷却 + 软件栈）；(3) <strong>AI 代码生成率 75% 的 second-order effects</strong> -- 当 AI 写 75% 的代码时，代码审查成为瓶颈（审查 AI 生成的代码比人类代码更难，因为审查者缺乏编写时的 context）。预计 2026 下半年会出现「AI code review agent」的爆发 -- 用 AI 审查 AI 写的代码，形成完整的 AI-to-AI 软件开发闭环。这将进一步加速中层工程岗位的替代，但也可能引入新的系统性风险（AI 生成代码中的 subtle bugs 被 AI reviewer 同样忽略）。
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>AI Pulse Daily #37 | 2026.04.27</p>
+    <p style="margin-top:4px;">数据来源: Bloomberg, CNBC, TechCrunch, Next Platform, NVIDIA Labs, Google Cloud Blog, ScienceDaily, JDSupra</p>
+    <p style="margin-top:8px;"><a href="/">返回 AI Pulse 主页</a></p>
+  </div>
+</div>
+
+<script>
+function switchTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(function(el) { el.classList.remove('active'); });
+  document.querySelectorAll('.tab-btn').forEach(function(el) { el.classList.remove('active'); });
+  document.getElementById('tab-' + tab).classList.add('active');
+  var tabs = ['casual', 'intermediate', 'expert'];
+  var idx = tabs.indexOf(tab);
+  document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>

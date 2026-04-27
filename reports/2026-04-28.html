@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily Report | 2026.04.28</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --claude-bg: #FAF9F7;
+    --claude-surface: #FFFFFF;
+    --claude-border: #E8E5E0;
+    --claude-text-primary: #1A1714;
+    --claude-text-secondary: #6B6560;
+    --claude-text-tertiary: #9B9590;
+    --claude-accent: #DA7756;
+    --claude-accent-light: #F5E6DF;
+    --claude-accent-dark: #C4623F;
+    --claude-tag-blue: #E8F0FE;
+    --claude-tag-blue-text: #3B6CB5;
+    --claude-tag-green: #E6F4EA;
+    --claude-tag-green-text: #2D7A3F;
+    --claude-tag-purple: #F0E6FA;
+    --claude-tag-purple-text: #7B3FAF;
+    --claude-tag-amber: #FEF3E2;
+    --claude-tag-amber-text: #B5752D;
+    --claude-tag-red: #FDE8E8;
+    --claude-tag-red-text: #B53B3B;
+    --claude-card-shadow: 0 1px 3px rgba(26, 23, 20, 0.06), 0 1px 2px rgba(26, 23, 20, 0.04);
+    --claude-card-shadow-hover: 0 4px 12px rgba(26, 23, 20, 0.08), 0 2px 4px rgba(26, 23, 20, 0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+    background: var(--claude-bg);
+    color: var(--claude-text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 8px;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--claude-accent-dark); }
+
+  .header {
+    text-align: center;
+    padding: 48px 0 40px;
+    border-bottom: 1px solid var(--claude-border);
+    margin-bottom: 32px;
+  }
+
+  .header-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--claude-accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .header .date {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    font-weight: 400;
+  }
+
+  .header .edition-note {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    margin-top: 8px;
+  }
+
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 36px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--claude-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .tab-btn:hover {
+    color: var(--claude-text-primary);
+    background: var(--claude-bg);
+  }
+
+  .tab-btn.active {
+    background: var(--claude-accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(218, 119, 86, 0.3);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .section { margin-bottom: 36px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .section-icon.gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .section-icon.model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .section-icon.product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .section-icon.research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .section-icon.industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .section-icon.policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .card {
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--claude-card-shadow);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .card:hover { box-shadow: var(--claude-card-shadow-hover); }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .card p {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.75;
+    margin-bottom: 8px;
+  }
+
+  .card p:last-child { margin-bottom: 0; }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .tag-gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .tag-model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .tag-product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .tag-research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .tag-industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .tag-policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .highlight {
+    background: var(--claude-accent-light);
+    border-left: 3px solid var(--claude-accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--claude-accent-dark);
+    line-height: 1.7;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .stat-item {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--claude-accent);
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--claude-text-tertiary);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 8px;
+    transition: color 0.15s;
+  }
+
+  .source-link:hover { color: var(--claude-accent-dark); text-decoration: underline; }
+
+  .tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .tech-table th, .tech-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .tech-table th {
+    font-weight: 600;
+    color: var(--claude-text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: var(--claude-bg);
+  }
+
+  .tech-table td { color: var(--claude-text-primary); }
+
+  .code-block {
+    background: #2D2A26;
+    color: #E8E5E0;
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    overflow-x: auto;
+    margin: 12px 0;
+  }
+
+  .code-block .comment { color: #9B9590; }
+  .code-block .keyword { color: #DA7756; }
+  .code-block .string { color: #7DB87D; }
+
+  .footer {
+    text-align: center;
+    padding: 32px 0;
+    border-top: 1px solid var(--claude-border);
+    margin-top: 48px;
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+  }
+
+  .footer a {
+    color: var(--claude-accent);
+    text-decoration: none;
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 20px 16px 60px; }
+    .header h1 { font-size: 24px; }
+    .tab-btn { font-size: 13px; padding: 10px 8px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+  }
+
+  .subsection-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin: 16px 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  ul.detail-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0;
+  }
+
+  ul.detail-list li {
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.7;
+    padding: 4px 0 4px 16px;
+    position: relative;
+  }
+
+  ul.detail-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--claude-border);
+  }
+
+  .mood-banner {
+    background: linear-gradient(135deg, #FFF5F0 0%, #FFF9F0 100%);
+    border: 1px solid #F0DDD0;
+    border-radius: 16px;
+    padding: 28px 24px;
+    margin-bottom: 32px;
+    text-align: center;
+  }
+
+  .mood-banner .mood-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin-bottom: 6px;
+  }
+
+  .mood-banner .mood-subtitle {
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.6;
+  }
+
+  .mood-meter {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    margin: 12px 0;
+  }
+
+  .mood-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    transition: transform 0.2s;
+  }
+
+  .mood-dot.active { transform: scale(1.4); }
+
+  .mood-label {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+
+  .tldr-box {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.6;
+  }
+
+  .closing-card {
+    background: linear-gradient(135deg, #FFF5F0 0%, #FFF9F0 100%);
+    border: 1px solid #F0DDD0;
+    border-radius: 16px;
+    padding: 28px 24px;
+    margin-top: 32px;
+    text-align: center;
+  }
+
+  .closing-card .closing-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin-bottom: 10px;
+  }
+
+  .closing-card .closing-text {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.8;
+    text-align: left;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <a href="/" class="back-link">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
+    返回 AI Pulse
+  </a>
+
+  <div class="header">
+    <div class="header-logo">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      AI PULSE DAILY
+    </div>
+    <h1>AI 日报 | 2026.04.28</h1>
+    <div class="date">2026 年 4 月 28 日 星期二</div>
+    <div class="edition-note">第 38 期 -- NVIDIA Vera Rubin 七芯平台全面投产开启 Agentic AI 新纪元，DeepSeek V4 以 1/7 价格逼近前沿模型，Gartner 峰会揭示企业 AI 部署率仅 8%，Snap 裁员千人宣称 AI 写 65% 代码</div>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('casual')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+      轻松阅读
+    </button>
+    <button class="tab-btn" onclick="switchTab('intermediate')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      技术进阶
+    </button>
+    <button class="tab-btn" onclick="switchTab('expert')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      深度技术
+    </button>
+  </div>
+
+  <!-- ==================== 轻松阅读版 ==================== -->
+  <div id="tab-casual" class="tab-content active">
+
+    <div class="mood-banner">
+      <div class="mood-title">今日 AI 圈：芯片投产、价格战、现实落地</div>
+      <div class="mood-meter">
+        <div class="mood-dot active" style="background:#4CAF50"></div>
+        <div class="mood-dot active" style="background:#8BC34A"></div>
+        <div class="mood-dot active" style="background:#FFC107"></div>
+        <div class="mood-dot" style="background:#FF9800"></div>
+        <div class="mood-dot" style="background:#F44336"></div>
+      </div>
+      <div class="mood-label">市场情绪：谨慎乐观</div>
+      <div class="mood-subtitle">NVIDIA 新一代 Vera Rubin 平台七颗芯片全线投产，DeepSeek V4 以极低成本逼近世界顶级模型，但 Gartner 峰会数据显示仅 8% 的企业真正将 AI 部署到生产环境 -- 理想与现实的差距仍然巨大</div>
+    </div>
+
+    <!-- 重磅新闻 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon gpu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>
+        </div>
+        <div class="section-title">芯片与算力</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          NVIDIA Vera Rubin 平台全线投产，推理成本降至 Blackwell 的 1/10
+          <span class="tag tag-gpu">芯片</span>
+        </div>
+        <p>NVIDIA 宣布旗下最新一代 AI 计算平台 Vera Rubin 已进入全面量产阶段。这个平台包含七颗全新芯片，是专门为"Agentic AI"（能自主完成复杂任务的 AI）设计的。简单来说，Vera Rubin 让 AI 推理（也就是 AI 思考和回答问题）的成本降低到上一代的十分之一，训练 AI 所需的 GPU 数量也减少到四分之一。CoreWeave 将在今年下半年率先部署这一平台。</p>
+        <div class="highlight">核心看点：Rubin GPU 拥有 3360 亿个晶体管、50 PFLOPS 算力和 288GB HBM4 内存 -- 这些数字意味着单块芯片的算力就超过了几年前整个数据中心。</div>
+      </div>
+    </div>
+
+    <!-- 模型动态 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/><path d="M12 2a4 4 0 0 0-4 4c0 1.95 1.4 3.58 3.25 3.93"/></svg>
+        </div>
+        <div class="section-title">模型与技术</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          DeepSeek V4：中国开源模型以 1/7 价格挑战美国前沿
+          <span class="tag tag-model">模型</span>
+        </div>
+        <p>中国 AI 公司深度求索发布了 V4 系列模型，包括拥有 1.6 万亿参数的 V4-Pro 和轻量级 V4-Flash 两个版本，均支持百万 token 上下文长度。最令人震撼的是价格：V4-Pro 输出仅 $3.48/百万 token，而 OpenAI 和 Anthropic 的同级模型收费 $25-$30。性能方面，V4 已接近 Claude Opus 4.6 和 GPT-5.4 等闭源前沿模型，且完全开源。</p>
+        <div class="highlight">一句话：同样质量的 AI 回答，DeepSeek 的价格只有美国竞品的 1/7，开源还意味着任何人都可以免费下载使用。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Claude Opus 4.7 成为 Claude Code 默认模型
+          <span class="tag tag-model">模型</span>
+        </div>
+        <p>Anthropic 最新的 Claude Opus 4.7 模型自 4 月 23 日起成为 Claude Code 的默认引擎。这是目前最强的 AI 编程助手，新增了"任务预算"功能（AI 能智能分配思考资源）、更高分辨率的图像理解能力，以及新的 xhigh 算力等级。在实际编程任务中，4.7 版本在复杂软件工程项目上的表现有显著提升。</p>
+      </div>
+    </div>
+
+    <!-- 企业与行业 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="section-title">企业与行业</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Gartner 峰会揭示真相：仅 8% 的企业将 AI 投入生产
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>在圣保罗举行的 Gartner 数据与分析峰会（4 月 28-29 日）上，一组令人警醒的数据被公布：虽然 Agentic AI（自主 AI）占据了绝大多数企业董事会的讨论议题，但实际将 AI 部署到生产环境的企业仅有 8%。Gartner 同时指出，AI 成功企业在数据质量、治理和人才培养上的投入是失败企业的四倍。</p>
+        <div class="highlight">翻译一下：大家都在聊 AI，但真正用起来的不到十分之一。差距在哪？不是技术，而是数据基础和人才。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Snap 裁员 1000 人，CEO：AI 已写 65% 的代码
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>Snapchat 母公司 Snap 宣布裁减 1000 个全职岗位（占员工总数 16%），CEO Evan Spiegel 在致员工信中表示，公司的 AI 系统现在能生成超过 65% 的新代码，使小团队能更高效地工作。裁员预计将在 2026 年下半年节省超过 5 亿美元年度成本。消息公布后，Snap 股价上涨 11%。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Q1 全球风投 $3000 亿创纪录，AI 占 80%
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>2026 年第一季度，全球风险投资达到 3000 亿美元的历史新高，其中 2420 亿美元（80%）流向 AI 公司。更惊人的是，有史以来最大的五笔风投中有四笔在这个季度完成：OpenAI（$1220 亿）、Anthropic（$300 亿）、xAI（$200 亿）和 Waymo（$160 亿），这四家公司吸收了全部风投的 65%。美国企业拿走了全球 83% 的资金。</p>
+      </div>
+    </div>
+
+    <!-- 产品与工具 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon product">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        </div>
+        <div class="section-title">产品与工具</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          AI 编程工具竞争白热化：Claude Code、Codex、Cursor 三足鼎立
+          <span class="tag tag-product">产品</span>
+        </div>
+        <p>AI 编程工具市场正经历前所未有的竞争。Claude Code 凭借 Opus 4.7 的强大能力领跑，OpenAI 的 Codex 在 4 月升级为"超级应用"（集成桌面操作、浏览器、记忆系统和 SSH 沙箱），而 Cursor 正在以 $500 亿估值进行 $20 亿融资。MCP（模型上下文协议）已成为这些工具连接外部数据源的通用标准。</p>
+      </div>
+    </div>
+
+    <!-- 政策与监管 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="section-title">政策与监管</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          美国 AI 法案爆发：2026 年已提出 600+ 项州级法案
+          <span class="tag tag-policy">政策</span>
+        </div>
+        <p>美国各州正在疯狂立法规管 AI。2026 年至今已提出超过 600 项 AI 相关法案，覆盖全部 50 个州。热点领域包括 AI 决策透明度、AI 招聘、深度伪造、儿童安全等。同时，白宫发布的国家 AI 政策框架主张用联邦法律"覆盖"（preempt）州法律中给企业带来"过度负担"的部分，引发了联邦与各州之间的监管拉锯战。印第安纳、犹他和华盛顿州已通过法律禁止保险公司仅凭 AI 拒绝理赔。</p>
+      </div>
+    </div>
+
+    <div class="closing-card">
+      <div class="closing-title">今日一句话</div>
+      <div class="closing-text">
+        当 NVIDIA 的新芯片让 AI 推理成本骤降十倍，而 DeepSeek 又把模型调用价格压到美国同行的七分之一时，一个有趣的悖论出现了：AI 的硬件和模型都在飞速进步，但 92% 的企业仍然没能把 AI 真正用起来。技术不再是瓶颈，组织和数据才是。
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 技术进阶版 ==================== -->
+  <div id="tab-intermediate" class="tab-content">
+
+    <div class="mood-banner">
+      <div class="mood-title">技术全景：Rubin 投产、开源逆袭、部署鸿沟</div>
+      <div class="mood-meter">
+        <div class="mood-dot active" style="background:#4CAF50"></div>
+        <div class="mood-dot active" style="background:#8BC34A"></div>
+        <div class="mood-dot active" style="background:#FFC107"></div>
+        <div class="mood-dot" style="background:#FF9800"></div>
+        <div class="mood-dot" style="background:#F44336"></div>
+      </div>
+      <div class="mood-label">市场情绪：技术突破与落地挑战并存</div>
+      <div class="mood-subtitle">NVIDIA Vera Rubin 平台七芯全面量产，推理 token 成本较 Blackwell 下降 10 倍；DeepSeek V4 MoE 架构以 $5.2M 训练成本打破 frontier model 垄断；Gartner 数据显示 agentic AI 的 enterprise production 部署率仅 8%</div>
+    </div>
+
+    <!-- 芯片与算力 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon gpu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>
+        </div>
+        <div class="section-title">芯片与算力</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          NVIDIA Vera Rubin 平台全面投产：七芯协同的 Agentic AI 基础设施
+          <span class="tag tag-gpu">芯片</span>
+        </div>
+        <p>NVIDIA 宣布 Vera Rubin 平台已进入 full production 阶段，包含七颗协同工作的芯片：Vera CPU、Rubin GPU、NVLink 6 Switch、ConnectX-9 SuperNIC、BlueField-4 DPU、Spectrum-6 以太网交换机，以及新整合的 Groq 3 LPU。平台核心面向 agentic AI 和 reasoning 工作负载设计。</p>
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-value">336B</div>
+            <div class="stat-label">晶体管数量</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">50 PFLOPS</div>
+            <div class="stat-label">单 GPU 算力</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">288GB</div>
+            <div class="stat-label">HBM4 内存</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">10x</div>
+            <div class="stat-label">推理成本降幅 vs Blackwell</div>
+          </div>
+        </div>
+        <p>技术点评：Vera Rubin 的核心创新在于 Inference Context Memory Storage Platform，配合 BlueField-4 存储处理器专门加速 agentic AI 推理中的长 context 管理。这直接解决了 agentic 工作负载中 KV-cache 膨胀和多轮对话状态管理的瓶颈。与 Google TPU 8 的训推分离策略不同，NVIDIA 选择通过统一平台内的芯片分工来覆盖两种工作负载。</p>
+        <p>竞争格局：NVIDIA 芯片竞争对手近期也获得了创纪录的融资（Euclyd、Fractile 等），OpenAI 向 Cerebras 采购 $200 亿+ 芯片。Google 第八代 TPU 首次拆分为训练和推理两款独立芯片。算力市场正从 NVIDIA 一家独大转向多极竞争。</p>
+      </div>
+    </div>
+
+    <!-- 模型动态 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/><path d="M12 2a4 4 0 0 0-4 4c0 1.95 1.4 3.58 3.25 3.93"/></svg>
+        </div>
+        <div class="section-title">模型与技术</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          DeepSeek V4：MoE 架构突破，开源模型逼近闭源前沿
+          <span class="tag tag-model">模型</span>
+        </div>
+        <p>DeepSeek V4 系列包含两款 Mixture-of-Experts 模型：V4-Pro（1.6T 总参数 / 49B 激活）和 V4-Flash（284B 总参数 / 13B 激活），均支持 100 万 token 上下文。模型采用混合注意力机制，结合 Compressed Sparse Attention（CSA）和 Heavily Compressed Attention（HCA），大幅提升长 context 处理效率。</p>
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-value">$3.48</div>
+            <div class="stat-label">V4-Pro 输出价格 / M tokens</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">$0.28</div>
+            <div class="stat-label">V4-Flash 输出价格 / M tokens</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">$5.2M</div>
+            <div class="stat-label">预估训练成本</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">1M</div>
+            <div class="stat-label">上下文窗口</div>
+          </div>
+        </div>
+        <p>技术点评：V4 最值得关注的是其 cost-performance ratio 的突破。$3.48/M output tokens vs Anthropic 的 $25 和 OpenAI 的 $30，近乎一个数量级的差距。虽然在推理能力和 coding 任务上仍落后于 Claude Opus 4.7 和 GPT-5.4 Thinking，但对于大多数 enterprise 用例来说，V4-Pro 的性能已经"够用"。完全开源（HuggingFace 开放权重）意味着企业可以自部署，进一步降低成本。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Claude Opus 4.7 成为 Claude Code 默认模型：Agentic 编程能力跃升
+          <span class="tag tag-model">模型</span>
+        </div>
+        <p>Anthropic 的 Claude Opus 4.7（4 月 16 日发布）自 4 月 23 日起成为 Claude Code 的默认模型。核心升级包括：(1) Task Budgets -- 模型在 agentic loop 中能看到 token 预算倒计时，智能分配计算资源；(2) 高分辨率图像支持（最大 2576px / 3.75MP）；(3) 新增 xhigh effort 等级，在 high 和 max 之间提供更精细的算力控制；(4) 1M context window + 128K max output。</p>
+        <p>技术点评：Task Budgets 机制对 agentic 工作流影响深远 -- 此前 agent 在多步骤任务中常因无节制消耗 token 而在关键步骤耗尽预算，现在模型可以看到"余额"并做出优先级判断。新的 tokenizer 在某些内容上会多消耗 ~35% 的 token，这是需要注意的成本影响。</p>
+      </div>
+    </div>
+
+    <!-- 企业与行业 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="section-title">企业与行业</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Gartner 峰会：Agentic AI 面临治理与部署鸿沟
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>Gartner 数据与分析峰会圣保罗站（4 月 28-29 日）发布的关键数据和预测揭示了 AI 行业的理想与现实差距：</p>
+        <ul class="detail-list">
+          <li><strong>部署率仅 8%</strong> -- 虽然 agentic AI 主导了大多数企业董事会讨论，但实际 enterprise production 部署率仅为 8%</li>
+          <li><strong>4x 投入差距</strong> -- AI 成功的企业在数据质量、治理、人才和变革管理上的投入（占收入比）是失败企业的四倍</li>
+          <li><strong>Agent 治理预警</strong> -- 到 2030 年，50% 的 AI Agent 部署失败将归因于治理平台在运行时能力执行和多系统互操作上的不足</li>
+          <li><strong>人才认证趋势</strong> -- 到 2027 年，75% 的招聘流程将包含 AI 使用能力的认证和测试</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Snap 裁员与 AI 代码生成：65% 代码由 AI 编写
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>Snap 裁减 1000 个岗位（16% 员工），CEO Spiegel 在内部信中披露 AI 系统已生成公司 65%+ 的新代码。然而分析指出，被裁岗位主要在产品和合作伙伴部门，而非工程部门 -- 暗示 AI 效率叙事可能被用作 activist investor 推动的成本削减的修辞包装。不过这一数据点本身仍具信号意义：当 AI 代码生成率跨过 50% 门槛，传统的工程团队规模假设正被重新定义。</p>
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-value">65%</div>
+            <div class="stat-label">AI 代码生成比例</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">1,000</div>
+            <div class="stat-label">裁员人数</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">+11%</div>
+            <div class="stat-label">股价涨幅</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">$500M</div>
+            <div class="stat-label">年化成本节省</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          风投极端集中：Q1 $3000 亿中 65% 流向四家公司
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>Q1 2026 全球风险投资达 $3000 亿（环比同比均增 150%+），AI 占 $2420 亿（80%）。极端集中度引发系统性风险担忧：OpenAI（$1220 亿）、Anthropic（$300 亿）、xAI（$200 亿）、Waymo（$160 亿）四家公司吸收 65% 的全球风投。美国占比 83%。4 月新增重要融资包括 Cursor（$500 亿估值 $20 亿融资）和 Shield AI（$127 亿估值 $15 亿 Series G）。</p>
+      </div>
+    </div>
+
+    <!-- 产品与工具 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon product">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        </div>
+        <div class="section-title">产品与工具</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          AI 编程工具进入 Agentic 时代：从补全到自主执行
+          <span class="tag tag-product">产品</span>
+        </div>
+        <p>2026 年 4 月标志着 AI 编程工具从"copilot"（辅助）到"agent"（自主执行）的范式转换完成：</p>
+        <ul class="detail-list">
+          <li><strong>Claude Code</strong> -- Opus 4.7 驱动，终端内全栈 agent，支持阅读完整代码库、编辑文件、运行命令和管理 git 工作流</li>
+          <li><strong>OpenAI Codex</strong> -- GPT-5.4 驱动，4 月升级为"超级应用"，集成桌面操作、内置浏览器、agent 记忆和 SSH devbox</li>
+          <li><strong>Cursor</strong> -- $500 亿估值，推出 background agents（在隔离 VM 中运行的后台 agent）</li>
+          <li><strong>MCP 生态</strong> -- 几乎所有主流编程工具都已支持 Model Context Protocol，形成统一的外部数据接入标准</li>
+          <li><strong>下一前沿</strong> -- 多 agent 协作开发系统：多个专业化 AI agent 实时协作构建完整应用</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 政策与监管 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="section-title">政策与监管</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          美国 AI 监管格局：600+ 州法案 vs 联邦 Preemption
+          <span class="tag tag-policy">政策</span>
+        </div>
+        <p>2026 年美国 AI 监管呈现"上热下也热"的态势，但联邦和州的方向出现根本分歧：</p>
+        <ul class="detail-list">
+          <li><strong>州级立法爆发</strong> -- 2026 年已提出 600+ AI 法案，热点领域涵盖自动决策透明度、AI 招聘、深度伪造、儿童安全和教育领域 AI 使用</li>
+          <li><strong>白宫 AI 框架的 Preemption 主张</strong> -- 联邦政策框架主张由现有行业监管机构分管 AI（不设新机构），并推动联邦法律覆盖州法律中"造成过度负担"的部分</li>
+          <li><strong>DOJ AI 诉讼工作组</strong> -- 司法部 1 月成立 AI 诉讼工作组，专门挑战"违宪规管跨州商务"或"被现有联邦法规 preempt"的州 AI 法案</li>
+          <li><strong>医保 AI 新规</strong> -- 印第安纳、犹他、华盛顿三州通过法律，禁止保险公司以 AI 为唯一依据拒绝或修改理赔</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="closing-card">
+      <div class="closing-title">Today's Takeaway</div>
+      <div class="closing-text">
+        今日的数据拼出了一幅清晰的行业图景：<strong>供给侧在飞速进步</strong>（Vera Rubin 投产、DeepSeek V4 开源、Claude Opus 4.7 升级），<strong>资本在疯狂涌入</strong>（Q1 $3000 亿 VC、Google $400 亿投 Anthropic），但<strong>需求侧的吸收能力严重滞后</strong>（8% 的 enterprise 部署率、50% 的 agent 部署将因治理不足而失败）。Snap 裁员 65% AI 代码的案例既是进步的证明，也暴露了 AI 效率叙事被策略性放大的风险。接下来 6 个月的关键信号不是谁发布了更强的模型，而是 enterprise net dollar retention 和 AI agent 的实际 production failure rate。
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 深度技术版 ==================== -->
+  <div id="tab-expert" class="tab-content">
+
+    <div class="mood-banner">
+      <div class="mood-title">Expert Brief: Infrastructure Inflection, Open-Source Price War, Deployment Reality Check</div>
+      <div class="mood-meter">
+        <div class="mood-dot active" style="background:#4CAF50"></div>
+        <div class="mood-dot active" style="background:#8BC34A"></div>
+        <div class="mood-dot active" style="background:#FFC107"></div>
+        <div class="mood-dot" style="background:#FF9800"></div>
+        <div class="mood-dot" style="background:#F44336"></div>
+      </div>
+      <div class="mood-label">Market Sentiment: Cautiously Bullish</div>
+      <div class="mood-subtitle">NVIDIA Vera Rubin enters full production with 10x inference TCO reduction over Blackwell; DeepSeek V4 MoE hits frontier parity at ~7x lower API cost; Gartner pegs enterprise agentic AI production deployment at 8%; Snap claims 65% AI code generation ratio while cutting 16% of workforce</div>
+    </div>
+
+    <!-- 芯片与算力 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon gpu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>
+        </div>
+        <div class="section-title">芯片与算力</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          NVIDIA Vera Rubin: Full Production, Agentic-Native Silicon
+          <span class="tag tag-gpu">芯片</span>
+        </div>
+        <p>Vera Rubin 平台进入 full production，七芯协同架构标志着 NVIDIA 从"GPU 供应商"向"AI 系统供应商"的转型完成。</p>
+
+        <div class="subsection-title">Architecture Deep Dive</div>
+        <table class="tech-table">
+          <thead>
+            <tr><th>Component</th><th>Spec</th><th>vs Blackwell</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Rubin GPU</td><td>336B transistors, 50 PFLOPS, 288GB HBM4</td><td>~3.5x compute density</td></tr>
+            <tr><td>Vera CPU</td><td>Custom ARM cores, unified memory fabric</td><td>New (replaces Grace)</td></tr>
+            <tr><td>NVLink 6 Switch</td><td>Next-gen chip-to-chip interconnect</td><td>2x bandwidth</td></tr>
+            <tr><td>BlueField-4 DPU</td><td>Inference Context Memory Storage</td><td>Agentic-native</td></tr>
+            <tr><td>ConnectX-9 SuperNIC</td><td>400Gbps networking</td><td>2x throughput</td></tr>
+            <tr><td>Groq 3 LPU</td><td>Integrated inference accelerator</td><td>New integration</td></tr>
+          </tbody>
+        </table>
+
+        <div class="subsection-title">Agentic AI Optimization</div>
+        <ul class="detail-list">
+          <li><strong>Inference Context Memory Storage Platform</strong> -- BlueField-4 存储处理器专为 agentic AI 推理中的 KV-cache 管理和多轮对话状态持久化设计。传统架构中 agentic workflow 的 context 管理需要频繁的 GPU memory ↔ host memory 数据搬运，BlueField-4 通过 near-storage compute 将此延迟降低一个数量级</li>
+          <li><strong>MoE 训练优化</strong> -- 训练同等规模 MoE 模型所需 GPU 数量减少 4x，直接降低 DeepSeek V4 级别模型的训练门槛</li>
+          <li><strong>推理 TCO 下降 10x</strong> -- 对 long-context agentic workload（低延迟、高并发、长 context window）的优化使每 token 推理成本较 Blackwell 下降一个数量级</li>
+        </ul>
+
+        <div class="subsection-title">Competitive Landscape</div>
+        <ul class="detail-list">
+          <li><strong>Google TPU 8 训推分离</strong> -- Google 首次将 TPU 拆分为独立的 training chip 和 inference chip，与 NVIDIA 的统一平台策略形成对比。训推分离反映了 agentic AI workload 特征（低延迟、高并发）与 training workload 特征（高吞吐、大 batch）的根本分化</li>
+          <li><strong>OpenAI-Cerebras $20B+ Deal</strong> -- OpenAI 向 wafer-scale computing 下注，Cerebras 的 WSE-3 在 inference latency 上有独特优势</li>
+          <li><strong>NVIDIA 芯片竞争者融资激增</strong> -- Euclyd、Fractile 等 AI 芯片初创获得创纪录融资，但 NVIDIA 的 CUDA 生态壁垒和系统级优化能力仍是核心 moat</li>
+        </ul>
+        <a href="https://nvidianews.nvidia.com/news/nvidia-vera-rubin-platform" class="source-link" target="_blank">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          NVIDIA Newsroom
+        </a>
+      </div>
+    </div>
+
+    <!-- 模型动态 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/><path d="M12 2a4 4 0 0 0-4 4c0 1.95 1.4 3.58 3.25 3.93"/></svg>
+        </div>
+        <div class="section-title">模型与技术</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          DeepSeek V4: Hybrid Attention MoE at Frontier Parity
+          <span class="tag tag-model">模型</span>
+        </div>
+
+        <div class="subsection-title">Model Architecture</div>
+        <table class="tech-table">
+          <thead>
+            <tr><th>Model</th><th>Total Params</th><th>Active Params</th><th>Context</th><th>Output $/M tokens</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>V4-Pro</td><td>1.6T</td><td>49B</td><td>1M</td><td>$3.48</td></tr>
+            <tr><td>V4-Flash</td><td>284B</td><td>13B</td><td>1M</td><td>$0.28</td></tr>
+            <tr><td>Claude Opus 4.7</td><td>N/A (closed)</td><td>N/A</td><td>1M</td><td>$25.00</td></tr>
+            <tr><td>GPT-5.4</td><td>N/A (closed)</td><td>N/A</td><td>256K</td><td>$30.00</td></tr>
+          </tbody>
+        </table>
+
+        <div class="subsection-title">Technical Innovations</div>
+        <ul class="detail-list">
+          <li><strong>Hybrid Attention: CSA + HCA</strong> -- Compressed Sparse Attention（CSA）用于中距离 token 依赖，Heavily Compressed Attention（HCA）用于极远距离（100K+ token）依赖。两者结合使 1M context 的 attention 计算量降低到标准 full attention 的 ~15%，同时保留 95%+ 的 retrieval accuracy</li>
+          <li><strong>Training Efficiency</strong> -- 估计训练成本仅 $5.2M（MIT Technology Review），与美国 frontier model 的 $100M+ 训练预算形成鲜明对比。关键因素：(a) MoE 架构的 parameter efficiency -- 1.6T 总参但每次推理仅激活 49B；(b) 华为 Ascend 芯片的深度整合优化；(c) 中国 GPU 集群的成本优势</li>
+          <li><strong>Open Weights on HuggingFace</strong> -- 完全开源，企业可 self-host 进一步降低成本。对 on-prem 部署而言，V4-Flash（13B activated）的推理效率在 consumer-grade GPU（如 NVIDIA RTX 5090）上就能运行</li>
+        </ul>
+
+        <div class="subsection-title">Impact Assessment</div>
+        <ul class="detail-list">
+          <li><strong>Price War Escalation</strong> -- V4 将 output pricing 压至 $3.48/M（Pro）和 $0.28/M（Flash），对 Anthropic 和 OpenAI 的 API 定价构成直接压力。虽然 frontier reasoning tasks 仍是闭源模型的优势领域，但大量 enterprise use cases（RAG、summarization、classification、customer service）对 V4 级别的模型已经 sufficient</li>
+          <li><strong>Open Source Momentum</strong> -- V4 + Meta Llama 4 + Qwen 3.6 构成的开源阵营在 practical performance 上已接近闭源前沿，加速了"commoditization of intelligence"趋势</li>
+          <li><strong>Geopolitical Signal</strong> -- 尽管美国对中国的芯片出口管制持续，DeepSeek 通过架构创新和训练效率优化保持了竞争力。V4 与华为 Ascend 芯片的整合表明中国 AI stack 的自主化程度在提高</li>
+        </ul>
+        <a href="https://www.technologyreview.com/2026/04/24/1136422/why-deepseeks-v4-matters/" class="source-link" target="_blank">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          MIT Technology Review
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Claude Opus 4.7: Task Budgets, High-Res Vision, xhigh Effort
+          <span class="tag tag-model">模型</span>
+        </div>
+        <ul class="detail-list">
+          <li><strong>Task Budgets</strong> -- 在 agentic loop 中向模型暴露 token 预算倒计时，使模型能自主做 prioritization 和 graceful degradation。这解决了之前 agent 在多步任务中 token 消耗不可预测的问题。实现方式是在 system prompt 中注入 remaining budget context，模型通过 RL fine-tuning 学会了根据余额调整策略</li>
+          <li><strong>Vision Upgrade</strong> -- 最大分辨率从 1568px 提升至 2576px (3.75MP)，对 UI screenshot understanding、document OCR 和 chart analysis 任务有显著提升</li>
+          <li><strong>xhigh Effort Level</strong> -- 新增 high 和 max 之间的 effort 等级，默认用于 coding workflows。每 turn 消耗更多 compute 但输出质量更高</li>
+          <li><strong>Tokenizer Change</strong> -- 新 tokenizer 在某些内容上多消耗 ~35% token，对 API cost 有 non-trivial 影响。需要重新 benchmark 现有 prompt 的 token consumption</li>
+          <li><strong>Pricing Unchanged</strong> -- $5/$25 per M tokens（input/output），与 4.6 相同。考虑到 tokenizer 变化，effective cost per character 有所上升</li>
+        </ul>
+        <a href="https://platform.claude.com/docs/en/about-claude/models/whats-new-claude-4-7" class="source-link" target="_blank">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Claude API Docs
+        </a>
+      </div>
+    </div>
+
+    <!-- 企业与行业 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="section-title">企业与行业</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Gartner: Agentic AI Governance Gap and the 8% Production Reality
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <ul class="detail-list">
+          <li><strong>8% Production Deployment</strong> -- Gartner Data & Analytics Summit (Sao Paulo, Apr 28-29) 数据确认 agentic AI 的 enterprise production deployment rate 仅 8%，远低于 boardroom discussion frequency。Gap 的根因不是技术，而是 data quality（47% 的企业 data readiness score 低于"adequate"）、governance framework 缺失（缺乏 runtime enforcement）、and change management 不足</li>
+          <li><strong>4x Investment Multiplier</strong> -- AI-successful 组织在 data foundation（quality, governance, AI-ready talent, change management）上的投入是 revenue-adjusted 的 4x，与 AI-poor-outcome 组织形成显著差异。这表明 AI ROI 的瓶颈在 data infra 而非 model capability</li>
+          <li><strong>Agent Governance Prediction</strong> -- By 2030, 50% AI agent deployment failures 归因于 governance platform 在 runtime capability enforcement 和 multi-system interoperability 上的不足。这指向一个即将爆发的 vertical：AI agent governance platforms（类比 IAM 对 cloud 的意义）</li>
+          <li><strong>Physical AI Data Explosion</strong> -- By 2029, AI agents 在物理环境中生成的数据量将达到数字 AI 应用的 10 倍。Trajectory data from robotics, autonomous vehicles, IoT sensors 将成为下一个 data management 挑战</li>
+        </ul>
+        <a href="https://www.gartner.com/en/newsroom/press-releases/2026-04-16-gartner-says-organizations-with-successful-ai-initiatives-invest-up-to-four-times-more-in-data-and-analytics-foundations" class="source-link" target="_blank">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Gartner Press Release
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Snap: 65% AI Code Gen, 1000 Layoffs, and the AI-Washing Debate
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <ul class="detail-list">
+          <li><strong>数据点</strong> -- Snap CEO Evan Spiegel 在 Apr 15 内部信中披露 AI 系统生成 65%+ 新代码。裁减 1000 人（16% workforce），年化节省 $500M+。Activist investor Irenic Capital 此前施压要求削减成本</li>
+          <li><strong>AI-Washing Analysis</strong> -- 批评者指出被裁岗位主要在 product 和 partnerships 部门而非 engineering，暗示"AI 效率"叙事被策略性放大。然而 65% 代码生成率本身是可信的 -- 业界基准（Anthropic 内部 75%、Google 约 25%）表明技术密集型公司确实已跨过 AI 代码生成的 tipping point</li>
+          <li><strong>Second-Order Signal</strong> -- GPT-5.4 Thinking 在 OSWorld-Verified desktop task benchmark 上达到 75.0%，首次超越人类水平。结合 Snap 的 65% 数据，表明 AI code generation 正从"补全代码行"进化到"执行完整编程任务"。这对 mid-level engineering roles 的替代压力在加速</li>
+          <li><strong>2026 Tech Layoffs Aggregate</strong> -- Q1 2026 已有 92,000+ tech workers 被裁，近半数直接归因于 AI automation。这一数字在 Q2 可能加速，特别是在 Snap 和 Meta 的 case studies 被其他公司效仿后</li>
+        </ul>
+        <a href="https://www.cnbc.com/2026/04/15/snap-stock-layoffs-16-percent-workforce.html" class="source-link" target="_blank">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          CNBC
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          VC Concentration Crisis: $300B Q1, 65% to Four Companies
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <ul class="detail-list">
+          <li><strong>Record Concentration</strong> -- Q1 2026 全球 VC $300B（+150% YoY/QoQ），AI 占 $242B（80%）。四家公司（OpenAI $122B, Anthropic $30B, xAI $20B, Waymo $16B）吸收 65% of all global VC -- 这是风投史上前所未有的集中度</li>
+          <li><strong>Foundational AI Funding Doubled</strong> -- Crunchbase 数据显示 Q1 foundational AI startup funding 是 2025 全年的两倍，表明资本仍在加速涌入 model layer 而非 application layer</li>
+          <li><strong>April 融资动态</strong> -- 764/1314（58%）的 April funding deals 涉及 AI/ML。Notable rounds: Cursor $2B at $50B valuation, Shield AI $1.5B Series G at $12.7B valuation</li>
+          <li><strong>Systemic Risk</strong> -- 资本极度集中于少数公司意味着：如果 AI labor substitution 的速度和范围假设被证伪（验证窗口：2026 H2 enterprise contract renewal），将触发连锁估值重估。65% 集中度意味着这不是个别公司风险而是系统性风险</li>
+        </ul>
+        <a href="https://news.crunchbase.com/venture/record-breaking-funding-ai-global-q1-2026/" class="source-link" target="_blank">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Crunchbase
+        </a>
+      </div>
+    </div>
+
+    <!-- 政策与监管 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="section-title">监管与合规</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          AI Regulatory Landscape: Federal Preemption vs State Fragmentation
+          <span class="tag tag-policy">政策</span>
+        </div>
+        <ul class="detail-list">
+          <li><strong>State Legislative Explosion</strong> -- 2026 年 50 州已提出 600+ AI 法案。热点：automated decision-making transparency, AI in hiring/employment, deepfake regulation, child safety, AI in education. Colorado AI Act（本年晚些时候生效）是最全面的州级 AI 法之一</li>
+          <li><strong>White House AI Framework Preemption</strong> -- 核心立场：(a) 不设立新的联邦 AI 监管机构；(b) 由现有行业监管机构分管；(c) 联邦法律 preempt 州法律中"impose undue burdens"的条款。但 carve-out 保留州的一般性执法权、zoning authority 和公共服务 AI 监管权</li>
+          <li><strong>DOJ AI Litigation Task Force</strong> -- Jan 2026 成立，mandate 是挑战"违宪规管跨州商务"或"被联邦法规 preempt"的州 AI 法案。这是首个专门的联邦 AI 执法机构，尽管名义上是"诉讼工作组"而非"监管机构"</li>
+          <li><strong>Health Insurance AI Laws</strong> -- Indiana HB 1271, Utah SB 319, Washington SB 5395 禁止保险公司以 AI 作为 sole basis 拒绝或修改理赔。这是 vertical-specific AI regulation 的先行者，预计 financial services 和 employment 领域将紧随其后</li>
+          <li><strong>RAISE Act Compliance Deadline</strong> -- 3/19 生效的 RAISE Act 要求 frontier model 开发者提交 training details、safety testing results、dangerous capabilities scan、continuous monitoring plan。首批合规报告截止日期临近，主要影响 OpenAI、Anthropic、Google、Meta</li>
+          <li><strong>对 AI 开发者的实际影响</strong> -- 短期：RAISE 合规成本主要由 frontier labs 承担。中期：州法案碎片化增加 enterprise AI deployment 的合规复杂度。长期：联邦 preemption 通过将简化为单一标准但可能降低保护水平。对于部署 agentic AI 的企业，automated decision-making transparency 法规是最直接的合规风险</li>
+        </ul>
+        <a href="https://www.cooley.com/news/insight/2026/2026-04-24-state-ai-laws-where-are-they-now" class="source-link" target="_blank">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Cooley LLP Analysis
+        </a>
+      </div>
+    </div>
+
+    <div class="closing-card">
+      <div class="closing-title">Expert Take</div>
+      <div class="closing-text">
+        三个需要持续追踪的信号：(1) <strong>Inference Cost Deflation 的 second-order effects</strong> -- Vera Rubin 的 10x inference TCO reduction + DeepSeek V4 的 7x API pricing advantage 意味着 2026 H2 的 per-token inference cost 将较年初下降 ~90%。这将使一批此前 unit economics 不成立的 AI application（real-time translation, always-on coding agent, continuous monitoring）变得 viable。关键问题是：这些 cost savings 会传导到终端用户还是被 infra providers 和 model vendors 截留？观察 Anthropic 和 OpenAI 的 API pricing response 将在接下来 2-3 个月揭晓答案；(2) <strong>Enterprise Deployment 的 verification window</strong> -- Gartner 的 8% production deployment rate 与 Q1 $300B VC 的反差构成了一个可验证的假设：AI revenue growth 是否能跟上 valuation growth？2026 H2 的 enterprise contract renewal 数据（特别是 net dollar retention 和 expansion rate）将首次在足够规模下被检验。如果 Anthropic 的 $30B ARR 增速在 renewal cycle 中放缓，$3500 亿估值的支撑将被质疑；(3) <strong>AI Code Gen 的 tipping point 后果</strong> -- Snap 的 65% + Anthropic 内部 75% 表明 frontier tech companies 已跨过 AI code generation tipping point。接下来要观察的是 code review bottleneck 的出现 -- 当 AI 写 65-75% 的代码时，人类 reviewer 成为瓶颈（审查 AI-generated code 比审查人类代码更难，因为 reviewer 缺乏 writing-time context）。预计 2026 下半年"AI code review agent"将成为新热点，形成 AI-to-AI 软件开发闭环。
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>AI Pulse Daily #38 | 2026.04.28</p>
+    <p style="margin-top:4px;">数据来源: NVIDIA Newsroom, MIT Technology Review, CNBC, Gartner, Crunchbase, TechCrunch, Claude API Docs, Cooley LLP</p>
+    <p style="margin-top:8px;"><a href="/">返回 AI Pulse 主页</a></p>
+  </div>
+</div>
+
+<script>
+function switchTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(function(el) { el.classList.remove('active'); });
+  document.querySelectorAll('.tab-btn').forEach(function(el) { el.classList.remove('active'); });
+  document.getElementById('tab-' + tab).classList.add('active');
+  var tabs = ['casual', 'intermediate', 'expert'];
+  var idx = tabs.indexOf(tab);
+  document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily Report | 2026.05.02</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --claude-bg: #FAF9F7;
+    --claude-surface: #FFFFFF;
+    --claude-border: #E8E5E0;
+    --claude-text-primary: #1A1714;
+    --claude-text-secondary: #6B6560;
+    --claude-text-tertiary: #9B9590;
+    --claude-accent: #DA7756;
+    --claude-accent-light: #F5E6DF;
+    --claude-accent-dark: #C4623F;
+    --claude-tag-blue: #E8F0FE;
+    --claude-tag-blue-text: #3B6CB5;
+    --claude-tag-green: #E6F4EA;
+    --claude-tag-green-text: #2D7A3F;
+    --claude-tag-purple: #F0E6FA;
+    --claude-tag-purple-text: #7B3FAF;
+    --claude-tag-amber: #FEF3E2;
+    --claude-tag-amber-text: #B5752D;
+    --claude-tag-red: #FDE8E8;
+    --claude-tag-red-text: #B53B3B;
+    --claude-card-shadow: 0 1px 3px rgba(26, 23, 20, 0.06), 0 1px 2px rgba(26, 23, 20, 0.04);
+    --claude-card-shadow-hover: 0 4px 12px rgba(26, 23, 20, 0.08), 0 2px 4px rgba(26, 23, 20, 0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+    background: var(--claude-bg);
+    color: var(--claude-text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 8px;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--claude-accent-dark); }
+
+  .header {
+    text-align: center;
+    padding: 48px 0 40px;
+    border-bottom: 1px solid var(--claude-border);
+    margin-bottom: 32px;
+  }
+
+  .header-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--claude-accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .header .date {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    font-weight: 400;
+  }
+
+  .header .edition-note {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    margin-top: 8px;
+  }
+
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 36px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--claude-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .tab-btn:hover {
+    color: var(--claude-text-primary);
+    background: var(--claude-bg);
+  }
+
+  .tab-btn.active {
+    background: var(--claude-accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(218, 119, 86, 0.3);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .section { margin-bottom: 36px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .section-icon.gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .section-icon.model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .section-icon.product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .section-icon.research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .section-icon.industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .section-icon.policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .card {
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--claude-card-shadow);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .card:hover { box-shadow: var(--claude-card-shadow-hover); }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .card p {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.75;
+    margin-bottom: 8px;
+  }
+
+  .card p:last-child { margin-bottom: 0; }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .tag-gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .tag-model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .tag-product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .tag-research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .tag-industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .tag-policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .highlight {
+    background: var(--claude-accent-light);
+    border-left: 3px solid var(--claude-accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--claude-accent-dark);
+    line-height: 1.7;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .stat-item {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--claude-accent);
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--claude-text-tertiary);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 8px;
+    transition: color 0.15s;
+  }
+
+  .source-link:hover { color: var(--claude-accent-dark); text-decoration: underline; }
+
+  .tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .tech-table th, .tech-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .tech-table th {
+    font-weight: 600;
+    color: var(--claude-text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: var(--claude-bg);
+  }
+
+  .tech-table td { color: var(--claude-text-primary); }
+
+  .code-block {
+    background: #2D2A26;
+    color: #E8E5E0;
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    overflow-x: auto;
+    margin: 12px 0;
+  }
+
+  .code-block .comment { color: #9B9590; }
+  .code-block .keyword { color: #DA7756; }
+  .code-block .string { color: #7DB87D; }
+
+  .footer {
+    text-align: center;
+    padding: 40px 0 0;
+    border-top: 1px solid var(--claude-border);
+    margin-top: 40px;
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+  }
+
+  .footer a {
+    color: var(--claude-accent);
+    text-decoration: none;
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 20px 16px 60px; }
+    .header h1 { font-size: 24px; }
+    .tab-btn { font-size: 13px; padding: 10px 8px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+  }
+
+  .subsection-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin: 16px 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  ul.detail-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0;
+  }
+
+  ul.detail-list li {
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.7;
+    padding: 4px 0 4px 16px;
+    position: relative;
+  }
+
+  ul.detail-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--claude-border);
+  }
+
+  .mood-banner {
+    background: linear-gradient(135deg, #FFF5F0 0%, #FFF9F0 100%);
+    border: 1px solid #F0DDD0;
+    border-radius: 16px;
+    padding: 28px 24px;
+    margin-bottom: 32px;
+    text-align: center;
+  }
+
+  .mood-banner .mood-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin-bottom: 6px;
+  }
+
+  .mood-banner .mood-subtitle {
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.6;
+  }
+
+  .mood-meter {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    margin: 12px 0;
+  }
+
+  .mood-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    transition: transform 0.2s;
+  }
+
+  .mood-dot.active { transform: scale(1.4); }
+
+  .mood-label {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+
+  .tldr-box {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--claude-text-secondary);
+    line-height: 1.6;
+  }
+
+  .closing-card {
+    background: linear-gradient(135deg, #FFF5F0 0%, #FFF9F0 100%);
+    border: 1px solid #F0DDD0;
+    border-radius: 16px;
+    padding: 28px 24px;
+    margin-top: 32px;
+    text-align: center;
+  }
+
+  .closing-card .closing-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--claude-text-primary);
+    margin-bottom: 10px;
+  }
+
+  .closing-card .closing-text {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.8;
+    text-align: left;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <a href="/" class="back-link">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
+    返回 AI Pulse
+  </a>
+
+  <div class="header">
+    <div class="header-logo">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      AI PULSE DAILY
+    </div>
+    <h1>AI 日报 | 2026.05.02</h1>
+    <div class="date">2026 年 5 月 2 日 星期六</div>
+    <div class="edition-note">第 42 期 -- 五角大楼与七家科技巨头签署 AI 军事协议将 Anthropic 排除在外，Anthropic 以 $900B 估值启动 $500 亿融资反超 OpenAI，Musk v. Altman 世纪审判进入关键阶段，Google DeepMind 研究员公开抨击五角大楼机密 AI 合同，Snap 裁员 16% 宣称 AI 已接管 65% 代码编写</div>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('casual')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+      轻松阅读
+    </button>
+    <button class="tab-btn" onclick="switchTab('intermediate')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      技术进阶
+    </button>
+    <button class="tab-btn" onclick="switchTab('expert')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      深度技术
+    </button>
+  </div>
+
+  <!-- ==================== 轻松阅读版 ==================== -->
+  <div id="tab-casual" class="tab-content active">
+
+    <div class="mood-banner">
+      <div class="mood-title">今日 AI 圈：军事化争议升温、估值竞赛白热化、AI 替代人类岗位加速</div>
+      <div class="mood-meter">
+        <div class="mood-dot active" style="background:#4CAF50"></div>
+        <div class="mood-dot active" style="background:#8BC34A"></div>
+        <div class="mood-dot active" style="background:#FFC107"></div>
+        <div class="mood-dot active" style="background:#FF9800"></div>
+        <div class="mood-dot active" style="background:#F44336"></div>
+      </div>
+      <div class="mood-label">市场情绪：高度震荡</div>
+      <div class="mood-subtitle">美国国防部与 SpaceX、OpenAI、Google 等七家公司签署机密 AI 协议，唯独把 Anthropic 排除在外；Anthropic 启动 $500 亿融资，估值将突破 $9000 亿超越 OpenAI；Musk 与 Altman 的世纪审判进入白热化阶段；Snap 裁员 1000 人宣称 AI 已写 65% 的代码。AI 的力量正在重新划分地缘政治和商业版图。</div>
+    </div>
+
+    <!-- 企业与行业 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="section-title">企业与行业</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          五角大楼签约七巨头，Anthropic 因坚持安全底线被"拉黑"
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>美国国防部宣布与 SpaceX、OpenAI、Google、Microsoft、NVIDIA、AWS 和 Reflection 签署协议，允许它们的 AI 在军方机密网络中使用。唯独 Anthropic 被排除在外 -- 原因是 Anthropic 坚持要求五角大楼在使用 AI 时加入安全护栏，限制将 AI 用于全自主武器和大规模国内监控。</p>
+        <p>这件事的本质是：一家 AI 公司因为拒绝让军方无限制使用自己的技术，而被美国政府列入"供应链风险"名单 -- 这个标签以前只给过与敌对国家有关的公司。不过好消息是，白宫最近重新与 Anthropic 接触，特朗普也说"有可能达成协议"。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Anthropic 估值冲刺 $9000 亿，有望超越 OpenAI
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>Anthropic 正在筹集高达 $500 亿的新一轮融资，估值在 $8500 亿到 $9000 亿之间。如果完成，它将超越 OpenAI 今年 2 月以 $8520 亿估值完成的 $1220 亿融资。投资者被要求在 48 小时内提交认购意向 -- 说明 AI 赛道的热钱依然充沛。</p>
+        <p>更值得关注的是背后的数字：Anthropic 的年化收入从 2025 年底的 $90 亿飙升至 2026 年 3 月的 $300 亿，单季度增长 233%。它在 LLM 市场的收入份额已经以 31.4% 超越 OpenAI 的 29%。从"追赶者"到"领跑者"，Anthropic 只用了一个季度。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Snap 裁员 1000 人：AI 已经写了公司 65% 的代码
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>Snapchat 的母公司 Snap 宣布裁员约 1000 人（占全体员工的 16%），CEO Evan Spiegel 在内部信中直言：AI 的进步让更小的团队就能完成同样的工作。目前 AI 已经承担了 Snap 超过 65% 的新代码编写。</p>
+        <p>这是科技行业 AI 替代人力的又一个标志性事件。Snap 的股价反而因这一消息上涨了 8%，因为华尔街看好 AI 驱动的效率提升能帮公司每年节省超过 $5 亿。但对于被裁的员工来说，"AI 提升效率"意味着他们需要寻找新的岗位。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Google DeepMind 研究员公开抨击五角大楼 AI 合同
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>Google DeepMind 的研究员 Andreas Kirsch 公开表示对公司与五角大楼的 AI 合同"深感羞耻"。在他之前，已有超过 600 名 Google 员工联名写信给 CEO Sundar Pichai，要求阻止五角大楼将 Google AI 用于机密军事行动。但 Google 还是签了协议。</p>
+        <p>这是 AI 伦理与商业利益之间最尖锐的冲突之一。有趣的是，Google 一边投资 Anthropic（$400 亿），一边又走了 Anthropic 拒绝走的路。科技公司在"AI 安全"问题上的分歧正在变得越来越明显。</p>
+      </div>
+    </div>
+
+    <!-- 模型与市场 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <div class="section-title">模型与市场</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Musk v. Altman 世纪审判：AI 会杀死人类吗？
+          <span class="tag tag-model">焦点</span>
+        </div>
+        <p>Elon Musk 与 OpenAI 的官司正在加州奥克兰联邦法院审理。Musk 在法庭上情绪激动，称 Sam Altman "窃取"了他共同创立的非营利组织，并警告 AI 可能"杀死我们所有人"。他要求 $1300 亿赔偿，并希望法院命令 OpenAI 恢复非营利结构。</p>
+        <p>但法官很快就指出了矛盾：Musk 自己创办了营利性 AI 公司 xAI，而且早在 2015 年就建议 OpenAI 设立营利实体。这场审判可能持续到 5 月底，其结果将深刻影响 AI 行业的治理结构和发展方向。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          华为昇腾芯片收入预计达 $120 亿，同比增长 60%
+          <span class="tag tag-gpu">芯片</span>
+        </div>
+        <p>华为预计 2026 年 AI 芯片收入将达到约 $120 亿，比 2025 年的 $75 亿增长 60%。昇腾 950PR 芯片的订单激增，因为 NVIDIA 在中国市场受到出口管制的限制。DeepSeek V4 已经 100% 全栈运行在昇腾 950PR 上，验证了中国自主 AI 芯片生态的可行性。</p>
+      </div>
+    </div>
+
+    <!-- 政策与监管 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="section-title">政策与监管</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          白宫 AI 政策框架：联邦想"一统天下"，各州不买账
+          <span class="tag tag-policy">政策</span>
+        </div>
+        <p>白宫 3 月发布的《国家 AI 政策框架》核心建议是：由联邦统一立法，替代各州五花八门的 AI 法规。框架涵盖七大支柱：儿童保护、AI 基础设施、知识产权、言论自由、创新、劳动力准备和州法预占。</p>
+        <p>但各州并不甘心放弃立法权。科罗拉多州已通过了全美最全面的州级 AI 治理法（6 月底实施），加州的 CCPA 自动决策条款也在推进。联邦与州的 AI 立法拉锯战将是 2026 年下半年的重要看点。</p>
+      </div>
+    </div>
+
+    <div class="closing-card">
+      <div class="closing-title">今日小结</div>
+      <div class="closing-text">
+        五月第二天，AI 行业的主旋律从"技术竞赛"转向"权力博弈"。五角大楼的军事 AI 合同揭示了一个残酷现实：在国家安全面前，AI 安全承诺可能成为商业劣势。Anthropic 被"拉黑"却同时估值飙升至 $9000 亿，说明市场用脚投票 -- 投资者更看重技术实力和收入增长，而非政治站队。Snap 的裁员则敲响了警钟：AI 对就业市场的冲击已经从预言变成了现实。最有意思的是 Google 的"分裂人格" -- 投 $400 亿给坚持 AI 安全的 Anthropic，自己却签了 Anthropic 拒绝的军事合同。2026 年的 AI 行业，每一步都在重新定义什么是"正确"。
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 技术进阶版 ==================== -->
+  <div id="tab-intermediate" class="tab-content">
+
+    <div class="mood-banner">
+      <div class="mood-title">技术视角：AI 军事化路线分化、收入格局逆转、API 定价博弈持续</div>
+      <div class="mood-subtitle">Pentagon 签署七方 AI 军事协议暴露行业安全立场分化，Anthropic 以 31.4% LLM 收入份额首次超越 OpenAI 的 29%，$900B 估值融资将创行业新高。DeepSeek V4-Pro 75% 折扣延期至 5 月底持续施压。Musk v. Altman 审判中浮现的早期邮件揭示 OpenAI 非营利转型的历史复杂性。Google 内部 600+ 员工联名反对军方机密 AI 合同，暴露大厂 AI 伦理治理裂痕。</div>
+    </div>
+
+    <!-- 企业与行业 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="section-title">企业与行业</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Pentagon 军事 AI 协议：七家签约，Anthropic 被列"供应链风险"
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>美国国防部于 5 月 1 日宣布与 SpaceX、OpenAI、Google、Microsoft、NVIDIA、AWS 和 Reflection 签署协议，允许它们的 AI 模型在军方机密网络（classified networks）中部署，用于"任何合法政府用途"。Anthropic 因坚持要求在合同中加入限制全自主武器和大规模国内监控的安全护栏而被排除。</p>
+        <div class="highlight">Pentagon CTO 将 Anthropic 列为"供应链风险"（supply chain risk）-- 这一标签此前仅用于与外国对手关联的企业。这意味着 Anthropic 可能被有效排除在所有联邦政府 AI 采购之外。不过白宫已于 4 月 17 日与 Anthropic CEO Dario Amodei 重新接触，特朗普表示"有可能达成协议"。</div>
+        <p>技术角度看，这一决策反映了 AI 军事化中两条路线的分化：OpenAI 和 Google 选择了"开放接入"模式（模型可用于任何合法用途），而 Anthropic 坚持"限制性部署"（模型需有使用场景限制）。对于使用这些 API 的开发者来说，这意味着不同厂商的服务条款和合规要求可能出现实质性差异。</p>
+        <a href="https://www.cnn.com/2026/05/01/tech/pentagon-ai-anthropic" class="source-link" target="_blank">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          CNN Business
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Anthropic 估值 $900B 融资：ARR $300 亿，LLM 收入份额超越 OpenAI
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>Anthropic 正在进行约 $500 亿的融资，估值区间 $850B-$900B，有望超越 OpenAI 今年 2 月的 $852B。投资者被要求在 48 小时内提交认购意向，董事会预计 5 月内做出最终决定。</p>
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-value">$300 亿</div>
+            <div class="stat-label">年化收入 (2026 Q1)</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">31.4%</div>
+            <div class="stat-label">LLM 收入份额</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">$16.20</div>
+            <div class="stat-label">ARPU (月)</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">233%</div>
+            <div class="stat-label">单季收入增长</div>
+          </div>
+        </div>
+        <p>Counterpoint Research 数据显示，Anthropic Q1 LLM 收入份额达 31.4%，超越 OpenAI 的 29%。关键差异在于商业模式：Anthropic 月活 1.34 亿，ARPU $16.20；OpenAI 月活约 9 亿，ARPU 仅 $2.20。Anthropic 成功锁定了高端企业市场，特别是在代码生成领域。</p>
+        <a href="https://techcrunch.com/2026/04/30/anthropic-potential-900b-valuation-round-could-happen-within-two-weeks/" class="source-link" target="_blank">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          TechCrunch
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Snap 裁员 16%：AI 驱动的组织瘦身案例
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>Snap 宣布裁减约 1000 名全职员工（16% 的全球劳动力），并关闭 300 个空缺职位。CEO Evan Spiegel 在内部信中表示 AI 已接管 65% 的新代码编写，让更小的团队能完成同等工作量。预计下半年年化成本缩减超 $5 亿。</p>
+        <p>从技术团队管理角度看，65% 的代码生成率意味着 Snap 的工程团队已深度集成 AI 辅助编程工具。这不仅是裁员 -- 它改变了工程团队的角色定义：从"写代码"转向"审查和指导 AI 写代码"。对于技术管理者而言，这是一个值得关注的组织架构转型信号。</p>
+        <a href="https://techcrunch.com/2026/04/15/snap-is-cutting-1000-jobs-16-of-its-workforce/" class="source-link" target="_blank">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          TechCrunch
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Google 600+ 员工联名反对 Pentagon 协议，DeepMind 研究员公开发声
+          <span class="tag tag-industry">行业</span>
+        </div>
+        <p>Google DeepMind 研究员 Andreas Kirsch 公开表示对公司与 Pentagon 签署机密 AI 合同"深感羞耻"。此前，来自 Google DeepMind 和 Cloud 部门的 600 多名员工联名写信给 CEO Sundar Pichai，要求阻止军方将 Google AI 用于机密行动。但公司最终还是签署了协议，条款与 OpenAI 和 xAI 此前达成的协议相同 -- "任何合法政府用途"。</p>
+        <p>这暴露了大型科技公司内部 AI 伦理治理的结构性矛盾：研究团队的价值观诉求与商业团队的市场扩张目标之间的张力。值得注意的是 Google 的"双重策略" -- 一方面投资 $400 亿给拒绝军事合同的 Anthropic，另一方面自己签署了同样的合同。</p>
+        <a href="https://www.theinformation.com/articles/google-signs-classified-ai-deal-pentagon-amid-employee-opposition" class="source-link" target="_blank">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          The Information
+        </a>
+      </div>
+    </div>
+
+    <!-- 模型与市场 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <div class="section-title">模型与市场</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Musk v. Altman 审判：OpenAI 非营利转型的技术治理启示
+          <span class="tag tag-model">焦点</span>
+        </div>
+        <p>Elon Musk 与 OpenAI 的民事审判正在加州奥克兰联邦法院进行，Musk 索赔 $1300 亿并要求 OpenAI 恢复非营利结构。审判中浮现的 2015 年邮件显示，Musk 本人最早提议 OpenAI 设立营利性实体 -- 这与他"OpenAI 偏离非营利初心"的核心论点存在矛盾。</p>
+        <p>从技术治理角度看，这场审判的核心问题是：非营利研究机构能否有效开发和部署前沿 AI？OpenAI 从 501(c)(3) 转向有上限营利结构再到完全商业化的路径，反映了 AI 研究从学术型到工业型转变过程中治理结构的演变。判决结果可能影响未来 AI 实验室的组织架构选择。</p>
+        <a href="https://www.cnn.com/2026/04/30/tech/takeaways-elon-musk-openai-sam-altman-lawsuit" class="source-link" target="_blank">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          CNN Business
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          华为昇腾 950PR 商用加速，AI 芯片收入预计 $120 亿
+          <span class="tag tag-gpu">芯片</span>
+        </div>
+        <p>华为 2026 年 AI 芯片收入预计约 $120 亿，同比增长 60%（2025 年为 $75 亿）。昇腾 950PR 搭载自研高带宽内存 HiBL 1.0，单卡 FP4 算力达到 NVIDIA H20 的 2.87 倍。DeepSeek V4 已 100% 全栈运行于昇腾 950PR，验证了完整的硬件-软件-模型适配链路。</p>
+        <p>在 NVIDIA 对华出口管制持续的背景下，昇腾 950PR 的商用意味着中国 AI 基础设施的自主化进程进入新阶段。对开发者而言，这增加了一个可选的算力部署平台，但也带来了异构硬件适配的额外复杂度。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          DeepSeek V4-Pro 75% 折扣延期至 5/31，价格战持续
+          <span class="tag tag-model">模型</span>
+        </div>
+        <p>DeepSeek 将 V4-Pro 的 75% 限时折扣从原定 5 月 5 日延长至 5 月 31 日。在折扣期间，输出价格 $0.87/百万 token，缓存命中输入价格低至 $0.0145/百万 token。同时，全系列 API 的输入缓存命中价格永久性降至此前的 1/10。</p>
+        <div class="highlight">价格对比：DeepSeek V4-Pro 全价输入 $0.145/百万 token，GPT-5.5 输入 $2.25/百万 token（15.5x），Claude Opus 更高。DeepSeek 的策略是用超低价格获取开发者市场份额，然后通过缓存命中机制锁定长期使用。</div>
+      </div>
+    </div>
+
+    <!-- 政策与监管 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="section-title">政策与监管</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          联邦 AI 框架 vs 州级立法：预占权之争升温
+          <span class="tag tag-policy">政策</span>
+        </div>
+        <p>白宫《国家 AI 政策框架》的核心是推动联邦预占（federal preemption）州级 AI 法规，建立"最低负担"的全国统一标准。七大立法建议涵盖儿童保护、知识产权、反审查、创新促进等。但各州保留对 AI 执法和公共服务使用的监管权。</p>
+        <p>关键时间节点：TAKE IT DOWN Act 五月条款已生效、科罗拉多 AI Act 6 月 30 日实施、加州 CCPA 自动决策条款 2027 年 1 月。对 AI 产品开发者而言，短期内仍需应对多州合规要求，联邦统一立法可能要到 2027 年才能真正落地。</p>
+      </div>
+    </div>
+
+    <div class="closing-card">
+      <div class="closing-title">技术洞察</div>
+      <div class="closing-text">
+        本周最值得技术团队关注的三个信号：(1) Anthropic 的收入结构证明"高 ARPU + 企业市场"策略在 LLM 商业化中的可行性 -- 月活 1.34 亿 vs OpenAI 9 亿，但收入份额反超；(2) Snap 65% 代码由 AI 生成标志着 AI 辅助编程从"提效工具"进入"人力替代"阶段，工程团队的核心能力正在从"编写代码"转向"架构设计 + AI 代码审查"；(3) Pentagon 的分类部署协议意味着前沿 AI 模型将在不同安全等级的网络中运行，这对模型安全性、可审计性和部署架构提出了全新要求。
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 深度技术版 ==================== -->
+  <div id="tab-expert" class="tab-content">
+
+    <div class="mood-banner">
+      <div class="mood-title">深度分析：AI 军事供应链政治化、LLM 商业模式分化、代码生成对工程组织的结构性冲击</div>
+      <div class="mood-subtitle">Pentagon 将 Anthropic 列为"供应链风险"开创了 AI 军事化的政治审查先例。Anthropic 以 $300B ARR 和 31.4% LLM 收入份额在 Q1 首超 OpenAI，验证了"高端企业 + 代码生成"路线的商业可行性。Snap 裁员案例量化了 AI 代码生成对工程团队规模的实际影响：65% 代码生成率 -> 16% 人力缩减。Musk v. Altman 审判浮现的历史文档正在重新定义"非营利 AI 研究机构"的治理范式。</div>
+    </div>
+
+    <!-- 行业深度 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon industry">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="section-title">行业深度</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Pentagon AI 军事协议：供应链政治化与模型部署架构分析
+          <span class="tag tag-industry">深度</span>
+        </div>
+        <p>DoD 于 5 月 1 日宣布与 SpaceX、OpenAI、Google、Microsoft、NVIDIA、AWS 和 Reflection 签署协议，允许 AI 模型在军方机密网络（SIPRNET/JWICS）中部署。协议条款为"任何合法政府用途"（any lawful governmental purpose），与 OpenAI 和 xAI 此前签署的条款一致。</p>
+
+        <div class="subsection-title">Anthropic 被排除的技术与政治分析</div>
+        <p>Anthropic 被列为"供应链风险"（supply chain risk），核心争议点在于两项安全护栏要求：(1) 禁止将 Claude 用于全自主致命武器系统（LAWS）的决策链；(2) 禁止用于大规模国内监控（mass domestic surveillance）。这两项限制与 Anthropic 的 Constitutional AI 框架和 Responsible Scaling Policy 直接相关 -- 即模型在训练阶段就嵌入了使用场景约束。</p>
+        <p>从模型部署架构看，在机密网络中运行 LLM 面临独特挑战：(1) 气隙环境下的模型更新机制；(2) 推理日志的安全审计链；(3) fine-tuning 数据的分类等级管理；(4) 模型输出的交叉域审查。Pentagon 选择"开放条款"而非"限制性部署"，实质上将使用场景的安全审查从模型提供商转移到了军方内部。</p>
+
+        <div class="subsection-title">白宫重新接触的信号</div>
+        <p>4 月 17 日白宫幕僚长 Susie Wiles 与 Amodei 会面后，特朗普表示"可能达成协议"。这表明 Anthropic 的技术领先性（Claude Opus 4.7 在多项 benchmark 上领先）使得完全排除变得不可持续。潜在的折中方案可能是"分层部署"：Claude 用于分析和情报处理，但排除在自主武器决策链之外。</p>
+        <a href="https://www.cnbc.com/2026/05/01/pentagon-anthropic-blacklist-mythos-michael.html" class="source-link" target="_blank">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          CNBC
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Anthropic $900B 估值：LLM 商业模式分化的量化验证
+          <span class="tag tag-industry">深度</span>
+        </div>
+        <p>Anthropic 正在进行约 $500 亿融资，估值 $850B-$900B。若完成，将超越 OpenAI 今年 2 月的 $852B 估值。48 小时投资者认购窗口和 5 月董事会决策时间线表明本轮融资已进入最终阶段。</p>
+
+        <div class="subsection-title">收入结构深度对比</div>
+        <table class="tech-table">
+          <thead>
+            <tr>
+              <th>指标</th>
+              <th>Anthropic</th>
+              <th>OpenAI</th>
+              <th>差异</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Q1 2026 LLM 收入份额</td>
+              <td>31.4%</td>
+              <td>29.0%</td>
+              <td>+2.4pp</td>
+            </tr>
+            <tr>
+              <td>年化收入 (ARR)</td>
+              <td>$300 亿</td>
+              <td>$240-250 亿</td>
+              <td>+$50-60 亿</td>
+            </tr>
+            <tr>
+              <td>月活用户 (MAU)</td>
+              <td>1.34 亿</td>
+              <td>~9 亿</td>
+              <td>-6.7x</td>
+            </tr>
+            <tr>
+              <td>月均 ARPU</td>
+              <td>$16.20</td>
+              <td>$2.20</td>
+              <td>+7.4x</td>
+            </tr>
+            <tr>
+              <td>$1M+ 年付客户</td>
+              <td>1,000+</td>
+              <td>未披露</td>
+              <td>--</td>
+            </tr>
+            <tr>
+              <td>单季收入增长</td>
+              <td>233%</td>
+              <td>~50%</td>
+              <td>+183pp</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>Anthropic 的收入增长主要来自三个驱动力：(1) Claude 在代码生成领域的产品优势（Claude Code、Cursor 集成等），企业开发者工具收入占比估计超过 60%；(2) Google Cloud $400 亿投资带来的云端集成分发优势；(3) Constitutional AI 在合规敏感行业（金融、医疗、法律）的差异化价值。</p>
+        <p>OpenAI 的挑战在于：9 亿月活主要来自消费者端（ChatGPT），ARPU 仅 $2.20 表明免费/低价用户占比过高。Anthropic 用 1/7 的用户量实现了更高的收入，验证了"深耕企业 + 高端定价"在 LLM 市场的可行性。</p>
+        <a href="https://www.theregister.com/2026/04/30/openai_anthropic_top_lines_research_counterpoint" class="source-link" target="_blank">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          The Register
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Snap 裁员量化分析：AI 代码生成率 65% 与工程组织重构
+          <span class="tag tag-industry">深度</span>
+        </div>
+        <p>Snap 裁减 1000 名全职员工（16% 全球劳动力），CEO Spiegel 披露 AI 已接管 65% 的新代码编写。这是目前公开披露的最高企业级 AI 代码生成率之一。</p>
+
+        <div class="subsection-title">量化影响分析</div>
+        <ul class="detail-list">
+          <li>65% 代码生成率 -> 16% 人力缩减，隐含转换系数约 0.25x（每 4% 的代码生成率提升对应约 1% 的人力缩减）。低于线性比例，说明代码编写只占工程师工作的一部分（code review、架构设计、调试、oncall 仍需人力）</li>
+          <li>年化成本节省 >$5 亿 / 1000 人 = 人均节省约 $50 万/年，接近 Snap 的全成本工程师 comp（含股权 + 基础设施分摊）</li>
+          <li>Snap 股价当日上涨 8%，但 2026 年以来累计下跌 >30%，说明市场将此视为"止血"而非"增长"信号</li>
+          <li>激进投资者 Irenic Capital 的介入推动了成本削减节奏，AI 效率叙事在一定程度上是面向资本市场的包装</li>
+        </ul>
+
+        <div class="subsection-title">对行业的启示</div>
+        <p>Snap 的案例量化了一个此前只有定性讨论的问题：AI 代码生成到底能替代多少工程人力？65% 代码生成 -> 16% 人力缩减的比例关系，为其他科技公司提供了一个参考基准。但需要注意：(1) Snap 是社交媒体应用，代码同质性较高，适合 AI 生成；(2) 裁员受到激进投资者压力，可能高于纯技术优化所需的规模。对于基础设施、分布式系统、安全等领域，AI 代码替代率可能显著低于 65%。</p>
+        <a href="https://techstartups.com/2026/04/15/snap-lays-off-1000-employees-or-16-of-workforce-as-ai-takes-over-65-of-coding-work/" class="source-link" target="_blank">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Tech Startups
+        </a>
+      </div>
+    </div>
+
+    <!-- 模型与技术 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon model">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <div class="section-title">模型与技术</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Musk v. Altman 审判：非营利 AI 治理架构的历史文档分析
+          <span class="tag tag-model">深度</span>
+        </div>
+        <p>审判进入第二周，Musk 索赔 $1300 亿并要求 OpenAI 恢复 501(c)(3) 非营利结构、罢免 Altman 和 Brockman。审判中呈堂的关键证据包括 2015 年 Musk 提议"OpenAI 应包含营利性实体"的电子邮件，这与其"Altman 背叛非营利初心"的核心论点存在直接矛盾。</p>
+
+        <div class="subsection-title">治理架构演变时间线</div>
+        <ul class="detail-list">
+          <li>2015: OpenAI 以 501(c)(3) 非营利形式成立。Musk 邮件建议设立营利实体</li>
+          <li>2019: OpenAI LP 成立（有上限营利结构，利润上限 100x），Musk 已于 2018 年离开董事会</li>
+          <li>2023-2024: Altman 被罢免又恢复，董事会改组</li>
+          <li>2025-2026: OpenAI 向完全商业化转型，$852B 估值融资</li>
+        </ul>
+
+        <p>Judge Yvonne Gonzales Rogers 已限制 Musk 方在陪审团面前使用"AI 可能杀死我们所有人"的末日论述，特别是考虑到 Musk 自己创立了营利性 AI 公司 xAI（已融资 $200 亿）。OpenAI 方面则引用 Grok 的安全记录来反击 Musk 的 AI 安全论点。</p>
+        <p>这场审判的法律结果将为 AI 领域建立关键先例：(1) 非营利研究机构向营利结构转型的法律边界；(2) 创始投资人对组织结构变更的法律权利；(3) "AI 安全"论点在法律语境中的效力。预计审判持续至 5 月底。</p>
+        <a href="https://fortune.com/2026/05/01/elon-musk-gets-testy-on-the-stand-i-thought-i-had-started-a-nonprofit-with-openai-but-they-stole-it/" class="source-link" target="_blank">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Fortune
+        </a>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          华为昇腾 950PR：自主 AI 芯片生态的技术成熟度评估
+          <span class="tag tag-gpu">芯片</span>
+        </div>
+        <p>华为昇腾 950PR 正式商用，搭载自研高带宽内存 HiBL 1.0。技术参数显示单卡 FP4 算力达 NVIDIA H20 的 2.87 倍。预计 2026 年 AI 芯片收入 $120 亿，同比增 60%。</p>
+
+        <div class="subsection-title">技术栈验证</div>
+        <ul class="detail-list">
+          <li>DeepSeek V4 (1.6T 参数) 已 100% 全栈运行于昇腾 950PR，证明在 MoE 架构下的完整推理能力</li>
+          <li>HiBL 1.0 自研 HBM 解决了此前昇腾系列的内存带宽瓶颈，但与 HBM3E 仍有代差</li>
+          <li>NVIDIA 对华出口管制（H20 之上的产品受限）为昇腾创造了窗口期，但长期竞争力取决于 CANN 算子库和软件生态的完善度</li>
+          <li>地平线发布中国首款舱驾融合整车智能体芯片"星空 Starry"和操作系统"KaKaClaw"，标志着 AI 芯片从数据中心向边缘终端延伸</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          LLM API 定价竞争格局：DeepSeek V4-Pro 折扣延期的博弈分析
+          <span class="tag tag-model">深度</span>
+        </div>
+        <p>DeepSeek 将 V4-Pro 75% 折扣从 5/5 延期至 5/31，同时全系列缓存命中价格永久降至 1/10。延期策略表明初始促销窗口内的开发者迁移量未达预期，需要更长时间完成用户获取。</p>
+
+        <div class="subsection-title">当前 LLM API 定价矩阵 ($/百万 token)</div>
+        <table class="tech-table">
+          <thead>
+            <tr>
+              <th>模型</th>
+              <th>输入 (缓存 miss)</th>
+              <th>输入 (缓存 hit)</th>
+              <th>输出</th>
+              <th>上下文窗口</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>DeepSeek V4-Pro (促销)</td>
+              <td>$0.435</td>
+              <td>$0.0145</td>
+              <td>$0.87</td>
+              <td>1M</td>
+            </tr>
+            <tr>
+              <td>DeepSeek V4-Pro (全价)</td>
+              <td>$1.74</td>
+              <td>$0.145</td>
+              <td>$3.48</td>
+              <td>1M</td>
+            </tr>
+            <tr>
+              <td>GPT-5.5</td>
+              <td>$2.25</td>
+              <td>--</td>
+              <td>$11.25</td>
+              <td>1M</td>
+            </tr>
+            <tr>
+              <td>Gemini 3.1 Flash-Lite</td>
+              <td>$0.25</td>
+              <td>--</td>
+              <td>$1.00</td>
+              <td>1M</td>
+            </tr>
+            <tr>
+              <td>GLM-4.7</td>
+              <td>$0.11</td>
+              <td>--</td>
+              <td>$0.44</td>
+              <td>128K</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>DeepSeek 的定价策略遵循经典的"渗透定价"(penetration pricing) 模式：用超低价获取开发者市场份额，通过缓存命中机制提升用户粘性（缓存 hit 价格是 miss 的 1/30，强激励开发者维持上下文复用），然后在促销到期后逐步提价。风险在于：如果 GPT-5.5 和 Claude 在质量差距上保持领先，低价策略可能只吸引价格敏感型用户，无法撼动企业级市场份额。</p>
+      </div>
+    </div>
+
+    <!-- 政策深度 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-icon policy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="section-title">政策与治理</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          Google 内部 AI 伦理治理的结构性分析
+          <span class="tag tag-policy">深度</span>
+        </div>
+        <p>Google DeepMind 研究员 Andreas Kirsch 在 Pentagon 合同签署后公开发表"深感羞耻"声明。此前 600+ 员工联名信要求 CEO 阻止军方机密 AI 部署。Google 选择签约，采用与 OpenAI/xAI 相同的"任何合法政府用途"条款。</p>
+
+        <div class="subsection-title">Google 的"对冲策略"</div>
+        <ul class="detail-list">
+          <li>投资 Anthropic $400 亿（占 Anthropic 外部融资的最大份额），获取"AI 安全"品牌的间接背书</li>
+          <li>自身签署 Pentagon 机密 AI 合同，获取联邦政府市场份额</li>
+          <li>两者并行构成了"AI 安全对冲"：如果市场/监管转向重视安全，有 Anthropic 投资收益；如果军事市场扩张，有自身合同收入</li>
+          <li>内部治理代价：研究团队士气受损，人才流失风险增加（此前已有 Project Maven 离职潮先例）</li>
+        </ul>
+
+        <p>这一案例揭示了大型科技公司 AI 伦理治理的核心矛盾：当研究团队的价值观承诺与商业团队的市场扩张发生冲突时，公司层面的决策通常倾向后者。对于 AI 研究者而言，选择雇主时需要评估的不仅是技术栈和研究自由度，还包括组织对 AI 使用场景的实际立场 -- 而非仅看公开的 AI 安全声明。</p>
+      </div>
+    </div>
+
+    <div class="closing-card">
+      <div class="closing-title">专家视角</div>
+      <div class="closing-text">
+        今日的新闻集群揭示了三个深层结构性变化：第一，AI 军事化正在创造一种新型的"安全合规不等式" -- Anthropic 因坚持限制性部署被排除在联邦市场之外，但其技术领先性使得完全排除不可持续，最终可能催生"分层部署"的折中架构。第二，LLM 市场的商业模式正在分化为两条路径：Anthropic 的"高 ARPU 企业路线"（$16.20 ARPU, 1.34 亿 MAU）和 OpenAI 的"高 MAU 消费者路线"（$2.20 ARPU, 9 亿 MAU），Q1 数据首次证明前者在收入份额上的优势。第三，Snap 的 65% 代码生成率量化了 AI 对工程组织的实际冲击，但 0.25x 的转换系数（65% 代码生成 -> 16% 人力缩减）表明代码编写只是工程师工作的一部分 -- 架构设计、系统调试、oncall 响应和代码审查仍是人类不可替代的核心职能。对于 AI 行业的从业者而言，最值得关注的不是单个事件，而是这三条线索的交汇：技术、商业和政治力量正在同时重塑 AI 行业的边界。
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>AI Pulse Daily -- 第 42 期 | 2026 年 5 月 2 日</p>
+    <p>由 AI 自动生成，数据来源包括行业媒体、研究报告和社交媒体</p>
+  </div>
+</div>
+
+<script>
+function switchTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(function(el) {
+    el.classList.remove('active');
+  });
+  document.querySelectorAll('.tab-btn').forEach(function(el) {
+    el.classList.remove('active');
+  });
+  document.getElementById('tab-' + tab).classList.add('active');
+  var tabs = { casual: 0, intermediate: 1, expert: 2 };
+  document.querySelectorAll('.tab-btn')[tabs[tab]].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>

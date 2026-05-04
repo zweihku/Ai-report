@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily Report | 2026.05.05</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --claude-bg: #FAF9F7;
+    --claude-surface: #FFFFFF;
+    --claude-border: #E8E5E0;
+    --claude-text-primary: #1A1714;
+    --claude-text-secondary: #6B6560;
+    --claude-text-tertiary: #9B9590;
+    --claude-accent: #DA7756;
+    --claude-accent-light: #F5E6DF;
+    --claude-accent-dark: #C4623F;
+    --claude-tag-blue: #E8F0FE;
+    --claude-tag-blue-text: #3B6CB5;
+    --claude-tag-green: #E6F4EA;
+    --claude-tag-green-text: #2D7A3F;
+    --claude-tag-purple: #F0E6FA;
+    --claude-tag-purple-text: #7B3FAF;
+    --claude-tag-amber: #FEF3E2;
+    --claude-tag-amber-text: #B5752D;
+    --claude-tag-red: #FDE8E8;
+    --claude-tag-red-text: #B53B3B;
+    --claude-card-shadow: 0 1px 3px rgba(26, 23, 20, 0.06), 0 1px 2px rgba(26, 23, 20, 0.04);
+    --claude-card-shadow-hover: 0 4px 12px rgba(26, 23, 20, 0.08), 0 2px 4px rgba(26, 23, 20, 0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+    background: var(--claude-bg);
+    color: var(--claude-text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 8px;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--claude-accent-dark); }
+
+  .header {
+    text-align: center;
+    padding: 48px 0 40px;
+    border-bottom: 1px solid var(--claude-border);
+    margin-bottom: 32px;
+  }
+
+  .header-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--claude-accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .header .date {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    font-weight: 400;
+  }
+
+  .header .edition-note {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    margin-top: 8px;
+  }
+
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 36px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--claude-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .tab-btn:hover {
+    color: var(--claude-text-primary);
+    background: var(--claude-bg);
+  }
+
+  .tab-btn.active {
+    background: var(--claude-accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(218, 119, 86, 0.3);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .section { margin-bottom: 36px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .section-icon.gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .section-icon.model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .section-icon.product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .section-icon.research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .section-icon.industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .section-icon.policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .card {
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--claude-card-shadow);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .card:hover { box-shadow: var(--claude-card-shadow-hover); }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .card p {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.75;
+    margin-bottom: 8px;
+  }
+
+  .card p:last-child { margin-bottom: 0; }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .tag-gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .tag-model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .tag-product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .tag-research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .tag-industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .tag-policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .highlight {
+    background: var(--claude-accent-light);
+    border-left: 3px solid var(--claude-accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--claude-accent-dark);
+    line-height: 1.7;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .stat-item {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--claude-accent);
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--claude-text-tertiary);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 8px;
+    transition: color 0.15s;
+  }
+
+  .source-link:hover { color: var(--claude-accent-dark); text-decoration: underline; }
+
+  .tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .tech-table th, .tech-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .tech-table th {
+    font-weight: 600;
+    color: var(--claude-text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .tech-table td { color: var(--claude-text-primary); }
+
+  .footer {
+    text-align: center;
+    padding-top: 40px;
+    border-top: 1px solid var(--claude-border);
+    margin-top: 60px;
+  }
+
+  .footer p {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    line-height: 1.8;
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 24px 16px 60px; }
+    .header { padding: 32px 0 28px; }
+    .header h1 { font-size: 24px; }
+    .tab-btn { font-size: 12px; padding: 10px 8px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<a href="/" class="back-link">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+  返回 AI Pulse
+</a>
+
+<header class="header">
+  <div class="header-logo">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    AI PULSE
+  </div>
+  <h1>AI 日报 | 2026.05.05</h1>
+  <p class="date">星期一 / Monday, May 5, 2026</p>
+  <p class="edition-note">Edition #47 - AI 企业军备竞赛白热化</p>
+</header>
+
+<nav class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('casual')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+    轻松阅读
+  </button>
+  <button class="tab-btn" onclick="switchTab('intermediate')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+    技术进阶
+  </button>
+  <button class="tab-btn" onclick="switchTab('expert')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+    深度技术
+  </button>
+</nav>
+
+<!-- ==================== 轻松阅读版 ==================== -->
+<div id="tab-casual" class="tab-content active">
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon industry">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    </div>
+    <h2 class="section-title">AI 巨头融资大战</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Anthropic 和 OpenAI 同时宣布企业合资计划 <span class="tag tag-industry">企业</span></div>
+    <p>两家公司不约而同地宣布了面向企业的 AI 合资项目。OpenAI 获得 1220 亿美元新融资，估值达 8520 亿美元；Anthropic 正在以 9000 亿美元估值寻求 500 亿美元融资。AI 公司的市值已经超过了大多数国家的 GDP。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Google 计划向 Anthropic 追加投资 400 亿美元 <span class="tag tag-industry">投资</span></div>
+    <p>Google 宣布计划向 Anthropic 投资高达 400 亿美元，其中 100 亿立即到账，剩余 300 亿取决于业绩里程碑。这是科技史上最大的单笔 AI 投资之一。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">亚马逊追加 250 亿美元投资 Anthropic <span class="tag tag-industry">投资</span></div>
+    <p>继今年2月 Anthropic 以 3800 亿美元估值完成 300 亿美元融资后，亚马逊又宣布追加 250 亿美元投资。科技巨头们正全力押注 AI 赛道。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon policy">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </div>
+    <h2 class="section-title">政策与争议</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">五角大楼 AI 合同排除 Anthropic <span class="tag tag-policy">政策</span></div>
+    <p>美国国防部与 OpenAI、Google、微软、亚马逊、NVIDIA 等8家公司签署了机密军事 AI 合同，但 Anthropic 被排除在外。原因是 Anthropic 拒绝允许五角大楼将 Claude 用于"所有合法"用途，担心可能被用于国内大规模监控或完全自主武器。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Grok 深伪丑闻引发全球封禁 <span class="tag tag-policy">争议</span></div>
+    <p>马斯克旗下 xAI 的 Grok 因生成色情深伪内容遭到全球抵制。多个国家已禁止访问 xAI 服务并启动刑事调查。这是 AI 生成内容安全问题的又一次重大爆发。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">马斯克 vs Altman 世纪审判持续 <span class="tag tag-policy">法律</span></div>
+    <p>马斯克与 OpenAI CEO 奥特曼的法庭大战本周继续升温，核心争议围绕 AI 技术可能失控的担忧。审判涉及马斯克关于 OpenAI 背离其创始使命的指控。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon model">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+    </div>
+    <h2 class="section-title">模型与产品</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">NVIDIA Nemotron 联盟成立 <span class="tag tag-product">联盟</span></div>
+    <p>NVIDIA CEO 黄仁勋在 GTC 2026 上与 Mistral、Perplexity、Cursor、Reflection AI 等公司 CEO 共同宣布成立 Nemotron 联盟，推动开放-专有混合生态模式。这意味着小公司也能借力 NVIDIA 的大模型基础设施。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">DeepSeek V4-Pro 限时2.5倍折扣 <span class="tag tag-model">模型</span></div>
+    <p>DeepSeek V4-Pro 推出限时优惠，输入价格低至每百万 token 仅 0.25 元人民币。开源、百万级上下文、性能接近 GPT-5.5，价格战已经打到骨折。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">NVIDIA 发布 Nemotron 3 Nano Omni <span class="tag tag-model">模型</span></div>
+    <p>NVIDIA 推出 Nemotron 3 Nano Omni，一个统一视觉、语音和语言能力的开源多模态模型，能让 AI 代理达到比同类开源模型高 9 倍的吞吐量。让机器人能同时"看"、"听"和"说"。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon gpu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/></svg>
+    </div>
+    <h2 class="section-title">机器人与物理 AI</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">NVIDIA Isaac GR00T 开源模型发布 <span class="tag tag-product">机器人</span></div>
+    <p>NVIDIA 新发布的 Isaac GR00T 开源模型让机器人能理解自然语言指令，执行复杂的多步骤任务。想象一下对机器人说"帮我整理桌面"，它就能一步步完成。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">生数科技 Motubrain 统一机器人大脑 <span class="tag tag-research">研究</span></div>
+    <p>生数科技的 Motubrain 将视频、语言和动作融为一体，让机器人能连续执行多达 10 个动作序列（传统系统只有 2-3 个）。机器人不再需要在不同系统间切换，可以一气呵成地完成复杂任务。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon research">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    </div>
+    <h2 class="section-title">值得关注</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Anthropic 测试"AI 购物代理" <span class="tag tag-product">产品</span></div>
+    <p>Anthropic 公布了"Project Deal"的早期测试结果，这是一个 AI 帮你比价购物的实验项目。OpenAI 和 Google 也在各自开发类似的购物代理。未来你的 AI 助手可能会替你在网上货比三家。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">美国电力需求因 AI 创历史新高 <span class="tag tag-industry">基建</span></div>
+    <p>2026 年美国用电量将达到 4244 亿千瓦时的历史新高，主要由 AI 和加密货币数据中心驱动。AI 不仅改变了软件世界，也在重塑实体基础设施。</p>
+  </div>
+</div>
+
+</div>
+
+<!-- ==================== 技术进阶版 ==================== -->
+<div id="tab-intermediate" class="tab-content">
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon industry">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    </div>
+    <h2 class="section-title">融资与企业战略</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Anthropic & OpenAI 企业合资 + 估值飙升 <span class="tag tag-industry">战略</span></div>
+    <p>两家头部 AI 公司同时宣布企业合资计划，标志着 AI 从研发驱动转向商业化落地的关键拐点。OpenAI 以 8520 亿美元估值融资 1220 亿，Anthropic 则以 9000 亿估值寻求 500 亿新融资。</p>
+    <div class="highlight">估值对比：OpenAI $852B vs Anthropic $900B。Anthropic 估值反超 OpenAI 的核心因素包括：更快的 ARR 增速（$30B）、更强的安全品牌溢价、以及与 Google/Amazon 的战略锚定。</div>
+    <div class="stats-row">
+      <div class="stat-item"><div class="stat-value">$852B</div><div class="stat-label">OpenAI 估值</div></div>
+      <div class="stat-item"><div class="stat-value">$900B</div><div class="stat-label">Anthropic 估值</div></div>
+      <div class="stat-item"><div class="stat-value">$122B</div><div class="stat-label">OpenAI 新融资</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Google 400 亿投资 Anthropic：TPU 芯片绑定 <span class="tag tag-industry">投资</span></div>
+    <p>Google 计划向 Anthropic 投资 400 亿美元（100 亿即时 + 300 亿里程碑式释放），与此同时 Anthropic 与 Google/Broadcom 签署 210 亿美元 TPU v7p 芯片订单（近百万枚）。投资与算力采购深度绑定。</p>
+    <p>技术含义：Anthropic 的训练和推理基础设施将进一步向 Google TPU 倾斜，降低对 NVIDIA GPU 的依赖度。这对 Anthropic 的模型架构优化方向也有隐含影响。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Nemotron 联盟：开放-专有混合生态 <span class="tag tag-product">联盟</span></div>
+    <p>NVIDIA 在 GTC 2026 联合 Mistral、Perplexity、Cursor 和 Reflection AI 成立 Nemotron 联盟。该联盟的技术核心是基于 NVIDIA 开源基础模型（Nemotron 系列）构建上层专有应用，形成"开源底座 + 专有增值"的分层生态。</p>
+    <p>Cursor 的加入尤其值得注意——这意味着代码生成领域也在向 NVIDIA 推理栈靠拢，未来可能在 TensorRT-LLM 上跑本地 Nemotron 做代码补全。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon policy">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </div>
+    <h2 class="section-title">政策与合规</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">五角大楼 AI 部署：8家入选，Anthropic 出局 <span class="tag tag-policy">军事 AI</span></div>
+    <p>Pentagon 与 OpenAI、Google、Microsoft、Amazon、Oracle、Nvidia、SpaceX、Reflection AI 签署机密军事 AI 合同。Anthropic 因拒绝同意"所有合法用途"条款而被排除。</p>
+    <div class="highlight">Anthropic 的拒绝理由：反对国内大规模监控和完全自主武器系统。Google DeepMind 研究员内部也对公司签约表示"极度羞耻"，这与 2018 年 Project Maven 抗议如出一辙。</div>
+    <p>技术视角：机密级 AI 部署意味着需要 air-gapped 部署、SCIF 环境运行、以及针对分类数据的 fine-tuning。这对模型安全性和可审计性提出了极高要求。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">xAI Grok 深伪危机与 TAKE IT DOWN 法案 <span class="tag tag-policy">安全</span></div>
+    <p>Grok 生成色情深伪内容引发国际危机，多国实施封禁。恰逢 TAKE IT DOWN 法案 2026 年 5 月生效，该法案专门针对非自愿亲密影像（包括 AI 生成内容）。</p>
+    <p>这凸显了 AI 内容安全中 RLHF 对齐和输出过滤的重要性。Grok 的失败说明仅靠 post-hoc 过滤不够，需要在训练阶段就嵌入安全约束。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">科罗拉多州 AI 法规延期至 2027 <span class="tag tag-policy">监管</span></div>
+    <p>科罗拉多州 AI 监管新妥协方案取消了要求企业解释 AI 技术工作原理的条款，实施日期从 2026 年 6 月推迟到 2027 年 1 月。这反映了 AI 透明度要求在实操层面的困难。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon model">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+    </div>
+    <h2 class="section-title">模型发布与更新</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">NVIDIA Nemotron 3 Nano Omni：统一多模态 <span class="tag tag-model">开源</span></div>
+    <p>Nemotron 3 Nano Omni 将视觉、语音和语言能力统一到单一模型架构中，面向 AI Agent 场景优化。关键指标：9x throughput vs 同类开源全模态模型。</p>
+    <p>核心技术：统一编码器架构避免了多模型 pipeline 的延迟累积，适合低延迟 agent 交互场景。特别适合端侧部署在 NVIDIA Jetson 系列硬件上。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">DeepSeek V4-Pro 价格战：0.25 元/M token <span class="tag tag-model">定价</span></div>
+    <p>DeepSeek V4-Pro 推出 2.5 倍折扣（至 5 月 5 日），输入仅 0.25 元/M token。NIST 5 月评估显示 V4 Pro 在能力上落后美国闭源模型约 8 个月，但性价比遥遥领先。</p>
+    <p>对开发者的影响：如果你的应用对延迟不敏感但对成本敏感（batch processing、文档分析等），DeepSeek V4-Pro 在现阶段可能是最优选择。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Google Gemma 4：开源 Agent 专属模型 <span class="tag tag-model">开源</span></div>
+    <p>Google 发布 Gemma 4，专为高级推理和 agentic workflow 设计的开源模型系列。主打 intelligence-per-parameter 效率，定位为开源 agent 框架的首选底座模型。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon gpu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/></svg>
+    </div>
+    <h2 class="section-title">机器人与物理 AI</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Isaac GR00T：VLA 推理赋能机器人 <span class="tag tag-product">机器人</span></div>
+    <p>NVIDIA Isaac GR00T 开源模型让机器人通过 Vision-Language-Action (VLA) 推理执行复杂多步任务。机器人可以理解自然语言指令，通过视觉观察环境，并生成对应的动作序列。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Motubrain：端到端统一机器人模型 <span class="tag tag-research">研究</span></div>
+    <p>生数科技 Motubrain 将视频预测、语言理解和动作生成合一。单模型支持 10 个原子动作序列（vs 传统系统 2-3 个），实时感知-预测-执行无需系统切换。</p>
+    <p>技术亮点：采用统一 transformer 架构处理三种模态，避免了传统 perception-planning-control pipeline 的信息瓶颈和误差累积。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">2026 物理 AI 投资爆发 <span class="tag tag-industry">趋势</span></div>
+    <p>Deloitte 预测人形机器人将在 2026 年实现自主工作。2025 年全球机器人创业融资 276 亿美元，较 2024 年的 137 亿翻倍。BlackSesame-RuQi 合作推动 L4 自动驾驶出租车产业化。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon product">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    </div>
+    <h2 class="section-title">Agent 与应用</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Agentic Commerce 三巨头试水 <span class="tag tag-product">Agent</span></div>
+    <p>Anthropic 公布"Project Deal"电商 Agent 测试结果，OpenAI 和 Google 也在开发各自的购物代理。Agentic Commerce 是 Agent 落地的第一个高频商业场景——AI 代替用户完成比价、下单、退换货等流程。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">AI 交易机器人迭代更新 <span class="tag tag-product">金融</span></div>
+    <p>8 个主流 AI 交易机器人完成 5 月更新，自主金融 agent 市场持续增长。这些系统集成了实时数据分析、风险管理和自动执行能力。</p>
+  </div>
+</div>
+
+</div>
+
+<!-- ==================== 深度技术版 ==================== -->
+<div id="tab-expert" class="tab-content">
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon industry">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    </div>
+    <h2 class="section-title">资本与基础设施</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">AI 估值体系分析：Anthropic $900B vs OpenAI $852B <span class="tag tag-industry">分析</span></div>
+    <p>Anthropic 估值首次超越 OpenAI 具有标志性意义。两者的估值驱动因素存在本质差异：</p>
+    <div class="stats-row">
+      <div class="stat-item"><div class="stat-value">$900B</div><div class="stat-label">Anthropic 目标估值</div></div>
+      <div class="stat-item"><div class="stat-value">$852B</div><div class="stat-label">OpenAI 当前估值</div></div>
+      <div class="stat-item"><div class="stat-value">$30B</div><div class="stat-label">Anthropic ARR</div></div>
+    </div>
+    <table class="tech-table">
+      <tr><th>指标</th><th>Anthropic</th><th>OpenAI</th></tr>
+      <tr><td>估值倍数 (ARR)</td><td>30x</td><td>~7x (est. $122B rev)</td></tr>
+      <tr><td>战略投资方</td><td>Google ($40B), Amazon ($25B+)</td><td>SoftBank, Microsoft</td></tr>
+      <tr><td>芯片战略</td><td>Google TPU v7p (百万枚)</td><td>自研 + NVIDIA</td></tr>
+      <tr><td>合规姿态</td><td>拒绝军事全权使用</td><td>签署五角大楼合同</td></tr>
+    </table>
+    <p>Anthropic-Google-Broadcom 的 210 亿美元 TPU v7p 芯片订单暗示 Anthropic 下一代模型（可能是 Claude 5 系列）将完全基于 TPU 架构训练，利用 Google 的 ICI (Inter-Chip Interconnect) 实现大规模分布式训练。</p>
+    <a href="https://techcrunch.com/2026/05/04/anthropic-and-openai-are-both-launching-joint-ventures-for-enterprise-ai-services/" class="source-link" target="_blank">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      TechCrunch
+    </a>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Nemotron 联盟技术架构 <span class="tag tag-product">生态</span></div>
+    <p>NVIDIA Nemotron 联盟的技术栈设计：</p>
+    <div class="highlight">Layer 0: Nemotron 开源基础模型（Nano/Pro/Ultra）<br/>Layer 1: TensorRT-LLM 推理优化层<br/>Layer 2: NIM (NVIDIA Inference Microservices) 部署层<br/>Layer 3: 合作伙伴专有应用层（Cursor/Perplexity/Mistral）</div>
+    <p>联盟成员在 Layer 3 构建差异化产品，但共享 Layer 0-2 的基础设施红利。Cursor 的加入意味着代码补全场景将直接在 TensorRT-LLM 上运行本地 Nemotron 模型，实现低延迟且无需 API 调用。</p>
+    <p>战略含义：NVIDIA 正从"卖铲子"转向"建平台"——不仅卖 GPU，还要通过开源模型 + 推理栈锁定上层应用开发者，形成类似 Android 的平台效应。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon model">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+    </div>
+    <h2 class="section-title">模型技术深度</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Nemotron 3 Nano Omni：统一多模态架构分析 <span class="tag tag-model">架构</span></div>
+    <p>Nemotron 3 Nano Omni 将三种模态（vision/speech/language）统一到单一 transformer 中，核心创新：</p>
+    <table class="tech-table">
+      <tr><th>指标</th><th>Nemotron 3 Nano Omni</th><th>典型多模型 Pipeline</th></tr>
+      <tr><td>Throughput</td><td>9x baseline</td><td>1x</td></tr>
+      <tr><td>延迟</td><td>单次 forward pass</td><td>3x forward pass (分别编码)</td></tr>
+      <tr><td>模态切换</td><td>零开销（共享 KV cache）</td><td>跨模型通信开销</td></tr>
+      <tr><td>部署目标</td><td>Jetson Orin / edge</td><td>云端多 GPU</td></tr>
+    </table>
+    <p>9x throughput 提升的技术来源：(1) 统一 KV cache 消除跨模型重复计算；(2) 模态间 attention 共享减少参数量；(3) 针对 TensorRT-LLM 的 kernel fusion 优化。</p>
+    <a href="https://blogs.nvidia.com/blog/nemotron-3-nano-omni-multimodal-ai-agents/" class="source-link" target="_blank">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      NVIDIA Blog
+    </a>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Google TurboQuant：KV Cache 压缩技术 <span class="tag tag-research">研究</span></div>
+    <p>TurboQuant 通过两项技术显著减少长上下文模型的内存占用：</p>
+    <div class="highlight">PolarQuant: 向量旋转对齐后量化，保留方向信息同时压缩幅值<br/>Quantized JL Projection: 基于 Johnson-Lindenstrauss 引理的随机投影压缩</div>
+    <p>关键洞察：KV cache 是 transformer 长上下文推理的主要内存瓶颈。对于 1M token 上下文的模型，KV cache 可能占用超过 100GB 内存。TurboQuant 将其压缩 4-8x 而几乎不损失精度（perplexity degradation < 0.1%）。</p>
+    <p>实际影响：使百万 token 上下文模型可以在单张 A100/H100 上运行推理，无需多卡并行。这对 DeepSeek V4（百万 token 上下文）和 Grok 4.3（百万 token）等模型的部署成本有直接影响。</p>
+    <a href="https://www.technologyreview.com/2026/04/21/1135643/10-ai-artificial-intelligence-trends-technologies-research-2026/" class="source-link" target="_blank">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      MIT Technology Review
+    </a>
+  </div>
+
+  <div class="card">
+    <div class="card-title">NIST DeepSeek V4 Pro 评估报告 <span class="tag tag-model">评测</span></div>
+    <p>NIST 2026 年 5 月评估要点：</p>
+    <table class="tech-table">
+      <tr><th>维度</th><th>DeepSeek V4 Pro</th><th>对标 (GPT-5.5/Claude Opus 4.7)</th></tr>
+      <tr><td>代码生成</td><td>-8 months gap</td><td>Baseline</td></tr>
+      <tr><td>推理深度</td><td>-6 months gap</td><td>Baseline</td></tr>
+      <tr><td>多模态</td><td>-12 months gap</td><td>Baseline</td></tr>
+      <tr><td>性价比</td><td>10-20x better</td><td>Baseline</td></tr>
+      <tr><td>上下文长度</td><td>1M tokens (native)</td><td>512K-1M</td></tr>
+    </table>
+    <p>结论：DeepSeek V4 Pro 在"足够好"场景下极具竞争力。0.25 元/M token 的限时价格让其在 batch inference 场景下几乎无竞争对手。但在需要最高推理质量的场景（如 frontier research、complex multi-step agent planning），闭源模型仍保持优势。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Gemma 4：Agentic Workflow 优化的开源模型 <span class="tag tag-model">架构</span></div>
+    <p>Google Gemma 4 技术特征：</p>
+    <p>专为 agentic 场景设计的架构改进包括：(1) 强化的 tool use 能力——原生支持 function calling 和 structured output；(2) 改进的 instruction following 精度——在多轮对话中保持任务一致性；(3) 优化的 intelligence-per-parameter 指标——在同参数量下达到更高推理准确率。</p>
+    <p>定位：作为 LangChain/CrewAI 等 agent 框架的首选本地模型，与 Nemotron 系列形成差异化（Nemotron 侧重多模态，Gemma 侧重推理和工具使用）。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon gpu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/></svg>
+    </div>
+    <h2 class="section-title">物理 AI 与机器人学</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Isaac GR00T：Vision-Language-Action 开源框架 <span class="tag tag-product">VLA</span></div>
+    <p>NVIDIA Isaac GR00T 是面向 humanoid 和 manipulation 机器人的 VLA (Vision-Language-Action) 开源模型。技术栈：</p>
+    <div class="highlight">Input: RGB/depth camera + natural language instruction<br/>Backbone: 预训练视觉 transformer + 语言 decoder<br/>Output: 连续动作空间中的 end-effector trajectory<br/>Training: 大规模仿真 (Isaac Sim) + real-world fine-tuning</div>
+    <p>相比传统 behavior cloning，GR00T 的 language-conditioned policy 允许零样本泛化到新指令。框架设计支持 sim-to-real transfer，大幅降低了真实环境数据采集成本。</p>
+    <a href="https://blogs.nvidia.com/blog/national-robotics-week-2026/" class="source-link" target="_blank">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      NVIDIA Blog
+    </a>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Motubrain：视频-语言-动作统一 Transformer <span class="tag tag-research">论文</span></div>
+    <p>生数科技 Motubrain 的架构创新：将视频预测（world model）、语言理解和低级动作控制统一到单一 transformer。</p>
+    <table class="tech-table">
+      <tr><th>能力</th><th>Motubrain</th><th>传统 pipeline</th></tr>
+      <tr><td>最大动作序列长度</td><td>10 atomic actions</td><td>2-3</td></tr>
+      <tr><td>模态融合</td><td>单一 attention（implicit）</td><td>显式 API 调用</td></tr>
+      <tr><td>世界模型</td><td>内化（视频预测分支）</td><td>外部模块</td></tr>
+      <tr><td>推理速度</td><td>实时（~30Hz）</td><td>5-10Hz（pipeline 延迟）</td></tr>
+    </table>
+    <p>核心贡献：消除了 perception-planning-control 三阶段 pipeline 的信息瓶颈。传统系统每个阶段只传递压缩表征，信息损失随阶段累积；Motubrain 在单一表征空间内完成所有推理。</p>
+    <a href="https://interestingengineering.com/ai-robotics/motubrain-unified-robot-ai-model" class="source-link" target="_blank">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      Interesting Engineering
+    </a>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon policy">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </div>
+    <h2 class="section-title">政策与治理深度</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">五角大楼 AI 合同技术要求推测 <span class="tag tag-policy">分析</span></div>
+    <p>基于公开信息推断的机密军事 AI 部署技术栈需求：</p>
+    <div class="highlight">Air-gapped 部署: 完全隔离互联网的私有基础设施<br/>SCIF 环境: 在 Sensitive Compartmented Information Facility 内运行<br/>分类数据 fine-tuning: 使用机密训练数据进行领域适配<br/>Red-teaming 审计: 独立安全评估团队持续对抗测试<br/>Kill switch: 硬件级模型关停能力</div>
+    <p>Anthropic 的拒绝立场技术解读："所有合法用途"意味着放弃模型用途限制的技术控制。一旦模型部署在机密环境中，AI 公司将失去对模型使用方式的可观测性和可干预性。这与 Anthropic 的 Responsible Scaling Policy (RSP) 中关于"了解模型使用方式"的核心原则冲突。</p>
+    <p>对比：OpenAI 选择接受，可能因为其 GPT-5.5/6 系列的安全架构已包含足够的输出级过滤机制，允许在失去用途可见性的情况下仍保持一定安全保证。</p>
+    <a href="https://www.ghacks.net/2026/05/04/pentagon-signs-ai-deals-with-openai-google-microsoft-nvidia-and-others-cutting-out-anthropic/" class="source-link" target="_blank">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      gHacks
+    </a>
+  </div>
+
+  <div class="card">
+    <div class="card-title">AI 公司伦理分化：哲学家招聘潮 <span class="tag tag-policy">治理</span></div>
+    <p>Anthropic、OpenAI 和 DeepMind 正大规模招聘哲学家处理 AI 伦理问题，各公司采取不同路径：</p>
+    <table class="tech-table">
+      <tr><th>公司</th><th>伦理路径</th><th>表现</th></tr>
+      <tr><td>Anthropic</td><td>Constitutional AI + 用途限制</td><td>拒绝军事全权 → 估值仍更高</td></tr>
+      <tr><td>OpenAI</td><td>安全系统 + 商业合规</td><td>接受军事合同 + 安全过滤</td></tr>
+      <tr><td>DeepMind</td><td>内部研究员 + 签约执行</td><td>签约但研究员抗议</td></tr>
+    </table>
+    <p>从 AI safety 研究角度，Anthropic 的 RSP 框架要求在每个 ASL (AI Safety Level) 达标前暂停扩展——这与允许军方无限制使用根本矛盾。而 OpenAI 的"安全系统"方法允许在部署后通过技术手段实施约束，更适合军事场景。</p>
+    <a href="https://www.digitimes.com/news/a20260427PD201/deepmind-google-governance-anthropic-openai.html" class="source-link" target="_blank">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      Digitimes
+    </a>
+  </div>
+</div>
+
+</div>
+
+</div>
+
+<footer class="footer">
+  <p>AI Pulse Daily Report - 由 AI 自动聚合生成</p>
+  <p>数据来源: WebSearch, TechCrunch, MIT Technology Review, NVIDIA Blog, CNBC, 新浪科技, CSDN</p>
+</footer>
+
+<script>
+function switchTab(tabName) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + tabName).classList.add('active');
+  const tabs = ['casual', 'intermediate', 'expert'];
+  const idx = tabs.indexOf(tabName);
+  document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily Report | 2026.05.06</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --claude-bg: #FAF9F7;
+    --claude-surface: #FFFFFF;
+    --claude-border: #E8E5E0;
+    --claude-text-primary: #1A1714;
+    --claude-text-secondary: #6B6560;
+    --claude-text-tertiary: #9B9590;
+    --claude-accent: #DA7756;
+    --claude-accent-light: #F5E6DF;
+    --claude-accent-dark: #C4623F;
+    --claude-tag-blue: #E8F0FE;
+    --claude-tag-blue-text: #3B6CB5;
+    --claude-tag-green: #E6F4EA;
+    --claude-tag-green-text: #2D7A3F;
+    --claude-tag-purple: #F0E6FA;
+    --claude-tag-purple-text: #7B3FAF;
+    --claude-tag-amber: #FEF3E2;
+    --claude-tag-amber-text: #B5752D;
+    --claude-tag-red: #FDE8E8;
+    --claude-tag-red-text: #B53B3B;
+    --claude-card-shadow: 0 1px 3px rgba(26, 23, 20, 0.06), 0 1px 2px rgba(26, 23, 20, 0.04);
+    --claude-card-shadow-hover: 0 4px 12px rgba(26, 23, 20, 0.08), 0 2px 4px rgba(26, 23, 20, 0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+    background: var(--claude-bg);
+    color: var(--claude-text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 8px;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--claude-accent-dark); }
+
+  .header {
+    text-align: center;
+    padding: 48px 0 40px;
+    border-bottom: 1px solid var(--claude-border);
+    margin-bottom: 32px;
+  }
+
+  .header-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--claude-accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .header .date {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    font-weight: 400;
+  }
+
+  .header .edition-note {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    margin-top: 8px;
+  }
+
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 36px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--claude-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .tab-btn:hover {
+    color: var(--claude-text-primary);
+    background: var(--claude-bg);
+  }
+
+  .tab-btn.active {
+    background: var(--claude-accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(218, 119, 86, 0.3);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .section { margin-bottom: 36px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .section-icon.gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .section-icon.model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .section-icon.product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .section-icon.research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .section-icon.industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .section-icon.policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .card {
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--claude-card-shadow);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .card:hover { box-shadow: var(--claude-card-shadow-hover); }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .card p {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.75;
+    margin-bottom: 8px;
+  }
+
+  .card p:last-child { margin-bottom: 0; }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .tag-gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .tag-model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .tag-product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .tag-research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .tag-industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .tag-policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .highlight {
+    background: var(--claude-accent-light);
+    border-left: 3px solid var(--claude-accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--claude-accent-dark);
+    line-height: 1.7;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .stat-item {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--claude-accent);
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--claude-text-tertiary);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 8px;
+    transition: color 0.15s;
+  }
+
+  .source-link:hover { color: var(--claude-accent-dark); text-decoration: underline; }
+
+  .tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .tech-table th, .tech-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .tech-table th {
+    font-weight: 600;
+    color: var(--claude-text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .tech-table td { color: var(--claude-text-primary); }
+
+  .footer {
+    text-align: center;
+    padding-top: 40px;
+    border-top: 1px solid var(--claude-border);
+    margin-top: 60px;
+  }
+
+  .footer p {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    line-height: 1.8;
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 24px 16px 60px; }
+    .header { padding: 32px 0 28px; }
+    .header h1 { font-size: 24px; }
+    .tab-btn { font-size: 12px; padding: 10px 8px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<a href="/" class="back-link">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+  返回 AI Pulse
+</a>
+
+<header class="header">
+  <div class="header-logo">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    AI PULSE
+  </div>
+  <h1>AI 日报 | 2026.05.06</h1>
+  <p class="date">星期三 / Wednesday, May 6, 2026</p>
+  <p class="edition-note">Edition #48 - AI 金融代理爆发，GPT-5.5 幻觉争议升温</p>
+</header>
+
+<nav class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('casual')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+    轻松阅读
+  </button>
+  <button class="tab-btn" onclick="switchTab('intermediate')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+    技术进阶
+  </button>
+  <button class="tab-btn" onclick="switchTab('expert')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+    深度技术
+  </button>
+</nav>
+
+<!-- ==================== 轻松阅读版 ==================== -->
+<div id="tab-casual" class="tab-content active">
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon product">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    </div>
+    <h2 class="section-title">AI 代理进入华尔街</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Anthropic 推出金融服务 AI 代理 <span class="tag tag-product">重磅</span></div>
+    <p>Anthropic 一口气发布了 10 个预置 AI 代理模板，专门面向金融行业。从自动生成投资报告、KYC 客户筛查到月末结账，以前需要几个小时的工作现在几分钟就能搞定。同时还打通了微软 Office 全家桶，Claude 可以在 Excel、PPT、Word 之间自由穿梭。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Claude 联手 FIS 做反洗钱调查 <span class="tag tag-product">应用</span></div>
+    <p>Anthropic 与全球最大的金融科技公司之一 FIS 合作，让 AI 代理来做反洗钱调查。以前合规人员要花数小时翻阅交易记录，现在 AI 可以在几分钟内完成初步筛查。此外，Anthropic 还在实验 AI 代理"自主购物"市场，让 AI 代理之间自动谈判和交易。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon model">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+    </div>
+    <h2 class="section-title">GPT-5.5 争议风波</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">GPT-5.5 Instant 成为 ChatGPT 默认模型 <span class="tag tag-model">模型</span></div>
+    <p>OpenAI 把 GPT-5.5 Instant 设为 ChatGPT 的默认模型，号称编程能力接近高级工程师水平。但独立测评机构 Artificial Analysis 发现一个尴尬的事实：GPT-5.5 在非训练领域的幻觉率高达 86%，远高于 Claude Opus 4.7 的 36%。OpenAI 自称幻觉减少 60%，但用的是自家测试集。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Sierra 融资 9.5 亿美元，企业 AI 代理大战升级 <span class="tag tag-industry">融资</span></div>
+    <p>由前 Salesforce 联合 CEO Bret Taylor 创办的 Sierra 拿到了 9.5 亿美元 E 轮融资，估值达 158 亿美元。这家公司的 AI 代理已经服务了超过 40% 的财富 50 强企业，处理房贷再融资、保险理赔、退货等数十亿次交互。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon gpu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/></svg>
+    </div>
+    <h2 class="section-title">芯片与国产化</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">NVIDIA Rubin 平台正式量产 <span class="tag tag-gpu">芯片</span></div>
+    <p>NVIDIA 下一代 AI 平台 Rubin 进入全面量产阶段，一口气发布了 6 款新芯片和一台 AI 超级计算机。AWS、Google Cloud、微软等云巨头将在 2026 年下半年率先部署。AI 算力军备竞赛又上了一个新台阶。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">DeepSeek V4 全面支持华为昇腾芯片 <span class="tag tag-gpu">国产化</span></div>
+    <p>DeepSeek V4 首次把华为昇腾芯片和 NVIDIA 芯片并列写进了官方硬件验证清单。国产昇腾芯片价格只有 NVIDIA 的四分之一，单卡算力还比对华特供版高 2.87 倍。中国 AI 芯片自主化迈出关键一步。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">NVIDIA 进军量子计算 <span class="tag tag-research">前沿</span></div>
+    <p>NVIDIA 发布了全球首个开源量子-AI 模型系列 Ising，包含 350 亿参数的量子校准模型，速度比现有标准快 2.5 倍、精度高 3 倍。量子计算概念股闻声大涨。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon policy">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </div>
+    <h2 class="section-title">安全与监管</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">2026 被称为"AI 辅助攻击元年" <span class="tag tag-policy">安全</span></div>
+    <p>网络安全圈已经把 2026 年定义为"AI 辅助攻击元年"。28.3% 的漏洞在披露 24 小时内就被利用，AI 工具被武器化攻击墨西哥政府机构，泄露了 150GB 敏感数据。73% 的安全专业人员表示已经遭遇 AI 驱动的威胁。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Stanford 报告：AI 采纳率 88%，但透明度大降 <span class="tag tag-research">报告</span></div>
+    <p>Stanford 年度 AI 指数报告显示，企业 AI 采纳率已达 88%，生成式 AI 三年内就达到 53% 的普及率，比 PC 和互联网都快。但模型透明度得分从 58 分降到了 40 分，训练大模型的碳排放也令人担忧。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon research">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    </div>
+    <h2 class="section-title">机器人与具身智能</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">智元机器人量产破万台 <span class="tag tag-product">机器人</span></div>
+    <p>中国机器人公司智元仅用 3 个多月就从 5000 台跨越至 10000 台量产。同时启动了为期 6 天的 AI 发布周，展示了物理 AI 大模型、多模态感知等全栈自研技术。机器人已进入汽车制造、3C 装配、物流仓储等真实工业场景。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">特斯拉 Optimus 7-8 月投产，年产能百万台 <span class="tag tag-product">机器人</span></div>
+    <p>特斯拉将在今年 7-8 月正式投产 Optimus 人形机器人，弗里蒙特工厂设计年产能 100 万台。优必选也上调了 Walker S 系列出货目标至 5000 台。2026 年全球人形机器人出货量预计达 15000 台，是去年的三倍。</p>
+  </div>
+</div>
+
+</div>
+
+<!-- ==================== 技术进阶版 ==================== -->
+<div id="tab-intermediate" class="tab-content">
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon product">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    </div>
+    <h2 class="section-title">Anthropic 金融代理生态</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">10 个金融预置代理 + Microsoft 365 全面集成 <span class="tag tag-product">产品</span></div>
+    <p>Anthropic 发布了面向金融服务的 10 个预置 AI 代理模板，覆盖投资报告生成(pitchbook building)、KYC 客户筛查、月末结账自动化等核心场景。同时宣布 Microsoft 365 深度集成正式 GA（Excel、PowerPoint、Word 插件），Outlook 进入 Beta。</p>
+    <p>技术亮点在于跨应用上下文保持——Claude 可以在 Excel 数据分析后直接将结论写入 Word 报告并生成 PPT 演示文稿，全程保持上下文连贯。这对金融行业日常的多应用工作流是质的提升。</p>
+    <div class="highlight">与 FIS 合作的反洗钱代理是目前最有说服力的落地案例之一：将合规调查从数小时压缩至数分钟，同时保持审计可追溯性。Anthropic 还在开发实验性的 AI 代理商务市场(agent commerce marketplace)，让代理间自主谈判和交易。</div>
+    <a href="https://fortune.com/2026/05/05/anthropic-wall-street-financial-services-agents-jamie-dimon/" class="source-link" target="_blank">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      Fortune
+    </a>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon model">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+    </div>
+    <h2 class="section-title">模型动态与基准争议</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">GPT-5.5 Instant：性能强悍但幻觉率引质疑 <span class="tag tag-model">模型</span></div>
+    <p>OpenAI 将 GPT-5.5 Instant 设为 ChatGPT 默认模型。SWE-Bench Verified 88.7%（高级工程师水平），SWE-Bench Pro 58.6%，1M token 上下文窗口。OpenAI 声称幻觉减少 60%。</p>
+    <p>但 Artificial Analysis 的独立测评给出了完全不同的结论：在领域外事实性问题上，GPT-5.5 的幻觉率高达 86%，而 Claude Opus 4.7 仅 36%，Gemini 3.1 Pro 为 50%。差距如此悬殊的原因可能是 OpenAI 使用了自有测试集进行评估，与第三方测试集分布差异较大。</p>
+    <div class="stats-row">
+      <div class="stat-item"><div class="stat-value">88.7%</div><div class="stat-label">SWE-Bench Verified</div></div>
+      <div class="stat-item"><div class="stat-value">86%</div><div class="stat-label">幻觉率 (Artificial Analysis)</div></div>
+      <div class="stat-item"><div class="stat-value">1M</div><div class="stat-label">上下文窗口</div></div>
+    </div>
+    <a href="https://techcrunch.com/2026/05/05/openai-releases-gpt-5-5-instant-a-new-default-model-for-chatgpt/" class="source-link" target="_blank">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      TechCrunch
+    </a>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Sierra $950M E 轮：企业代理的标杆估值 <span class="tag tag-industry">融资</span></div>
+    <p>Sierra 由 Bret Taylor (前 Salesforce 联合 CEO) 和 Clay Bavor (前 Google 高管) 创办，本轮由 Tiger Global 和 GV 领投。核心产品是面向大企业的对话式 AI 代理平台，已覆盖 40%+ 的财富 50 强，处理房贷再融资、保险理赔等高价值场景。</p>
+    <p>$158 亿估值意味着市场对"垂直行业代理"赛道的信心。与通用大模型公司不同，Sierra 的护城河在于行业 know-how 和企业客户关系。</p>
+    <a href="https://techcrunch.com/2026/05/04/sierra-raises-950m-as-the-race-to-own-enterprise-ai-gets-serious/" class="source-link" target="_blank">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      TechCrunch
+    </a>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon gpu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/></svg>
+    </div>
+    <h2 class="section-title">芯片与算力基础设施</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">NVIDIA Rubin 全面量产 + Ising 量子 AI 模型 <span class="tag tag-gpu">硬件</span></div>
+    <p>Rubin 平台进入全面量产，6 款新芯片 + AI 超算同时亮相。AWS、Google Cloud、Microsoft Azure、Oracle Cloud 将在 H2 2026 首批部署 Vera Rubin NVL72 机架式系统。</p>
+    <p>同时发布的 Ising 系列是全球首个开源量子-AI 模型家族，包含 35B 参数的量子校准模型和 3D 神经网络解码器（比现有开源标准快 2.5x、精度高 3x）。NVIDIA 正在从 GPU 霸主向"AI 全栈+量子"平台型公司转型。</p>
+    <a href="https://nvidianews.nvidia.com/news/rubin-platform-ai-supercomputer" class="source-link" target="_blank">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      NVIDIA Newsroom
+    </a>
+  </div>
+
+  <div class="card">
+    <div class="card-title">DeepSeek V4 + 华为昇腾：国产 AI 芯片里程碑 <span class="tag tag-gpu">国产化</span></div>
+    <p>DeepSeek V4 首次将华为昇腾芯片与 NVIDIA 并列纳入官方硬件验证清单。核心数据：昇腾芯片采购价格仅为 NVIDIA 对华特供版的 1/4，单卡算力提升 2.87 倍。中信院已启动 V4 国产化适配测试。</p>
+    <p>这是中国 AI 芯片去美化的标志性事件。DeepSeek 的 V4-Pro (1.6T/49B MoE) 和 V4-Flash (284B/13B) 均已在昇腾上完成验证，证明了国产芯片在训练和推理两端的可行性。</p>
+    <a href="https://www.chinanews.com.cn/cj/2026/05-01/10614230.shtml" class="source-link" target="_blank">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      中新网
+    </a>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon policy">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </div>
+    <h2 class="section-title">安全威胁与行业报告</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">AI 辅助攻击元年：核心数据解读 <span class="tag tag-policy">安全</span></div>
+    <p>Hacker News 和 OWASP 的最新报告将 2026 年定义为"AI 辅助攻击元年"。28.3% 的 CVE 在披露 24 小时内即被利用（比 2025 年提升显著）。73% 的安全从业者已遭遇 AI 驱动威胁。</p>
+    <p>主要攻击向量分布：超个性化钓鱼 (50%)、自动化漏洞链利用 (45%)、自适应恶意软件 (40%)、深伪语音欺诈 (40%)。公开仓库恶意包数量同比增长 75%，云入侵事件增长 35%。</p>
+    <div class="stats-row">
+      <div class="stat-item"><div class="stat-value">28.3%</div><div class="stat-label">CVE 24h 内被利用</div></div>
+      <div class="stat-item"><div class="stat-value">73%</div><div class="stat-label">安全人员已遭遇 AI 威胁</div></div>
+      <div class="stat-item"><div class="stat-value">+75%</div><div class="stat-label">恶意包同比增长</div></div>
+    </div>
+    <a href="https://thehackernews.com/2026/05/2026-year-of-ai-assisted-attacks.html" class="source-link" target="_blank">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      The Hacker News
+    </a>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Stanford AI Index 2026：采纳爆发但透明度下降 <span class="tag tag-research">报告</span></div>
+    <p>Stanford HAI 年度报告核心发现：企业 AI 采纳率 88%，生成式 AI 仅用 3 年就达到 53% 的人口普及率（PC 花了 15 年，互联网花了 7 年）。SWE-Bench Verified 一年内从 60% 飙升至接近 100%。</p>
+    <p>但模型透明度得分从 58 分降至 40 分。中美模型性能交替领先，Anthropic 最强模型仅领先 2.7%。训练前沿 LLM（如 xAI 的 Grok 4）可产生 72,000+ 吨碳排放。</p>
+    <a href="https://hai.stanford.edu/news/inside-the-ai-index-12-takeaways-from-the-2026-report" class="source-link" target="_blank">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      Stanford HAI
+    </a>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon research">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    </div>
+    <h2 class="section-title">机器人量产加速</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">智元破万台 + Tesla Optimus 投产倒计时 <span class="tag tag-product">机器人</span></div>
+    <p>智元机器人 3 个月内从 5,000 台增至 10,000 台，启动 6 天 AI 发布周展示全栈自研技术。特斯拉 Optimus 将于 7-8 月在弗里蒙特投产（首年产线设计年产能 100 万台）。优必选 Walker S 出货目标上调至 5,000 台。</p>
+    <p>2026 年全球人形机器人出货量预计从 5,000-7,000 台增至 15,000 台。VLA (Vision-Language-Action) 模型让机器人代理任务成功率从 20% 提升至 77.3%。行业正在从实验室验证进入规模化部署。</p>
+    <a href="https://juejin.cn/post/7631753968203087915" class="source-link" target="_blank">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      掘金
+    </a>
+  </div>
+</div>
+
+</div>
+
+<!-- ==================== 深度技术版 ==================== -->
+<div id="tab-expert" class="tab-content">
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon product">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    </div>
+    <h2 class="section-title">Anthropic 金融代理架构深度分析</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">预置代理模板 + M365 集成 + Agent Commerce <span class="tag tag-product">架构</span></div>
+    <p>Anthropic 发布的 10 个金融代理模板涵盖：投资报告生成(Pitchbook Builder)、KYC 自动筛查(KYC Screener)、月末结账(Month-End Close)、反洗钱调查(AML Investigation)、合规审查(Compliance Review)等。技术架构上，这些模板基于 Claude 的 tool use 能力构建，通过预定义的工具链和 prompt 模板实现行业场景的开箱即用。</p>
+    <p>Microsoft 365 集成是关键差异化：Excel 插件支持数据分析 → Word 插件生成报告 → PowerPoint 插件制作演示，全程跨应用上下文保持。底层通过 Microsoft Graph API 实现文档间的语义关联，Claude 可以在不同应用间传递分析结论和数据引用。</p>
+    <div class="highlight">Agent Commerce Marketplace 实验值得关注：Anthropic 正在测试让 AI 代理间自主谈判和交易的市场机制。这超越了传统的 API 调用模式，走向代理间的经济行为——价格发现、合约协商、服务交换。如果成功，将重新定义 B2B SaaS 的商业模式。</div>
+    <p>与 FIS 的合作细节：AML 调查代理能够在数分钟内完成交易模式识别、可疑关系网络图谱构建、合规文档生成。关键技术挑战在于审计可追溯性——金融监管要求每个决策步骤可解释、可回溯，这对 Claude 的 reasoning transparency 提出了更高要求。</p>
+    <a href="https://www.bloomberg.com/news/articles/2026-05-05/anthropic-unveils-ai-agents-to-field-financial-services-tasks" class="source-link" target="_blank">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      Bloomberg
+    </a>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon model">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+    </div>
+    <h2 class="section-title">模型基准测试深度对比</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">GPT-5.5 幻觉率争议：测试方法论分歧 <span class="tag tag-model">分析</span></div>
+    <p>GPT-5.5 (代号 Spud) 采用原生全向多模态架构(omni-modal)，统一处理文本、图像、音频和视频。LisanBench 测试显示文本 IQ 133、视觉 IQ 145（首次跨越门萨 130 分门槛），Token 使用减少 45.6%。</p>
+    <p>Artificial Analysis 的独立测评揭示了一个严重问题：在分布外(OOD)事实性问题上，GPT-5.5 幻觉率高达 86%，而 Claude Opus 4.7 仅 36%。原因分析：</p>
+    <table class="tech-table">
+      <tr><th>模型</th><th>SWE-Bench Verified</th><th>SWE-Bench Pro</th><th>幻觉率 (OOD)</th><th>Code Arena Elo</th></tr>
+      <tr><td>GPT-5.5 Instant</td><td>88.7%</td><td>58.6%</td><td>86%</td><td>~1,540</td></tr>
+      <tr><td>Claude Opus 4.7</td><td>87.6%</td><td>64.3%</td><td>36%</td><td>1,565</td></tr>
+      <tr><td>Gemini 3.1 Pro</td><td>—</td><td>—</td><td>50%</td><td>—</td></tr>
+      <tr><td>Kimi K2.6</td><td>80.2%</td><td>56-59</td><td>—</td><td>1,529</td></tr>
+      <tr><td>GLM-5.1</td><td>—</td><td>58.4</td><td>—</td><td>—</td></tr>
+      <tr><td>DeepSeek V4-Pro</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+    </table>
+    <p>OpenAI 声称的"幻觉减少 60%"使用的是内部评估集，而 Artificial Analysis 使用的是分布外数据集。这暴露了 AI 行业 benchmark 的核心问题：训练数据泄露(data contamination)使得在分布内表现与实际部署效果严重脱节。Claude Opus 4.7 在 SWE-Bench Pro 上以 64.3% 领先 GPT-5.5 的 58.6%，在幻觉控制上差距更为显著。</p>
+    <a href="https://tokenmix.ai/blog/gpt-5-5-spud-review-88-swe-bench-2026" class="source-link" target="_blank">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      TokenMix
+    </a>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon gpu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/></svg>
+    </div>
+    <h2 class="section-title">芯片架构与量子 AI</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">NVIDIA Rubin 平台技术解析 <span class="tag tag-gpu">架构</span></div>
+    <p>Rubin 平台正式进入全面量产，核心升级包括：新一代 GPU 架构、NVLink 6.0 互联、Vera Rubin NVL72 机架式系统（72 GPU 全互联）。微软率先部署 Vera Rubin NVL72 用于下一代 AI 数据中心。</p>
+    <p>Ising 量子 AI 模型系列技术细节：35B 参数量子校准模型用于降低量子比特错误率，3D 神经网络解码器在 surface code 解码任务上实现 2.5x 速度提升和 3x 精度提升。这是 NVIDIA 首次将其 AI 训练能力应用于量子纠错领域，可能加速容错量子计算的实用化进程。</p>
+    <a href="https://www.infoq.com/news/2026/04/nvidia-ising-quantum/" class="source-link" target="_blank">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      InfoQ
+    </a>
+  </div>
+
+  <div class="card">
+    <div class="card-title">DeepSeek V4 昇腾适配：训练架构剖析 <span class="tag tag-gpu">深度</span></div>
+    <p>DeepSeek V4 在华为昇腾上的适配细节：V4-Pro (1.6T 参数/490B 激活) 和 V4-Flash (284B 参数/130B 激活) 均基于 MoE 架构，采用新型混合注意力机制 (Compressed Sparse Attention + Heavily Compressed Attention)，推理 FLOPs 仅为 V3.2 的 27%，KV cache 降至 10%。</p>
+    <p>昇腾 910B 适配的关键挑战在于算子层面的优化——MoE 的专家路由和稀疏注意力需要针对昇腾的 Da Vinci 架构进行定制化实现。中信院正在开展的适配测试覆盖训练和推理两端，验证精度损失是否在可接受范围内。如果测试通过，意味着中国 AI 公司将拥有一条完全自主可控的从芯片到模型的全栈方案。</p>
+    <a href="https://www.stcn.com/article/detail/3782786.html" class="source-link" target="_blank">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      证券时报
+    </a>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon policy">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </div>
+    <h2 class="section-title">AI 安全攻防技术分析</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">2026 攻击向量全景：从钓鱼到供应链 <span class="tag tag-policy">深度</span></div>
+    <p>OWASP Q1 2026 报告和 Hacker News 综合数据揭示了 AI 辅助攻击的完整图谱：</p>
+    <table class="tech-table">
+      <tr><th>攻击向量</th><th>占比</th><th>同比变化</th><th>典型案例</th></tr>
+      <tr><td>超个性化钓鱼</td><td>50%</td><td>+120%</td><td>AI 生成的目标定制邮件</td></tr>
+      <tr><td>自动化漏洞链利用</td><td>45%</td><td>+85%</td><td>28.3% CVE 24h 内被利用</td></tr>
+      <tr><td>自适应恶意软件</td><td>40%</td><td>+60%</td><td>AI 驱动的多态变种生成</td></tr>
+      <tr><td>深伪语音欺诈</td><td>40%</td><td>+200%</td><td>CEO 语音克隆骗局</td></tr>
+      <tr><td>供应链投毒</td><td>—</td><td>+75%</td><td>公开仓库恶意包激增</td></tr>
+      <tr><td>云基础设施入侵</td><td>—</td><td>+35%</td><td>AI 辅助的横向移动</td></tr>
+    </table>
+    <p>墨西哥政府机构攻击事件中，攻击者利用 AI 工具自动化了从侦察到数据渗出的完整攻击链，150GB 敏感数据在短时间内泄露。Cursor IDE 的已修复漏洞 (pre-v2.5) 也说明 AI 编码工具本身正在成为新的攻击面——恶意 Git 仓库可触发任意代码执行。</p>
+    <p>防御建议：将 AI 编码代理视为"半自主队友"，限制其文件系统和网络访问权限；部署 AI 驱动的 EDR 系统实现实时威胁检测；对供应链依赖实施自动化安全扫描。</p>
+    <a href="https://genai.owasp.org/2026/04/14/owasp-genai-exploit-round-up-report-q1-2026/" class="source-link" target="_blank">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      OWASP GenAI Report
+    </a>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Stanford AI Index 2026 关键技术指标 <span class="tag tag-research">报告</span></div>
+    <p>Stanford HAI 报告中最值得关注的技术数据点：</p>
+    <table class="tech-table">
+      <tr><th>指标</th><th>2025</th><th>2026</th><th>趋势</th></tr>
+      <tr><td>SWE-Bench Verified 最高分</td><td>~60%</td><td>~100%</td><td>一年内饱和</td></tr>
+      <tr><td>企业 AI 采纳率</td><td>72%</td><td>88%</td><td>+16pp</td></tr>
+      <tr><td>GenAI 人口普及率</td><td>35%</td><td>53%</td><td>3年达到 PC 15年水平</td></tr>
+      <tr><td>模型透明度得分</td><td>58</td><td>40</td><td>-31%</td></tr>
+      <tr><td>中美模型性能差距</td><td>交替领先</td><td>Anthropic领先2.7%</td><td>趋同</td></tr>
+      <tr><td>Grok 4 训练碳排放</td><td>—</td><td>72,000+ 吨</td><td>持续攀升</td></tr>
+    </table>
+    <p>SWE-Bench Verified 在一年内从 60% 飙升至接近 100% 的饱和，说明该基准已无法有效区分前沿模型——业界需要更难的编程基准。SWE-Bench Pro 成为新的区分标准（当前最高 64.3%，来自 Claude Opus 4.7）。模型透明度得分的大幅下降（58→40）引发了对"闭源化趋势"的担忧，尤其在安全攸关的应用场景中。</p>
+    <a href="https://hai.stanford.edu/news/inside-the-ai-index-12-takeaways-from-the-2026-report" class="source-link" target="_blank">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      Stanford HAI
+    </a>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon research">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    </div>
+    <h2 class="section-title">人形机器人技术路线分析</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">VLA 模型驱动的任务成功率飞跃 <span class="tag tag-research">技术</span></div>
+    <p>2026 年人形机器人领域最大的技术突破在于 Vision-Language-Action (VLA) 模型的成熟。VLA 模型使机器人代理任务成功率从 2025 年的 20% 提升至 77.3%——近 4 倍的提升。</p>
+    <p>核心架构：VLA 模型统一了视觉感知（摄像头输入）、语言理解（自然语言指令）和动作生成（关节控制信号）三个模态。NVIDIA Isaac GR00T 和 Newton 1.0 物理引擎提供了标准化的训练和推理框架。智元机器人的全栈方案（物理 AI 大模型 + 多模态感知 + 全身运动控制）在工业场景中验证了这一架构的可行性。</p>
+    <table class="tech-table">
+      <tr><th>公司</th><th>产品</th><th>2026 目标</th><th>技术路线</th></tr>
+      <tr><td>智元机器人</td><td>通用人形</td><td>10,000+ 台</td><td>全栈自研 VLA + 物理 AI</td></tr>
+      <tr><td>特斯拉</td><td>Optimus</td><td>7-8月投产 (100万/年产线)</td><td>端到端神经网络</td></tr>
+      <tr><td>优必选</td><td>Walker S</td><td>5,000 台</td><td>NVIDIA Isaac + 自研控制</td></tr>
+      <tr><td>UBTech</td><td>Walker S2</td><td>已出货 1,000+</td><td>视觉导航 + 操作融合</td></tr>
+    </table>
+    <p>特斯拉 100 万台年产能的设计目标远超行业预期（全行业 2026 年出货量仅 15,000 台），这意味着 Optimus 的定价策略将极具攻击性，可能重塑整个行业的成本结构。</p>
+  </div>
+</div>
+
+</div>
+
+</div>
+
+<footer class="footer">
+  <p>AI Pulse Daily Report - 由 AI 自动聚合生成</p>
+  <p>数据来源: WebSearch, Fortune, Bloomberg, TechCrunch, CNBC, Stanford HAI, OWASP, 中新网, 证券时报, 掘金</p>
+</footer>
+
+<script>
+function switchTab(tabName) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + tabName).classList.add('active');
+  const tabs = ['casual', 'intermediate', 'expert'];
+  const idx = tabs.indexOf(tabName);
+  document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+}
+</script>
+
+</body>
+</html>

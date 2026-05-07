@@ -45,6 +45,7 @@
     { "date": "2026-05-03", "file": "2026-05-03.html", "title": "AI Daily Report | 2026.05.03", "tags": ["Musk xAI Distills", "SoftBank Roze", "EU AI Act Stall"] },
     { "date": "2026-05-05", "file": "2026-05-05.html", "title": "AI Daily Report | 2026.05.05", "tags": ["Nemotron Coalition", "Pentagon AI", "Anthropic $900B"] },
     { "date": "2026-05-06", "file": "2026-05-06.html", "title": "AI Daily Report | 2026.05.06", "tags": ["Financial AI Agents", "GPT-5.5 Hallucination", "Sierra $950M"] },
-    { "date": "2026-05-07", "file": "2026-05-07.html", "title": "AI Daily Report | 2026.05.07", "tags": ["Anthropic $200B Google Cloud", "Pentagon AI Alliance", "NIST Model Testing"] }
+    { "date": "2026-05-07", "file": "2026-05-07.html", "title": "AI Daily Report | 2026.05.07", "tags": ["Anthropic $200B Google Cloud", "Pentagon AI Alliance", "NIST Model Testing"] },
+    { "date": "2026-05-08", "file": "2026-05-08.html", "title": "AI Daily Report | 2026.05.08", "tags": ["GPT-Realtime Audio", "Anthropic SpaceX", "DeepSeek $45B"] }
   ]
 }

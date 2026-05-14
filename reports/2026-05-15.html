@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily Report | 2026.05.15</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --claude-bg: #FAF9F7;
+    --claude-surface: #FFFFFF;
+    --claude-border: #E8E5E0;
+    --claude-text-primary: #1A1714;
+    --claude-text-secondary: #6B6560;
+    --claude-text-tertiary: #9B9590;
+    --claude-accent: #DA7756;
+    --claude-accent-light: #F5E6DF;
+    --claude-accent-dark: #C4623F;
+    --claude-tag-blue: #E8F0FE;
+    --claude-tag-blue-text: #3B6CB5;
+    --claude-tag-green: #E6F4EA;
+    --claude-tag-green-text: #2D7A3F;
+    --claude-tag-purple: #F0E6FA;
+    --claude-tag-purple-text: #7B3FAF;
+    --claude-tag-amber: #FEF3E2;
+    --claude-tag-amber-text: #B5752D;
+    --claude-tag-red: #FDE8E8;
+    --claude-tag-red-text: #B53B3B;
+    --claude-card-shadow: 0 1px 3px rgba(26, 23, 20, 0.06), 0 1px 2px rgba(26, 23, 20, 0.04);
+    --claude-card-shadow-hover: 0 4px 12px rgba(26, 23, 20, 0.08), 0 2px 4px rgba(26, 23, 20, 0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+    background: var(--claude-bg);
+    color: var(--claude-text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 8px;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--claude-accent-dark); }
+
+  .header {
+    text-align: center;
+    padding: 48px 0 40px;
+    border-bottom: 1px solid var(--claude-border);
+    margin-bottom: 32px;
+  }
+
+  .header-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--claude-accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .header .date {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    font-weight: 400;
+  }
+
+  .header .edition-note {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    margin-top: 8px;
+  }
+
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 36px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--claude-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .tab-btn:hover {
+    color: var(--claude-text-primary);
+    background: var(--claude-bg);
+  }
+
+  .tab-btn.active {
+    background: var(--claude-accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(218, 119, 86, 0.3);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .section { margin-bottom: 36px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .section-icon.gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .section-icon.model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .section-icon.product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .section-icon.research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .section-icon.industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .section-icon.policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .card {
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--claude-card-shadow);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .card:hover { box-shadow: var(--claude-card-shadow-hover); }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .card p {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.75;
+    margin-bottom: 8px;
+  }
+
+  .card p:last-child { margin-bottom: 0; }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .tag-gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .tag-model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .tag-product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .tag-research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .tag-industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .tag-policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .highlight {
+    background: var(--claude-accent-light);
+    border-left: 3px solid var(--claude-accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--claude-accent-dark);
+    line-height: 1.7;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .stat-item {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--claude-accent);
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--claude-text-tertiary);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 8px;
+    transition: color 0.15s;
+  }
+
+  .source-link:hover { color: var(--claude-accent-dark); text-decoration: underline; }
+
+  .tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .tech-table th, .tech-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .tech-table th {
+    font-weight: 600;
+    color: var(--claude-text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .tech-table td { color: var(--claude-text-primary); }
+
+  .footer {
+    text-align: center;
+    padding-top: 40px;
+    border-top: 1px solid var(--claude-border);
+    margin-top: 60px;
+  }
+
+  .footer p {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    line-height: 1.8;
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 24px 16px 60px; }
+    .header { padding: 32px 0 28px; }
+    .header h1 { font-size: 24px; }
+    .tab-btn { font-size: 12px; padding: 10px 8px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<a href="/" class="back-link">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+  返回 AI Pulse
+</a>
+
+<header class="header">
+  <div class="header-logo">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    AI PULSE
+  </div>
+  <h1>AI 日报 | 2026.05.15</h1>
+  <p class="date">星期五 / Friday, May 15, 2026</p>
+  <p class="edition-note">Edition #57 - Cerebras首日暴涨76%收于$326，美国批准向10家中国公司出口NVIDIA H200芯片，xAI今日退役8款旧模型统一至Grok 4.3，Palo Alto发出AI网络安全"漏洞末日"警告</p>
+</header>
+
+<nav class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('casual')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+    轻松阅读
+  </button>
+  <button class="tab-btn" onclick="switchTab('intermediate')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+    技术进阶
+  </button>
+  <button class="tab-btn" onclick="switchTab('expert')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+    深度技术
+  </button>
+</nav>
+
+<!-- ==================== 轻松阅读版 ==================== -->
+<div id="tab-casual" class="tab-content active">
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon industry">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+    </div>
+    <h2 class="section-title">Cerebras 首日暴涨：一颗芯片的 IPO 狂欢</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Cerebras 上市首日股价翻倍：发行价 185 美元，最高冲到 385 美元 <span class="tag tag-industry">IPO</span></div>
+    <p>昨天我们报道了 Cerebras 即将上市的消息，今天结果出来了：这只股票疯了。发行价最终定在 185 美元（比之前预期的 150-160 美元区间高出不少），开盘直接跳到 350 美元，盘中最高触及 385 美元，最终收于 326 美元——首日涨幅约 76%。Cerebras 现在是 2026 年最热的科技 IPO，市值已接近 600 亿美元。还记得他们把整片晶圆做成一颗芯片吗？华尔街显然很买账。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon policy">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+    </div>
+    <h2 class="section-title">美国放行 NVIDIA H200 卖给中国：但北京说"再想想"</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">美国批准向 10 家中国公司出售 NVIDIA H200 芯片，每家最多 75,000 颗 <span class="tag tag-policy">芯片出口</span></div>
+    <p>在 Trump-Xi 北京峰会期间传来了一个重磅消息：美国商务部已批准阿里巴巴、腾讯、字节跳动、京东等约 10 家中国公司购买 NVIDIA 的 H200 AI 芯片，每家公司最多可以买 75,000 颗。这是 NVIDIA CEO 黄仁勋随 Trump 访华期间推动的成果。但事情没那么简单——北京方面正在施压这些公司暂缓购买，因为中国政府希望推动国产芯片替代。所以虽然美国这边开了绿灯，实际交付量可能远低于预期。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Trump-Xi 峰会达成"建设性战略稳定关系"共识 <span class="tag tag-policy">峰会</span></div>
+    <p>Trump 与习近平在北京完成了为期两天的峰会，双方同意发展"建设性的中美战略稳定关系"。AI 是核心议题之一——两国可能在 AI 风险对话、自主武器限制方面建立新的沟通机制。但习近平在台湾问题上发出了严厉警告，称处理不当将使中美关系"陷入极大危险"。总体氛围：合作信号多于对抗信号，但芯片出口和台湾仍是两大暗礁。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon model">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+    </div>
+    <h2 class="section-title">xAI 大扫除：今天一口气退役 8 个旧模型</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">xAI 今天退役 8 款模型，全部重定向到 Grok 4.3 <span class="tag tag-model">模型更新</span></div>
+    <p>从今天中午 12 点（太平洋时间）开始，Elon Musk 的 xAI 一口气退役了 8 款旧模型——包括 Grok 3、Grok 4 的多个变体、以及 Grok Code 和图像生成模型。所有请求自动重定向到新旗舰 Grok 4.3。好消息是你不需要改代码，旧的模型名称还能用；坏消息是定价可能不同了。Grok 4.3 的亮点：100 万 token 上下文窗口，三档可调推理强度，价格 1.25/2.50 美元（输入/输出）。xAI 称这是他们"有史以来最快、最智能的模型"。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon research">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </div>
+    <h2 class="section-title">AI 安全警报：Palo Alto 发现"漏洞末日"</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">用 AI 找漏洞：Palo Alto 一个月发现 75 个，是平时 7 倍 <span class="tag tag-research">安全</span></div>
+    <p>网络安全巨头 Palo Alto Networks 发布了一份令人警醒的报告：他们用 Anthropic 的 Mythos 和 OpenAI 的 GPT-5.5 对自家产品做安全测试，一个月就找出了 75 个漏洞——是平时月均数量的 7 倍。更吓人的是，这些 AI 模型生成的攻击代码超过 70% 都能直接运行。Palo Alto 首席技术官警告说，企业还有"3 到 5 个月的窗口期"来加固防御，之后 AI 驱动的网络攻击将成为"新常态"。Mozilla 上月就修了 423 个安全问题，创历史纪录。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon product">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+    </div>
+    <h2 class="section-title">AI 主动出击：Orbit、Pulse、Gemini Intelligence 三方争霸</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">AI 不再等你开口：三大公司同时推出"主动式 AI" <span class="tag tag-product">产品</span></div>
+    <p>一个新趋势正在形成——AI 不再只是被动回答问题，而是主动帮你干活。Anthropic 的 Orbit 会每天早上从你的 Gmail、Slack、GitHub、Figma 里提取信息，自动生成工作简报。OpenAI 的 ChatGPT Pulse 做类似的事，每晚替你做研究，第二天早上推送个性化更新。Google 则把 Gemini Intelligence 深度整合到 Android 系统中，让手机 AI 能跨应用理解屏幕内容、自动填表、帮你预订餐厅。三家巨头不约而同地从"你问我答"转向"我主动帮你"，这可能是 2026 年 AI 产品最大的范式转变。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Google I/O 2026 下周一开幕：Gemini 4 呼之欲出 <span class="tag tag-product">预告</span></div>
+    <p>Google I/O 2026 定于 5 月 19 日开幕，市场期待值拉满。最大看点是新一代 Gemini 模型——有可能直接跳到 Gemini 4.0。其他亮点包括 Android 17 正式发布、Android XR 眼镜的新进展、以及"Googlebooks"——一种搭载 Android 系统的高端笔记本电脑（合作方包括 Acer、ASUS、联想）。上周提前播出的 Android Show 已经透露了 Gemini Intelligence 的功能，但主 keynote 可能还有更多惊喜。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon industry">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    </div>
+    <h2 class="section-title">AI 行业速报</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">全球 76% 企业已设立首席 AI 官 (CAIO)，一年前仅 26% <span class="tag tag-industry">趋势</span></div>
+    <p>CNBC 引用最新调查数据：超过 2000 家受访企业中，76% 已经设立了首席 AI 官 (CAIO) 职位，而一年前这个比例仅为 26%。这不只是挂个头衔——这些 CAIO 正在获得实质性的预算和决策权。另一个数据：2026 年 Q1，全球工作年龄人口中的 AI 使用率从 16.3% 上升到 17.8%，增长了 1.5 个百分点。AI 正在从"科技圈玩具"变成"职场标配"。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Xpanner 融资 1800 万美元：用 AI 和机器人自动化建筑工地 <span class="tag tag-industry">融资</span></div>
+    <p>建筑机器人初创公司 Xpanner 宣布完成 1800 万美元融资，目标是用 AI + 机器人技术自动化建筑施工中的重复性工作。这是物理 AI（Physical AI）赛道的又一笔资金注入。上个月 AI 初创企业的总融资额再创新高——2026 年至今风投已向 AI 初创企业投入 188 亿美元。</p>
+  </div>
+</div>
+
+</div>
+
+<!-- ==================== 技术进阶版 ==================== -->
+<div id="tab-intermediate" class="tab-content">
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon industry">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+    </div>
+    <h2 class="section-title">Cerebras CBRS 首日交易：$185 发行价的市场验证</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Cerebras 首日收涨 76%：从估值溢价到市场共识 <span class="tag tag-industry">IPO</span></div>
+    <p>Cerebras（CBRS）首日交易数据超出预期。最终发行价定在 185 美元，高于此前 150-160 美元的指导区间，反映承销商在路演后上调了需求预期。开盘价 350 美元（+89%），盘中高点 385 美元，收盘 326 美元（+76%），首日融资 55 亿美元。</p>
+    <div class="stats-row">
+      <div class="stat-item"><div class="stat-value">$185</div><div class="stat-label">最终发行价</div></div>
+      <div class="stat-item"><div class="stat-value">$326</div><div class="stat-label">首日收盘价</div></div>
+      <div class="stat-item"><div class="stat-value">+76%</div><div class="stat-label">首日涨幅</div></div>
+      <div class="stat-item"><div class="stat-value">~$60B</div><div class="stat-label">收盘市值</div></div>
+    </div>
+    <p>市场给出的 60x+ P/S 倍数远超 NVIDIA 的 ~30x，说明投资者对 WSE-3 晶圆级芯片在推理场景的差异化优势给予了显著溢价。关键看点转向今天的 Day 2 交易——IPO 首日超额认购中有多少是短线翻手需求，今天的换手率和价格走势将给出答案。</p>
+    <div class="highlight">Day 2 关注：锁定期内流通股有限，如果首日买家获利了结导致抛压增大，$300 是第一个关键支撑位。反之，如果机构继续加仓，$350-385 区间可能成为新的交易中枢。</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon gpu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+    </div>
+    <h2 class="section-title">NVIDIA H200 中国出口：技术批准 vs 政治博弈</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">美国商务部批准 10 家中国公司购买 H200，但北京施压暂缓 <span class="tag tag-gpu">芯片</span></div>
+    <p>在 Trump-Xi 峰会期间，美国商务部正式批准约 10 家中国企业（包括阿里巴巴、腾讯、字节跳动、京东等）及分销商（联想、富士康）购买 NVIDIA H200 芯片。每家获批客户的采购上限为 75,000 颗。</p>
+    <p>但实际交付面临双重阻力：(1) 北京方面正施压获批企业暂缓采购，理由是推动华为 Ascend 等国产替代方案；(2) NVIDIA CEO 黄仁勋随 Trump 访华的核心目标之一就是疏通这个堵点——Trump 在阿拉斯加中转时直接把黄仁勋接上了空军一号。</p>
+    <div class="highlight">H200 的定位：80GB HBM3e 显存，比 H100 推理吞吐提升约 1.5-2x。对中国企业来说，这是合规渠道能买到的最强 NVIDIA AI 芯片。但 75,000 颗/家的上限约等于一个中等规模数据中心的算力——对字节、阿里这种体量的公司来说，杯水车薪。这也是北京乐于施压的原因：实际影响有限，政治信号更重要。</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon model">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+    </div>
+    <h2 class="section-title">xAI 模型整合：8 退 1 的 Grok 4.3 统一架构</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">xAI 退役 8 款旧模型，Grok 4.3 成为唯一 API 端点 <span class="tag tag-model">平台</span></div>
+    <p>今天 12:00 PM PT 起，xAI 退役以下模型：grok-4-1-fast-reasoning、grok-4-1-fast-non-reasoning、grok-4-fast-reasoning、grok-4-fast-non-reasoning、grok-4-0709、grok-code-fast-1、grok-3、grok-imagine-image-pro。所有旧 slug 自动重定向到 Grok 4.3，代码无需修改。</p>
+    <div class="stats-row">
+      <div class="stat-item"><div class="stat-value">1M</div><div class="stat-label">上下文窗口 (tokens)</div></div>
+      <div class="stat-item"><div class="stat-value">$1.25</div><div class="stat-label">输入 / 1M tokens</div></div>
+      <div class="stat-item"><div class="stat-value">$2.50</div><div class="stat-label">输出 / 1M tokens</div></div>
+      <div class="stat-item"><div class="stat-value">3 级</div><div class="stat-label">可调推理强度</div></div>
+    </div>
+    <p>Grok 4.3 的定位是"一个模型覆盖所有场景"：通过三档推理强度（低/中/高）替代此前 reasoning/non-reasoning 的模型分拆。这是 LLM API 提供商的一个趋势——OpenAI 的 GPT-5.5 也在通过推理预算参数实现类似的弹性控制，减少模型碎片化的同时让开发者按需付费。xAI 称 Grok 4.3 在 Agentic tool calling 场景表现最优。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon research">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </div>
+    <h2 class="section-title">AI 网络安全："漏洞末日"的技术剖析</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Palo Alto Networks：Mythos + GPT-5.5 生成可用 exploits 的成功率超 70% <span class="tag tag-research">安全</span></div>
+    <p>Palo Alto Networks 的内部测试数据触目惊心：使用 Anthropic Mythos 和 OpenAI GPT-5.5 对自家产品进行自动化安全审计，一个月内发现 75 个漏洞（月均正常水平约 10 个），其中生成的 exploit 代码超过 70% 可以直接运行。</p>
+    <p>最令人担忧的能力：这些模型能够理解应用的业务逻辑，然后将多个低危漏洞串联成一条完整的攻击路径（chain exploits）。这种"逻辑理解+组合利用"的能力是传统漏洞扫描工具不具备的。Anthropic 目前只向 Palo Alto、CrowdStrike、Amazon、Apple、JPMorgan 等有限客户开放 Mythos 的安全测试权限。</p>
+    <div class="highlight">企业行动建议：Palo Alto CTO 认为企业有 3-5 个月的窗口期来部署 AI 驱动的防御体系。The Register 称之为"vulnpocalypse"——Mozilla 4 月份修复了 423 个安全问题，创历史纪录。攻守双方都在用同样的 AI 模型，差别在于谁先行动。</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon product">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+    </div>
+    <h2 class="section-title">主动式 AI 产品浪潮：Orbit / Pulse / Gemini Intelligence</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Anthropic Orbit vs OpenAI Pulse vs Google Proactive Assistance <span class="tag tag-product">产品对比</span></div>
+    <table class="tech-table">
+      <tr><th>产品</th><th>Anthropic Orbit</th><th>OpenAI Pulse</th><th>Google Proactive</th></tr>
+      <tr><td>集成</td><td>Gmail, Slack, GitHub, Figma, Calendar, Drive</td><td>Gmail, Google Calendar, 聊天记录</td><td>Android 系统级（全应用）</td></tr>
+      <tr><td>触发</td><td>定时简报 + 事件驱动</td><td>每晚异步研究，晨间推送</td><td>屏幕上下文感知，实时触发</td></tr>
+      <tr><td>目标用户</td><td>开发者 + 创作者</td><td>通用消费者（Pro 先行）</td><td>Android 用户</td></tr>
+      <tr><td>发布状态</td><td>Code with Claude 发布，逐步推送</td><td>Pro 移动端预览</td><td>Android Show 预告，夏季上线</td></tr>
+    </table>
+    <p>三家公司同步布局"主动式 AI"，但策略各异：Anthropic 聚焦开发者工作流（GitHub + Figma 是差异化），OpenAI 走大众消费路线（个性化晨报），Google 走系统级集成路线（利用 Android 的 OS 权限实现全应用感知）。这标志着 AI 产品从"reactive"到"proactive"的范式转变——用户不需要提问，AI 就知道你需要什么。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Google I/O 2026 前瞻：Gemini 4、Android 17、Googlebooks <span class="tag tag-product">预告</span></div>
+    <p>Google I/O 2026 将于 5 月 19 日在 Shoreline Amphitheatre 举办。核心预期：(1) Gemini 4.0 或重大模型更新——Gemini 的下一代旗舰，可能包含原生多模态能力升级；(2) Android 17 正式版——深度整合 Gemini Intelligence；(3) Android XR 眼镜新进展——Project Astra 的持续多模态助手；(4) Googlebooks——基于 Android 的高端笔记本品类（Acer/ASUS/Lenovo 合作）；(5) Veo 文字生成视频模型更新。Google 正在将 Gemini 打造为贯穿搜索、手机、笔记本、眼镜的统一 AI 层。</p>
+  </div>
+</div>
+
+</div>
+
+<!-- ==================== 深度技术版 ==================== -->
+<div id="tab-expert" class="tab-content">
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon industry">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+    </div>
+    <h2 class="section-title">Cerebras CBRS Day 1 复盘：76% 首日回报的估值拆解</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Cerebras IPO 首日深度分析：$185 → $326 的估值逻辑重构 <span class="tag tag-gpu">分析</span></div>
+    <table class="tech-table">
+      <tr><th>指标</th><th>发行时</th><th>收盘时</th><th>对比 NVIDIA</th></tr>
+      <tr><td>股价</td><td>$185</td><td>$326</td><td>—</td></tr>
+      <tr><td>市值</td><td>$48.8B</td><td>~$60B</td><td>~$5T</td></tr>
+      <tr><td>P/S (追踪)</td><td>~51x</td><td>~63x</td><td>~30x</td></tr>
+      <tr><td>EV/EBITDA</td><td>~108x</td><td>~133x</td><td>~55x</td></tr>
+      <tr><td>2025 收入</td><td colspan="2">$510M (+76% YoY)</td><td>~$170B</td></tr>
+      <tr><td>GAAP 净利润率</td><td colspan="2">47%</td><td>~60%</td></tr>
+    </table>
+    <p>收盘 63x P/S 的溢价主要来源于三个维度：(1) 高增长叙事——76% YoY 增长率是同类 AI 芯片公司中最高的；(2) 稀缺性溢价——WSE-3 是唯一量产的晶圆级芯片方案，没有直接可比公司；(3) OpenAI 合约的收入锚定——$20B+ 的合约在 LPA 基础上提供了 3-4 年的收入可见性。</p>
+    <p>WSE-3 的技术护城河在推理场景尤为显著：44GB 片上 SRAM 提供约 20 PB/s 等效带宽，完全消除了 GPU 集群中 HBM-to-HBM 的跨节点通信延迟。在稀疏推理 workload 下，per-token latency 可以比等价 GPU 方案低一个数量级。但风险同样清晰：(1) 客户集中度极高（OpenAI 占比 ~70%+ 收入）；(2) 良率管理——整片 300mm 晶圆的良率控制成本远高于标准 die；(3) NVIDIA Vera Rubin 的 HBM4（22 TB/s 带宽）正在缩小带宽差距。</p>
+    <div class="highlight">Day 2 技术交易策略：观察 Dark Pool 成交量占比——如果 Day 2 Dark Pool 占比从首日的预估 ~15% 上升到 25%+，说明机构正在场外积累头寸，利好中期走势。如果日内换手率超过 40%（以流通股计），则短线投机主导，$300 支撑位可能受到测试。</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon gpu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+    </div>
+    <h2 class="section-title">NVIDIA H200 中国出口：技术规格与地缘政治约束的交叉分析</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">H200 出口许可的技术与战略含义 <span class="tag tag-gpu">分析</span></div>
+    <p>美国商务部批准 H200 出口的技术边界值得深究。H200 配备 80GB HBM3e（带宽 4.8 TB/s），相比中国合规芯片 H20（96GB HBM3, 4.0 TB/s），H200 在 FP8 推理吞吐上高出约 2x，在 BF16 训练场景高出约 3-4x。每家 75,000 颗的上限意味着约 6 EF（exaFLOPS）的 FP8 算力——足以支撑一个中等规模的 LLM 推理集群，但不足以支撑 frontier model 的训练。</p>
+    <p>北京施压暂缓的逻辑有双重考量：(1) 华为 Ascend 910C 正在量产爬坡，需要锁定国内采购订单以支撑生态；(2) 如果中国企业大规模采购 H200，等于承认国产替代方案的不足，削弱"自主可控"叙事。黄仁勋的策略是用 H200 作为楔子——一旦客户依赖 NVIDIA CUDA 生态，后续 Vera Rubin 等下一代产品的销售就有了路径依赖。</p>
+    <div class="highlight">地缘博弈的技术核心：H200 的 75,000 颗/家上限被精确设计——足够让中国企业尝到甜头（推理场景的 TCO 优势显著），但不足以替代完整的训练基础设施。这是"controlled dependency"策略：让中国企业在推理层面依赖 NVIDIA，同时确保 frontier training 能力仍受管控。</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon model">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+    </div>
+    <h2 class="section-title">Grok 4.3 架构分析：统一推理模型的技术路线</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">xAI 模型整合策略：从 8 模型矩阵到单一可调推理端点 <span class="tag tag-model">架构</span></div>
+    <p>xAI 今天退役的 8 款模型涵盖了推理/非推理、快速/标准、代码专用、图像生成等多个维度。整合到 Grok 4.3 后，差异化通过三档推理强度参数实现：低强度（快速响应，对标 grok-4-fast-non-reasoning）、中等强度（平衡模式）、高强度（深度推理，对标 grok-4-1-fast-reasoning）。</p>
+    <p>从 API 设计角度看，这与 OpenAI 的 reasoning_effort 参数、Anthropic 的 extended thinking budget 机制走向趋同——LLM 提供商正在从"多模型目录"向"单模型 + 推理预算旋钮"演进。Grok 4.3 的 1M token 上下文窗口在同价位段最大（Claude Opus 4 为 200K 标准/800K 扩展，GPT-5.5 为 256K 标准/1M 需申请），$1.25/$2.50 的价格也具有竞争力。</p>
+    <p>xAI 强调 Grok 4.3 在 Agentic tool calling 场景的优势——这与退役的 grok-code-fast-1（代码专用模型）的能力整合有关。统一模型意味着 agent 在单次 session 中可以无缝切换代码生成、推理分析、图像理解（grok-imagine-image-pro 的能力被吸收），无需跨模型调用。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon research">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </div>
+    <h2 class="section-title">AI 安全研究：Frontier 模型的漏洞发现能力量化分析</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Palo Alto Networks 内部测试：AI 漏洞发现的攻守博弈 <span class="tag tag-research">安全</span></div>
+    <p>Palo Alto Networks 的报告揭示了 frontier 模型在安全领域的双刃剑效应。核心数据：</p>
+    <table class="tech-table">
+      <tr><th>指标</th><th>传统扫描</th><th>Mythos/GPT-5.5</th><th>倍数</th></tr>
+      <tr><td>月发现漏洞数</td><td>~10</td><td>75</td><td>7.5x</td></tr>
+      <tr><td>可用 Exploit 生成率</td><td>~15%</td><td>70%+</td><td>4.7x</td></tr>
+      <tr><td>链式漏洞发现</td><td>罕见</td><td>常见</td><td>—</td></tr>
+      <tr><td>审计时间</td><td>周级</td><td>小时级</td><td>~100x</td></tr>
+    </table>
+    <p>关键差异在于"语义理解"能力——传统漏洞扫描工具依赖已知模式匹配（CVE 数据库、签名规则），而 Mythos 和 GPT-5.5 能理解应用的业务逻辑，发现传统工具无法检测的逻辑漏洞。最危险的能力是 chain exploit：模型将多个单独来看"低危"的漏洞组合成一条从入口到提权的完整攻击路径。</p>
+    <p>Anthropic 的 Mythos 目前采用受限部署策略——仅向 Palo Alto Networks、CrowdStrike、Amazon、Apple、JPMorgan 等企业开放安全测试权限。METR（模型评估机构）表示其现有评估框架几乎无法度量 Mythos 的实际能力上限。The Register 将当前状态称为"vulnpocalypse"——Mozilla 4 月份修复了 423 个安全问题（创纪录），直接原因是使用了 AI 辅助漏洞发现工具。</p>
+    <div class="highlight">防御侧启示：AI 漏洞发现的速度远超人工修复速度，这意味着"发现->修复"的传统安全循环正在被打破。企业需要转向 AI 驱动的自动化修复（auto-patching）和实时 WAF 规则生成。Palo Alto 正在推广其"Frontier AI Defense"产品线——用同样的 frontier 模型做防御侧的自动化漏洞修复和威胁狩猎。</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon product">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+    </div>
+    <h2 class="section-title">Proactive AI 架构对比：Orbit / Pulse / Gemini Intelligence 技术实现</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">从 Reactive 到 Proactive：三种技术路线的架构差异 <span class="tag tag-product">架构</span></div>
+    <p>三家的"主动式 AI"在技术实现上走了不同的路线：</p>
+    <p><strong>Anthropic Orbit</strong>：运行在 Claude Cowork 平台上，通过 OAuth 连接 Gmail/Slack/GitHub/Figma 等 SaaS 工具。采用定时触发 + 事件驱动的双模式：定时简报在用户设定的时区每日推送，事件驱动模式则监听 webhook（如 GitHub PR merged、Slack @mention）实时生成 insights。Orbit 的差异化在于开发者工具链整合——能理解 PR diff、Issue context、Design handoff，生成面向工程师的 actionable briefing。底层使用 Claude Mythos 的 summarization 和 reasoning 能力。</p>
+    <p><strong>OpenAI ChatGPT Pulse</strong>：采用异步研究架构——每晚批量运行，基于用户的 memory（对话历史）、calendar events、feedback signals 确定研究主题，然后生成个性化的"视觉卡片"在晨间推送。技术上相当于一个 scheduled agent pipeline：任务规划 -> 搜索执行 -> 内容过滤 -> 卡片生成。当前仅 Pro 移动端可用。</p>
+    <p><strong>Google Gemini Intelligence</strong>：利用 Android OS 级别权限实现全应用感知。Chrome auto-browse、AI-generated widgets、跨应用任务编排（从 Gmail 提取信息 -> 构建购物车 -> 预订餐厅）。这是唯一采用 on-device inference（Gemini Nano）+ cloud inference（Gemini Ultra）混合架构的方案，隐私敏感操作在端侧完成。</p>
+    <div class="highlight">架构启示：Anthropic 和 OpenAI 走的是 SaaS API 集成路线（Cloud-first），Google 走 OS 级集成路线（Device+Cloud）。长期看，OS 级集成的数据密度和实时性优势更大（无需 OAuth 轮询，直接监听系统事件），但 Google 需要解决 Android 碎片化问题——OEM 的 Gemini Intelligence 覆盖率将直接决定产品体验的一致性。</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon policy">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+    </div>
+    <h2 class="section-title">NIST AI 模型预发布测试：政府评估框架的技术实现</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">美国政府获得 Google/Microsoft/xAI 模型的预发布评估权限 <span class="tag tag-policy">监管</span></div>
+    <p>NIST 旗下的 AI 标准与创新中心（Center for AI Standards and Innovation）宣布与 Google DeepMind、Microsoft 和 xAI 达成协议：这三家公司将在模型公开发布前，向美国政府提供评估权限。这是 Biden-era 的 AI Executive Order 框架在 Trump 政府下的延续——尽管 Trump 撤销了部分 AI 监管命令，但 NIST 的模型评估项目被保留。</p>
+    <p>技术细节尚未公开，但根据已知信息，评估将聚焦：(1) 大规模杀伤性武器知识（CBRN）；(2) 自主网络攻击能力（与 Palo Alto 的发现直接相关）；(3) 自我复制/自主运行能力；(4) 对关键基础设施的潜在影响。值得注意的是，Anthropic 和 OpenAI 不在首批名单中——可能因为两家公司已经有独立的第三方评估协议（Anthropic 使用 METR，OpenAI 使用内部 Preparedness 团队）。</p>
+  </div>
+</div>
+
+</div>
+
+<footer class="footer">
+  <p>AI Pulse Daily Report - 由 AI 自动聚合生成</p>
+  <p>数据来源: WebSearch, CNBC, Reuters, CoinDesk, Axios, The Register, PBS, Al Jazeera, TechCrunch, VentureBeat, Android Authority, Yahoo Finance, xAI Docs, Palo Alto Networks</p>
+</footer>
+
+<script>
+function switchTab(tabName) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + tabName).classList.add('active');
+  const tabs = ['casual', 'intermediate', 'expert'];
+  const idx = tabs.indexOf(tabName);
+  document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+}
+</script>
+
+</body>
+</html>

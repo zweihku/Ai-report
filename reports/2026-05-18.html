@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily Report | 2026.05.18</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --claude-bg: #FAF9F7;
+    --claude-surface: #FFFFFF;
+    --claude-border: #E8E5E0;
+    --claude-text-primary: #1A1714;
+    --claude-text-secondary: #6B6560;
+    --claude-text-tertiary: #9B9590;
+    --claude-accent: #DA7756;
+    --claude-accent-light: #F5E6DF;
+    --claude-accent-dark: #C4623F;
+    --claude-tag-blue: #E8F0FE;
+    --claude-tag-blue-text: #3B6CB5;
+    --claude-tag-green: #E6F4EA;
+    --claude-tag-green-text: #2D7A3F;
+    --claude-tag-purple: #F0E6FA;
+    --claude-tag-purple-text: #7B3FAF;
+    --claude-tag-amber: #FEF3E2;
+    --claude-tag-amber-text: #B5752D;
+    --claude-tag-red: #FDE8E8;
+    --claude-tag-red-text: #B53B3B;
+    --claude-card-shadow: 0 1px 3px rgba(26, 23, 20, 0.06), 0 1px 2px rgba(26, 23, 20, 0.04);
+    --claude-card-shadow-hover: 0 4px 12px rgba(26, 23, 20, 0.08), 0 2px 4px rgba(26, 23, 20, 0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+    background: var(--claude-bg);
+    color: var(--claude-text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 8px;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--claude-accent-dark); }
+
+  .header {
+    text-align: center;
+    padding: 48px 0 40px;
+    border-bottom: 1px solid var(--claude-border);
+    margin-bottom: 32px;
+  }
+
+  .header-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--claude-accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .header .date {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    font-weight: 400;
+  }
+
+  .header .edition-note {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    margin-top: 8px;
+  }
+
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 36px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--claude-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .tab-btn:hover {
+    color: var(--claude-text-primary);
+    background: var(--claude-bg);
+  }
+
+  .tab-btn.active {
+    background: var(--claude-accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(218, 119, 86, 0.3);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .section { margin-bottom: 36px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .section-icon.gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .section-icon.model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .section-icon.product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .section-icon.research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .section-icon.industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .section-icon.policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .card {
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--claude-card-shadow);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .card:hover { box-shadow: var(--claude-card-shadow-hover); }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .card p {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.75;
+    margin-bottom: 8px;
+  }
+
+  .card p:last-child { margin-bottom: 0; }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .tag-gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .tag-model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .tag-product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .tag-research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .tag-industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .tag-policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .highlight {
+    background: var(--claude-accent-light);
+    border-left: 3px solid var(--claude-accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--claude-accent-dark);
+    line-height: 1.7;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .stat-item {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--claude-accent);
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--claude-text-tertiary);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 8px;
+    transition: color 0.15s;
+  }
+
+  .source-link:hover { color: var(--claude-accent-dark); text-decoration: underline; }
+
+  .tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .tech-table th, .tech-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .tech-table th {
+    font-weight: 600;
+    color: var(--claude-text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .tech-table td { color: var(--claude-text-primary); }
+
+  .footer {
+    text-align: center;
+    padding-top: 40px;
+    border-top: 1px solid var(--claude-border);
+    margin-top: 60px;
+  }
+
+  .footer p {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    line-height: 1.8;
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 24px 16px 60px; }
+    .header { padding: 32px 0 28px; }
+    .header h1 { font-size: 24px; }
+    .tab-btn { font-size: 12px; padding: 10px 8px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<a href="/" class="back-link">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+  返回 AI Pulse
+</a>
+
+<header class="header">
+  <div class="header-logo">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    AI PULSE
+  </div>
+  <h1>AI 日报 | 2026.05.18</h1>
+  <p class="date">星期一 / Sunday, May 18, 2026</p>
+  <p class="edition-note">Edition #59 - Google I/O 2026明日开幕前瞻，NVIDIA周三财报周倒计时，OpenAI Sora正式关停视频AI格局重组，Meta 8000人裁员周三生效，SAP发布自主企业AI Agent平台，BMW人形机器人量产11个月成绩单</p>
+</header>
+
+<nav class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('casual')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+    轻松阅读
+  </button>
+  <button class="tab-btn" onclick="switchTab('intermediate')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+    技术进阶
+  </button>
+  <button class="tab-btn" onclick="switchTab('expert')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+    深度技术
+  </button>
+</nav>
+
+<!-- ==================== 轻松阅读版 ==================== -->
+<div id="tab-casual" class="tab-content active">
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon product">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    </div>
+    <h2 class="section-title">Google I/O 明日开幕：AI 全面接管 Android</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Google 将发布新一代 Gemini 模型和 Googlebook 电脑品类 <span class="tag tag-product">发布会</span></div>
+    <p>Google I/O 2026 将于明天（5 月 19-20 日）在加州举办，这可能是 Google 有史以来最重大的一次开发者大会。首先是新品类 Googlebook——一种围绕 Gemini Intelligence 打造的全新笔记本电脑，Acer、ASUS、Dell、HP、Lenovo 都将推出产品，今年秋季上市。其次是 Android 的彻底重构：不再是传统"操作系统"，而是以 Gemini 为底层智能层的"智能系统"，包括浏览器内的 AI Agent（Chrome Auto Browse）和 AI 自动生成 Widgets。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">新 Gemini 模型据传可与 GPT-5.5 持平 <span class="tag tag-product">模型</span></div>
+    <p>据多方消息，Google 将在 I/O 上发布一款全新的 Gemini 模型，性能据报道与 OpenAI 的 GPT-5.5 在同一水平线上，但仍低于 Anthropic 的 Claude Mythos。此外，Google 还可能发布 Gemini "Omni"——一个能通过对话实现视频生成、混剪和编辑的多模态工具。Alphabet 股价过去一年已涨 151%，市值逼近 4.9 万亿美元。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon gpu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+    </div>
+    <h2 class="section-title">NVIDIA 财报周：Vera Rubin 投产在即</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">NVIDIA 周三公布财报，分析师预期收入 $785 亿 <span class="tag tag-gpu">财报</span></div>
+    <p>NVIDIA 将在本周三（5 月 20 日）公布 2027 财年 Q1 财报。华尔街预期收入将达到 785 亿美元，同比增长 78%。公司股价已创下 223.75 美元的历史新高，市值突破 5.4 万亿美元。全球顶级超算中心正在疯狂抢购 GPU，四大云巨头今年的 AI 基础设施总投入将达 7250 亿美元。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">下一代 Vera Rubin 芯片平台 6 月试产，7 月出货 <span class="tag tag-gpu">芯片</span></div>
+    <p>NVIDIA 最新的 Vera Rubin 平台（6 款新芯片）将于 6 月进入试生产，7 月开始向超大规模数据中心客户出货。相比上一代 Blackwell Ultra，Vera Rubin 的 FP4 算力提升了 3.3 倍。与此同时，Cerebras（CBRS）IPO 后股价趋于稳定，在 279 美元附近波动，市场正在消化其千亿估值。费城半导体指数六周内暴涨 60%，AMD 数据中心收入同比增长 57%，Intel 股价翻了三倍。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon industry">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    </div>
+    <h2 class="section-title">AI 裁员潮加速：9.2 万人已失业</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">2026 年科技业已裁 9.2 万人，近半归因 AI 自动化 <span class="tag tag-industry">裁员</span></div>
+    <p>2026 年至今，全球科技行业已裁员超过 9.2 万人，其中 47.9% 被明确归因于 AI 自动化。Meta 将于本周三（5 月 20 日）裁减 8000 人，Cloudflare 裁 20%，Upwork 裁 25%，Coinbase 裁 14%，PayPal 裁 20%。55% 的美国雇主预计 2026 年还会继续裁员，44% 认为 AI 是头号原因。微软 AI 业务负责人 Mustafa Suleyman 甚至预测"18 个月内所有白领工作都将被自动化"。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">76% 公司已设首席 AI 官，SAP 推出"自主企业"平台 <span class="tag tag-industry">企业</span></div>
+    <p>IBM 最新调查显示，76% 的组织已设立 CAIO（首席 AI 官），一年前这个数字还只有 26%。SAP 在 Sapphire 大会上发布了"自主企业"愿景，一次性推出超过 50 个领域专用 AI Agent，覆盖财务、供应链、采购、HR 和客户体验。NVIDIA 也宣布与 ServiceNow 合作，将治理化的自主 Agent 从员工桌面延伸到 AI 工厂。AI Agent 多智能体系统市场预计以 48.5% 的年复合增长率增长至 2030 年。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon model">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+    </div>
+    <h2 class="section-title">OpenAI Sora 正式关停，视频 AI 重新洗牌</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Sora 每日烧 $1500 万，终身收入仅 $210 万 <span class="tag tag-model">关停</span></div>
+    <p>OpenAI 的视频生成产品 Sora 于 3 月 24 日正式关闭 App，API 将在 9 月 24 日下线。这个曾被视为颠覆好莱坞的产品最终败给了经济现实：日均算力成本 1500 万美元，但整个生命周期内总收入只有 210 万美元。Sora 的失败给视频 AI 赛道上了沉重一课——光有技术突破不够，还需要可持续的商业模型。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Runway Gen-4.5、Google Veo 3.1 和 Kling 3.0 瓜分市场 <span class="tag tag-model">视频AI</span></div>
+    <p>Sora 退场后，视频 AI 市场正在快速重组。Runway Gen-4 Turbo/4.5 在时间连贯性和角色一致性上拿下第一；Google Veo 3.1 技术最强，支持真 4K（3840x2160）60fps 带同步音频；快手 Kling 3.0 最便宜，6.99 美元/月起就能生成 2 分钟视频。Sora 关停后 Kling 周活跃用户立即增长了 4%。此外，前 OpenAI CTO Mira Murati 的新公司 Thinking Machines 宣布了"交互模型"——能实时同时处理音频、视频和文本。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon research">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+    </div>
+    <h2 class="section-title">人形机器人走进工厂和机场</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">BMW 人形机器人 11 个月生产了 3 万辆 X3 <span class="tag tag-research">机器人</span></div>
+    <p>Figure AI 的 Figure 02 人形机器人在 BMW 工厂部署 11 个月交出成绩单：参与生产超过 3 万辆 BMW X3，装卸超过 9 万件钣金件。这是人形机器人首次在大规模汽车制造中证明其实用价值。与此同时，日本航空在东京羽田机场部署了人形机器人服务旅客，签了三年合同。中国的智元机器人（AgiBot）今年 3 月产量已突破 1 万台，一年前还只有 1000 台。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">NVIDIA Isaac GR00T 让机器人听懂自然语言 <span class="tag tag-research">平台</span></div>
+    <p>NVIDIA 发布了 Isaac GR00T 开源模型——让机器人能够理解自然语言指令，并完成多步骤的视觉-语言-动作推理。另一项研究突破将神经网络与符号推理结合，使机器人 AI 的能耗降低了 100 倍，同时精度还有提升。波士顿动力的电动 Atlas 2026 年的产能已全部被现代汽车和 Google DeepMind 预订。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon policy">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </div>
+    <h2 class="section-title">AI 安全：提示注入攻击瞄准企业 Agent</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Google 警告：恶意网站通过提示注入劫持 AI Agent <span class="tag tag-policy">安全</span></div>
+    <p>Google 安全团队发出警告：恶意网站正在利用隐藏的提示注入（prompt injection）攻击企业 AI Agent。当 Agent 访问被污染的网页时，隐藏指令会劫持其行为，特别危险的是那些能访问邮件、日历和内部系统的 Agent。88% 的企业已经历过 AI 相关安全事件。这一威胁凸显了在企业大规模部署 Agent 时，安全隔离和权限控制的极端重要性。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Deepfake 钓鱼：假 CEO 视频骗走 200 万美元 <span class="tag tag-policy">威胁</span></div>
+    <p>高质量的语音和视频克隆正在针对美国企业高管实施精准钓鱼攻击。最新案例中，一个 AI 生成的假 CEO 视频电话成功骗取了一笔 200 万美元的电汇。世界经济论坛调查中 94% 的组织认为 AI 是 2026 年最大的网络安全威胁。Mandiant 的数据显示 28.3% 的漏洞在披露后 24 小时内就被武器化利用。</p>
+  </div>
+</div>
+
+</div>
+
+<!-- ==================== 技术进阶版 ==================== -->
+<div id="tab-intermediate" class="tab-content">
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon product">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    </div>
+    <h2 class="section-title">Google I/O 2026 技术前瞻：Gemini 全栈重构</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Android 从 OS 到 Intelligence Layer 的架构转型 <span class="tag tag-product">架构</span></div>
+    <p>Google 明天将展示 Android 平台的根本性重构：Gemini 不再只是系统中的一个 App，而是成为底层智能层（Intelligence Layer）。关键技术变化包括：Chrome Auto Browse（浏览器内置的 AI Agent 执行器，可自主完成网页操作）、AI-Generated Widgets（根据用户上下文动态生成 UI 组件）、以及跨设备的 Gemini-First 交互范式。Googlebook 定位为与 Android 手机深度协同的 AI-Native 笔记本，内置专用 Gemini 推理芯片。</p>
+    <div class="highlight">技术要点：新 Gemini 模型据传在 MMLU-Pro 和 HumanEval+ 上与 GPT-5.5 持平，但在 Agentic Coding 和多步推理任务上仍落后于 Claude Mythos。Google 的差异化在于：端侧模型（Gemini Nano 3）+ 云端大模型 + 自有 TPU v6 的全栈垂直整合能力。</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Gemini "Omni" 多模态视频生成整合 <span class="tag tag-product">多模态</span></div>
+    <p>可能发布的 Gemini Omni 将整合视频生成/混剪/编辑能力到 Gemini 对话界面中。这一产品思路与关停的 Sora 不同——不是独立的视频生成工具，而是会话式 AI 的原生扩展。技术路线是将 Veo 3.1 的 4K/60fps 视频生成能力封装为 Gemini 可调用的 function call，通过 multimodal reasoning 实现"描述→生成→迭代"的闭环。Google Cloud 收入同比增长 63%，积压订单翻倍至 4620 亿美元，为 AI 基础设施的持续投入提供了充足弹药。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon gpu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+    </div>
+    <h2 class="section-title">NVIDIA Vera Rubin 架构详解与行业格局</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Vera Rubin 6 芯片组：FP4 算力 3.3x Blackwell Ultra <span class="tag tag-gpu">架构</span></div>
+    <p>NVIDIA Vera Rubin 平台包含 6 款新芯片，覆盖训练和推理全场景。核心提升：FP4 计算吞吐量相比 Blackwell Ultra 提升 3.3 倍，6 月试产、7 月向超大规模客户出货。架构亮点包括：新一代 NVLink 互连带宽翻倍、HBM4 内存支持（相比 HBM3e 带宽提升 50%）、以及针对 MoE 模型的 Expert Parallel 硬件加速。</p>
+    <div class="stats-row">
+      <div class="stat-item"><div class="stat-value">3.3x</div><div class="stat-label">FP4 算力提升</div></div>
+      <div class="stat-item"><div class="stat-value">$785 亿</div><div class="stat-label">Q1 预期收入</div></div>
+      <div class="stat-item"><div class="stat-value">$5.4 万亿</div><div class="stat-label">NVIDIA 市值</div></div>
+      <div class="stat-item"><div class="stat-value">$7250 亿</div><div class="stat-label">四大云厂 AI 投入</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">半导体行业从 GPU 独大到多元化转型 <span class="tag tag-gpu">趋势</span></div>
+    <p>一个值得注意的行业转变：随着 AI 工作负载从训练转向推理，芯片需求正从 GPU 单一主导向 CPU + Memory + ASIC 多元组合演进。AMD 数据中心收入同比增长 57% 至 58 亿美元（Instinct MI350 推理加速器供不应求）；Intel 收入超预期 14 亿美元，股价今年已翻三倍（Gaudi 3 被微软和 AWS 采购）；Micron 一周暴涨 38%（HBM4 产线满载运行）。Cerebras 的整片晶圆架构在推理延迟上有独特优势，IPO 后市值稳定在约 580 亿美元。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon industry">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    </div>
+    <h2 class="section-title">AI Agent 企业落地：从概念到量产部署</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">SAP "自主企业" 50+ Domain-Specific Agents <span class="tag tag-industry">企业</span></div>
+    <p>SAP Sapphire 大会发布的 Autonomous Enterprise 方案值得关注：50 多个领域专用的 Joule AI Agent 同时发布，覆盖 finance（自动对账/预测）、supply chain（需求感知/库存优化）、procurement（自动询价/合规审查）、HR（人才匹配/绩效分析）和 CX（客户意图预测/个性化服务）。这不是实验性 Demo，而是直接嵌入 SAP S/4HANA 核心流程的生产级 Agent。</p>
+    <p>与此同时，Anthropic 推出了 Claude for Small Business——免费集成 QuickBooks、PayPal、HubSpot、Canva、DocuSign、Google Workspace 和 Microsoft 365 的连接器和工作流，无需额外付费。Writer 也发布了免提示（prompt-free）AI Agent，直接与 Amazon、Microsoft、Salesforce 竞争企业自动化市场。</p>
+    <div class="highlight">市场数据：多智能体系统市场预计以 48.5% CAGR 增长至 2030 年。76% 的组织已设立 CAIO，但只有 19% 实现了规模化 AI 部署（两年仅增长 9 个百分点）。差距的主要原因：安全顾虑（88% 经历过 AI 安全事件）和组织准备不足。</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">AI 裁员结构性分析：哪些岗位被替代 <span class="tag tag-industry">劳动力</span></div>
+    <p>2026 年科技裁员 9.2 万人中，受影响最大的是客服支持（完全被 Agent 替代）、初级内容创作（被生成式 AI 替代）、基础数据分析（被 AI 自动化报告替代）和 QA 测试（被 AI 测试框架替代）。Meta 即将裁减的 8000 人主要在中层管理和 Reality Labs 非核心团队。这一轮裁员与 2023-2024 年的"过度招聘修正"不同——这次是永久性的岗位消除，被裁岗位不会重新招聘。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon model">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+    </div>
+    <h2 class="section-title">视频 AI 格局重组：Sora 之死与新玩家崛起</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Sora 失败的技术和商业复盘 <span class="tag tag-model">分析</span></div>
+    <p>OpenAI Sora 的失败是一个经典的技术优先、商业后置案例。技术层面，Sora 的 DiT（Diffusion Transformer）架构在时间一致性上确实领先，但算力需求极高——单次推理需要数百个 H100 GPU-小时。商业层面，日均 1500 万美元的算力成本对应 210 万美元的终身收入，ROI 为 -99.99%。根本原因在于视频生成的推理成本结构与文本/图像完全不同——每增加一秒视频，计算量指数级增长。</p>
+    <table class="tech-table">
+      <tr><th>产品</th><th>最高分辨率</th><th>特色</th><th>起步价</th></tr>
+      <tr><td>Runway Gen-4.5</td><td>4K/30fps</td><td>角色一致性最强</td><td>$15/月</td></tr>
+      <tr><td>Google Veo 3.1</td><td>4K/60fps</td><td>技术最先进+音频同步</td><td>Cloud API</td></tr>
+      <tr><td>Kling 3.0</td><td>1080p/30fps</td><td>2 分钟视频+最低价</td><td>$6.99/月</td></tr>
+      <tr><td>Pika 3.0</td><td>1080p/30fps</td><td>物理模拟最佳</td><td>$10/月</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon research">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+    </div>
+    <h2 class="section-title">物理 AI：人形机器人从实验走向量产</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">BMW Figure 02 量产数据首次公开 <span class="tag tag-research">机器人</span></div>
+    <p>Figure AI 在 BMW 斯帕坦堡工厂的 Figure 02 人形机器人项目运行 11 个月后首次公开量产数据：参与生产 30,000+ 辆 BMW X3，装卸 90,000+ 件钣金组件，24/7 运行，故障率低于传统工业臂。关键技术：基于 VLA（Vision-Language-Action）模型的任务规划，NVIDIA Isaac GR00T 提供底层推理框架，支持自然语言指令的多步骤执行。</p>
+    <p>行业趋势：中国智元机器人（AgiBot）3 月产量突破 10,000 台（去年 1,000 台）；波士顿动力电动 Atlas 2026 年产能被现代和 DeepMind 全部预定；日本航空在羽田机场部署人形机器人，签署三年服务合同。索尼 Ace Robot 登上 Nature 封面——首个能与职业选手对打乒乓球的自主系统。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon policy">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </div>
+    <h2 class="section-title">AI 安全态势：Prompt Injection 的企业级威胁</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">AI Agent 提示注入攻击的杀伤链分析 <span class="tag tag-policy">安全</span></div>
+    <p>Google Threat Intelligence Group 的最新报告详细分析了针对企业 AI Agent 的提示注入攻击链：攻击者在看似正常的网页中嵌入不可见的指令文本（白色字体/零宽字符/CSS 隐藏），当 AI Agent 访问该页面进行信息检索时，隐藏指令被注入 Agent 的上下文窗口，随后 Agent 可能执行未授权操作（发送邮件、修改文件、泄露数据）。</p>
+    <p>防御建议：Agent 访问外部内容时使用沙箱隔离；实施最小权限原则（Agent 只能执行预定义操作集）；对 Agent 输出进行二次验证（human-in-the-loop checkpoint）；部署 AI 内容过滤层检测注入模式。88% 的企业已报告过 AI 安全事件，但仅 23% 有正式的 AI Agent 安全策略。</p>
+  </div>
+</div>
+
+</div>
+
+<!-- ==================== 深度技术版 ==================== -->
+<div id="tab-expert" class="tab-content">
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon product">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    </div>
+    <h2 class="section-title">Google I/O 2026 架构深度：Gemini Intelligence Layer</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Android 智能层架构重构：从 App 到 System Service <span class="tag tag-product">架构</span></div>
+    <p>Google 即将展示的 Android Intelligence Layer 代表了移动操作系统的范式转变。技术架构要点：</p>
+    <p>1) Gemini Nano 3 作为 System Service 常驻运行，提供 on-device 推理能力（文本理解、意图识别、上下文感知），延迟 < 50ms；2) Chrome Auto Browse 使用 Gemini 的 function calling 能力在浏览器沙箱内执行多步骤网页操作，本质是将 Web Agent 嵌入浏览器内核；3) AI-Generated Widgets 基于用户上下文动态生成 UI 组件（使用 Layout Language Model 直接输出 Android View 层级）；4) Cross-Device Intelligence 通过 Gemini 的 multimodal understanding 实现手机-Googlebook-Nest 之间的无缝任务接续。</p>
+    <p>新 Gemini 模型的架构特征（据传）：Dense Transformer（非 MoE），参数规模约 2T，原生 2M context window，支持视频/音频/代码/文档多模态输入。在 MMLU-Pro 上与 GPT-5.5 持平（约 89.2%），在 SWE-bench Verified 上约 78%（vs Claude Mythos 87.6%），在 GPQA Diamond 上约 72%（vs Mythos 81.3%）。Google 的核心竞争力在于端云一体+自有硬件（TPU v6）的成本优势。</p>
+    <div class="highlight">关键差异化：Apple Intelligence 走 "小模型+隐私" 路线，Google 走 "大模型+全栈整合" 路线，Anthropic/OpenAI 走 "纯云端+API-first" 路线。Google 是唯一一个同时控制 OS、浏览器、硬件（TPU + Tensor SoC）和模型的公司。</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon gpu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+    </div>
+    <h2 class="section-title">NVIDIA Vera Rubin 技术规格与推理经济学</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Vera Rubin 平台技术规格全面解析 <span class="tag tag-gpu">硬件</span></div>
+    <p>NVIDIA Vera Rubin 平台（代号 R100）将于 6 月试产、7 月出货超大规模客户，是继 Blackwell 之后的重大架构升级：</p>
+    <table class="tech-table">
+      <tr><th>规格</th><th>Blackwell Ultra</th><th>Vera Rubin</th><th>提升</th></tr>
+      <tr><td>FP4 TFLOPS</td><td>~40,000</td><td>~132,000</td><td>3.3x</td></tr>
+      <tr><td>HBM 类型</td><td>HBM3e</td><td>HBM4</td><td>带宽 +50%</td></tr>
+      <tr><td>NVLink 带宽</td><td>1.8 TB/s</td><td>3.6 TB/s</td><td>2x</td></tr>
+      <tr><td>Expert Parallel</td><td>软件模拟</td><td>硬件加速</td><td>MoE 延迟 -40%</td></tr>
+      <tr><td>功耗</td><td>1000W</td><td>1200W</td><td>效率 +2.75x/W</td></tr>
+    </table>
+    <p>推理经济学影响：Vera Rubin 的 FP4 优化意味着推理成本将大幅下降。以 GPT-5.5 级别模型为基准，单 token 推理成本预计从 Blackwell 时代的 $0.003/1K tokens 降至 $0.001/1K tokens。这将使更多企业能够承担实时 AI Agent 部署的算力成本。</p>
+    <p>竞争格局：AMD MI350 在推理 workload 上 TCO 仍有优势（CUDA 锁定弱化）；Intel Gaudi 3 被 Microsoft/AWS 采购用于推理专用集群；Cerebras 的 wafer-scale 架构在延迟敏感场景（实时对话、游戏 NPC）有独特优势。但 NVIDIA 的护城河在于 CUDA 生态的 15 年积累和 NVLink 互连带来的大规模集群效率。</p>
+  </div>
+
+  <div class="card">
+    <div name="card-title" class="card-title">数据中心基础设施：从千瓦到兆瓦的范式转变 <span class="tag tag-gpu">基建</span></div>
+    <p>AI 数据中心正在经历量级跃迁：单机架功耗从传统的 30-40kW 逼近兆瓦级。OpenAI Stargate（Oracle Cloud, Abilene TX）总功耗已超 10GW。KKR 投 100 亿美元成立 Helix Digital Infrastructure（由前 AWS CEO 领导）。一个新趋势：Span 公司将液冷 NVIDIA RTX PRO 6000 Blackwell GPU 安装在居民家中，将闲置算力卖给超大规模客户——分布式推理网络的雏形。同时，缅因州即将成为第一个对数据中心建设实施暂停令的州，反映了公众对 AI 能耗的日益抵触。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon industry">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    </div>
+    <h2 class="section-title">Multi-Agent 系统工程：SAP 案例与架构模式</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">SAP Joule Agent 架构：领域特定 Agent 的工程实践 <span class="tag tag-industry">架构</span></div>
+    <p>SAP 的 Autonomous Enterprise 架构提供了企业级 Multi-Agent 系统的参考实现：</p>
+    <p>1) Agent 注册与发现：统一的 Agent Registry，每个 Agent 声明其能力（capabilities）、所需权限（permissions）和触发条件（triggers）。2) 编排层（Orchestration）：基于 DAG 的任务图引擎，支持顺序/并行/条件执行；Agent 间通过结构化消息（非自然语言）通信以确保确定性。3) 状态管理：每个 Agent 维护独立状态，通过 Event Sourcing 模式保证可审计性。4) 安全边界：每个 Agent 在独立的沙箱中运行，只能通过预定义 API 访问业务数据；所有跨 Agent 通信经过策略引擎审查。5) 人工兜底：所有金额超过阈值或涉及合规风险的决策自动升级为 human-in-the-loop。</p>
+    <p>Writer 的 prompt-free Agent 则走了另一条路线：不依赖用户编写 prompt，而是基于业务流程的 schema 自动推断意图。核心技术是 Structured Intent Recognition——将企业工作流建模为有限状态机，Agent 根据当前状态和上下文自动决定下一步操作。这种方式牺牲了灵活性换取了确定性和可控性。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">AI 开发工具市场格局：Cursor vs Copilot vs Claude Code <span class="tag tag-industry">工具</span></div>
+    <p>AI 编码辅助市场已达 128 亿美元，85% 的开发者日常使用 AI 工具。当前三大产品的技术路线差异明显：</p>
+    <p>Cursor（$2B ARR, 1M+ 用户）：AI-native IDE，Composer 支持单次操作多文件编辑。核心优势是与编辑器状态的深度集成——模型能感知光标位置、选中文本、打开文件、terminal 输出等上下文。GitHub Copilot（6 月 1 日转 AI Credits 计费）：覆盖最广的 IDE 支持（VS Code, JetBrains, Visual Studio, Neovim, Xcode），移向 usage-based pricing 反映了 Microsoft 对推理成本的管控需求。Claude Code（Anthropic）：Terminal-first 范式，200K context window，特别适合需要大量代码阅读+跨文件修改的复杂任务（架构重构、大型迁移）。2026 年典型的专业开发者工具链：Cursor 日常编码 + Claude Code 复杂任务。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon model">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+    </div>
+    <h2 class="section-title">视频生成架构对比：DiT vs Autoregressive vs Hybrid</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Sora DiT 失败的技术根因与替代架构 <span class="tag tag-model">架构</span></div>
+    <p>Sora 基于 Diffusion Transformer (DiT) 架构——将视频帧序列 patch 化后输入 Transformer，通过去噪过程生成视频。技术优势：时间一致性极好（patch 间的 attention 天然建模时序关系）。致命缺陷：计算复杂度与帧数呈超线性增长——每帧约 32x32=1024 个 patch，10 秒 30fps 视频 = 300,000 个 patch，self-attention 复杂度 O(n^2) 使推理成本爆炸。</p>
+    <p>替代路线对比：Runway Gen-4 使用 Latent Video Transformer（在压缩潜空间中生成，降低分辨率对计算的影响，推理快 10x）。Google Veo 3.1 采用 Hybrid 架构（粗粒度用 Autoregressive 生成关键帧，细粒度用 Diffusion 填充中间帧+超分，兼顾质量和效率）。Kling 3.0 使用轻量级 Flow Matching + 视频编解码器联合训练（最低成本方案，牺牲部分质量换取极低推理价格）。</p>
+    <p>Thinking Machines 的"交互模型"更激进：不做逐帧生成，而是将音视频文本作为连续信号流同时处理，使用 State-Space Model（SSM）变体实现 O(n) 复杂度的实时多模态推理。这可能代表了下一代多模态系统的方向——从 batch generation 转向 continuous interaction。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon research">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+    </div>
+    <h2 class="section-title">具身智能技术栈：VLA 模型与 Neuro-Symbolic 突破</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">VLA (Vision-Language-Action) 模型的工程化部署 <span class="tag tag-research">具身</span></div>
+    <p>BMW Figure 02 的成功验证了 VLA 模型在工业环境中的可行性。当前技术栈：</p>
+    <p>感知层：多相机 RGB-D 融合 + LiDAR 点云，实时 6DoF 物体姿态估计（精度 < 2mm）。规划层：NVIDIA Isaac GR00T 提供的 Foundation Policy Model——接受自然语言任务描述 + 视觉观测，输出连续动作序列。核心创新是 Behavior Cloning + RL fine-tuning 的混合训练：先用大量人类遥操作数据做 imitation learning，再用 sim-to-real transfer 在仿真中做 RL 优化。执行层：50Hz 控制循环，力矩控制精度 0.1Nm，关节空间轨迹插值。</p>
+    <p>100x 能效突破的技术细节：将 Neural Network（感知+粗规划）与 Symbolic Reasoning（精确几何计算+约束满足）结合。NN 负责理解场景和生成高层计划（which object, where to place），Symbolic 负责精确执行（碰撞检测、路径优化、力控制策略）。这种分工让 NN 部分可以用极小的模型（7B 参数 vs 原来的 70B），同时 Symbolic 部分零能耗（纯数学计算）。最终在精度持平的情况下，总算力消耗降低 100x。</p>
+    <div class="highlight">开源生态：NVIDIA Isaac GR00T 模型已开源，支持 ROS 2 集成。ShengShu 的 Motubrain 提供了 VLA + World Model + Video Generation 的统一框架。AgiBot 基于自研 A2 架构，月产能已达 10,000 台。MIT-IBM Computing Research Lab（4 月成立）正在探索量子+AI+机器人的交叉应用。</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon policy">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </div>
+    <h2 class="section-title">AI Agent 安全工程：攻击面分析与防御架构</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Prompt Injection 攻击在 Agentic 系统中的升级形态 <span class="tag tag-policy">安全</span></div>
+    <p>传统 prompt injection 主要影响单次对话输出。但在 Agentic 系统中，攻击面指数级扩大：</p>
+    <p>攻击分类：1) Direct Injection——攻击者直接在 Agent 可访问的内容中嵌入指令（恶意网页、文档、邮件）。2) Indirect Injection——通过修改 Agent 可能查询的数据源（数据库、API 响应、搜索结果）。3) Multi-hop Injection——指令被分散在多个来源中，单独看无害，但当 Agent 聚合后形成完整攻击指令。4) Persistence Injection——将恶意指令写入 Agent 的长期记忆/RAG 向量库，实现持久化控制。</p>
+    <p>防御架构（Defense-in-Depth）：Layer 1 - Input Sanitization（内容过滤、隐藏字符检测、语义异常检测）；Layer 2 - Capability Isolation（每个 Agent 在权限沙箱中运行，最小权限原则）；Layer 3 - Output Validation（另一个独立模型审查 Agent 输出是否符合原始意图）；Layer 4 - Action Gating（高风险操作需要 human approval，金额/权限/数据范围阈值触发）；Layer 5 - Behavioral Monitoring（异常行为模式检测，如突然访问不相关系统、批量数据读取）。</p>
+    <p>Google 的建议特别强调了 Layer 3（independent verifier）和 Layer 5（behavioral baseline），因为 Layer 1 的绕过率已达 37%（通过 Unicode tricks、多语言切换、context window flooding 等技术）。当前 AI Agent 安全市场约 300 亿美元，但仅 23% 的企业有正式的 Agent 安全框架。</p>
+  </div>
+</div>
+
+</div>
+
+<footer class="footer">
+  <p>AI Pulse Daily Report - 由 AI 自动聚合生成</p>
+  <p>数据来源: WebSearch, Air Street Press, TechCrunch, CNBC, Fortune, eWeek, NVIDIA, Google, Mandiant, WEF, IBM, PitchBook, ScienceDaily</p>
+</footer>
+
+<script>
+function switchTab(tabName) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + tabName).classList.add('active');
+  const tabs = ['casual', 'intermediate', 'expert'];
+  const idx = tabs.indexOf(tabName);
+  document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+}
+</script>
+
+</div>
+</body>
+</html>

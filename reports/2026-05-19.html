@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily Report | 2026.05.19</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --claude-bg: #FAF9F7;
+    --claude-surface: #FFFFFF;
+    --claude-border: #E8E5E0;
+    --claude-text-primary: #1A1714;
+    --claude-text-secondary: #6B6560;
+    --claude-text-tertiary: #9B9590;
+    --claude-accent: #DA7756;
+    --claude-accent-light: #F5E6DF;
+    --claude-accent-dark: #C4623F;
+    --claude-tag-blue: #E8F0FE;
+    --claude-tag-blue-text: #3B6CB5;
+    --claude-tag-green: #E6F4EA;
+    --claude-tag-green-text: #2D7A3F;
+    --claude-tag-purple: #F0E6FA;
+    --claude-tag-purple-text: #7B3FAF;
+    --claude-tag-amber: #FEF3E2;
+    --claude-tag-amber-text: #B5752D;
+    --claude-tag-red: #FDE8E8;
+    --claude-tag-red-text: #B53B3B;
+    --claude-card-shadow: 0 1px 3px rgba(26, 23, 20, 0.06), 0 1px 2px rgba(26, 23, 20, 0.04);
+    --claude-card-shadow-hover: 0 4px 12px rgba(26, 23, 20, 0.08), 0 2px 4px rgba(26, 23, 20, 0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+    background: var(--claude-bg);
+    color: var(--claude-text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 8px;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--claude-accent-dark); }
+
+  .header {
+    text-align: center;
+    padding: 48px 0 40px;
+    border-bottom: 1px solid var(--claude-border);
+    margin-bottom: 32px;
+  }
+
+  .header-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--claude-accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .header .date {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    font-weight: 400;
+  }
+
+  .header .edition-note {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    margin-top: 8px;
+  }
+
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 36px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--claude-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .tab-btn:hover {
+    color: var(--claude-text-primary);
+    background: var(--claude-bg);
+  }
+
+  .tab-btn.active {
+    background: var(--claude-accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(218, 119, 86, 0.3);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .section { margin-bottom: 36px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .section-icon.gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .section-icon.model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .section-icon.product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .section-icon.research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .section-icon.industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .section-icon.policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .card {
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--claude-card-shadow);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .card:hover { box-shadow: var(--claude-card-shadow-hover); }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .card p {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.75;
+    margin-bottom: 8px;
+  }
+
+  .card p:last-child { margin-bottom: 0; }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .tag-gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .tag-model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .tag-product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .tag-research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .tag-industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .tag-policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .highlight {
+    background: var(--claude-accent-light);
+    border-left: 3px solid var(--claude-accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--claude-accent-dark);
+    line-height: 1.7;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .stat-item {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--claude-accent);
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--claude-text-tertiary);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 8px;
+    transition: color 0.15s;
+  }
+
+  .source-link:hover { color: var(--claude-accent-dark); text-decoration: underline; }
+
+  .tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .tech-table th, .tech-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .tech-table th {
+    font-weight: 600;
+    color: var(--claude-text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .tech-table td { color: var(--claude-text-primary); }
+
+  .footer {
+    text-align: center;
+    padding-top: 40px;
+    border-top: 1px solid var(--claude-border);
+    margin-top: 60px;
+  }
+
+  .footer p {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    line-height: 1.8;
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 24px 16px 60px; }
+    .header { padding: 32px 0 28px; }
+    .header h1 { font-size: 24px; }
+    .tab-btn { font-size: 12px; padding: 10px 8px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<a href="/" class="back-link">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+  返回 AI Pulse
+</a>
+
+<header class="header">
+  <div class="header-logo">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    AI PULSE
+  </div>
+  <h1>AI 日报 | 2026.05.19</h1>
+  <p class="date">星期二 / Tuesday, May 19, 2026</p>
+  <p class="edition-note">Edition #60 - Google I/O 2026今日开幕 Gemini 4.0 呼之欲出，Cursor Composer 2.5 昨日发布对标 Opus 4.7，Claude Opus 4.7 正式 GA 视觉能力飞跃，Gartner 研究揭示 AI 裁员与 ROI 脱钩，礼来 $27.5 亿 AI 药物发现交易创纪录，Figure 03 家用机器人 $2 万目标价 BMW 部署扩展至欧洲</p>
+</header>
+
+<nav class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('casual')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+    轻松阅读
+  </button>
+  <button class="tab-btn" onclick="switchTab('intermediate')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+    技术进阶
+  </button>
+  <button class="tab-btn" onclick="switchTab('expert')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+    深度技术
+  </button>
+</nav>
+
+<!-- ==================== 轻松阅读版 ==================== -->
+<div id="tab-casual" class="tab-content active">
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon product">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    </div>
+    <h2 class="section-title">Google I/O 2026 今日开幕：Gemini 4.0 即将登场</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Google 史上最重磅开发者大会今天开始 <span class="tag tag-product">发布会</span></div>
+    <p>Google I/O 2026 今日在加州山景城 Shoreline Amphitheatre 正式开幕，主题演讲将于北京时间凌晨 1 点开始。最大看点是 Gemini 4.0 的发布——这将是 Google 迄今为止最强大的 AI 模型，直接对标 OpenAI GPT-5.5 和 Anthropic Claude Opus 4.7。此外，Google 还将推出全新笔记本电脑品类 Googlebook（由 Acer、Dell、HP、Lenovo 等合作生产），以及把 Android 和 ChromeOS 合二为一的 Aluminium OS。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Android XR 智能眼镜和 Android 17 也在路上 <span class="tag tag-product">硬件</span></div>
+    <p>除了模型和操作系统，Google 还将发布 Android XR 智能眼镜（代号"Jinju"，重量仅约 50 克），与三星、Warby Parker、XREAL 等品牌合作。Android 17 将深度集成 Gemini Intelligence，包括浏览器内 AI Agent（Chrome Auto Browse）和 AI 自动生成 Widgets。在 I/O 前夕，Gemini 3.2 Flash 的定价已被提前泄露——输入 $0.25/百万 token，输出 $2.00/百万 token。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon product">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+    </div>
+    <h2 class="section-title">AI 编程大战：Cursor 2.5 叫板 Claude</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Cursor 昨日发布 Composer 2.5，性能直追顶级模型 <span class="tag tag-product">工具</span></div>
+    <p>AI 编程工具 Cursor 在昨天（5 月 18 日）发布了 Composer 2.5，声称在多项编程基准测试中已接近 Claude Opus 4.7 和 GPT-5.5 的水平，但价格只是它们的几分之一。这款工具基于月之暗面的 Kimi K2.5 模型深度定制而成。同时，GitHub Copilot 将在 6 月 1 日转为按使用量计费的"AI 积分"模式。开发者们的新标准组合正在形成：日常写代码用 Cursor，复杂任务用 Claude Code。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon model">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>
+    </div>
+    <h2 class="section-title">Claude Opus 4.7 正式全面开放</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Anthropic 最强模型 GA，看图能力提升 80% <span class="tag tag-model">模型</span></div>
+    <p>Anthropic 的 Claude Opus 4.7 正式向所有用户开放。这款模型在代码修复能力测试（SWE-bench）中得分 87.6%，稳居全球第一。最令人惊喜的是"视觉"升级——现在它能看懂分辨率高达 375 万像素的图片（之前只有 1/3），图像识别准确率从 54.5% 飙升至 98.5%。新推出的 Managed Agents"做梦"功能让 AI 助手能在工作间隙自动回顾和优化自己。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon industry">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    </div>
+    <h2 class="section-title">AI 裁员潮：赚不赚钱都在裁</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Gartner 研究：80% 试点 AI 的公司已裁员 <span class="tag tag-industry">职场</span></div>
+    <p>一项 Gartner 最新研究发现了一个令人不安的事实：80% 正在试点 AI 的公司已经裁员，但无论 AI 投资回报高低，裁员规模几乎一样。这意味着很多公司可能只是把 AI 当作裁员的借口。Coinbase 上周裁掉了 700 人（14%），用"AI 原生小组"取代传统团队，CEO 声称这不是削减成本而是"根本性重构"。PayPal 也宣布未来 2-3 年裁员 20%，目标节省 15 亿美元。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon research">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+    </div>
+    <h2 class="section-title">AI 医药里程碑：礼来砸下 27.5 亿美元</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">制药巨头与 AI 公司达成史上最大药物发现交易 <span class="tag tag-research">医疗</span></div>
+    <p>制药巨头礼来（Eli Lilly）与香港 AI 药物发现公司 Insilico Medicine 签署了一项价值最高 27.5 亿美元的协议，这是 AI 辅助药物发现领域有史以来最大的交易之一。礼来还启用了自己的超级 AI 计算中心 LillyPod——这是全球首个由制药公司独立拥有的 NVIDIA DGX SuperPOD，装备了 1,016 块最新 Blackwell Ultra GPU，算力超过 9,000 petaflops。AI 正在彻底改变新药研发的方式。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon gpu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4"/><path d="M12 19v4"/><path d="M1 12h4"/><path d="M19 12h4"/><path d="M4.22 4.22l2.83 2.83"/><path d="M16.95 16.95l2.83 2.83"/><path d="M4.22 19.78l2.83-2.83"/><path d="M16.95 7.05l2.83-2.83"/></svg>
+    </div>
+    <h2 class="section-title">机器人走进工厂和家庭</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">BMW 将人形机器人部署扩展到欧洲，Figure 03 瞄准家庭市场 <span class="tag tag-gpu">机器人</span></div>
+    <p>BMW 在美国工厂用 Figure 02 机器人成功生产了 3 万多辆 X3 后，宣布将在今年夏天把人形机器人部署到德国莱比锡工厂——这是欧洲首次。与此同时，Figure AI 公布了第三代家用机器人 Figure 03 的目标价——仅 2 万美元（约 14.5 万元人民币），身高 1.72 米、体重 61 公斤、续航 5 小时，已在测试中展示了 8 种自主清洁技能。制造速度也从每天 1 台提升到每小时 1 台。</p>
+  </div>
+</div>
+
+</div>
+
+<!-- ==================== 技术进阶版 ==================== -->
+<div id="tab-intermediate" class="tab-content">
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon product">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    </div>
+    <h2 class="section-title">Google I/O 2026：Gemini 4.0 与全平台战略</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Gemini 4.0 预计在 Agent 能力上实现突破 <span class="tag tag-product">发布会</span></div>
+    <p>Google I/O 2026 今日开幕，核心看点是 Gemini 4.0。与上一代主攻推理不同，新模型预计在 Agent 任务能力上实现突破性进展。此前泄露的 Gemini 3.2 Flash 定价（$0.25/$2.00 per M tokens）暗示 Google 正在价格-性能比上同时发力。Gemini Omni 多模态版本据报可在对话中实现视频生成、混剪和编辑。</p>
+    <p>更深远的影响在于平台层面：Aluminium OS 将 Android 与 ChromeOS 合并为统一笔记本平台，秋季上市的 Googlebook 由 Acer、ASUS、Dell、HP、Lenovo 代工。Android 17 以 Gemini Intelligence 为底层智能层，Chrome Auto Browse 实现浏览器内 AI Agent，标志着操作系统从"交互界面"向"智能代理"的范式转移。</p>
+    <div class="highlight">竞争格局：GPT-5.5 Instant 于 5 月 5 日成为 ChatGPT 默认模型（BenchLM 总分 91/100），Claude Opus 4.7 以 SWE-bench 87.6% 保持代码能力领先。Google 需要证明 Gemini 4.0 能在核心基准上缩小差距，同时靠生态整合建立差异化护城河。</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon product">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+    </div>
+    <h2 class="section-title">Cursor Composer 2.5：AI 编程工具的基准之争</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">基于 Kimi K2.5 深度定制，CursorBench 提升 61% <span class="tag tag-product">工具</span></div>
+    <p>Cursor 于 5 月 18 日发布 Composer 2.5。其前代 Composer 2（3 月 19 日发布）基于月之暗面 Kimi K2.5 进行了代码专项继续预训练和大规模 RL 优化，CursorBench 得分 61.3（+61%），SWE-bench Multilingual 73.7（+30%），Terminal-Bench 2.0 61.7（+54%）。Composer 2.5 在此基础上加强了后训练，声称在多项指标上接近 Opus 4.7 和 GPT-5.5 水平。</p>
+    <p>定价策略激进：$0.50/M input tokens，远低于 Claude 的 $5.00 和 GPT-5.5 的同级定价。但社区发现 Cursor 在官方公告中刻意隐瞒了 Kimi K2.5 底座的事实，引发透明度争议。GitHub Copilot 将于 6 月 1 日转向"AI Credits"按量计费。2026 年主流开发者组合正在形成：日常编辑用 Cursor + 复杂工程任务用 Claude Code。</p>
+    <div class="stats-row">
+      <div class="stat-item"><div class="stat-value">61.3</div><div class="stat-label">CursorBench</div></div>
+      <div class="stat-item"><div class="stat-value">73.7</div><div class="stat-label">SWE-bench ML</div></div>
+      <div class="stat-item"><div class="stat-value">$0.50</div><div class="stat-label">/M Input Tokens</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon model">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>
+    </div>
+    <h2 class="section-title">Claude Opus 4.7：SWE-bench 87.6% 的技术突破</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">视觉分辨率 3 倍提升，Managed Agents 三大新特性 <span class="tag tag-model">模型</span></div>
+    <p>Claude Opus 4.7 正式 GA，在多项指标上重夺最强通用 LLM 宝座。SWE-bench Verified 从 80.8% 跃升至 87.6%（领先 Gemini 3.1 Pro 的 80.6%），SWE-bench Pro 提升 10 个百分点至 64.3%，CursorBench 提升 12 个百分点至 70%。视觉能力是最大亮点：图像长边分辨率从 ~860px 提升至 2,576px（~375 万像素），视觉精度从 54.5% 飙升至 98.5%。新增"xhigh"effort 级别。</p>
+    <p>Managed Agents 获得三大升级：1) Dreaming——Agent 在空闲时自动回顾历史会话进行自我优化；2) Multi-Agent 编排——Lead Agent 将任务委派给并行运行的专家 Agent，共享文件系统；3) Claude Code Agent View——统一管理多个会话。Claude Platform 登陆 AWS。Anthropic 还发布了 20+ 法律 MCP 连接器和 12 个专业领域插件。</p>
+    <div class="stats-row">
+      <div class="stat-item"><div class="stat-value">87.6%</div><div class="stat-label">SWE-bench Verified</div></div>
+      <div class="stat-item"><div class="stat-value">98.5%</div><div class="stat-label">视觉精度</div></div>
+      <div class="stat-item"><div class="stat-value">3.75MP</div><div class="stat-label">图像分辨率</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon industry">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    </div>
+    <h2 class="section-title">AI 裁员的真相：与 ROI 无关</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Gartner：高回报和低回报公司裁员比例几乎相同 <span class="tag tag-industry">研究</span></div>
+    <p>Gartner 5 月 11 日发布的研究揭示了 AI 裁员背后的不舒服事实：80% 试点 AI/自动化的公司已削减人数，但高 ROI 和低 ROI 公司的裁员率几乎持平。这表明"AI 替代人类"在很多场景中更多是管理层的叙事工具，而非技术驱动的必然结果。</p>
+    <p>Coinbase 裁员 700 人（14%，~5000 人中），用"AI 原生 Pod"（含一人团队指挥 AI Agent）取代"纯管理者"。重组费用 Q2 约 $5000-6000 万，遣散费最低 16 周。PayPal 计划 2-3 年裁 20%（~4,760 人），目标节省 $15 亿。2025 年全年因 AI 导致的裁员达 55,000 人——是 2023 年的 12 倍。六分之一的雇主预计 2026 年将因 AI 缩减编制。</p>
+    <div class="highlight">核心洞察：Gartner 数据显示 AI 裁员与实际 AI 投资回报之间缺乏相关性。企业在"AI 优先重组"叙事下的裁员，更多反映的是成本压力和管理层对 AI 未来的押注，而非 AI 已经在当前工作流中实现了人力替代。</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon research">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+    </div>
+    <h2 class="section-title">AI 制药进入临床时代</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">礼来 $27.5 亿 Insilico 交易 + LillyPod 超算上线 <span class="tag tag-research">医疗</span></div>
+    <p>礼来与 Insilico Medicine 达成总价值最高 $27.5 亿的合作（$1.15 亿预付款），获得 Insilico Pharma.AI 平台发现的多个临床前药物候选物的全球独家开发和商业化权利。这是 AI 药物发现领域最大的单笔交易之一。</p>
+    <p>同时，礼来的 LillyPod 超算中心正式上线——全球首个由制药公司独立拥有的 NVIDIA DGX SuperPOD with DGX B300，配备 1,016 块 Blackwell Ultra GPU，算力超过 9,000 petaflops，从组装到运行仅用 4 个月。NVIDIA 和礼来还成立了首个 AI 药物发现联合创新实验室。头部 AI 生物科技公司（Iambic、Generate）预计 2026 年将有 3 个以上 AI 设计药物进入临床试验。</p>
+    <div class="stats-row">
+      <div class="stat-item"><div class="stat-value">$27.5亿</div><div class="stat-label">交易总价值</div></div>
+      <div class="stat-item"><div class="stat-value">1,016</div><div class="stat-label">Blackwell Ultra GPU</div></div>
+      <div class="stat-item"><div class="stat-value">9,000+</div><div class="stat-label">PFLOPS 算力</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon gpu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4"/><path d="M12 19v4"/><path d="M1 12h4"/><path d="M19 12h4"/></svg>
+    </div>
+    <h2 class="section-title">Figure + BMW：人形机器人的产业化加速</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">BMW 莱比锡工厂今夏启用机器人，Figure 03 定价 $2 万 <span class="tag tag-gpu">机器人</span></div>
+    <p>BMW Spartanburg 工厂完成了 10 个月的 Figure 02 试点：机器人每周 5 天、每天 10 小时工作，参与生产了 3 万多辆 X3。成功验证后，BMW 宣布将于今夏在德国莱比锡工厂部署 AEON 人形机器人，用于高压电池组装和零部件制造——这是欧洲首次人形机器人量产部署。BMW 同时成立了"生产物理 AI 卓越中心"。</p>
+    <p>Figure 03 是面向家庭市场的第三代机器人：身高 1.72m，体重 61kg，续航 5 小时，负载 20kg，搭载 20 自由度灵巧手（3 克触觉灵敏度），2kW 无线脚垫充电。运行 Helix 视觉-语言-动作模型实现真自主。3 月试验中展示了 8 种自主清洁技能。Figure 制造速度从每天 1 台提升至每小时 1 台（24 倍），已交付 350+ 台。</p>
+  </div>
+</div>
+
+</div>
+
+<!-- ==================== 深度技术版 ==================== -->
+<div id="tab-expert" class="tab-content">
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon product">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    </div>
+    <h2 class="section-title">Google I/O 2026 技术分析：Agent-First 战略</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Gemini 4.0 预期与技术竞争格局 <span class="tag tag-product">发布会</span></div>
+    <p>Google I/O 2026 于今日（5/19）10am PT 开幕。根据泄露信息和预发布分析，技术看点如下：</p>
+    <p>Gemini 模型矩阵：Google 可能同时发布 Gemini 3.2（Flash 定价已泄露：$0.25/$2.00/M tokens）、Gemini 3.5、和旗舰 Gemini 4.0。核心突破方向从纯推理转向 Agent 能力——端到端工具使用、多步骤规划和自主执行。Gemini Omni 是原生多模态版本，支持对话式视频生成/编辑。</p>
+    <p>平台架构变革：Aluminium OS 统一 Android + ChromeOS 为一个平台，底层 Gemini Intelligence 层作为统一智能服务。Android 17 的 Chrome Auto Browse 实现浏览器内 Agent——不是简单的 UI automation，而是理解网页语义后的智能操作。AI Widgets 自动生成意味着 UI 层从声明式走向生成式。</p>
+    <table class="tech-table">
+      <tr><th>模型</th><th>SWE-bench</th><th>BenchLM</th><th>定价 (Input/Output)</th></tr>
+      <tr><td>Claude Opus 4.7</td><td>87.6%</td><td>-</td><td>$5.00 / $25.00</td></tr>
+      <tr><td>GPT-5.5 Instant</td><td>-</td><td>91/100</td><td>~$2.50 / $10.00</td></tr>
+      <tr><td>Gemini 3.2 Flash (leaked)</td><td>-</td><td>-</td><td>$0.25 / $2.00</td></tr>
+      <tr><td>Gemini 3.1 Pro</td><td>80.6%</td><td>-</td><td>$1.25 / $5.00</td></tr>
+      <tr><td>DeepSeek V4-Pro</td><td>80.6%</td><td>-</td><td>Open (MIT)</td></tr>
+    </table>
+    <p>Android XR 眼镜（代号 Jinju）约 50g，与 Samsung、Warby Parker、XREAL 合作。此前 Apple Vision Pro 2 代已降至 $2,499 但销量持续低迷——Google 选择轻量级 AR 眼镜而非 VR 头显的路线更符合市场方向。</p>
+    <a href="https://io.google/2026/" class="source-link" target="_blank">Google I/O 2026 官网 &#8599;</a>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon product">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+    </div>
+    <h2 class="section-title">AI 编程工具技术深度：Composer 2.5 架构剖析</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Kimi K2.5 底座 + Code-heavy CPT + RL Agent 训练 <span class="tag tag-product">工具</span></div>
+    <p>Cursor Composer 2 系列的技术架构值得深入分析。底座模型为月之暗面 Kimi K2.5（MoE 架构，1T total / 32B active），在此基础上进行了：1) 代码密集型 Continued Pre-Training（CPT）——使用大规模代码语料增强代码生成和理解能力；2) 大规模强化学习——专门针对 Agent 行为（文件操作、终端命令、多文件编辑）进行 RL 优化。</p>
+    <p>Composer 2.5（5/18 发布）在 Composer 2 基础上加强了后训练阶段，但保持 K2.5 底座不变。Cursor 声称 Composer 2.5 在多项基准上匹配 Opus 4.7（SWE-bench 87.6%）和 GPT-5.5 水平，但以 $0.50/M input tokens 的激进定价提供——这是 Claude 定价的 1/10。</p>
+    <table class="tech-table">
+      <tr><th>指标</th><th>Composer 1</th><th>Composer 2</th><th>提升</th></tr>
+      <tr><td>CursorBench</td><td>38.1</td><td>61.3</td><td>+61%</td></tr>
+      <tr><td>SWE-bench Multilingual</td><td>56.7</td><td>73.7</td><td>+30%</td></tr>
+      <tr><td>Terminal-Bench 2.0</td><td>40.1</td><td>61.7</td><td>+54%</td></tr>
+    </table>
+    <p>透明度争议：Cursor 在官方技术报告和公告中未明确披露 Kimi K2.5 作为底座模型，开发者社区自行发现后引发争议。这反映了 AI 编程工具行业的一个结构性问题——终端产品的模型供应链透明度远低于直接 API 服务。</p>
+    <div class="highlight">行业格局：2026 年开发者工具栈正在收敛——日常编辑 Cursor（自研模型，低价高频）+ 复杂工程任务 Claude Code（Opus 4.7，高精度低频），或 Copilot IDE + Claude Code Terminal。GitHub Copilot 6/1 转 AI Credits 计费可能加速开发者向 Cursor 迁移。SpaceX 以 $600 亿收购 Cursor 的期权也暗示了 AI 编程在航天/国防领域的战略价值。</div>
+    <a href="https://cursor.com/blog/composer-2-technical-report" class="source-link" target="_blank">Composer 2 Technical Report &#8599;</a>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon model">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>
+    </div>
+    <h2 class="section-title">Claude Opus 4.7 技术分析：视觉与 Agent 双重突破</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">SWE-bench 87.6%、视觉 98.5%、Managed Agents Dreaming <span class="tag tag-model">模型</span></div>
+    <p>Claude Opus 4.7 GA 的关键技术突破点：</p>
+    <p>代码能力：SWE-bench Verified 80.8% -> 87.6%（+6.8pp，绝对领先第二名 Gemini 3.1 Pro 的 80.6% 达 7 个百分点）。SWE-bench Pro 53.4% -> 64.3%（+10.9pp），CursorBench 58% -> 70%（+12pp）。这些提升在已经饱和的高分区间尤其显著。</p>
+    <p>视觉能力跃迁：图像输入分辨率从 ~860px 长边提升至 2,576px（~3.75MP，3 倍提升），视觉精度从 54.5% 飙升至 98.5%（+44pp）。这使得 Claude 可以直接处理高分辨率截图、技术图表、PDF 文档等场景，不再需要预处理降采样。</p>
+    <p>推理层次：新增"xhigh"effort 级别（介于 high 和 max 之间），为 Agent 场景提供更细粒度的推理深度控制。定价不变：$5/M input, $25/M output。</p>
+    <table class="tech-table">
+      <tr><th>基准</th><th>Opus 4.6</th><th>Opus 4.7</th><th>变化</th></tr>
+      <tr><td>SWE-bench Verified</td><td>80.8%</td><td>87.6%</td><td>+6.8pp</td></tr>
+      <tr><td>SWE-bench Pro</td><td>53.4%</td><td>64.3%</td><td>+10.9pp</td></tr>
+      <tr><td>CursorBench</td><td>58%</td><td>70%</td><td>+12pp</td></tr>
+      <tr><td>视觉精度</td><td>54.5%</td><td>98.5%</td><td>+44pp</td></tr>
+      <tr><td>图像分辨率</td><td>~0.74MP</td><td>~3.75MP</td><td>3x</td></tr>
+    </table>
+    <p>Managed Agents 三大新特性深度：1) Dreaming——Agent 在空闲时回放历史 session，提取模式和错误，写入 self-improvement memory。这是 meta-learning at inference time 的实用化实现。2) Multi-Agent Orchestration——Lead Agent 分析任务后动态 spawn 专家 Agent，共享文件系统（而非消息传递），避免序列化瓶颈。3) Agent View in Claude Code——统一 dashboard 管理多个并发 session 的状态和进度。</p>
+    <div class="highlight">Anthropic 生态扩展：Claude Platform 登陆 AWS；20+ 法律 MCP 连接器（Westlaw、LexisNexis、Thomson Reuters）和 12 个专业领域插件；Claude for Small Business 集成 QuickBooks、PayPal、HubSpot、Canva、Docusign。Anthropic Q1 ARR 超 $440 亿（80x YoY），正以 $9000 亿+ 估值融资 $300 亿。</div>
+    <a href="https://www.anthropic.com/news/claude-opus-4-7" class="source-link" target="_blank">Claude Opus 4.7 发布公告 &#8599;</a>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon industry">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    </div>
+    <h2 class="section-title">AI 裁员经济学：Gartner 数据驱动的深度分析</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">ROI 不相关性与"AI 原生 Pod"组织实验 <span class="tag tag-industry">研究</span></div>
+    <p>Gartner（5/11）的研究方法论值得关注：对数百家企业 AI 试点项目的追踪显示，workforce reduction 在高 ROI（AI 确实产生显著回报）和低 ROI（AI 试点效果不佳）群体中的分布几乎均匀。这从统计学角度证伪了"AI 替代人力"的因果叙事——裁员决策的驱动力是管理层对 AI 未来的预期，而非 AI 当前的实际能力。</p>
+    <p>Coinbase 的"AI 原生 Pod"是一个值得技术分析的组织实验。CEO Brian Armstrong 的架构：消除"纯管理者"层级，每个 Pod 可以是一人团队 + AI Agent 集群。核心假设是 AI Agent 已达到可以替代初级工程师执行标准化任务（代码 review、bug triage、文档、测试）的水平。重组费用 Q2 $5000-6000 万，16 周遣散费，影响 ~700 人。</p>
+    <p>PayPal 的 $15 亿目标更加激进：2-3 年裁 20%（~4,760 人），明确将 savings 归因于 AI-driven efficiency。对比：2025 全年 AI 导致裁员 55,000 人（12x 2023）；六分之一雇主预计 2026 年因 AI 缩编。</p>
+    <div class="highlight">关键发现：AI 裁员存在显著的 performative 成分。企业需要向资本市场展示"AI 转型决心"，裁员成为最直观的信号。但 Gartner 数据警示：当裁员与 ROI 脱钩时，企业可能在 AI 尚未能有效替代人力的领域过早削减关键知识工作者，造成隐性能力损失。</div>
+    <a href="https://fortune.com/2026/05/11/ai-automation-layoffs-gartner-study-roi/" class="source-link" target="_blank">Fortune: Gartner AI Layoffs Study &#8599;</a>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon research">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+    </div>
+    <h2 class="section-title">AI 药物发现的临床时代：LillyPod 与 Pharma.AI</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">$27.5 亿 Insilico 交易 + 世界首个药企超算中心 <span class="tag tag-research">医疗</span></div>
+    <p>礼来-Insilico 交易结构：$1.15 亿 upfront payment + 里程碑付款合计最高 $27.5 亿。礼来获得 Insilico Pharma.AI 生成式平台发现的多个临床前候选药物的全球独家开发权。Pharma.AI 平台的核心能力：从靶点发现到分子生成到临床前验证的端到端 AI pipeline，使用生成化学（GAN + Diffusion Models）和多目标优化。</p>
+    <p>LillyPod 技术参数：全球首个由制药公司独立拥有的 NVIDIA DGX SuperPOD with DGX B300 系统。1,016 块 Blackwell Ultra GPU，总算力 9,000+ PFLOPS。从组装到上线仅 4 个月。用途覆盖基因组学、蛋白质组学、药物-靶点相互作用建模、临床试验设计优化、真实世界证据分析。NVIDIA 和礼来同时宣布成立首个 AI 药物发现联合创新实验室。</p>
+    <p>行业趋势：多个 AI 生物科技公司（Iambic、Generate、Recursion、Exscientia）预计 2026 年有 3+ AI 设计药物进入临床试验。计算评估复杂生物制剂（多特异性抗体、融合蛋白）的能力正在让 dry lab 到 wet lab 的反馈循环从月级缩短到天级。AI 药物发现正在从"概念验证"进入"临床交付"阶段。</p>
+    <table class="tech-table">
+      <tr><th>参数</th><th>LillyPod 规格</th></tr>
+      <tr><td>GPU</td><td>1,016 x NVIDIA Blackwell Ultra</td></tr>
+      <tr><td>总算力</td><td>9,000+ PFLOPS</td></tr>
+      <tr><td>平台</td><td>NVIDIA DGX SuperPOD with DGX B300</td></tr>
+      <tr><td>建设周期</td><td>4 个月</td></tr>
+      <tr><td>位置</td><td>Indianapolis, USA</td></tr>
+      <tr><td>所有权</td><td>Eli Lilly 独立拥有（药企首例）</td></tr>
+    </table>
+    <a href="https://www.biopharmadive.com/news/eli-lilly-insilico-ai-medicine-drug-discovery/816088/" class="source-link" target="_blank">BioPharma Dive: Lilly-Insilico 交易详情 &#8599;</a>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon gpu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4"/><path d="M12 19v4"/><path d="M1 12h4"/><path d="M19 12h4"/><path d="M4.22 4.22l2.83 2.83"/><path d="M16.95 16.95l2.83 2.83"/><path d="M4.22 19.78l2.83-2.83"/><path d="M16.95 7.05l2.83-2.83"/></svg>
+    </div>
+    <h2 class="section-title">人形机器人工程化：Figure 的 Helix VLA 与 BMW 产线验证</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">从 PoC 到产线：10 个月 3 万辆 X3 的量化验证 <span class="tag tag-gpu">机器人</span></div>
+    <p>BMW Spartanburg 的 Figure 02 部署数据具有工程参考价值：10 个月运行、5 天/周、10 小时/天，参与 30,000+ 辆 X3 生产。主要任务：钣金件拾取和焊接定位。这不是 demo——是在实际产线上经过验证的 OEE（Overall Equipment Effectiveness）数据。BMW 据此决定扩展至莱比锡工厂（欧洲首部署），使用 AEON 人形机器人（非 Figure）用于高压电池组装——更复杂的任务域。</p>
+    <p>Figure 03 技术参数深度：身高 1.72m，体重 61kg，续航 5h，负载 20kg。20-DOF 灵巧手是关键差异化——3g 触觉灵敏度意味着可以处理玻璃杯、织物等精细物体。2kW 无线脚垫充电消除了对接站需求。运行 Helix 视觉-语言-动作（VLA）模型：视觉感知 + 语言理解 + 连续动作生成的端到端网络，实现"看-理解-做"闭环。3 月测试中 8 种自主清洁技能（扫地、拖地、擦桌、整理、倒垃圾等）无需人类干预。</p>
+    <p>制造能力跃升：从 1 robot/day 到 1 robot/hour（24x），已交付 350+ 台。$20,000 目标价对标高端家电价位。Japan Airlines 与 GMO AI &amp; Robotics 合作，以 ~$15,400/台试点机场行李装卸。</p>
+    <div class="highlight">产业化关键指标：制造速度从每天 1 台到每小时 1 台（24x 提升）是工程里程碑——这意味着产线已从手工组装转向半自动化流水线。350+ 台交付量虽然绝对值小，但已超过大多数人形机器人公司的总交付量。$20K 目标价如果实现，将首次让人形机器人进入消费市场的价格带。Helix VLA 的端到端架构避免了传统机器人的 perception-planning-control pipeline 的模块间误差累积问题。</div>
+    <a href="https://www.figure.ai/news/introducing-figure-03" class="source-link" target="_blank">Figure 03 公告 &#8599;</a>
+  </div>
+</div>
+
+</div>
+
+<footer class="footer">
+  <p>AI Pulse Daily Report - 由 AI 自动聚合生成</p>
+  <p>数据来源: WebSearch, TechCrunch, CNBC, Fortune, VentureBeat, Android Authority, BioPharma Dive, Gartner, Anthropic, Google, Cursor, Figure AI, BMW Group, IT之家, 36氪, 量子位</p>
+</footer>
+
+<script>
+function switchTab(tabName) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + tabName).classList.add('active');
+  const tabs = ['casual', 'intermediate', 'expert'];
+  const idx = tabs.indexOf(tabName);
+  document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+}
+</script>
+
+</div>
+</body>
+</html>

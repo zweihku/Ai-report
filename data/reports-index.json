@@ -55,6 +55,7 @@
     { "date": "2026-05-14", "file": "2026-05-14.html", "title": "AI Daily Report | 2026.05.14", "tags": ["Cerebras CBRS Debut", "Trump-Xi AI Summit", "Anthropic Stainless $300M"] },
     { "date": "2026-05-15", "file": "2026-05-15.html", "title": "AI Daily Report | 2026.05.15", "tags": ["Cerebras +76% Day 1", "NVIDIA H200 China Export", "Grok 4.3 Consolidation"] },
     { "date": "2026-05-16", "file": "2026-05-16.html", "title": "AI Daily Report | 2026.05.16", "tags": ["Anthropic $950B Round", "China Token Economy", "Semiconductor Boom"] },
-    { "date": "2026-05-18", "file": "2026-05-18.html", "title": "AI Daily Report | 2026.05.18", "tags": ["Google I/O 2026 Eve", "NVIDIA Vera Rubin", "Sora Shutdown"] }
+    { "date": "2026-05-18", "file": "2026-05-18.html", "title": "AI Daily Report | 2026.05.18", "tags": ["Google I/O 2026 Eve", "NVIDIA Vera Rubin", "Sora Shutdown"] },
+    { "date": "2026-05-19", "file": "2026-05-19.html", "title": "AI Daily Report | 2026.05.19", "tags": ["Google I/O 2026 Keynote", "Cursor Composer 2.5", "Claude Opus 4.7 GA"] }
   ]
 }

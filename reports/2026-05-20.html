@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily Report | 2026.05.20</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --claude-bg: #FAF9F7;
+    --claude-surface: #FFFFFF;
+    --claude-border: #E8E5E0;
+    --claude-text-primary: #1A1714;
+    --claude-text-secondary: #6B6560;
+    --claude-text-tertiary: #9B9590;
+    --claude-accent: #DA7756;
+    --claude-accent-light: #F5E6DF;
+    --claude-accent-dark: #C4623F;
+    --claude-tag-blue: #E8F0FE;
+    --claude-tag-blue-text: #3B6CB5;
+    --claude-tag-green: #E6F4EA;
+    --claude-tag-green-text: #2D7A3F;
+    --claude-tag-purple: #F0E6FA;
+    --claude-tag-purple-text: #7B3FAF;
+    --claude-tag-amber: #FEF3E2;
+    --claude-tag-amber-text: #B5752D;
+    --claude-tag-red: #FDE8E8;
+    --claude-tag-red-text: #B53B3B;
+    --claude-card-shadow: 0 1px 3px rgba(26, 23, 20, 0.06), 0 1px 2px rgba(26, 23, 20, 0.04);
+    --claude-card-shadow-hover: 0 4px 12px rgba(26, 23, 20, 0.08), 0 2px 4px rgba(26, 23, 20, 0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+    background: var(--claude-bg);
+    color: var(--claude-text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 8px;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--claude-accent-dark); }
+
+  .header {
+    text-align: center;
+    padding: 48px 0 40px;
+    border-bottom: 1px solid var(--claude-border);
+    margin-bottom: 32px;
+  }
+
+  .header-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--claude-accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .header .date {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    font-weight: 400;
+  }
+
+  .header .edition-note {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    margin-top: 8px;
+  }
+
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 36px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--claude-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .tab-btn:hover {
+    color: var(--claude-text-primary);
+    background: var(--claude-bg);
+  }
+
+  .tab-btn.active {
+    background: var(--claude-accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(218, 119, 86, 0.3);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .section { margin-bottom: 36px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .section-icon.gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .section-icon.model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .section-icon.product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .section-icon.research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .section-icon.industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .section-icon.policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .card {
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--claude-card-shadow);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .card:hover { box-shadow: var(--claude-card-shadow-hover); }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .card p {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.75;
+    margin-bottom: 8px;
+  }
+
+  .card p:last-child { margin-bottom: 0; }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .tag-gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .tag-model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .tag-product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .tag-research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .tag-industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .tag-policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .highlight {
+    background: var(--claude-accent-light);
+    border-left: 3px solid var(--claude-accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--claude-accent-dark);
+    line-height: 1.7;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .stat-item {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--claude-accent);
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--claude-text-tertiary);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 8px;
+    transition: color 0.15s;
+  }
+
+  .source-link:hover { color: var(--claude-accent-dark); text-decoration: underline; }
+
+  .tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .tech-table th, .tech-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .tech-table th {
+    font-weight: 600;
+    color: var(--claude-text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .tech-table td { color: var(--claude-text-primary); }
+
+  .footer {
+    text-align: center;
+    padding-top: 40px;
+    border-top: 1px solid var(--claude-border);
+    margin-top: 60px;
+  }
+
+  .footer p {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    line-height: 1.8;
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 24px 16px 60px; }
+    .header { padding: 32px 0 28px; }
+    .header h1 { font-size: 24px; }
+    .tab-btn { font-size: 12px; padding: 10px 8px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<a href="/" class="back-link">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+  返回 AI Pulse
+</a>
+
+<header class="header">
+  <div class="header-logo">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    AI PULSE
+  </div>
+  <h1>AI 日报 | 2026.05.20</h1>
+  <p class="date">星期三 / Wednesday, May 20, 2026</p>
+  <p class="edition-note">Edition #61 - Google I/O 2026 发布 Gemini 3.5 Flash/Spark/Omni 三连击，NVIDIA 今日公布 Q1 财报市值触及 $5.5 万亿，DeepSeek 筹划 500 亿元史上最大 AI 融资，中国大模型首次登顶全球 #1-#2，2026 年科技裁员超 15 万人近半归因 AI，EU AI Act 首次修订达成协议，Figure AI 人形机器人连续自主运行 50 小时创纪录</p>
+</header>
+
+<nav class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('casual')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+    轻松阅读
+  </button>
+  <button class="tab-btn" onclick="switchTab('intermediate')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+    技术进阶
+  </button>
+  <button class="tab-btn" onclick="switchTab('expert')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+    深度技术
+  </button>
+</nav>
+
+<!-- ==================== 轻松阅读版 ==================== -->
+<div id="tab-casual" class="tab-content active">
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon product">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    </div>
+    <h2 class="section-title">Google I/O 2026：一场 AI 的盛宴</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Google 一口气发布三个 Gemini 新模型 <span class="tag tag-product">发布会</span></div>
+    <p>Google I/O 2026 昨天在加州山景城开幕，整场两小时的主题演讲几乎全被 AI 占据。最大的亮点是一次性发布了三个 Gemini 新模型：Gemini 3.5 Flash 成为新的默认模型，比上一代 3.1 Pro 更强还快 4 倍；Gemini Spark 是一个"私人 AI 管家"，能帮你处理 Gmail、日历、文档等各种事务，你甚至可以关掉电脑让它继续干活；Gemini Omni 则能理解现实世界并生成视频。Google 还发布了开源模型 Gemma 4 和 AI 图片编辑工具 Google Pics。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Android XR 智能眼镜今秋上市，Android 17 缺席 <span class="tag tag-product">硬件</span></div>
+    <p>三星和 Google 联手打造的 Android XR 智能音频眼镜将在今年秋天上市，由 Gentle Monster 和 Warby Parker 设计外观，兼容 Android 和 iPhone。眼镜内置 Gemini，通过耳机私密回应你的问题。不过让很多人失望的是，整场发布会完全没提 Android 17，被戏称为"没有 Android 的 Android 开发者大会"。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon gpu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v12"/><path d="M18 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+    </div>
+    <h2 class="section-title">NVIDIA 今日公布财报，市值已达 5.5 万亿美元</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">全球最值钱的芯片公司今天交成绩单 <span class="tag tag-gpu">芯片</span></div>
+    <p>NVIDIA 将在今天美股盘后公布 2026 财年 Q1 财报，这是科技圈最受瞩目的一份成绩单。公司市值已达 5.5 万亿美元（一度触及 6 万亿），今年 AI 供应链投资超过 450 亿美元。NVIDIA 还公布了一个惊人的数字：Blackwell 和 Vera Rubin 两代芯片在 2026-2027 年的潜在收入可达 1 万亿美元。此外，美国批准了向部分中国企业出口 H200 芯片，CEO 黄仁勋随特朗普访华讨论芯片出口条件。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon model">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>
+    </div>
+    <h2 class="section-title">中国 AI 大模型首次登顶世界前二</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">DeepSeek 筹划 500 亿元融资，中国 AI 全面崛起 <span class="tag tag-model">模型</span></div>
+    <p>中国 AI 迎来里程碑时刻：Kimi K2.6 和 DeepSeek V4 在全球旗舰模型性能排名中首次超越 OpenAI，分列第一和第二。与此同时，DeepSeek 正在筹划高达 500 亿元人民币（约 70 亿美元）的融资，这将是中国 AI 领域史上最大的单笔融资。百度也发布了文心 5.1，预训练成本仅为同级模型行业平均水平的 6%。阿里云推出了"通义灵码 Qoder 1.0"，只要输入需求描述，AI 团队就能自动完成从需求拆解到代码编写、测试和交付的全流程。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon industry">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    </div>
+    <h2 class="section-title">2026 年科技裁员超 15 万人，AI 成最大"借口"</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">亚马逊裁 3 万人，微软 AI 负责人称 18 个月内所有白领工作可被自动化 <span class="tag tag-industry">职场</span></div>
+    <p>2026 年科技行业裁员潮持续恶化：仅 Q1 就有 78,557 人失业，其中近一半（47.9%）被归因于 AI 和自动化。全年累计已超 15 万人。亚马逊自去年 10 月以来裁掉了约 3 万名企业和技术岗位（约 10%），Meta 和微软也合计裁了 2 万多人。讽刺的是，哈佛商业评论指出，很多公司裁员并非因为 AI 已经能替代这些岗位，而是押注 AI 的"未来潜力"。微软 AI 负责人 Mustafa Suleyman 更是大胆预测：18 个月内所有白领工作都可以被 AI 自动化。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">马斯克败诉：陪审团裁定 OpenAI 不欠他 <span class="tag tag-industry">法律</span></div>
+    <p>在一场引人注目的法律大战中，美国陪审团一致裁定马斯克败诉，认定他对 OpenAI 的诉讼提起得太晚，OpenAI 对马斯克不负有任何法律责任。这场围绕"OpenAI 是否背离造福人类使命"的官司终于画上句号。与此同时，OpenAI 的年化收入已突破 250 亿美元，正在以 8,520 亿美元的估值筹集 1,220 亿美元融资，并开始启动 IPO 准备。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon policy">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </div>
+    <h2 class="section-title">欧盟 AI 法案首次修订：放宽期限，加码内容管控</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">全球最严 AI 法规松了口气，但新增了"裸化"应用禁令 <span class="tag tag-policy">监管</span></div>
+    <p>欧盟理事会、议会和委员会在经过 6 个月的谈判后，于 5 月 7 日凌晨 4:30 达成了 AI 法案的首次修订协议。最大的变化是：高风险 AI 系统的合规期限从 2026 年 8 月推迟到 2027 年 12 月，给企业多了 16 个月的缓冲时间。同时新增了对 AI 生成非自愿亲密图像（"裸化"应用）和儿童性虐待材料的明确禁令。中小企业的优惠待遇也扩展到了中型公司。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon gpu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4"/><path d="M12 19v4"/><path d="M1 12h4"/><path d="M19 12h4"/><path d="M4.22 4.22l2.83 2.83"/><path d="M16.95 16.95l2.83 2.83"/><path d="M4.22 19.78l2.83-2.83"/><path d="M16.95 7.05l2.83-2.83"/></svg>
+    </div>
+    <h2 class="section-title">Figure AI 机器人连续自主工作 50 小时创纪录</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">人形机器人不眠不休分拣包裹，Meta 收购机器人公司 <span class="tag tag-gpu">机器人</span></div>
+    <p>Figure AI 的人形机器人完成了一项惊人壮举：在不需要任何人类干预的情况下，连续分拣包裹约 50 个小时。整个过程由 Helix-02 神经网络在机器人本地运行驱动，CEO 承诺实验期间零人类介入。Meta 也正式进军机器人领域，收购了人形机器人初创公司 ARI（Assured Robot Intelligence）。日本航空则在羽田机场部署了两台 Unitree 人形机器人，每台约 1.54 万美元，负责行李装载和清洁工作。Unitree 还提交了上海科创板 IPO 申请，目标估值 70 亿美元。</p>
+  </div>
+</div>
+
+</div>
+
+<!-- ==================== 技术进阶版 ==================== -->
+<div id="tab-intermediate" class="tab-content">
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon product">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    </div>
+    <h2 class="section-title">Google I/O 2026：Gemini 全家桶的三线作战</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Gemini 3.5 Flash + Spark Agent + Omni World Model <span class="tag tag-product">发布会</span></div>
+    <p>Google I/O 2026 的核心信息是"Gemini 无处不在"。三个新模型各有定位：Gemini 3.5 Flash 取代 3.1 Pro 成为默认模型，在编码、Agent 和多模态基准测试中全面超越前代，输出 token 速度提升 4 倍，网络安全防御能力增强（减少有害内容生成和误拒率）；Gemini Spark 是基于云的通用 AI Agent，能跨 Gmail、Docs 等应用推理并代用户执行操作，下周向 Google AI Ultra 订阅者开放；Gemini Omni 是"世界模型"，可以模拟物理环境并预测结果，支持从多模态输入生成视频。</p>
+    <p>平台层面的变化同样深远：开源模型 Gemma 4 号称"每字节最强开放模型"，针对高级推理和 Agent 工作流优化。Google Pics 将 AI 图像编辑集成到 Drive/Docs/Slides 中。但值得注意的是，整场主题演讲完全没有提及 Android 17，表明 Google 的战略重心已从操作系统转向 AI 平台。</p>
+    <div class="highlight">竞争格局分析：Gemini 3.5 Flash 在多模态和 Agent 能力上发力明显，但业内评估认为其在编码基准上仍未实现对 Claude 的追赶。对于开发者而言，Gemini 更像是"多模态+分发优势"的打法，而非直接在代码能力上与 Claude Opus 4.7（SWE-bench 87.6%）正面交锋。Gemini 3.5 Pro 预计下月发布，届时将揭晓 Google 在编码领域的真正实力。</div>
+    <a href="https://9to5google.com/2026/05/19/google-io-2026-news/" class="source-link" target="_blank">9to5Google: I/O 2026 完整回顾 &#8599;</a>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon gpu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v12"/><path d="M18 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+    </div>
+    <h2 class="section-title">NVIDIA Q1 财报日：$5.5T 市值背后的数字</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">今日盘后公布，Blackwell+Vera Rubin 预期收入 $1T <span class="tag tag-gpu">芯片</span></div>
+    <p>NVIDIA 今天美股收盘后发布 FY2026 Q1 财报，市场预期由 AI 数据中心芯片需求驱动的强劲收入增长。公司市值已达 $5.5 万亿（短暂触及 $6T），2026 年 AI 供应链投资超过 $450 亿。关键看点包括：前瞻指引（尤其是 Blackwell Ultra 产能爬坡情况）、供应链约束、AMD/定制硅芯片竞争态势，以及 AI 基建支出的可持续性。</p>
+    <p>NVIDIA 公布 Blackwell 和 Vera Rubin 两代处理器在 2026-2027 年的潜在收入可达 $1 万亿，较此前预期大幅上调。H200 获批向部分中国企业出口。黄仁勋随特朗普访华讨论芯片出口条件。值得关注的是，华尔街分析师正在将 AI 芯片投资热情从 NVIDIA 扩展到 Intel、AMD 和 Micron，暗示竞争格局正在拓宽。NVIDIA 还任命前高盛高管 Suzanne Nora Johnson 为董事会成员。</p>
+    <div class="stats-row">
+      <div class="stat-item"><div class="stat-value">$5.5T</div><div class="stat-label">市值（峰值 $6T）</div></div>
+      <div class="stat-item"><div class="stat-value">$1T</div><div class="stat-label">Blackwell+VR 预期收入</div></div>
+      <div class="stat-item"><div class="stat-value">$450亿</div><div class="stat-label">2026 供应链投资</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon model">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>
+    </div>
+    <h2 class="section-title">中国大模型登顶全球：DeepSeek $7B 融资 + 全面技术突破</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Kimi K2.6 和 DeepSeek V4 全球 #1-#2，百度 ERNIE 5.1 成本仅 6% <span class="tag tag-model">模型</span></div>
+    <p>中国 AI 模型实现历史性突破：Kimi K2.6 和 DeepSeek V4 在全球旗舰模型性能排名中首次超越 OpenAI，分列第一和第二。DeepSeek 正在筹划 500 亿元人民币（~$7B）融资，如果完成将是中国 AI 领域有史以来最大的单笔融资。DeepSeek V4 同步推出激进的 API 降价策略（缓存命中价格降至 1/10），并推进国产芯片兼容性建设。</p>
+    <p>百度发布文心 5.1（ERNIE 5.1），采用"多维弹性预训练"技术，在国内排名第一、全球排名第四，预训练成本仅为同级模型行业平均水平的 6%。智谱 AI 发布 GLM-5V-Turbo 多模态编码模型，实现从"文本到代码"到"视觉到代码"的范式转变——输入设计稿或网页截图即可生成可运行的前端代码，Design2Code 基准得分 94.8。阿里云推出通义灵码 Qoder 1.0，输入自然语言需求后 AI Agent 团队自主完成需求拆解、编码、测试和交付全流程。</p>
+    <div class="stats-row">
+      <div class="stat-item"><div class="stat-value">500亿</div><div class="stat-label">DeepSeek 融资（元）</div></div>
+      <div class="stat-item"><div class="stat-value">6%</div><div class="stat-label">ERNIE 5.1 预训练成本</div></div>
+      <div class="stat-item"><div class="stat-value">94.8</div><div class="stat-label">GLM-5V Design2Code</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon industry">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    </div>
+    <h2 class="section-title">AI 裁员危机：Q1 近 8 万人失业，47.9% 归因 AI</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">亚马逊 3 万、Meta+微软 2 万+，大厂 AI 支出却达 $7000 亿 <span class="tag tag-industry">职场</span></div>
+    <p>2026 年科技行业裁员数据触目惊心：Q1 共有 78,557 人被裁，其中 37,638 人（47.9%）被直接归因于 AI 和自动化，全年累计已超 15 万人，76% 以上在美国。亚马逊自去年 10 月以来裁掉约 3 万名企业和技术岗位（约 10%），Meta 和微软合计裁员超 2 万人。</p>
+    <p>矛盾的是，Alphabet、Microsoft、Meta 和 Amazon 预计 2026 年在 AI 基础设施上的支出合计将接近 $7,000 亿。HBR 分析指出，企业裁员更多是基于 AI 的"未来潜力"而非已验证的替代能力。微软 AI 负责人 Mustafa Suleyman 预测 18 个月内所有白领工作都可被 AI 自动化。马斯克诉 OpenAI 案以败诉告终——陪审团一致裁定 OpenAI 不欠马斯克任何法律责任。OpenAI 年化收入突破 $250 亿，正以 $8,520 亿估值进行 $1,220 亿融资。</p>
+    <div class="highlight">核心矛盾：大厂一边大规模裁员一边投入天量资金建设 AI 基础设施，2025 年全年因 AI 导致的裁员达 55,000 人是 2023 年的 12 倍。76% 的组织已设立首席 AI 官（CAIO），较 2025 年的 26% 暴增。AI 驱动的零售网站流量同比增长 393%，转化率比其他渠道高 42%。技术变革的速度正在超过组织适应的速度。</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon policy">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </div>
+    <h2 class="section-title">全球 AI 监管：欧盟修订 + 美国分裂 + 中国 Agent 规范</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">EU AI Act 首次修订达成，中国首次监管 AI Agent <span class="tag tag-policy">监管</span></div>
+    <p>EU AI Omnibus 修正案经过 6 个月谈判于 5 月 7 日达成协议：高风险 AI 系统合规期限从 2026 年 8 月推迟到 2027 年 12 月（+16 个月），认证流程简化，执法权进一步集中到 AI 办公室，中小企业优惠待遇扩展到中型企业。新增"裸化"应用和 CSAM 的明确禁令。EU 层面的监管沙盒正式建立。</p>
+    <p>美国层面，联邦立法仍处空白——尽管白宫发布了 AI 政策框架建议（涵盖儿童保护、知识产权、创新支持等 7 大支柱），但国会尚未通过任何约束性法案。各州各行其是：加州透明度法案（1 月 1 日生效）、纽约 RAISE Act 修正案（转向披露制）、科罗拉多 SB 189（重新修订 AI 法案）。全美超 1,200 个 AI 法案待审。中国则率先出手监管 AI Agent——网信办、发改委和工信部联合发布了专门针对智能体的监管规定，标志着从生成式 AI 到 Agent AI 的监管升级。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon gpu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4"/><path d="M12 19v4"/><path d="M1 12h4"/><path d="M19 12h4"/><path d="M4.22 4.22l2.83 2.83"/><path d="M16.95 16.95l2.83 2.83"/><path d="M4.22 19.78l2.83-2.83"/><path d="M16.95 7.05l2.83-2.83"/></svg>
+    </div>
+    <h2 class="section-title">人形机器人：从 50 小时自主运行到产业链加速</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Figure AI 50h 无人干预 + Meta 收购 ARI + Unitree $7B IPO <span class="tag tag-gpu">机器人</span></div>
+    <p>Figure AI 完成了人形机器人领域的里程碑：约 50 小时不间断自主包裹分拣，全程使用 Helix-02 神经网络在本地运行，零人类干预。此前 Figure 02 已在 BMW Spartanburg 工厂支持了 30,000+ 辆汽车生产，累计 1,250+ 小时，移动 90,000+ 个零件。</p>
+    <p>Meta 通过收购 Assured Robot Intelligence（ARI）正式进军物理 AI 领域，该公司此前专注于构建人形机器人的基础模型。日本航空在羽田机场部署了两台 Unitree 人形机器人（~$15,400/台），用于行李装载和客舱清洁。Unitree Robotics 已提交上海科创板 IPO 申请，目标融资 42 亿元（~$6.1 亿），估值约 $70 亿。2025 年出货 5,500+ 台，2026 年目标 10,000-20,000 台。</p>
+    <div class="stats-row">
+      <div class="stat-item"><div class="stat-value">50h</div><div class="stat-label">Figure 自主运行</div></div>
+      <div class="stat-item"><div class="stat-value">$70亿</div><div class="stat-label">Unitree IPO 估值</div></div>
+      <div class="stat-item"><div class="stat-value">20,000</div><div class="stat-label">Unitree 2026 目标</div></div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<!-- ==================== 深度技术版 ==================== -->
+<div id="tab-expert" class="tab-content">
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon product">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    </div>
+    <h2 class="section-title">Google I/O 2026 技术深潜：Gemini 架构拆解与 Agent 范式</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Gemini 3.5 Flash 架构、Spark Agent 闭环、Omni 世界模型 <span class="tag tag-product">发布会</span></div>
+    <p>Gemini 3.5 Flash 的技术进步主要集中在三个维度：(1) 编码/Agent/多模态基准全面超越 3.1 Pro；(2) 输出 token 速度 4x 提升（具体 tokens/s 数据未公布，但对标的是同级 frontier 模型）；(3) 安全对齐改进——同时降低有害内容生成率和误拒率，这意味着 RLHF/Constitutional AI 训练在精度上有了提升。API 定价 $0.25/$2.00 per M tokens（此前泄露数据确认），延续 Google 的价格战策略。Gemini 3.5 Pro 预计下月发布。</p>
+    <p>Gemini Spark 的 Agent 架构值得关注：基于云运行（非设备端），能跨 Google Workspace 应用推理和执行操作，支持用户离开设备后继续执行。这意味着 Google 构建了一个服务端 Agent runtime，具备持久化状态管理、跨应用 API 编排和异步任务执行能力。初期仅向 Google AI Ultra 订阅者和受信测试者开放。</p>
+    <p>Gemini Omni 是本次发布中技术上最激进的产品：它被定位为"世界模型"（world model），能模拟物理环境并预测结果。支持图像/音频输入并输出视频，意味着它整合了多模态理解和生成能力。更关键的是 3D bounding box 和 trajectory 输出能力，这直接打通了与 AR/XR 和机器人 pipeline 的集成路径。Gemma 4 开源发布，声称"每参数智能"最高的开放模型，专为推理和 Agent 工作流设计。</p>
+    <table class="tech-table">
+      <tr><th>模型</th><th>定位</th><th>关键差异化</th></tr>
+      <tr><td>Gemini 3.5 Flash</td><td>默认模型</td><td>4x 输出速度，全面超越 3.1 Pro</td></tr>
+      <tr><td>Gemini 3.5 Pro</td><td>旗舰（下月）</td><td>编码/推理对标 Claude Opus 4.7</td></tr>
+      <tr><td>Gemini Spark</td><td>个人 Agent</td><td>云端异步，跨 Workspace 编排</td></tr>
+      <tr><td>Gemini Omni</td><td>世界模型</td><td>3D output，视频生成，物理模拟</td></tr>
+      <tr><td>Gemma 4</td><td>开源</td><td>最高参数效率，Agent 优化</td></tr>
+    </table>
+    <div class="highlight">技术判断：Google 的策略是通过分发优势（Search、Android、Chrome、Workspace）和多模态/Agent 差异化来避开与 Claude 的编码能力正面对决。Gemini 3.5 Flash 在编码基准上仍未实现对 Claude Opus 4.7（SWE-bench Verified 87.6%）的追赶。真正的测试是下月的 3.5 Pro——如果它仍无法在编码领域缩小差距，Google 的 AI 叙事将更多依赖生态整合而非模型能力。Spark 的 Agent 架构设计决策（云端 vs 设备端）暗示 Google 对 Agent 计算密度的判断：当前 Agent 推理负载仍需服务端支撑。</div>
+    <a href="https://www.cnbc.com/2026/05/19/google-ai-ultra-gemini-spark-omni.html" class="source-link" target="_blank">CNBC: Google AI Ultra, Gemini Spark, Omni &#8599;</a>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon gpu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v12"/><path d="M18 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+    </div>
+    <h2 class="section-title">NVIDIA FY2026 Q1：$5.5T 市值的可持续性分析</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">今日盘后财报、$1T 芯片收入预期与竞争拐点 <span class="tag tag-gpu">芯片</span></div>
+    <p>NVIDIA 今天美股盘后发布 FY2026 Q1 财报。核心变量：(1) 数据中心收入增长（市场预期继续 100%+ YoY）；(2) Blackwell Ultra 产能爬坡进度（H200→B200 transition yield rate）；(3) 前瞻指引中对 Vera Rubin 芯片的交付时间表更新；(4) AMD MI450X 和自研 ASIC（Google TPU v7、AWS Trainium 3）的竞争压力是否在订单层面有所体现。</p>
+    <p>NVIDIA 公布 Blackwell + Vera Rubin 两代芯片的 2026-2027 潜在收入可达 $1 万亿，大幅上调此前预期。这一数字隐含着数据中心 GPU 市场从 $500B 扩张到 $1T+ 的假设。市值 $5.5T（短暂触及 $6T），P/E 仍在 ~60x。AI 供应链投资加码至 $450 亿+。H200 获批向部分中国企业出口，黄仁勋随特朗普访华谈判芯片出口条件。但 NVIDIA 在中国的限制性访问已催生了国产芯片加速发展。华尔街正在将 AI 芯片投资热情扩展到 Intel、AMD 和 Micron。</p>
+    <table class="tech-table">
+      <tr><th>指标</th><th>数据</th></tr>
+      <tr><td>市值</td><td>$5.5T（峰值 $6T）</td></tr>
+      <tr><td>Blackwell+VR 预期收入</td><td>$1T（2026-2027）</td></tr>
+      <tr><td>2026 AI 供应链投资</td><td>$450亿+</td></tr>
+      <tr><td>Cerebras CBRS 股价</td><td>~$303（IPO $185→首日 $311）</td></tr>
+      <tr><td>Cerebras 市值</td><td>$63.75B</td></tr>
+      <tr><td>中国出口</td><td>H200 部分获批</td></tr>
+    </table>
+    <div class="highlight">关键风险：$5.5T 市值以 ~60x P/E 交易，隐含着 AI 基建支出持续加速的预期。四大科技巨头（Alphabet、Microsoft、Meta、Amazon）2026 年 AI 基建预算合计 ~$7,000 亿，但 ROI 验证仍在早期。如果前瞻指引暗示需求增长斜率放缓，或 Blackwell Ultra yield 不及预期，市场反应可能剧烈。Cerebras（CBRS）IPO 后市值 $63.75B，为 NVIDIA 的 ~1.2%，但其 WSE-3 架构在推理延迟上具有结构性优势。</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon model">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>
+    </div>
+    <h2 class="section-title">中国 AI 模型全球登顶：技术路径与产业化分析</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Kimi K2.6 全球 #1、DeepSeek V4 #2、ERNIE 5.1 成本 6%、GLM-5V 视觉编码 <span class="tag tag-model">模型</span></div>
+    <p>中国大模型在 2026 年 5 月实现了历史性突破：Kimi K2.6（月之暗面）和 DeepSeek V4 首次在全球旗舰模型性能排名中超越 OpenAI，分列 #1 和 #2。这一成就建立在多个技术路径的并行推进上：</p>
+    <p>DeepSeek V4 采用激进的定价策略（缓存命中价格降至 1/10）和国产芯片兼容性建设，同时筹划 500 亿元（~$7B）融资。其 MoE 架构在保持前沿性能的同时大幅降低推理成本，是对标 GPT-5.5 的直接挑战。百度 ERNIE 5.1 采用"多维弹性预训练"（multi-dimensional elastic pre-training）技术，在国内排名 #1、全球 #4，预训练成本仅为同级模型行业均值的 6%——这是一个工程上的重大突破，意味着百度找到了一种在计算效率上大幅领先的训练方法论。</p>
+    <p>智谱 AI 的 GLM-5V-Turbo 代表了一种新范式：从"text-to-code"到"vision-to-code"。该模型可以解析设计稿和网页截图并生成可运行的前端代码，Design2Code 基准得分 94.8，超越竞争对手。这是多模态模型在软件开发中的具体应用落地。阿里云 Qoder 1.0 实现了全生命周期自主编码——从需求描述到需求拆解、编码、测试、交付的端到端自动化。中国还率先发布了专门针对 AI Agent 的监管规定（网信办+发改委+工信部联合发布），标志着从生成式 AI 到 Agent AI 的监管升级。</p>
+    <table class="tech-table">
+      <tr><th>模型/产品</th><th>亮点</th><th>技术路径</th></tr>
+      <tr><td>Kimi K2.6</td><td>全球 #1</td><td>MoE + 长上下文 + RL</td></tr>
+      <tr><td>DeepSeek V4</td><td>全球 #2，价格 1/10</td><td>MoE + 国产芯片兼容</td></tr>
+      <tr><td>ERNIE 5.1</td><td>成本 6%</td><td>多维弹性预训练</td></tr>
+      <tr><td>GLM-5V-Turbo</td><td>Design2Code 94.8</td><td>视觉-代码多模态</td></tr>
+      <tr><td>Qoder 1.0</td><td>全生命周期自主编码</td><td>Multi-Agent 编排</td></tr>
+    </table>
+    <div class="highlight">产业化判断：中国大模型登顶全球性能排名是一个拐点事件。但需要注意几个维度：(1) 基准排名和实际部署能力之间存在差距，中国模型在企业级应用和开发者工具生态上仍落后于 Anthropic 和 OpenAI；(2) DeepSeek 的定价策略是双刃剑——低价促进采用但可能压缩利润空间；(3) ERNIE 5.1 的 6% 成本数据如果可复现，可能是改变行业成本结构的 breakthrough；(4) 中国对 AI Agent 的监管速度领先全球，这将同时约束和规范 Agent 商业化路径。LLM 免费时代正在结束——字节跳动豆包等模型正从免费转向收费，商业化能力成为生存必需。</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon industry">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    </div>
+    <h2 class="section-title">AI 劳动力危机的量化分析与结构性矛盾</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Q1 78,557 人被裁（47.9% 归因 AI），$7,000 亿基建支出的人力悖论 <span class="tag tag-industry">研究</span></div>
+    <p>2026 年科技裁员的量化图景：Q1 78,557 人被裁，其中 37,638 人（47.9%）被直接归因于 AI/自动化。全年累计超 15 万人，76%+ 在美国。自 2020 年以来，全球已有近 90 万科技工作者被裁。按公司拆分：Amazon ~30,000 人（自去年 10 月以来，~10% 企业/技术岗）、Meta + Microsoft 合计 20,000+、Coinbase 700 人（14%）、PayPal 计划 2-3 年裁 20%（~4,760 人）。</p>
+    <p>HBR 分析揭示了核心矛盾：企业裁员基于 AI 的"潜力"而非验证的"性能"——2025 年 55,000 次裁员被归因于 AI，是 2023 年的 12 倍，但 Gartner 此前发现高 ROI 和低 ROI 公司的裁员率几乎持平。Microsoft AI 负责人 Suleyman 预测 18 个月内所有白领工作可被自动化。同时，四大科技巨头 2026 年 AI 基建预算合计 ~$7,000 亿——这个数字意味着 AI 正在创造大量基础设施岗位的同时消灭应用层岗位，劳动力市场的结构性重构正在加速。</p>
+    <p>法律层面：马斯克诉 OpenAI 案以败诉告终。奥克兰联邦法院陪审团一致裁定马斯克提诉过晚，OpenAI 不负赔偿责任。这一裁决终结了围绕 OpenAI 企业重组最大的法律悬念。OpenAI 目前年化收入 $250 亿+，正以 $8,520 亿估值进行 $1,220 亿融资（Amazon、NVIDIA、SoftBank、Microsoft 领投），并启动 IPO 准备。The Development Company 风投以 $100 亿估值募资 $40 亿，吸引 19 名投资者。</p>
+    <div class="highlight">结构性分析：AI 裁员与 AI 投资的并存揭示了一个深层逻辑——科技巨头正在进行劳动力构成的根本性重构，而非简单的"用 AI 替代人"。76% 的组织已设立 CAIO（2025 年仅 26%），AI 零售流量 YoY +393%，转化率比其他渠道高 42%。这些数据表明 AI 不是在消灭工作岗位，而是在重新定义什么构成有价值的人类劳动。风险在于：如果 Suleyman 的 18 个月预测哪怕部分成真，当前的社会保障体系和再培训机制完全无法承接这个速度的转型。</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon policy">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </div>
+    <h2 class="section-title">全球 AI 监管：三大法域的路径分化</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">EU Omnibus 修正案、美国 1,200+ 法案混战、中国 Agent 规范 <span class="tag tag-policy">监管</span></div>
+    <p>EU AI Omnibus 修正案于 5 月 7 日凌晨 4:30 达成政治协议（6 个月谈判）。核心变化：(1) 高风险 AI 系统合规期限从 2026 年 8 月推迟到 2027 年 12 月（+16 个月），这对所有在欧盟部署 AI 的企业是重大利好；(2) 认证流程简化，标准化义务精简；(3) 执法权进一步集中到 EU AI Office；(4) EU 层面监管沙盒正式建立；(5) SME 优惠待遇扩展到小型中等企业；(6) 新增 AI 生成非自愿亲密图像（"裸化"应用）和 CSAM 的明确禁令。</p>
+    <p>美国联邦层面仍无约束性 AI 立法。白宫 3 月 20 日发布的 AI 政策框架涵盖 7 大支柱（儿童保护、AI 基建与小企业支持、知识产权、言论自由、创新促进、劳动力准备、联邦 vs 州法预替），但国会行动滞后。加州透明度法案（1 月 1 日生效）要求 frontier 模型发布安全框架和事件报告，成为事实上的行业标准。全美 1,200+ AI 法案待审，缺乏统一测试框架。特朗普政府在 Mythos 网络安全能力展示后态度转向，开始考虑对先进 AI 模型的监管——这是此前去监管立场的逆转。Microsoft 和 xAI 同意在模型公开发布前向监管机构提供早期访问。</p>
+    <p>中国走在前面：网信办、发改委和工信部联合发布了专门针对 AI Agent 的监管规定，这是全球首个明确将监管范围从生成式 AI 扩展到智能体的法规框架。同时，《保护消费者免受欺骗性 AI 法案》（4 月 23 日，美国联邦）要求 NIST 制定 AI 生成内容的水印、数字指纹和溯源元数据标准。</p>
+    <div class="highlight">监管格局判断：三大法域呈现明确的路径分化——EU 走"综合立法+延期执行"路线，实用主义优先；美国陷入联邦空白 vs 州法碎片化的困境，1,200+ 法案混战是治理失能的信号；中国以最快速度将监管范围扩展到 AI Agent，体现了"技术追赶+监管领先"的双轨策略。对企业的实际影响：EU 高风险合规宽限期延长 16 个月是短期利好，但 2027 年底的 deadline 不可避免；美国企业需要同时满足加州、纽约、科罗拉多等州的差异化要求；在中国运营的 Agent 产品需要尽快适应新规。</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon gpu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4"/><path d="M12 19v4"/><path d="M1 12h4"/><path d="M19 12h4"/><path d="M4.22 4.22l2.83 2.83"/><path d="M16.95 16.95l2.83 2.83"/><path d="M4.22 19.78l2.83-2.83"/><path d="M16.95 7.05l2.83-2.83"/></svg>
+    </div>
+    <h2 class="section-title">人形机器人产业化进入量化验证阶段</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Figure Helix-02 50h 自主运行、Meta 收购 ARI、Unitree $7B IPO <span class="tag tag-gpu">机器人</span></div>
+    <p>Figure AI 的 50 小时无人干预自主包裹分拣实验是一个重要的工程验证节点。技术细节：(1) 使用 Helix-02 VLA（Vision-Language-Action）神经网络，完全在机器人本地运行（edge deployment）；(2) CEO 公开承诺零人类干预，意味着模型在 perception-decision-action 闭环中的鲁棒性已达到工业级水平；(3) 此前 BMW Spartanburg 工厂数据——30,000+ 辆车生产、1,250+ 工时、90,000+ 零件——提供了更长时间跨度的量化验证。</p>
+    <p>Meta 收购 Assured Robot Intelligence（ARI）标志着又一家 Magnificent 7 公司进入物理 AI 赛道。ARI 此前构建人形机器人的基础模型，专注于家务等物理劳动场景。这与 Google DeepMind 的 Gemini Robotics、NVIDIA 的 Jetson Thor 平台形成了三路竞争格局。Unitree Robotics 提交上海科创板 IPO 申请（42 亿元/~$6.1 亿，估值 ~$7B），2025 年出货 5,500+ 台，2026 年目标 10,000-20,000 台。JAL 在羽田机场的部署（2 台/~$15,400 each）是亚太地区服务业机器人应用的早期信号。</p>
+    <p>行业趋势：edge deployment 成为主流方向（安全性、隐私和延迟考虑），NVIDIA Jetson Thor 平台推进多模态机器人 AI。新的神经网络+符号推理混合方法（ScienceDaily）声称可将 AI 能耗降低 100 倍同时提高准确率——如果验证成立，将是物理 AI 部署成本的 game changer。</p>
+    <div class="highlight">产业化拐点信号：Figure 从"每天 1 台→每小时 1 台"（24x 制造提速）到"50 小时无人干预自主运行"，两个里程碑分别验证了制造可扩展性和运行可靠性。Unitree 的 IPO 和 20,000 台出货目标意味着人形机器人正在从"可以做"转向"可以卖"。Meta 的入场将加速基础模型的研发投入。但 $7B 估值对应 5,500 台出货意味着 ~$1.27M/台的隐含估值，这仍然是资本市场的预期定价而非运营利润的反映。能耗降低 100x 的突破如果可复现，将解决 edge deployment 的最大瓶颈。</div>
+  </div>
+</div>
+
+</div>
+
+<footer class="footer">
+  <p>AI Pulse Daily Report - 由 AI 自动聚合生成</p>
+  <p>数据来源: WebSearch, CNBC, 9to5Google, TechCrunch, Fortune, Bloomberg, Tom's Hardware, CBS News, HBR, EU Council, Benzinga, Interesting Engineering, Crunchbase, CSDN, 量子位, 新浪财经, 证券时报</p>
+</footer>
+
+<script>
+function switchTab(tabName) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + tabName).classList.add('active');
+  const tabs = ['casual', 'intermediate', 'expert'];
+  const idx = tabs.indexOf(tabName);
+  document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+}
+</script>
+
+</div>
+</body>
+</html>

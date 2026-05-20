@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily Report | 2026.05.21</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --claude-bg: #FAF9F7;
+    --claude-surface: #FFFFFF;
+    --claude-border: #E8E5E0;
+    --claude-text-primary: #1A1714;
+    --claude-text-secondary: #6B6560;
+    --claude-text-tertiary: #9B9590;
+    --claude-accent: #DA7756;
+    --claude-accent-light: #F5E6DF;
+    --claude-accent-dark: #C4623F;
+    --claude-tag-blue: #E8F0FE;
+    --claude-tag-blue-text: #3B6CB5;
+    --claude-tag-green: #E6F4EA;
+    --claude-tag-green-text: #2D7A3F;
+    --claude-tag-purple: #F0E6FA;
+    --claude-tag-purple-text: #7B3FAF;
+    --claude-tag-amber: #FEF3E2;
+    --claude-tag-amber-text: #B5752D;
+    --claude-tag-red: #FDE8E8;
+    --claude-tag-red-text: #B53B3B;
+    --claude-card-shadow: 0 1px 3px rgba(26, 23, 20, 0.06), 0 1px 2px rgba(26, 23, 20, 0.04);
+    --claude-card-shadow-hover: 0 4px 12px rgba(26, 23, 20, 0.08), 0 2px 4px rgba(26, 23, 20, 0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+    background: var(--claude-bg);
+    color: var(--claude-text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 8px;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--claude-accent-dark); }
+
+  .header {
+    text-align: center;
+    padding: 48px 0 40px;
+    border-bottom: 1px solid var(--claude-border);
+    margin-bottom: 32px;
+  }
+
+  .header-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--claude-accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .header .date {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    font-weight: 400;
+  }
+
+  .header .edition-note {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    margin-top: 8px;
+  }
+
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 36px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--claude-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .tab-btn:hover {
+    color: var(--claude-text-primary);
+    background: var(--claude-bg);
+  }
+
+  .tab-btn.active {
+    background: var(--claude-accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(218, 119, 86, 0.3);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .section { margin-bottom: 36px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .section-icon.gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .section-icon.model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .section-icon.product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .section-icon.research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .section-icon.industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .section-icon.policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .card {
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--claude-card-shadow);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .card:hover { box-shadow: var(--claude-card-shadow-hover); }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .card p {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.75;
+    margin-bottom: 8px;
+  }
+
+  .card p:last-child { margin-bottom: 0; }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .tag-gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .tag-model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .tag-product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .tag-research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .tag-industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .tag-policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .highlight {
+    background: var(--claude-accent-light);
+    border-left: 3px solid var(--claude-accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--claude-accent-dark);
+    line-height: 1.7;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .stat-item {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--claude-accent);
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--claude-text-tertiary);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 8px;
+    transition: color 0.15s;
+  }
+
+  .source-link:hover { color: var(--claude-accent-dark); text-decoration: underline; }
+
+  .tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .tech-table th, .tech-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .tech-table th {
+    font-weight: 600;
+    color: var(--claude-text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .tech-table td { color: var(--claude-text-primary); }
+
+  .footer {
+    text-align: center;
+    padding-top: 40px;
+    border-top: 1px solid var(--claude-border);
+    margin-top: 60px;
+  }
+
+  .footer p {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    line-height: 1.8;
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 24px 16px 60px; }
+    .header { padding: 32px 0 28px; }
+    .header h1 { font-size: 24px; }
+    .tab-btn { font-size: 12px; padding: 10px 8px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<a href="/" class="back-link">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+  返回 AI Pulse
+</a>
+
+<header class="header">
+  <div class="header-logo">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    AI PULSE
+  </div>
+  <h1>AI 日报 | 2026.05.21</h1>
+  <p class="date">星期四 / Thursday, May 21, 2026</p>
+  <p class="edition-note">Edition #62 - NVIDIA Q1 财报炸裂：$81.6B 收入同比增 85%、EPS $2.39 远超预期，Q2 指引 $91B；Intuit 裁员 3,000 人（17%）全面转向 AI；Anthropic 以 34.4% 市占率首超 OpenAI 成为美国付费 AI 订阅第一；字节豆包开启收费终结中国免费 AI 时代；AI 编程工具大战白热化：Grok Build / Cursor 2.5 / Copilot 转向用量计费；康涅狄格州通过美国最全面 AI 法案 SB5</p>
+</header>
+
+<nav class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('casual')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+    轻松阅读
+  </button>
+  <button class="tab-btn" onclick="switchTab('intermediate')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+    技术进阶
+  </button>
+  <button class="tab-btn" onclick="switchTab('expert')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+    深度技术
+  </button>
+</nav>
+
+<!-- ==================== 轻松阅读版 ==================== -->
+<div id="tab-casual" class="tab-content active">
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon gpu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v12"/><path d="M18 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+    </div>
+    <h2 class="section-title">NVIDIA 财报炸裂：一个季度赚了 816 亿美元</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">AI 芯片之王交出史上最强成绩单 <span class="tag tag-gpu">芯片</span></div>
+    <p>NVIDIA 昨晚公布了最新一季度的财报，数字惊人：收入 816 亿美元，同比增长 85%，其中数据中心（也就是 AI 芯片）贡献了 752 亿美元。每股收益 2.39 美元，远超华尔街预期的 1.79 美元。更让投资者兴奋的是，下一个季度的收入指引高达 910 亿美元。NVIDIA 的市值已经达到 5.5 万亿美元，稳坐全球最值钱公司之一。CEO 黄仁勋还宣布向 OpenAI 投资 300 亿美元，并随特朗普访华讨论芯片出口事宜。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon industry">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    </div>
+    <h2 class="section-title">Intuit 裁员 3,000 人：又一家公司"因为 AI"动刀</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">报税软件巨头砍掉 17% 的员工，全面押注 AI <span class="tag tag-industry">职场</span></div>
+    <p>美国知名财税软件公司 Intuit（旗下有 TurboTax、QuickBooks、Credit Karma）宣布裁员约 3,000 人，占总员工数的 17%。CEO 表示这是为了"减少企业复杂性，全面聚焦 AI"。公司同时与 Anthropic 和 OpenAI 签署了多年合作协议，将把两家的 AI 模型嵌入所有产品中。两个美国办公室将关闭。这已经是 2026 年科技行业第 N 次以"AI 转型"为由的大规模裁员了，全年累计已超过 10 万人。渣打银行 CEO 也公开表示要用 AI 取代 15% 的后台员工。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon model">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>
+    </div>
+    <h2 class="section-title">Anthropic 悄悄超越 OpenAI，成为美国付费 AI 第一名</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Claude 的公司拿下 34.4% 市场份额，OpenAI 掉到 32.3% <span class="tag tag-model">市场</span></div>
+    <p>一个让很多人意外的数据：Anthropic（Claude 的母公司）已经在美国付费 AI 订阅市场超越了 OpenAI，以 34.4% 对 32.3% 的份额位居第一，Google 仅占 4.5%。Anthropic 最近动作频频：推出了"Claude for Small Business"，接入了 QuickBooks、PayPal、HubSpot 等主流商业工具；与 KPMG（27.6 万员工）、PwC 达成企业合作；获得了盖茨基金会 2 亿美元合作。Claude Code 的使用时间限制翻倍，得益于租用了马斯克解散 xAI 后释放的 22 万张 GPU。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon product">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    </div>
+    <h2 class="section-title">字节豆包开始收费：中国免费 AI 时代终结</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">3.5 亿月活用户的豆包推出 68-500 元/月付费套餐 <span class="tag tag-product">产品</span></div>
+    <p>字节跳动旗下 AI 助手豆包正式推出付费订阅：标准版 68 元/月，增强版 200 元/月，专业版 500 元/月。免费基础版仍然保留，但高级功能（PPT 生成、数据分析、视频制作）需要付费。豆包目前月活超过 3.5 亿，每天处理 120 万亿个 token（两年增长了 1,000 倍），成本压力迫使公司开启商业化。社交媒体上"豆包又笨又收费"一度冲上热搜。与此同时，字节旗下火山引擎推出了"Agent Plan"订阅包（40 元/月起），兼容 Claude Code 等多种开发平台。字节今年 AI 基建投入从 1,600 亿提升至 2,000 亿元。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon product">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+    </div>
+    <h2 class="section-title">AI 编程工具大战：每家都在争夺程序员的钱包</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Grok Build、Cursor 2.5、Copilot 改计费......你选哪个？ <span class="tag tag-product">工具</span></div>
+    <p>AI 编程工具市场正在白热化。马斯克的 SpaceXAI 推出了 Grok Build 编程助手，但只对 300 美元/月的 SuperGrok Heavy 用户开放。Cursor 发布了 Composer 2.5，号称在基准测试中匹配 Opus 4.7 和 GPT-5.5 水平，还推出了云端开发环境和并行构建功能。GitHub Copilot 则暂停了 Pro/Pro+ 新注册，从 6 月 1 日起转向按用量计费（AI Credits），并增加了 Copilot Max 档位。Google 也在 I/O 上发布了 Antigravity 2.0 全功能 IDE。目前最主流的开发者工作流是：日常编码用 Cursor，复杂任务用 Claude Code。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon policy">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </div>
+    <h2 class="section-title">康涅狄格州通过美国最全面 AI 法案</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">SB5 法案覆盖就业 AI、聊天机器人监管和前沿模型举报保护 <span class="tag tag-policy">监管</span></div>
+    <p>美国康涅狄格州以压倒性多数通过了 SB5 法案（众议院 131:17，参议院 32:4），被认为是全美最全面的 AI 立法。法案涵盖三大领域：规范 AI 在招聘和就业中的使用；禁止 AI 聊天机器人与未成年人进行浪漫或性相关互动；为前沿模型开发公司的员工提供举报保护。法案将在 2026 年 10 月至 2027 年 10 月分阶段生效。与此同时，美国联邦层面已有超过 1,200 项 AI 相关法案在审议中，但缺乏统一的测试框架。白宫倾向于由现有机构监管 AI，并推动联邦法律优先于各州法律。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon research">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4"/><path d="M12 19v4"/><path d="M1 12h4"/><path d="M19 12h4"/><path d="M4.22 4.22l2.83 2.83"/><path d="M16.95 16.95l2.83 2.83"/><path d="M4.22 19.78l2.83-2.83"/><path d="M16.95 7.05l2.83-2.83"/></svg>
+    </div>
+    <h2 class="section-title">百度 Create 2026：AI Agent 成为新主角</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">李彦宏提出 DAA（每日活跃 Agent 数），预言全球将超 100 亿 <span class="tag tag-research">生态</span></div>
+    <p>百度在北京举办了 Create 2026 开发者大会，整场活动的关键词只有一个："Agent"（智能体）。李彦宏提出了一个新概念 DAA（Daily Active Agents，每日活跃 Agent 数），预测全球每日活跃 Agent 数将超过 100 亿。百度一口气推出和升级了多个 Agent：DuMate 通用助手、Miaoda 编程 Agent、百度易境数字人 Agent 等。这是百度首次将开发者大会和云峰会合并举办，标志着"模型退居幕后，Agent 走向前台"的战略转型。</p>
+  </div>
+</div>
+
+</div>
+
+<!-- ==================== 技术进阶版 ==================== -->
+<div id="tab-intermediate" class="tab-content">
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon gpu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v12"/><path d="M18 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+    </div>
+    <h2 class="section-title">NVIDIA Q1 FY2027 财报深度：数据中心收入 $75.25B，Q2 指引 $91B</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">全面超预期，但竞争格局正在拓宽 <span class="tag tag-gpu">芯片</span></div>
+    <p>NVIDIA 发布了 FY2027 Q1 财报，所有核心指标均超预期：收入 $81.62B（预期 $80.4B，同比+85.2%），数据中心收入 $75.25B（同比+92%），毛利率 75%（符合预期），经营利润 $53.5B（同比+147.4%），经营现金流 $50.3B（同比+83.6%）。Q2 指引 $91B（不含中国数据中心计算收入），信号非常强势。</p>
+    <p>战略层面的动作同样密集：向 OpenAI 投资 $300 亿，向 Corning 投资 $32 亿，向 IREN 投资 $21 亿，总计股权投资承诺超过 $400 亿。Blackwell 和 Vera Rubin 两代芯片在 2026-2027 年预期收入可达 $1 万亿。但值得注意的是，Amazon 定制芯片业务已达 $200 亿年化收入，华尔街开始将关注扩展到 Intel、AMD 和 Micron，竞争正在从单一玩家垄断走向多元格局。</p>
+    <div class="stats-row">
+      <div class="stat-item"><div class="stat-value">$81.6B</div><div class="stat-label">Q1 收入（+85% YoY）</div></div>
+      <div class="stat-item"><div class="stat-value">$2.39</div><div class="stat-label">EPS（预期 $1.79）</div></div>
+      <div class="stat-item"><div class="stat-value">$91B</div><div class="stat-label">Q2 收入指引</div></div>
+      <div class="stat-item"><div class="stat-value">75%</div><div class="stat-label">毛利率</div></div>
+    </div>
+    <div class="highlight">黄仁勋随特朗普访华讨论 H200 出口条件，部分中国企业获批采购。但 Q2 指引明确"不含中国数据中心计算收入"，意味着中美芯片博弈仍是最大不确定性。NVIDIA 控制着约 81% 的 AI 数据中心芯片市场。</div>
+    <a href="https://www.cnbc.com/2026/05/20/nvidia-nvda-earnings-report-q1-2027.html" class="source-link" target="_blank">CNBC: NVIDIA Q1 2027 Earnings Live Updates &#8599;</a>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon industry">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    </div>
+    <h2 class="section-title">Intuit 裁 17% 员工 + 双供应商 AI 战略</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">同时签约 Anthropic 和 OpenAI，对冲策略值得关注 <span class="tag tag-industry">企业</span></div>
+    <p>Intuit 裁员 3,000 人（17%），关闭 Reno 和 Woodland Hills 两个办公室，受影响员工最后工作日为 7 月 31 日，可获 16 周基础薪资加每年服务 2 周薪资的遣散费。技术层面的关键信号是：Intuit 同时与 Anthropic 和 OpenAI 签署了多年合作协议，将两家的模型分别嵌入不同产品线。这种"双供应商"策略在企业 AI 采购中越来越常见——既避免供应商锁定，又确保获得最优模型。</p>
+    <p>更大的背景是：2026 年科技行业 AI 驱动裁员已超 10 万人。JPMorgan Chase 将 AI 投资从"实验性研发"正式重分类为"核心基础设施"，技术预算 $198 亿，2,000 人专职 AI 团队。渣打银行 CEO 公开表示 AI 将取代"低价值人力资本"中 15%+ 的后台岗位。企业不再问"要不要用 AI"，而是问"如何用 AI 重组"。</p>
+    <div class="highlight">Intuit 的裁员策略透露了一个趋势：企业级 AI 部署不再是单一模型选择，而是多模型编排。TurboTax 可能用 Claude 处理复杂税务推理，QuickBooks 用 GPT 做日常交互——产品线级别的模型差异化正在成为新常态。</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon model">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>
+    </div>
+    <h2 class="section-title">Anthropic 超越 OpenAI：从模型公司到平台公司的蜕变</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">34.4% vs 32.3%：Agent 基础设施成为差异化关键 <span class="tag tag-model">市场</span></div>
+    <p>Anthropic 在美国付费 AI 订阅市场以 34.4% 份额超越 OpenAI 的 32.3%（Google 仅 4.5%）。这一逆转发生的技术背景值得分析：在 5 月 6 日的 Code w/ Claude 2026 活动中，Anthropic 没有发布新模型，而是全力推进 Agent 基础设施——托管式多 Agent 编排、Claude Code Routines、Advisor 工具、远程 Agent 和 CI 自动修复。</p>
+    <p>企业端：Claude for Small Business 发布，预装 QuickBooks、PayPal、HubSpot、Canva、DocuSign 等连接器。KPMG（27.6 万+员工）和 PwC 签署企业协议。盖茨基金会 $2 亿合作。6 月 15 日起编程用量将与聊天限制分离，引入专用 Credit 系统。SpaceXAI 将 Colossus 集群（22 万+NVIDIA GPU）租给 Anthropic，Claude Code 时间限制因此翻倍。</p>
+    <div class="stats-row">
+      <div class="stat-item"><div class="stat-value">34.4%</div><div class="stat-label">US 付费 AI 份额</div></div>
+      <div class="stat-item"><div class="stat-value">220K+</div><div class="stat-label">GPU（Colossus 租用）</div></div>
+      <div class="stat-item"><div class="stat-value">$200M</div><div class="stat-label">盖茨基金会合作</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon product">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    </div>
+    <h2 class="section-title">字节 AI 生态：豆包付费 + Agent Plan + 2,000 亿基建</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">120 万亿日 token 背后的成本压力，催生中国 AI 商业化拐点 <span class="tag tag-product">产品</span></div>
+    <p>字节豆包推出三档付费：标准版 68 元/月、增强版 200 元/月、专业版 500 元/月。3.5 亿+ MAU、日处理 120 万亿 token（自 2024 年 5 月增长 1,000 倍）的规模使免费模式不可持续。火山引擎同步推出 Agent Plan——业界首个"Agent 订阅包"（40 元/月起），聚合字节 Seed 系列模型和第三方模型（GLM-5.1、Kimi K2.6），支持智能路由，兼容 Claude Code、OpenCode、TRAE 等平台。</p>
+    <p>企业端发布"字节智助"AI 办公助手，覆盖智能会议纪要、文档自动生成、邮件智能回复。字节 2026 年 AI 基础设施资本开支从 1,600 亿上调至 2,000 亿元。这标志着中国 AI 从"烧钱抢用户"过渡到"规模化商业变现"的关键拐点。</p>
+    <div class="highlight">Agent Plan 的商业模式值得关注：不是卖单一模型，而是以订阅包形式聚合多模型 + 工具链，类似于 AI 时代的"Android 开放平台"。如果这个模式跑通，字节有望成为中国 AI Agent 基础设施的事实标准。</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon product">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+    </div>
+    <h2 class="section-title">AI 编程工具格局：四方混战 + 商业模式分裂</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Grok Build / Cursor 2.5 / Copilot Max / Antigravity 2.0 <span class="tag tag-product">工具</span></div>
+    <p>AI 编程工具市场进入全面竞争。Grok Build（SpaceXAI）：仅限 SuperGrok Heavy 用户（$300/月），支持终端执行、计划模式、AGENTS.md、插件和 MCP 服务。Cursor Composer 2.5：自研模型在基准测试中匹配 Opus 4.7 和 GPT-5.5，推出云端 Agent 开发环境和 Build in Parallel 并行构建。GitHub Copilot：暂停 Pro/Pro+ 注册，6 月 1 日转为 AI Credits 用量计费，新增 Copilot Max 档位。Google Antigravity 2.0：I/O 发布的全功能 IDE，含 Editor 视图和 Manager 视图用于多 Agent 编排。</p>
+    <p>当前开发者的主流工作流是 Cursor（日常编辑）+ Claude Code（复杂任务）。Cursor 自研模型（Composer 2.5）达到前沿水平是一个关键信号：编程专用模型开发正在从"调用 API"走向"自研基础模型"。GitHub 从订阅制转向用量制则预示商业模式的根本性转变。</p>
+    <div class="highlight">Grok Build 的 $300/月定价限制了大规模采用，但对标的是 Claude Code Max/Enterprise。四款工具的技术路线正在分化：Cursor 走"自研模型+IDE"路线，Claude Code 走"最强模型+终端"路线，Copilot 走"平台分发+多模型"路线，Antigravity 走"Google 生态+多 Agent"路线。</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon policy">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </div>
+    <h2 class="section-title">AI 监管全球加速：美国州法 vs 联邦框架 + 中欧最新动态</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">康涅狄格 SB5 + 科罗拉多 AI Act + 中国拟人化服务管理 <span class="tag tag-policy">监管</span></div>
+    <p>美国 AI 监管正在州层面快速推进。康涅狄格 SB5 是目前最全面的州级 AI 法案：覆盖就业 AI 决策规范、AI 聊天机器人监管（禁止与未成年人的浪漫/性互动）、前沿模型举报人保护，2026.10-2027.10 分阶段生效。科罗拉多 AI Act 将于 6 月 30 日开始执法。纽约 RAISE Act 要求更严格的 AI 事故报告。联邦层面有 1,200+ AI 法案在审，白宫倾向现有机构监管而非新设联邦 AI 机构。</p>
+    <p>中国方面：五部门联合发布《人工智能拟人化互动服务管理暂行办法》（7 月 15 日生效），禁止向未成年人提供虚拟亲密关系服务，要求每 2 小时连续使用提示，过度依赖时必须标注 AI 生成内容。《人工智能终端智能化分级》国标发布（GB/Z 177-2026），将 AI 终端分为 L1-L4 四个等级。EU 方面正在简化 AI Act 规则以配合 8 月 2 日高风险 AI 系统条款生效。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon research">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4"/><path d="M12 19v4"/><path d="M1 12h4"/><path d="M19 12h4"/><path d="M4.22 4.22l2.83 2.83"/><path d="M16.95 16.95l2.83 2.83"/><path d="M4.22 19.78l2.83-2.83"/><path d="M16.95 7.05l2.83-2.83"/></svg>
+    </div>
+    <h2 class="section-title">百度 Create 2026：Agent-First 战略全面落地</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">DAA 指标提出 + Agent 全家桶 + 阿里千问深度绑定淘宝 <span class="tag tag-research">生态</span></div>
+    <p>百度 Create 2026 开发者大会首次将开发者大会与云峰会合并，核心主题是"Agent-First"。李彦宏提出 DAA（Daily Active Agents）作为衡量 Agent 生态的新标准，预测全球日活 Agent 将超 100 亿。同步推出 DuMate 通用助手、Miaoda 编程 Agent、百度易境数字人 Agent 和 Famou 自进化决策 Agent。</p>
+    <p>阿里方面动作同样密集：通义千问深度整合淘宝，用户可在千问 App 中通过对话式交互浏览、比较和下单 40 亿+ 商品。支付宝"AI Pay"上线委托支付功能和"AI 低价抢"。阿里云的 Qoder 1.0 从"AI IDE"升级为"Agent-first 自主开发工作站"，支持 Quest 独立命令中心、跨项目多任务并行、团队知识引擎。腾讯开源混元 Hy3 Preview（295B MoE，21B 激活参数，256K 上下文），Agent 工作流 495 步成功率达 99.99%+。</p>
+    <div class="highlight">中国 AI 生态正在从"大模型军备竞赛"转向"Agent 落地战"。百度的 DAA 指标、字节的 Agent Plan 订阅包、阿里的千问+淘宝电商 Agent——三条路线分别对应开放平台、基础设施和垂直场景，竞争维度已从模型能力扩展到完整的商业闭环。</div>
+  </div>
+</div>
+
+</div>
+
+<!-- ==================== 深度技术版 ==================== -->
+<div id="tab-expert" class="tab-content">
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon gpu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v12"/><path d="M18 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+    </div>
+    <h2 class="section-title">NVIDIA Q1 FY2027：$81.6B 收入、$75.25B 数据中心、75% 毛利率</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">财报全面拆解：Blackwell 产能爬坡、$300 亿 OpenAI 投资、中国出口不确定性 <span class="tag tag-gpu">芯片</span></div>
+    <p>NVIDIA FY2027 Q1 核心数据：收入 $81.62B（YoY +85.2%，beat $80.4B 共识），Data Center $75.25B（YoY +92%，占总收入 92.2%），毛利率 75.0%（符合预期），Operating Income $53.5B（YoY +147.4%），Net Income $58.3B（YoY +210.6%），Diluted EPS $2.39（beat $1.79 共识），Operating Cash Flow $50.3B（YoY +83.6%）。Q2 指引 $91B +/- 2%，不含中国数据中心计算收入。</p>
+    <p>战略投资组合：$300 亿入股 OpenAI、$32 亿入股 Corning（光纤/光连接器）、$21 亿入股 IREN（数据中心基础设施），总计 $400 亿+ 股权投资承诺。Blackwell + Vera Rubin 在 2026-2027 年预期潜在收入 $1 万亿。前高盛高管 Suzanne Nora Johnson 加入董事会。</p>
+    <table class="tech-table">
+      <tr><th>指标</th><th>Q1 FY2027</th><th>预期</th><th>YoY</th></tr>
+      <tr><td>收入</td><td>$81.62B</td><td>$80.4B</td><td>+85.2%</td></tr>
+      <tr><td>数据中心</td><td>$75.25B</td><td>--</td><td>+92%</td></tr>
+      <tr><td>EPS (Diluted)</td><td>$2.39</td><td>$1.79</td><td>+214.5%</td></tr>
+      <tr><td>毛利率</td><td>75.0%</td><td>75.0%</td><td>--</td></tr>
+      <tr><td>经营现金流</td><td>$50.3B</td><td>--</td><td>+83.6%</td></tr>
+      <tr><td>Q2 指引</td><td>$91B</td><td>--</td><td>--</td></tr>
+    </table>
+    <div class="highlight">关键不确定性：(1) Q2 指引"不含中国数据中心计算收入"措辞——H200 获批部分出口但范围有限，黄仁勋访华讨论条件仍在进行中；(2) Amazon 定制芯片业务达 $200 亿年化收入，Intel 18A 量产，AMD 和 Micron 获得更多关注——NVIDIA 81% 的 AI 数据中心市场份额面临中长期侵蚀压力；(3) 全球云厂商 2026 AI 资本开支计划 $7,250 亿（YoY +77%），调整后约 $8,300 亿，但可持续性存疑。</div>
+    <a href="https://www.quiverquant.com/news/NVIDIA+Corporation+%28NVDA%29+Releases+Q1+2027+Earnings%3A+Blockbuster+Revenue%2C+Profit+and+EPS+Beat" class="source-link" target="_blank">Quiver Quantitative: NVIDIA Q1 2027 Earnings Analysis &#8599;</a>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon industry">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    </div>
+    <h2 class="section-title">AI 驱动的企业重组：Intuit 17% + JPMorgan 重分类 + 渣打 15%</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">多供应商 AI 采购策略成企业新范式 <span class="tag tag-industry">企业</span></div>
+    <p>Intuit 裁员 3,000 人（18,200 人中的 17%），关闭 Reno NV 和 Woodland Hills CA 办公室，受影响员工最后工作日 7/31，遣散方案 16 周基础薪资 + 2 周/年服务。技术战略核心是同时与 Anthropic 和 OpenAI 签署多年合作协议，将两家模型嵌入 TurboTax、QuickBooks、Credit Karma、Mailchimp 产品线。</p>
+    <p>企业 AI 采购的"双供应商"模式正在扩散：JPMorgan Chase 将 AI 投资从实验性 R&D 重分类为核心基础设施（2026 技术预算 $198 亿，2,000 人专职 AI），预计年化价值 $25 亿；渣打银行 CEO 宣布 AI 将在 2030 年前取代 15%+ 后台支持岗位；诺和诺德与 OpenAI 达成战略合作，全面整合 AI 至药物发现、制造和商业运营。</p>
+    <p>2026 年科技 AI 裁员时间线：Amazon 30,000+（约 10%），Meta + Microsoft 合计 20,000+，Intuit 3,000，加上 Cisco、Oracle 等，全年已超 100,000 人。47.9% 的 Q1 裁员直接归因于 AI/自动化。</p>
+    <div class="highlight">Intuit 的架构选择暗示了企业 AI 部署的下一阶段：产品线级别的模型差异化。复杂税务推理可能用 Claude 的长上下文和推理能力，日常 QuickBooks 交互可能用 GPT 的响应速度和多模态——不再是"选一个 AI 供应商"，而是"为每个用例选最优模型"。这对 AI 公司的定价和竞争策略有深远影响。</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon model">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>
+    </div>
+    <h2 class="section-title">Anthropic 34.4% 市占率超 OpenAI：Agent 基础设施层的胜利</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Code w/ Claude 2026 技术栈解析 + SpaceXAI GPU 租用 + Credit 分离 <span class="tag tag-model">平台</span></div>
+    <p>Anthropic 在美国付费 AI 商业订阅市场以 34.4% 超越 OpenAI 的 32.3%（Google 4.5%），这一逆转发生在 Agent 基础设施层面的密集迭代中。Code w/ Claude 2026（5/6）发布的技术栈：Managed-Agent 多 Agent 编排框架、Claude Code Routines（可复用的 Agent 工作流模板）、Advisor 工具（上下文感知的代码审查和建议引擎）、Remote Agents（远程运行的长任务 Agent）、CI Auto-Fix（持续集成管道中的自动缺陷修复）。</p>
+    <p>关键决策：没有发布新模型。这表明 Anthropic 判断当前模型能力（Opus 4.7 SWE-bench 87.6%）已足够，差异化竞争已转向 Agent 编排层和企业集成层。Claude for Small Business 预装连接器矩阵：QuickBooks、PayPal、HubSpot、Canva、DocuSign、Google Workspace、Microsoft 365。SpaceXAI Colossus 集群（22 万+NVIDIA GPU，300+ MW）租用后 Claude Code 时间限制翻倍。6/15 起编程 API 用量与聊天限制分离，引入专用 Credit 系统。</p>
+    <table class="tech-table">
+      <tr><th>指标</th><th>Anthropic</th><th>OpenAI</th><th>Google</th></tr>
+      <tr><td>US 付费订阅份额</td><td>34.4%</td><td>32.3%</td><td>4.5%</td></tr>
+      <tr><td>核心编码基准 (SWE-bench)</td><td>87.6% (Opus 4.7)</td><td>~82% (GPT-5.5)</td><td>TBD (3.5 Pro)</td></tr>
+      <tr><td>Agent 编排</td><td>Managed-Agent</td><td>Deployment Co.</td><td>Antigravity 2.0</td></tr>
+      <tr><td>定价</td><td>$200/mo (Max)</td><td>$200/mo (Pro)</td><td>$100-200/mo (Ultra)</td></tr>
+    </table>
+    <div class="highlight">Anthropic 的 Agent 基础设施优先策略正在被验证：不是"谁的模型最强"，而是"谁的 Agent 最容易在企业中落地"。KPMG 27.6 万员工 + PwC + Gates Foundation $2 亿的合作组合表明，大型组织选择 AI 供应商时，Agent 编排能力和企业连接器的丰富度已经超过模型基准分数成为首要考量。</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon product">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    </div>
+    <h2 class="section-title">中国 AI 商业化拐点：豆包 120T 日 token + Agent Plan + 2,000 亿资本开支</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">字节构建 AI Agent 开放平台层，阿里千问绑定 40 亿商品淘宝 <span class="tag tag-product">生态</span></div>
+    <p>字节豆包付费分层（标准 68/增强 200/专业 500 元/月）的底层逻辑：3.5 亿+ MAU、120 万亿日 token（2024.5 至今 1,000x 增长）的推理成本已不可持续。火山引擎 Agent Plan（40 元/月起）是更值得关注的产品：聚合字节 Seed 系列 + 第三方模型（GLM-5.1、Kimi K2.6），智能路由选择最优模型，兼容 Claude Code / OpenCode / TRAE 等开发平台。这本质上是在构建 AI Agent 的"Android 开放平台层"——标准化模型接入、统一计费、跨平台兼容。字节 2026 AI 基建资本开支从 1,600 亿上调至 2,000 亿元。</p>
+    <p>阿里生态：千问深度整合淘宝，对话式 AI 可直接浏览/比较/下单 40 亿+ 商品。支付宝"AI Pay"上线委托支付 + "AI 低价抢"功能。"AI 店小蜜"成为电商首个售前+售后合一的 AI 客服 Agent。Qoder 1.0 升级为 Agent-first 自主开发工作站：Quest 独立命令中心、跨项目多任务并行、团队知识引擎、多 Agent 专家团队协作——团队已实现"用 Qoder 开发 Qoder"，9 个月 60+ 正式发布。</p>
+    <p>腾讯混元 Hy3 Preview：295B MoE / 21B 激活参数 / 256K 上下文，从零重建不到 3 个月。TTFT 降低 54%，端到端响应时间降低 47%，复杂 Agent 工作流（495 步）成功率 99.99%+。DeepSeek 500 亿元首轮融资（创始人梁文锋出资 200 亿），国家集成电路基金领投讨论中，估值预期超 3,500 亿元。Kimi K2.6 完成 $20 亿 B 轮，估值超 $200 亿。</p>
+    <div class="highlight">技术洞察：腾讯 Hy3 的 99.99%+ Agent 495 步成功率是一个关键指标——意味着单步成功率约 99.998%，这是 Agent 从"demo 可用"到"生产可靠"的门槛。DeepSeek V4 明确适配国产 GPU 架构可能是最具战略意义的技术决策：一旦国产芯片生态闭环形成，中美 AI 计算将出现真正的平行体系。全球半导体收入 IDC 预测 2026 年达 $1.29 万亿（YoY +52.8%），内存（HBM）市场从 $2,260 亿跃升至 $5,947 亿。</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon product">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+    </div>
+    <h2 class="section-title">AI 编程工具矩阵：技术路线分化 + 商业模式革命</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">四大路线：自研模型 / 最强 API / 平台分发 / 生态绑定 <span class="tag tag-product">工具</span></div>
+    <p>AI 编程工具在 2026 年 5 月形成了四条清晰的技术路线：</p>
+    <table class="tech-table">
+      <tr><th>产品</th><th>路线</th><th>定价</th><th>核心差异化</th></tr>
+      <tr><td>Cursor (Composer 2.5)</td><td>自研模型 + IDE</td><td>$20-40/mo</td><td>自研模型匹配前沿，云端 Agent 环境，并行构建</td></tr>
+      <tr><td>Claude Code</td><td>最强模型 + 终端</td><td>$100-200/mo</td><td>SWE-bench 87.6%，Routines，Remote Agents，CI Auto-Fix</td></tr>
+      <tr><td>GitHub Copilot (Max)</td><td>平台分发 + 多模型</td><td>AI Credits 计量</td><td>1.5 亿+ 开发者分发，VS Code 原生集成</td></tr>
+      <tr><td>Google Antigravity 2.0</td><td>Google 生态 + 多 Agent</td><td>含 AI Ultra</td><td>Editor + Manager 双视图，Gemini 全生态</td></tr>
+      <tr><td>Grok Build</td><td>Premium + 终端</td><td>$300/mo</td><td>AGENTS.md，MCP，Headless 自动化</td></tr>
+      <tr><td>Alibaba Qoder 1.0</td><td>Agent-first 工作站</td><td>TBD</td><td>Quest 命令中心，跨项目并行，团队知识引擎</td></tr>
+    </table>
+    <p>Cursor 自研 Composer 2.5 模型达到前沿水平（匹配 Opus 4.7 和 GPT-5.5 基准）标志着编程工具公司从"API 消费者"向"基础模型开发者"的跨越。GitHub Copilot 从订阅制转向 AI Credits 用量计费（6/1 生效）是商业模式层面的根本变革——将 AI 编程工具从 SaaS 定价拉向 Cloud 计量定价。Grok Build 虽然定价高但特性完善（终端执行、计划模式、AGENTS.md、插件、Hooks、MCP），显示 SpaceXAI 解散后仍在积极推进产品化。</p>
+    <div class="highlight">Grok app 下载量从 1 月的 2,000 万+下降到 4 月的 830 万（-60%），但 Grok Build 的技术完成度（AGENTS.md、MCP 支持、Headless 自动化）表明 SpaceXAI 正在从消费端转向开发者端——与 Anthropic 的路径相似。Apple Intelligence Extensions 计划允许第三方 AI 提供商（Google、Anthropic）为 iOS 27/iPadOS 27/macOS 27 提供 AI 能力，可能在 WWDC 2026 公布，将进一步重塑编程工具的分发格局。</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon policy">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </div>
+    <h2 class="section-title">全球 AI 监管深度：1,200+ 美国法案 + 中国拟人化管理 + EU 简化</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">州法 vs 联邦预占、中国分类标准、EU 执行简化的技术影响 <span class="tag tag-policy">监管</span></div>
+    <p>美国 AI 监管正处于"州法快速推进 vs 联邦框架缺位"的张力中。康涅狄格 SB5（众 131:17，参 32:4）三大支柱：(1) 就业 AI 决策——要求通知、解释权和人工审查选项；(2) AI 聊天机器人——禁止与未成年人浪漫/性互动，要求 AI 身份披露；(3) 前沿模型——开发公司员工举报保护，2026.10-2027.10 分阶段生效。科罗拉多 AI Act 6/30 开始执法。白宫国家政策框架（3/20）推动联邦预占州法。1,200+ AI 法案在审，Fortune 指出"无统一测试框架"。</p>
+    <p>中国：五部门《人工智能拟人化互动服务管理暂行办法》（7/15 生效）——禁止向未成年人提供虚拟亲密关系（虚拟配偶/家人）服务；用户表现过度依赖时强制 AI 生成标注；每 2 小时连续使用时间限制提醒。这是全球首个专门针对 AI 情感伴侣服务的监管。《AI 终端智能化分级》国标 GB/Z 177-2026 发布，L1 响应/L2 工具/L3 助手/L4 协作四级分类。十部门 AI 科技伦理审查办法，六维度：促进人类福祉、公平、可控/可信、透明/可解释、问责/可追溯、隐私保护。修订《网络安全法》新增 AI 专门条款（Art. 20）。</p>
+    <p>EU：临时协议简化 AI Act 规则，配合 8/2 高风险 AI 系统条款生效。此前修订已将高风险合规期限从 2026.8 推迟到 2027.12（+16 个月）。</p>
+    <div class="highlight">技术影响评估：(1) SB5 的就业 AI 决策条款将影响所有在康涅狄格运营的 AI 招聘/HR 产品（HireVue, Pymetrics 等），需要增加可解释性和人工审查路径；(2) 中国拟人化管理办法直接影响 Character.AI、Replika 类产品的中国运营策略，豆包等国内 AI 助手需在 7/15 前完成合规改造；(3) GitHub Copilot 转向用量计费的时机恰好与科罗拉多 AI Act 执行重叠，可能需要在计费透明度上做额外工作。</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon research">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4"/><path d="M12 19v4"/><path d="M1 12h4"/><path d="M19 12h4"/><path d="M4.22 4.22l2.83 2.83"/><path d="M16.95 16.95l2.83 2.83"/><path d="M4.22 19.78l2.83-2.83"/><path d="M16.95 7.05l2.83-2.83"/></svg>
+    </div>
+    <h2 class="section-title">Q1 2026 AI 融资 $246.6B + 国产 GPU 四龙上市 + DeepSeek $73.5B 估值</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">资本市场数据全景：全球融资、中国 IPO 潮、半导体重估 <span class="tag tag-research">资本</span></div>
+    <p>Q1 2026 全球 AI 后期融资 $246.6B / 584 笔，YoY +205%。头部融资：OpenAI $122B（估值 $730B，Amazon/SoftBank/NVIDIA）、Anthropic $30B、xAI $20B、Sierra $950M（Tiger Global/GV 领投，$15B+ 估值）、Parallel $230M（AI Agent 搜索基础设施）。自 2025 年成立以来的 AI 初创公司已获 $188 亿投资。$55 亿+ 资本瞄准企业"部署缺口"。</p>
+    <p>中国 AI IPO/融资：智谱 1/8 港交所上市（522 亿元市值，API ARR 17 亿元/3 月底，YoY 60x）。MiniMax 1/9 港交所上市（HK$165，HK$7,630 亿市值，首日+42.67%，公开发售 1,837 倍超购）。国产 GPU "四龙"35 天内上市：壁仞科技（HK 上市，+82.14%，HK$8,550 亿市值）、天数智芯（HK 上市，募 HK$37 亿）、摩尔线程（科创板，首日+425.46%）、沐曦（科创板，首日+692.95%），四家合计市值超 6,800 亿元。</p>
+    <p>DeepSeek 500 亿元首轮融资执行中（创始人梁文锋出资 200 亿，外部 300 亿），估值预计超 3,500 亿元（~$515B）。国家集成电路基金讨论领投，腾讯、阿里、国资基金跟投。Kimi（月之暗面）$20 亿 B 轮完成，估值 $200 亿+，ARR 超 $2 亿。全球半导体收入 IDC 预计 2026 年 $1.29 万亿（YoY +52.8%），内存市场从 $2,260 亿跃升至 $5,947 亿。TSMC 2nm 量产，Samsung 2nm 良率超 60%，Intel 18A 量产中。</p>
+    <div class="highlight">DeepSeek V4 明确适配国产 GPU 架构是一个可能改变全球半导体格局的技术决策。如果"国产大模型 + 国产芯片"闭环成功，中美 AI 计算将形成真正平行的两套体系。四家国产 GPU 公司 35 天内上市、合计市值 6,800 亿元，为这条路线注入了前所未有的资本动能。从 $10B（4 月初）到可能的 $50B+（5 月中）的估值跃升，DeepSeek 的速度堪比 2024 年的 OpenAI。</div>
+  </div>
+</div>
+
+</div>
+
+<footer class="footer">
+  <p>AI Pulse Daily Report - 由 AI 自动聚合生成</p>
+  <p>数据来源: WebSearch, CNBC, Kiplinger, TechCrunch, Fortune, Quiver Quantitative, 9to5Google, QbitAI, 36kr, IT之家, 澎湃新闻, 证券时报, 虎嗅, 新浪财经</p>
+</footer>
+
+<script>
+function switchTab(tabName) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + tabName).classList.add('active');
+  const tabs = ['casual', 'intermediate', 'expert'];
+  const idx = tabs.indexOf(tabName);
+  document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+}
+</script>
+
+</div>
+</body>
+</html>

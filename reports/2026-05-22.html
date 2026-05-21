@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily Report | 2026.05.22</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --claude-bg: #FAF9F7;
+    --claude-surface: #FFFFFF;
+    --claude-border: #E8E5E0;
+    --claude-text-primary: #1A1714;
+    --claude-text-secondary: #6B6560;
+    --claude-text-tertiary: #9B9590;
+    --claude-accent: #DA7756;
+    --claude-accent-light: #F5E6DF;
+    --claude-accent-dark: #C4623F;
+    --claude-tag-blue: #E8F0FE;
+    --claude-tag-blue-text: #3B6CB5;
+    --claude-tag-green: #E6F4EA;
+    --claude-tag-green-text: #2D7A3F;
+    --claude-tag-purple: #F0E6FA;
+    --claude-tag-purple-text: #7B3FAF;
+    --claude-tag-amber: #FEF3E2;
+    --claude-tag-amber-text: #B5752D;
+    --claude-tag-red: #FDE8E8;
+    --claude-tag-red-text: #B53B3B;
+    --claude-card-shadow: 0 1px 3px rgba(26, 23, 20, 0.06), 0 1px 2px rgba(26, 23, 20, 0.04);
+    --claude-card-shadow-hover: 0 4px 12px rgba(26, 23, 20, 0.08), 0 2px 4px rgba(26, 23, 20, 0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+    background: var(--claude-bg);
+    color: var(--claude-text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 8px;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--claude-accent-dark); }
+
+  .header {
+    text-align: center;
+    padding: 48px 0 40px;
+    border-bottom: 1px solid var(--claude-border);
+    margin-bottom: 32px;
+  }
+
+  .header-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--claude-accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .header .date {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    font-weight: 400;
+  }
+
+  .header .edition-note {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    margin-top: 8px;
+  }
+
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 36px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--claude-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .tab-btn:hover {
+    color: var(--claude-text-primary);
+    background: var(--claude-bg);
+  }
+
+  .tab-btn.active {
+    background: var(--claude-accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(218, 119, 86, 0.3);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .section { margin-bottom: 36px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .section-icon.gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .section-icon.model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .section-icon.product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .section-icon.research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .section-icon.industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .section-icon.policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .card {
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--claude-card-shadow);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .card:hover { box-shadow: var(--claude-card-shadow-hover); }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .card p {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.75;
+    margin-bottom: 8px;
+  }
+
+  .card p:last-child { margin-bottom: 0; }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .tag-gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .tag-model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .tag-product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .tag-research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .tag-industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .tag-policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .highlight {
+    background: var(--claude-accent-light);
+    border-left: 3px solid var(--claude-accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--claude-accent-dark);
+    line-height: 1.7;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .stat-item {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--claude-accent);
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--claude-text-tertiary);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 8px;
+    transition: color 0.15s;
+  }
+
+  .source-link:hover { color: var(--claude-accent-dark); text-decoration: underline; }
+
+  .tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .tech-table th, .tech-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .tech-table th {
+    font-weight: 600;
+    color: var(--claude-text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .tech-table td { color: var(--claude-text-primary); }
+
+  .footer {
+    text-align: center;
+    padding-top: 40px;
+    border-top: 1px solid var(--claude-border);
+    margin-top: 60px;
+  }
+
+  .footer p {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    line-height: 1.8;
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 24px 16px 60px; }
+    .header { padding: 32px 0 28px; }
+    .header h1 { font-size: 24px; }
+    .tab-btn { font-size: 12px; padding: 10px 8px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<a href="/" class="back-link">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+  返回 AI Pulse
+</a>
+
+<header class="header">
+  <div class="header-logo">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    AI PULSE
+  </div>
+  <h1>AI 日报 | 2026.05.22</h1>
+  <p class="date">星期五 / Friday, May 22, 2026</p>
+  <p class="edition-note">Edition #63 - Karpathy 加盟 Anthropic 领导预训练研究；Meta 裁员 8,000 人同时资本开支上调至 $125-145B；NextEra-Dominion $67B 合并成史上最大能源并购；教皇将发布首份 AI 通谕；Apple WWDC 前瞻：Siri 全面开放第三方 AI 模型；DeepMind 以 $100M 收编 Contextual AI 团队；Cursor Composer 2.5 以十分之一成本匹敌 Claude Opus</p>
+</header>
+
+<nav class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('casual')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+    轻松阅读
+  </button>
+  <button class="tab-btn" onclick="switchTab('intermediate')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+    技术进阶
+  </button>
+  <button class="tab-btn" onclick="switchTab('advanced')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+    深度技术
+  </button>
+</nav>
+
+<!-- ==================== 轻松阅读版 ==================== -->
+<div id="casual" class="tab-content active">
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon industry">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+    </div>
+    <h2 class="section-title">人才争夺与行业格局</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      Karpathy 正式加盟 Anthropic，顶级 AI 人才再洗牌
+      <span class="tag tag-industry">人才</span>
+    </div>
+    <p>OpenAI 联合创始人、前特斯拉 AI 总监 Andrej Karpathy 已正式加入 Anthropic，将在预训练研究负责人 Nick Joseph 麾下组建新团队。Karpathy 是深度学习领域最具影响力的研究者之一，他的加盟标志着 AI 人才争夺战进入白热化阶段。</p>
+    <p>Karpathy 的新方向是用 Claude 来加速预训练研究本身，也就是"用 AI 来做 AI 研究"。这一思路被认为是通向下一代前沿模型的关键路径。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      Meta 裁员 8,000 人，同时疯狂烧钱建 AI 基础设施
+      <span class="tag tag-industry">企业</span>
+    </div>
+    <p>Meta 宣布裁减约 8,000 名员工（占总人数 10%），同时将 2026 年资本开支上调至 1,250-1,450 亿美元，几乎全部用于 AI 基础设施。这种"一边裁人一边砸钱"的操作正在成为科技行业的新常态。</p>
+    <p>在路易斯安那州，Meta 一座价值 270 亿美元的数据中心正在改变当地整个社区的面貌。AI 基建的规模已经开始重塑美国的地理经济版图。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      DeepMind 花近 1 亿美元"挖角" Contextual AI 整支团队
+      <span class="tag tag-industry">并购</span>
+    </div>
+    <p>Google DeepMind 以 8,000 万至 1 亿美元的授权费，将 Contextual AI 的 20 多名研究人员收入麾下，包括 CEO Douwe Kiela。这延续了 Google 通过"人才收购"避开反垄断审查的策略，此前 Character.AI 和 Windsurf 团队也是以类似方式被收编的。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon gpu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/></svg>
+    </div>
+    <h2 class="section-title">基础设施与能源</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      NextEra-Dominion $670 亿合并：AI 催生史上最大能源并购
+      <span class="tag tag-gpu">能源</span>
+    </div>
+    <p>美国两大电力公司 NextEra Energy 和 Dominion Energy 宣布 670 亿美元合并，成为自 1998 年埃克森-美孚合并以来最大的能源交易。推动这笔交易的核心动力就是 AI 数据中心对电力的巨大需求。</p>
+    <p>美国电力消耗预计将在 2026-2027 年创下历史新高。数据中心的单机架功率密度已从几年前的 30-40kW 飙升至接近兆瓦级别。AI 不仅在改变软件行业，也在重塑整个能源产业。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      Dell-NVIDIA 联手推出"桌面级 AI 工厂"
+      <span class="tag tag-gpu">硬件</span>
+    </div>
+    <p>在 Dell Technologies World 大会上，黄仁勋与 Michael Dell 共同发布了 Dell Deskside Agentic AI 方案。这意味着企业无需依赖云端，就能在本地硬件上部署自主运行的 AI Agent。NVIDIA 的 NemoClaw 参考架构支持从桌面到数据中心的无缝扩展。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      华为昇腾 950PR 量产，算力性价比碾压英伟达对华特供版
+      <span class="tag tag-gpu">芯片</span>
+    </div>
+    <p>华为昇腾 950PR 推理芯片正式量产，单卡算力较 H20 提升 2.87 倍，采购价仅为英伟达对华特供版的四分之一。字节跳动已将 AI 基础设施资本开支从 1,600 亿元上调至 2,000 亿元，并加大国产芯片采购比例。国产算力自主化正式进入规模替代阶段。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon product">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    </div>
+    <h2 class="section-title">产品与平台</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      Apple WWDC 前瞻：Siri 将接入 Claude、Gemini 等第三方 AI
+      <span class="tag tag-product">产品</span>
+    </div>
+    <p>Apple 正在为 iOS 27 / macOS 27 开发一项"Extensions"能力，允许用户选择 Google、Anthropic 等第三方 AI 来驱动 Apple Intelligence。这将打破此前 OpenAI 独家合作的局面，让用户自由选择自己偏好的 AI 模型。</p>
+    <p>与此同时，Siri 正在被彻底重建为一个完整的 AI 聊天机器人，将支持网页搜索、图片生成和文档分析。WWDC 2026 定于 6 月 8 日举办。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      Cursor Composer 2.5 发布：十分之一成本匹敌顶级模型
+      <span class="tag tag-product">编程工具</span>
+    </div>
+    <p>Cursor 发布第三代自研编程模型 Composer 2.5，基于 Moonshot 的 Kimi K2.5 检查点进行大规模后训练。在 SWE-Bench 多语言测试中得分 79.8%，接近 Claude Opus 4.7 的 80.5%，但 Token 成本仅为后者的十分之一。</p>
+    <p>AI 编程工具的竞争已经从"谁的模型最好"转向"谁能用最低成本达到最好效果"。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      OpenAI 推出自助广告平台，瞄准千亿美元广告市场
+      <span class="tag tag-product">商业化</span>
+    </div>
+    <p>OpenAI 在 ChatGPT 内推出了自助广告管理平台，目标是 2026 年实现 25 亿美元广告收入，长期目标是到 2030 年达到 1,000 亿美元。当你与 AI 对话时，也可能会看到广告了。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon policy">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </div>
+    <h2 class="section-title">伦理与监管</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      教皇将发布首份 AI 通谕，Anthropic 联合创始人同台
+      <span class="tag tag-policy">伦理</span>
+    </div>
+    <p>教皇利奥十四世将于 5 月 25 日发布历史上第一份关于人工智能的教皇通谕《Magnifica Humanitas》，探讨 AI 伦理与人类尊严。Anthropic 联合创始人 Christopher Olah 受邀在梵蒂冈同台演讲。</p>
+    <p>AI 伦理议题正在从科技圈的内部讨论上升到文明层面的对话。当教皇开始关注 AI，你就知道这个技术真的在改变世界了。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      美国 1,200+ 州级 AI 法案并行，联邦框架仍然缺位
+      <span class="tag tag-policy">政策</span>
+    </div>
+    <p>全美各州目前有超过 1,200 项 AI 相关法案正在推进，但联邦层面仍无统一框架。白宫正在研究一项类似 FDA 模式的 AI 安全评估行政令。科罗拉多州已有 4 项 AI 法案送交州长签署，佐治亚州则签署了 AI 聊天机器人安全和 AI 医疗审批法律。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon research">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+    </div>
+    <h2 class="section-title">融资与创业</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      Rhoda AI 以 $4.5 亿 A 轮亮相，机器人智能平台赛道升温
+      <span class="tag tag-research">融资</span>
+    </div>
+    <p>Rhoda AI 公开发布其 FutureVision 机器人智能平台，获得 4.5 亿美元 A 轮融资，成为 AI 机器人领域最大的单轮融资之一。该平台专注于视频预测控制技术，让机器人能够"预见"未来并据此行动。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      马斯克诉 OpenAI 案败诉，陪审团仅用 90 分钟裁决
+      <span class="tag tag-industry">法律</span>
+    </div>
+    <p>加州联邦陪审团仅用约 90 分钟就一致驳回了马斯克对 OpenAI 的 1,500 亿美元诉讼，认定马斯克早在 2021 年就知晓相关行为，已超过诉讼时效。马斯克的律师表示将上诉，但这一判决为 OpenAI 的商业化扫清了一大法律障碍。</p>
+  </div>
+</div>
+
+</div>
+
+<!-- ==================== 技术进阶版 ==================== -->
+<div id="intermediate" class="tab-content">
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon industry">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+    </div>
+    <h2 class="section-title">人才与组织变革</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      Karpathy 加入 Anthropic：用 Claude 加速预训练研究
+      <span class="tag tag-industry">人才</span>
+    </div>
+    <p>Andrej Karpathy 正式加入 Anthropic，在预训练研究负责人 Nick Joseph 领导下组建新团队。Karpathy 此前作为 OpenAI 联合创始人参与了 GPT 系列早期开发，后在 Tesla 领导 Autopilot 视觉团队，2023 年离开后创办了 AI 教育项目。</p>
+    <div class="highlight">核心方向：使用 Claude 模型本身来加速预训练研究的自动化。这是"AI 研究 AI"（AI-for-AI-research）范式的重要实践。如果成功，将大幅缩短下一代前沿模型的研发周期。</div>
+    <p>技术点评：Karpathy 在 scaling laws、curriculum learning 和 multimodal pretraining 方面有深厚积累。他的加入可能加速 Anthropic 在预训练效率和数据工程方面的突破，直接影响 Claude 5 系列的研发进度。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      Meta 裁员 8,000 人 + 资本开支 $125-145B：极端两极化运营
+      <span class="tag tag-industry">企业</span>
+    </div>
+    <p>Meta 同时执行 10% 裁员（约 8,000 人）和史上最高资本开支（$125-145B），几乎全部投入 AI 基础设施。这意味着 Meta 正在将人力资源从传统业务向 AI 密集型业务大规模转移。</p>
+    <div class="stats-row">
+      <div class="stat-item">
+        <div class="stat-value">~8,000</div>
+        <div class="stat-label">裁员人数</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">$125-145B</div>
+        <div class="stat-label">2026 资本开支</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">$27B</div>
+        <div class="stat-label">路易斯安那数据中心</div>
+      </div>
+    </div>
+    <p>技术点评：数据中心机架功率密度已从 30-40kW 飙升至接近兆瓦级，这对供电、散热和网络架构都提出了全新要求。Meta 此前开源的 OCP 设计方案正在被行业广泛采用。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      DeepMind 以 ~$100M 收编 Contextual AI 团队
+      <span class="tag tag-industry">并购</span>
+    </div>
+    <p>Google DeepMind 通过 $80-100M 的技术授权交易，将 Contextual AI（含 CEO Douwe Kiela）的 20+ 名研究人员纳入麾下。Contextual AI 专注于 RAG（检索增强生成）和 enterprise grounding 技术。</p>
+    <p>技术点评：这是 Google 继 Character.AI（$2.7B）和 Windsurf 之后的又一次 acqui-hire。通过许可协议而非直接收购，可有效规避 FTC 反垄断审查。Contextual AI 的 RAG 技术可能被整合进 Gemini 的企业级产品中，提升幻觉控制能力。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon gpu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/></svg>
+    </div>
+    <h2 class="section-title">基础设施与芯片</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      NextEra-Dominion $67B 合并：AI 重塑能源产业格局
+      <span class="tag tag-gpu">能源</span>
+    </div>
+    <p>NextEra Energy 与 Dominion Energy 宣布 $670 亿合并，为 1998 年埃克森-美孚以来最大能源并购。直接驱动力是 AI 数据中心的电力需求爆发。</p>
+    <div class="stats-row">
+      <div class="stat-item">
+        <div class="stat-value">$67B</div>
+        <div class="stat-label">合并规模</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">$9.8B</div>
+        <div class="stat-label">Hut 8 德州租约</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">$10B+</div>
+        <div class="stat-label">KKR Helix 基金</div>
+      </div>
+    </div>
+    <p>技术点评：Hut 8 签署 15 年 $9.8B 德州 AI 数据中心租约（总规模潜在 $25.1B）。KKR 成立 Helix Digital Infrastructure，由前 AWS CEO 领导，首期 $10B+ 专投 AI 数据中心。行业对 AI 电力基础设施的投资规模已进入万亿级别赛道。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      Dell-NVIDIA Deskside Agentic AI：本地化 Agent 部署方案
+      <span class="tag tag-gpu">硬件</span>
+    </div>
+    <p>Dell Technologies World 2026 发布 Deskside Agentic AI 方案。NVIDIA NemoClaw 参考架构提供安全的本地 Agent 运行环境，通过 OpenShell 实现从桌面到数据中心的无缝扩展。</p>
+    <p>技术点评：NemoClaw 集成了 NVIDIA NeMo 框架和 Agent 编排工具，支持基于 RAG 的企业知识库接入、本地模型推理和 Agent 间协作。对于数据合规要求严格的金融、医疗行业，本地化 Agent 部署是关键需求。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      华为昇腾 950PR 量产 + 芯片代工格局重组
+      <span class="tag tag-gpu">芯片</span>
+    </div>
+    <p>华为昇腾 950PR 正式量产，单卡推理算力为 H20 的 2.87 倍，采购价仅为英伟达对华特供版 1/4。字节跳动 AI 资本开支从 1,600 亿元上调至 2,000 亿元，加大国产芯片采购。</p>
+    <p>全球芯片代工格局同步重组：Intel 拿下 Apple 代工订单，马斯克选择 Intel 德州 Terafab 为 SpaceX/xAI/Tesla 封装定制芯片，AMD 接近与三星 2nm 达成协议以分散 TSMC 依赖。NVIDIA、AMD、Broadcom 已锁定 TSMC 全部 3nm AI 芯片产能。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon product">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    </div>
+    <h2 class="section-title">产品与模型动态</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      Apple WWDC 2026 前瞻：Siri 重构 + 第三方 AI 模型开放
+      <span class="tag tag-product">产品</span>
+    </div>
+    <p>Apple 准备在 iOS 27 中通过"Extensions"机制，允许用户选择 Claude、Gemini、Grok 等第三方 AI 驱动 Apple Intelligence，打破 OpenAI 独家合作。Siri 正在被彻底重建为全功能 AI 聊天机器人，支持网页搜索、图像生成和文档分析。</p>
+    <p>技术点评：Apple 底层 foundation model 据报已转向基于 Google Gemini 的合作方案。第三方 Extensions 接入可能采用类似 App Intents 的标准化 API，允许模型提供方注册能力清单并由 Siri 路由分发。这本质上是在端侧构建了一个模型路由层。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      Cursor Composer 2.5：自研编程模型的成本效率突破
+      <span class="tag tag-product">编程工具</span>
+    </div>
+    <p>Cursor 发布 Composer 2.5，基于 Moonshot Kimi K2.5 检查点进行深度后训练。SWE-Bench Multilingual 得分 79.8%，接近 Claude Opus 4.7 的 80.5%，Token 定价 $0.50/$2.50（输入/输出），约为 Opus 的 1/10。</p>
+    <div class="highlight">关键技术：Cursor 将 85% 的算力投入自有后训练流水线，开发了新的 targeted text-feedback 技术。同时 Cursor 和 SpaceXAI 正在从零训练一个更大规模的全新模型。</div>
+    <p>技术点评：这证实了一个趋势 -- 在编程领域，定制后训练可以让中等规模模型逼近顶级通用模型的性能，且推理成本大幅降低。Cursor 正在从"IDE 壳"转变为拥有自研模型能力的全栈 AI 编程平台。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      OpenAI 自助广告平台上线
+      <span class="tag tag-product">商业化</span>
+    </div>
+    <p>OpenAI 在 ChatGPT 内推出自助广告管理工具，2026 年目标 $2.5B 广告收入，2030 年目标 $100B/年。这标志着 OpenAI 正式进入广告变现赛道，与 Google 搜索广告模式直接竞争。</p>
+    <p>技术点评：对话式 AI 广告的核心挑战是"意图识别精度"和"广告插入时机"。如果处理不当，会严重损害用户体验和信任度。如何在不降低模型回答质量的前提下植入广告，是全新的产品设计问题。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon policy">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </div>
+    <h2 class="section-title">监管与伦理</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      教皇 AI 通谕 + 1,200 州级法案：多层次治理格局成型
+      <span class="tag tag-policy">治理</span>
+    </div>
+    <p>教皇利奥十四世将于 5 月 25 日发布首份 AI 通谕《Magnifica Humanitas》，Anthropic 联合创始人 Christopher Olah 受邀同台。这标志着 AI 伦理讨论进入跨宗教、跨文明的对话维度。</p>
+    <p>美国方面，1,200+ 州级 AI 法案并行推进但联邦框架仍缺位。白宫正研究 FDA 模式的 AI 安全评估行政令。DeepMind 提出的"safety case"方法论（每次模型发布附带正式安全文档）正在成为行业监管标准的候选方案。</p>
+    <p>EU 方面，理事会与议会就简化 AI Act 条款达成一致，赶在 2026 年 8 月 2 日高风险 AI 执法截止日前完成。布鲁塞尔已在教皇通谕前禁止 AI"去衣"应用。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon research">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+    </div>
+    <h2 class="section-title">融资与法律</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      Rhoda AI $450M A 轮 + 马斯克诉 OpenAI 败诉
+      <span class="tag tag-research">综合</span>
+    </div>
+    <p>Rhoda AI 以 $4.5 亿 A 轮融资发布 FutureVision 机器人智能平台，聚焦视频预测控制（video-predictive control），为 AI 机器人领域最大单轮融资之一。</p>
+    <p>马斯克诉 OpenAI $150B 案被加州联邦陪审团一致驳回，仅耗时约 90 分钟。陪审团认定马斯克早在 2021 年即知晓相关行为，超出诉讼时效。马斯克律师 Marc Toberoff 宣布上诉。</p>
+    <p>技术点评：Rhoda AI 的 video-predictive control 技术结合了视觉世界模型和强化学习，让机器人能基于视频预测未来状态并提前规划动作。这是 embodied AI 从模式识别向因果推理演进的重要一步。</p>
+  </div>
+</div>
+
+</div>
+
+<!-- ==================== 深度技术版 ==================== -->
+<div id="advanced" class="tab-content">
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon industry">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+    </div>
+    <h2 class="section-title">人才流动与组织架构</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      Karpathy@Anthropic：AI-for-AI-Research 的技术路径分析
+      <span class="tag tag-industry">深度分析</span>
+    </div>
+    <p>Andrej Karpathy 加入 Anthropic 预训练团队（leader: Nick Joseph），将组建专注于"用 Claude 加速预训练研究"的新方向。这一任命的技术含义值得深入分析。</p>
+    <div class="highlight">关键信号：Anthropic 正在将 AI-assisted research 从辅助工具提升为核心研发方法论。如果 Claude 能有效参与超参数搜索、数据配比优化、架构变体评估等预训练决策，将实现研发效率的指数级提升。</div>
+    <p>Karpathy 的技术背景覆盖三个关键领域：(1) 大规模预训练工程（GPT-2/3 时期的 OpenAI 经验）；(2) 视觉-语言多模态融合（Tesla Autopilot 的 vision-only 架构）；(3) 高效训练方法论（nanoGPT 等项目展示的极简主义工程哲学）。</p>
+    <p>在 Anthropic 语境下，"用 Claude 做预训练研究"可能包括：自动化实验设计与超参数搜索、训练数据质量评估与过滤、模型行为的自动化分析与对齐验证、scaling law 预测的元学习。这与 Google DeepMind 的 AlphaProof / AlphaGeometry 路线（用 AI 做数学/科学研究）形成互补，但更直接地指向 AI 能力的递归式自我提升。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      DeepMind Acqui-hire Contextual AI：RAG 技术整合路径
+      <span class="tag tag-industry">并购技术</span>
+    </div>
+    <p>Google DeepMind 以 $80-100M 授权交易获得 Contextual AI 的 20+ 研究人员（含 CEO Douwe Kiela）。Contextual AI 的核心技术栈包括：</p>
+    <table class="tech-table">
+      <tr><th>技术方向</th><th>细节</th><th>整合价值</th></tr>
+      <tr><td>RAG 2.0 框架</td><td>端到端可训练的检索-生成架构</td><td>提升 Gemini 企业版幻觉控制</td></tr>
+      <tr><td>Grounding 引擎</td><td>多源知识图谱实时验证</td><td>增强 Google Workspace AI 可靠性</td></tr>
+      <tr><td>Attribution 系统</td><td>生成内容的细粒度来源归因</td><td>满足企业合规与审计要求</td></tr>
+    </table>
+    <p>这是 Google 的第三次 acqui-hire（Character.AI $2.7B, Windsurf, Contextual AI $100M），累计通过许可交易而非直接收购获取了超过 100 名顶级研究人员。该策略有效绕过了 FTC 对大型科技公司 AI 收购的审查，但监管机构已开始关注这一模式。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      Meta 裁员与 $145B 资本开支的技术经济学
+      <span class="tag tag-industry">分析</span>
+    </div>
+    <p>Meta 的极端两极化运营策略背后有清晰的技术经济逻辑：</p>
+    <div class="stats-row">
+      <div class="stat-item">
+        <div class="stat-value">~8,000</div>
+        <div class="stat-label">裁员（10% 总人数）</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">$125-145B</div>
+        <div class="stat-label">2026 CapEx 指引</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">$27B</div>
+        <div class="stat-label">路州单体数据中心</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">~1MW</div>
+        <div class="stat-label">单机架功率密度趋势</div>
+      </div>
+    </div>
+    <p>路易斯安那州 $27B 数据中心的技术参数值得关注：单集群配置超过 100,000 个 GPU，采用新一代液冷散热方案，机架功率密度接近兆瓦级（对比：传统数据中心约 5-10kW/rack，2024 年 AI 集群约 30-40kW/rack）。这种功率密度对供电（UPS、变压器、配电）、散热（直接液冷 + 后门热交换器）、网络（InfiniBand/RoCE 无损网络）都提出了全新的工程挑战。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon gpu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/></svg>
+    </div>
+    <h2 class="section-title">基础设施与半导体</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      AI 能源基础设施的万亿级重组
+      <span class="tag tag-gpu">能源</span>
+    </div>
+    <p>NextEra-Dominion $67B 合并只是 AI 驱动的能源产业重组的冰山一角。完整的基础设施投资矩阵如下：</p>
+    <table class="tech-table">
+      <tr><th>项目</th><th>规模</th><th>时间跨度</th><th>技术特点</th></tr>
+      <tr><td>NextEra-Dominion 合并</td><td>$67B</td><td>2026-2027 完成</td><td>垂直整合发电+输配电</td></tr>
+      <tr><td>Hut 8 德州数据中心</td><td>$9.8B（潜在 $25.1B）</td><td>15 年租约</td><td>GPU-as-a-service + 主机托管</td></tr>
+      <tr><td>KKR Helix Digital</td><td>$10B+</td><td>首期基金</td><td>前 AWS CEO 领导，tier-1 设施</td></tr>
+      <tr><td>Meta 路州数据中心</td><td>$27B</td><td>建设中</td><td>100K+ GPU 单集群</td></tr>
+      <tr><td>Dell Deskside AI</td><td>企业级</td><td>已发布</td><td>NemoClaw 本地 Agent 栈</td></tr>
+    </table>
+    <p>美国电力消耗预计 2026-2027 年创历史新高。AI 数据中心的电力需求增速远超新增发电能力的建设速度，这一结构性缺口正在重新定义美国的能源政策优先级。核电复兴（SMR 小型模块化反应堆）和天然气发电扩建成为两条主要路径。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      全球芯片代工格局重组：Intel、TSMC、三星三足鼎立
+      <span class="tag tag-gpu">半导体</span>
+    </div>
+    <p>芯片代工格局在 AI 需求推动下发生显著重组：</p>
+    <table class="tech-table">
+      <tr><th>事件</th><th>技术节点</th><th>意义</th></tr>
+      <tr><td>Intel 获 Apple 代工订单</td><td>18A / 14A</td><td>Intel Foundry Services 首个重量级客户</td></tr>
+      <tr><td>Musk 选择 Intel Terafab</td><td>定制封装</td><td>SpaceX/xAI/Tesla 芯片封装基地</td></tr>
+      <tr><td>AMD-三星 2nm 协议</td><td>2nm GAA</td><td>AMD 分散 TSMC 依赖</td></tr>
+      <tr><td>NVIDIA/AMD/Broadcom 锁定 TSMC 3nm</td><td>N3E/N3P</td><td>TSMC AI 产能全部售罄</td></tr>
+      <tr><td>华为昇腾 950PR 量产</td><td>国产工艺</td><td>推理性能 2.87x H20，价格 1/4</td></tr>
+    </table>
+    <p>华为昇腾 950PR 的量产标志着中国 AI 推理芯片进入实质性替代阶段。字节跳动将 AI CapEx 从 1,600 亿元上调至 2,000 亿元并加大国产芯片采购，是这一趋势的直接体现。但训练芯片方面，国产方案与 NVIDIA H200/B200 仍有代差。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon product">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    </div>
+    <h2 class="section-title">模型与产品技术分析</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      Cursor Composer 2.5 技术架构深度解析
+      <span class="tag tag-product">技术分析</span>
+    </div>
+    <p>Cursor Composer 2.5 的技术路线代表了 AI 编程工具的重要演进方向：</p>
+    <table class="tech-table">
+      <tr><th>指标</th><th>Composer 2.5</th><th>Claude Opus 4.7</th><th>GPT-5.5 Spud</th></tr>
+      <tr><td>SWE-Bench Multilingual</td><td>79.8%</td><td>80.5%</td><td>76.2%</td></tr>
+      <tr><td>输入价格 ($/1M tokens)</td><td>$0.50</td><td>$5.00</td><td>$3.00</td></tr>
+      <tr><td>输出价格 ($/1M tokens)</td><td>$2.50</td><td>$25.00</td><td>$15.00</td></tr>
+      <tr><td>基座模型</td><td>Kimi K2.5 checkpoint</td><td>Claude 4 系列</td><td>GPT-5 系列</td></tr>
+      <tr><td>后训练方法</td><td>Targeted text-feedback</td><td>RLHF + Constitutional AI</td><td>RLHF + Process RM</td></tr>
+    </table>
+    <p>Cursor 的关键技术创新是 targeted text-feedback：不同于传统 RLHF 使用标量奖励信号，该方法允许人类审阅者在代码的特定位置提供文本形式的反馈，模型学习将这些 fine-grained 文本信号转化为代码修改决策。85% 的计算资源投入自有后训练流水线，仅 15% 用于推理服务优化。</p>
+    <p>Cursor 与 SpaceXAI 的联合训练计划（从零训练更大规模模型）暗示了 AI 编程工具公司向 foundation model 开发者转型的趋势。这与 Anthropic（通用 AI 实验室也做编程工具 Claude Code）的路径恰好相反。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      Apple Intelligence 2.0 架构前瞻：端侧模型路由层
+      <span class="tag tag-product">架构分析</span>
+    </div>
+    <p>Apple 在 iOS 27 中开放第三方 AI 模型接入（Claude、Gemini、Grok）的技术架构值得关注：</p>
+    <div class="highlight">架构推测：Apple Intelligence Extensions 本质上是在端侧构建了一个"模型路由层"（Model Router），根据任务类型、复杂度、用户偏好和隐私级别，动态选择最优的 AI 提供方。这与 OpenRouter 等云端模型路由服务的理念类似，但在端侧实现提供了更好的隐私保护。</div>
+    <p>关键技术决策：(1) Apple 底层 foundation model 据报转向 Google Gemini，意味着 Apple 放弃了自研大规模 LLM 的路线；(2) 第三方模型通过 Extensions API 注册能力清单，Siri 作为协调者路由请求；(3) 端侧小模型负责意图分类和隐私过滤，敏感数据不离开设备；(4) Siri 被重建为完整 AI 聊天机器人，支持网页搜索、图像生成、文档分析。</p>
+    <p>这一架构对行业的影响：Apple 的 10 亿+ 设备安装基数意味着第三方 AI 模型可以通过 Apple Intelligence Extensions 获得前所未有的分发渠道，但也意味着 Apple 将成为 AI 模型的"应用商店守门人"，可能在未来收取类似 App Store 30% 的佣金。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      OpenAI 广告变现的技术与商业挑战
+      <span class="tag tag-product">商业分析</span>
+    </div>
+    <p>OpenAI 自助广告平台的技术架构面临独特挑战：</p>
+    <p>(1) 意图信号密度：搜索广告依赖明确的查询意图，但对话式 AI 中用户意图是逐步展开的、多轮对话中意图可能转变。广告匹配需要理解对话上下文而非单一查询。</p>
+    <p>(2) 插入时机优化：在不干扰对话流的前提下，何时以何种形式展示广告是全新的 UX 设计问题。过早插入会损害用户信任，过晚则错失转化窗口。</p>
+    <p>(3) 信息可信度困境：当 AI 推荐的内容包含广告因素时，用户对 AI 回答的信任度会系统性下降。2026 年目标 $2.5B、2030 年 $100B 的收入规模意味着广告密度将不可避免地上升。</p>
+    <p>对比参考：Google 搜索广告 2025 年收入约 $200B，如果 OpenAI 2030 年目标为 $100B，这意味着 ChatGPT 广告将占据整个数字广告市场约 5-8% 的份额。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon policy">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </div>
+    <h2 class="section-title">治理、伦理与开源生态</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      全球 AI 治理多层次格局：教廷、联邦、州、欧盟
+      <span class="tag tag-policy">治理</span>
+    </div>
+    <p>AI 治理正在形成前所未有的多层次结构：</p>
+    <table class="tech-table">
+      <tr><th>层级</th><th>主体</th><th>进展</th><th>技术影响</th></tr>
+      <tr><td>文明/伦理</td><td>教皇通谕</td><td>5/25 发布《Magnifica Humanitas》</td><td>AI 伦理原则的跨文化共识</td></tr>
+      <tr><td>联邦</td><td>白宫</td><td>FDA 模式 AI 安全评估行政令研究中</td><td>可能要求前沿模型部署前审批</td></tr>
+      <tr><td>州级</td><td>1,200+ 法案</td><td>科罗拉多 4 法案送签、佐治亚签署</td><td>合规碎片化，多州运营成本上升</td></tr>
+      <tr><td>欧盟</td><td>AI Act</td><td>简化条款、8/2 高风险执法</td><td>GPAI 模型系统性风险评估义务</td></tr>
+      <tr><td>行业</td><td>DeepMind Safety Case</td><td>每次发布附带正式安全文档</td><td>可能成为事实标准</td></tr>
+    </table>
+    <p>DeepMind 提出的"safety case"方法论是一个重要的行业自律尝试：要求每次模型发布时附带一份正式的安全评估文档，涵盖能力边界评估、误用风险分析、对齐测试结果和缓解措施。如果被监管机构采纳，将成为类似药物临床试验报告的 AI 领域标准。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      开源模型生态与企业 Agent 部署现状
+      <span class="tag tag-model">开源</span>
+    </div>
+    <p>开源模型生态持续繁荣，新发布包括：</p>
+    <table class="tech-table">
+      <tr><th>模型</th><th>参数量</th><th>特点</th><th>许可</th></tr>
+      <tr><td>Gemma 4 (Google)</td><td>--</td><td>Apache 2.0 开源</td><td>Apache 2.0</td></tr>
+      <tr><td>GLM-5.1 (智谱 AI)</td><td>--</td><td>Agent 软件工程方向</td><td>待确认</td></tr>
+      <tr><td>Qwen 3.5 (阿里)</td><td>397B</td><td>201 语言, 1M 上下文</td><td>待确认</td></tr>
+      <tr><td>SubQ 1M-Preview</td><td>--</td><td>首个商用亚二次 LLM, 12M 上下文</td><td>商业</td></tr>
+      <tr><td>ZAYA1-8B (Zyphra)</td><td>8B MoE</td><td>AMD 硬件训练</td><td>Apache 2.0</td></tr>
+    </table>
+    <p>企业 AI Agent 部署数据（Gartner）：40% 的企业应用将在 2026 年底包含 AI Agent（2025 年不足 5%）。专用 Agent 市场规模达 $11.79B。Top 用例：客服（26.5%）、研究分析（24.4%）、工作流自动化（18%）。但大多数部署仍卡在治理/安全审查环节，而非模型实验阶段。</p>
+  </div>
+</div>
+
+</div>
+
+<footer class="footer">
+  <p>AI Pulse Daily Report | Edition #63</p>
+  <p>数据来源：WebSearch 多源聚合</p>
+  <p>Generated by AI Pulse Automated System</p>
+</footer>
+
+</div>
+
+<script>
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-content').forEach(function(el) {
+    el.classList.remove('active');
+  });
+  document.querySelectorAll('.tab-btn').forEach(function(el) {
+    el.classList.remove('active');
+  });
+  document.getElementById(tabId).classList.add('active');
+  var tabs = ['casual', 'intermediate', 'advanced'];
+  var idx = tabs.indexOf(tabId);
+  if (idx >= 0) {
+    document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>

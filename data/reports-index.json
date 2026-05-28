@@ -60,6 +60,7 @@
     { "date": "2026-05-20", "file": "2026-05-20.html", "title": "AI Daily Report | 2026.05.20", "tags": ["Gemini 3.5 Flash Launch", "NVIDIA Q1 Earnings", "DeepSeek $7B Funding"] },
     { "date": "2026-05-21", "file": "2026-05-21.html", "title": "AI Daily Report | 2026.05.21", "tags": ["NVIDIA $81.6B Earnings", "Intuit 3000 Layoffs", "Anthropic #1 Paid AI"] },
     { "date": "2026-05-22", "file": "2026-05-22.html", "title": "AI Daily Report | 2026.05.22", "tags": ["Karpathy Joins Anthropic", "Meta 8K Layoffs", "NextEra-Dominion $67B"] },
-    { "date": "2026-05-28", "file": "2026-05-28.html", "title": "AI Daily Report | 2026.05.28", "tags": ["Anthropic $900B", "Cognition $26B", "Copilot CUA GA", "DeepSeek V4 75% Cut"] }
+    { "date": "2026-05-28", "file": "2026-05-28.html", "title": "AI Daily Report | 2026.05.28", "tags": ["Anthropic $900B", "Cognition $26B", "Copilot CUA GA", "DeepSeek V4 75% Cut"] },
+    { "date": "2026-05-29", "file": "2026-05-29.html", "title": "AI Daily Report | 2026.05.29", "tags": ["KPMG Claude 276K", "OpenAI DeployCo", "Pope AI Encyclical", "Cisco Multi-Turn Attack"] }
   ]
 }

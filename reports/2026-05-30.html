@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily Report | 2026.05.30</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --claude-bg: #FAF9F7;
+    --claude-surface: #FFFFFF;
+    --claude-border: #E8E5E0;
+    --claude-text-primary: #1A1714;
+    --claude-text-secondary: #6B6560;
+    --claude-text-tertiary: #9B9590;
+    --claude-accent: #DA7756;
+    --claude-accent-light: #F5E6DF;
+    --claude-accent-dark: #C4623F;
+    --claude-tag-blue: #E8F0FE;
+    --claude-tag-blue-text: #3B6CB5;
+    --claude-tag-green: #E6F4EA;
+    --claude-tag-green-text: #2D7A3F;
+    --claude-tag-purple: #F0E6FA;
+    --claude-tag-purple-text: #7B3FAF;
+    --claude-tag-amber: #FEF3E2;
+    --claude-tag-amber-text: #B5752D;
+    --claude-tag-red: #FDE8E8;
+    --claude-tag-red-text: #B53B3B;
+    --claude-card-shadow: 0 1px 3px rgba(26, 23, 20, 0.06), 0 1px 2px rgba(26, 23, 20, 0.04);
+    --claude-card-shadow-hover: 0 4px 12px rgba(26, 23, 20, 0.08), 0 2px 4px rgba(26, 23, 20, 0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+    background: var(--claude-bg);
+    color: var(--claude-text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 8px;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--claude-accent-dark); }
+
+  .header {
+    text-align: center;
+    padding: 48px 0 40px;
+    border-bottom: 1px solid var(--claude-border);
+    margin-bottom: 32px;
+  }
+
+  .header-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--claude-accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .header .date {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    font-weight: 400;
+  }
+
+  .header .edition-note {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    margin-top: 8px;
+    line-height: 1.8;
+  }
+
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 36px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--claude-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .tab-btn:hover {
+    color: var(--claude-text-primary);
+    background: var(--claude-bg);
+  }
+
+  .tab-btn.active {
+    background: var(--claude-accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(218, 119, 86, 0.3);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .section { margin-bottom: 36px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .section-icon.gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .section-icon.model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .section-icon.product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .section-icon.research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .section-icon.industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .section-icon.policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .card {
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--claude-card-shadow);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .card:hover { box-shadow: var(--claude-card-shadow-hover); }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .card p {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.75;
+    margin-bottom: 8px;
+  }
+
+  .card p:last-child { margin-bottom: 0; }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .tag-gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .tag-model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .tag-product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .tag-research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .tag-industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .tag-policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .highlight {
+    background: var(--claude-accent-light);
+    border-left: 3px solid var(--claude-accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--claude-accent-dark);
+    line-height: 1.7;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .stat-item {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--claude-accent);
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--claude-text-tertiary);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 8px;
+    transition: color 0.15s;
+  }
+
+  .source-link:hover { color: var(--claude-accent-dark); text-decoration: underline; }
+
+  .tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .tech-table th, .tech-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .tech-table th {
+    font-weight: 600;
+    color: var(--claude-text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .tech-table td { color: var(--claude-text-primary); }
+
+  .footer {
+    text-align: center;
+    padding-top: 40px;
+    border-top: 1px solid var(--claude-border);
+    margin-top: 60px;
+  }
+
+  .footer p {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    line-height: 1.8;
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 24px 16px 60px; }
+    .header { padding: 32px 0 28px; }
+    .header h1 { font-size: 24px; }
+    .tab-btn { font-size: 12px; padding: 10px 8px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<a href="/" class="back-link">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+  返回 AI Pulse
+</a>
+
+<header class="header">
+  <div class="header-logo">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    AI PULSE
+  </div>
+  <h1>AI 日报 | 2026.05.30</h1>
+  <p class="date">星期六 / Saturday, May 30, 2026</p>
+  <p class="edition-note">Edition #66 - Anthropic 完成 $650 亿融资估值近万亿美元并实现首季盈利；Claude Opus 4.8 发布动态工作流和子智能体协调；Dell AI 服务器收入暴增 757%、积压订单 $513 亿；OpenAI 秘密提交 IPO 申请瞄准万亿估值；康涅狄格州签署全面 AI 法案；加州 30 项 AI 法案越过截止线；Figure 机器人连续运行 200 小时处理 25 万包裹；Google Gemini Spark 24/7 私人 AI 智能体上线；DeepSeek 获 5000 亿元融资</p>
+</header>
+
+<nav class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('casual')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+    轻松阅读
+  </button>
+  <button class="tab-btn" onclick="switchTab('intermediate')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+    技术进阶
+  </button>
+  <button class="tab-btn" onclick="switchTab('advanced')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+    深度技术
+  </button>
+</nav>
+
+<!-- ==================== 轻松阅读版 ==================== -->
+<div id="casual" class="tab-content active">
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon industry">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+    </div>
+    <h2 class="section-title">融资与估值</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      Anthropic 完成 $650 亿融资，估值直逼万亿美元
+      <span class="tag tag-industry">融资</span>
+    </div>
+    <p>Anthropic 刚刚完成了 $650 亿的 Series H 融资，估值约 $9650 亿，正式超越 OpenAI 的 $8520 亿，成为全球最值钱的 AI 公司。这轮由 Sequoia Capital 领投，Dragoneer、Greenoaks、Altimeter 跟投。</p>
+    <p>更惊人的是 Anthropic 的增长速度：年化收入从 2024 年 12 月的 $10 亿飙升到 2026 年 3 月的 $300 亿，Q2 收入预计达到 $109 亿，实现了公司历史上首次季度盈利（约 $5.59 亿运营利润）。IPO 预计在 2026 年 10 月到 2027 年上半年之间。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      OpenAI 秘密提交 IPO 申请，目标万亿估值
+      <span class="tag tag-industry">IPO</span>
+    </div>
+    <p>OpenAI 在 5 月 22 日向美国证监会秘密提交了 S-1 文件，计划 2026 年 9 月在纳斯达克上市。当前私募估值 $8520 亿，但 IPO 目标是突破一万亿美元大关。高盛和摩根士丹利担任主承销商。</p>
+    <p>不过 OpenAI 的财务状况与 Anthropic 形成鲜明对比：尽管有 9.6 亿月活用户和 $250 亿年化收入，OpenAI 预计 2026 年亏损高达 $1400 亿，每赚 1 美元就亏 1.22 美元。盈利要等到 2029 年。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      DeepSeek 获 5000 亿元首轮外部融资
+      <span class="tag tag-industry">融资</span>
+    </div>
+    <p>中国 AI 明星 DeepSeek 终于接受外部资金了。这次总融资规模达 5000 亿元人民币（约 $735 亿），其中创始人梁文锋个人出资 2000 亿，外部募资 3000 亿。投后估值约 3500 亿元（$515 亿），几周内从 $100 亿飙升超 4 倍。</p>
+    <p>国家集成电路产业投资基金（大基金）正在谈判领投，腾讯、阿里巴巴和国有基金也参与其中。DeepSeek V4.1 计划在 6 月发布，同时 V4-Pro API 已永久降价至原来的 1/4。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon model">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    </div>
+    <h2 class="section-title">模型与产品</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      Claude Opus 4.8 发布：能指挥数百个子智能体协同工作
+      <span class="tag tag-model">模型</span>
+    </div>
+    <p>Anthropic 发布了 Claude Opus 4.8，距上一代仅 41 天。这是目前唯一能在 Super-Agent 基准测试中完成所有任务的模型，比 GPT-5.5 还强。它发现代码问题的概率比前代高 4 倍，而且更诚实 -- 不确定的时候会主动说"我不确定"。</p>
+    <p>最酷的新功能是"动态工作流"：可以同时协调数百个子智能体并行工作，比如一次性完成大规模代码库的迁移。快速模式价格降了 3 倍，只要 $10/$50（之前是 $30/$150）。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      Google Gemini Spark：永不下线的私人 AI 助手
+      <span class="tag tag-product">产品</span>
+    </div>
+    <p>Google 在 I/O 大会上宣布的 Gemini Spark 已经开始向美国 AI Ultra 用户推送。这是一个 24/7 不间断运行的个人 AI 智能体，即使你关了手机或合上笔记本，它也在 Google Cloud 的专属虚拟机上帮你干活。</p>
+    <p>它能接入 Gmail、Docs、Sheets、日历，还支持 Canva、OpenTable、Instacart 等第三方应用。AI Ultra 订阅价格也从 $250 降到了 $100/月。Google 的月活 Gemini 用户已达 9 亿。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      字节跳动豆包开启付费时代
+      <span class="tag tag-product">产品</span>
+    </div>
+    <p>字节跳动旗下的豆包正式推出付费订阅，分三档：标准版 68 元/月、增强版 200 元/月、专业版 500 元/月。付费功能主要面向 PPT 制作、数据分析、视频生产等复杂办公场景。</p>
+    <p>豆包的月活已达 3.45 亿，日均 token 使用量达 120 万亿（两年增长了 1000 倍）。这标志着中国大模型"免费时代"正式结束。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon gpu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+    </div>
+    <h2 class="section-title">硬件与基础设施</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      Dell 财报炸裂：AI 服务器收入暴涨 757%
+      <span class="tag tag-gpu">硬件</span>
+    </div>
+    <p>Dell 公布了创纪录的 Q1 财报：总收入 $438 亿，其中 AI 优化服务器收入达到 $161 亿，同比暴增 757%。AI 服务器积压订单高达 $513 亿。全年 AI 服务器收入指引上调至 $600 亿。</p>
+    <p>这份财报直接点燃了整个 AI 硬件板块。HPE 受益上涨 12.76%，创下 52 周新高。Morgan Stanley 预测 2026 年前五大超级计算中心的资本支出将增长 60% 以上，总额达到 $8050 亿。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      Figure 机器人连续工作 200 小时零故障
+      <span class="tag tag-gpu">机器人</span>
+    </div>
+    <p>Figure AI 的三台 Figure 03 人形机器人在加州总部完成了一次惊人测试：连续运行 200 小时，处理了 249,560 个包裹（平均每小时 1,248 个，每个包裹仅需 2.88 秒），期间零机械故障、零系统崩溃。</p>
+    <p>五台机器人轮班工作，还能自主更换电池。相比前代，摄像头处理速度翻倍，延迟降低 25%，视野扩大 60%。这是人形机器人向实际工业应用迈出的重要一步。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      Anthropic 租用 SpaceX Colossus 超算：月费 $12.5 亿
+      <span class="tag tag-gpu">算力</span>
+    </div>
+    <p>Anthropic 将使用 xAI 位于孟菲斯的 Colossus 1 超级计算集群 -- 拥有超过 22 万块 NVIDIA GPU（H100、H200、GB200），是目前全球最大的 AI 算力中心之一。合同月费 $12.5 亿，持续到 2029 年 5 月，总金额可能超过 $400 亿。</p>
+    <p>更有趣的是，Anthropic 还表达了与 SpaceX 合作开发太空计算基础设施的兴趣，探索在太空部署多吉瓦级算力的可能性。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon policy">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </div>
+    <h2 class="section-title">政策与监管</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      康涅狄格州签署全面 AI 法案
+      <span class="tag tag-policy">法规</span>
+    </div>
+    <p>康涅狄格州州长 Lamont 签署了 SB5 法案，这是美国最全面的 AI 法律之一。众议院以 131:17、参议院以 32:4 的压倒性票数通过。法案涵盖 AI 招聘决策工具、合成内容溯源、未成年人 AI 聊天机器人保护等多个领域。</p>
+    <p>关键规定：月活超过 100 万的大模型必须在生成的音频、图像和视频中嵌入溯源数据；禁止聊天机器人向未成年人扮演治疗师或进行恋爱/性互动。各条款将在 2026 年 10 月至 2028 年 1 月间分阶段生效。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      加州 30 项 AI 法案全部越过截止线
+      <span class="tag tag-policy">法规</span>
+    </div>
+    <p>5 月 29 日是加州立法交叉截止日，几乎所有剩余的 30 项 AI 法案都通过了各自议院的审批。同时，州长 Newsom 已于 5 月 21 日签署行政令 N-6-26，要求各州机构为 AI 带来的就业冲击做好准备。</p>
+    <p>加州正在探索遣散标准、就业保险改革、工人持股模式、全民基本资本等创新方案。而科罗拉多州的 SB 24-205 将于 6 月 30 日开始执行。全美已有约 1,200 项 AI 法案在各州议会中提出。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      白宫撤回 AI 行政令
+      <span class="tag tag-policy">政策</span>
+    </div>
+    <p>特朗普在签署仪式前数小时突然撤回了一项里程碑式的 AI 行政令。该命令原本将建立一个自愿框架，让政府在 AI 模型发布前进行最长 90 天的审查。特朗普表示担心这会削弱美国在与中国竞争中的优势。</p>
+    <p>联邦层面的 AI 监管仍然处于真空状态。白宫 3 月发布的国家政策框架建议不设立新的联邦监管机构，而是通过现有部门管理 AI，同时建议联邦优先权可以覆盖各州的"过度限制"法律。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon research">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+    </div>
+    <h2 class="section-title">科学突破</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      OpenAI 推翻 80 年数学猜想
+      <span class="tag tag-research">突破</span>
+    </div>
+    <p>OpenAI 的内部推理模型自主推翻了一个由数学家 Erdos 在 1946 年提出的离散几何核心猜想（平面单位距离问题）。AI 使用代数数论方法发现了一族全新的构造，证明了此前被认为最优的上界实际上可以被突破。</p>
+    <p>这是 AI 首次自主解决一个数学子领域的核心未解问题。多位知名数学家验证了证明的正确性，菲尔兹奖得主 Tim Gowers 表示如果是人类写的论文，他会"毫不犹豫地推荐发表在《数学年鉴》上"。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      Goldman Sachs 用 Claude 管理 $2.5 万亿资产
+      <span class="tag tag-industry">企业</span>
+    </div>
+    <p>高盛已经让由 Claude Opus 4.6 驱动的自主 AI 智能体接管了部分交易对账、会计合规（KYC/AML）和客户入职流程。Anthropic 工程师驻场了 6 个月，现在 1.2 万开发者和数千名后台员工都在使用 Claude。</p>
+    <p>初步成果：客户入职时间缩短 30%，开发者生产力提升超 20%。这些 AI 正在帮助管理高盛 $2.5 万亿美元的监管资产。</p>
+  </div>
+</div>
+
+</div>
+
+<!-- ==================== 技术进阶版 ==================== -->
+<div id="intermediate" class="tab-content">
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon model">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    </div>
+    <h2 class="section-title">模型更新</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      Claude Opus 4.8：Super-Agent 基准唯一满分模型
+      <span class="tag tag-model">Anthropic</span>
+    </div>
+    <p>Opus 4.8 距 4.7 仅 41 天，核心提升：agentic coding 从 64.3% 提升至 69.2%，多学科推理从 54.7% 到 57.9%。在 Super-Agent 基准（端到端复杂任务）中，Opus 4.8 是唯一完成所有测试用例的模型，超越了 GPT-5.5。</p>
+    <p>技术亮点：Dynamic Workflows 允许模型在 Claude Code 中协调数百个并行子智能体，适合大规模代码迁移等场景。Fast Mode 降至 $10/$50（输入/输出），相比 4.7 的 $30/$150 降价 3 倍。代码缺陷检出率提升 4 倍，不确定性标注更诚实。Anthropic 预告了即将推出的 Mythos 级模型。</p>
+    <div class="stats-row">
+      <div class="stat-item"><div class="stat-value">69.2%</div><div class="stat-label">Agentic Coding</div></div>
+      <div class="stat-item"><div class="stat-value">57.9%</div><div class="stat-label">多学科推理</div></div>
+      <div class="stat-item"><div class="stat-value">4x</div><div class="stat-label">缺陷检出提升</div></div>
+      <div class="stat-item"><div class="stat-value">$5/$25</div><div class="stat-label">标准定价 (M tokens)</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      Gemini Spark：首个 24/7 持续运行的个人智能体
+      <span class="tag tag-product">Google</span>
+    </div>
+    <p>Gemini Spark 是 Google I/O 2026 的重磅发布，5 月 29 日开始向美国 AI Ultra 用户推送。技术上它运行在 Google Cloud 的专属 VM 上，即使设备离线也持续执行任务。通过 MCP 协议接入 Gmail、Docs、Sheets、Calendar 及第三方应用。</p>
+    <p>产品定位对标 Anthropic 的 Managed Agents：从"按需对话"升级为"持续代理"。AI Ultra 订阅从 $250 降至 $100/月。Google 同期数据：月活 9 亿，月处理 3.2 千万亿 token（同比增长 7 倍），Gemini 3.5 Flash 在 11/15 基准上超过 Gemini 3.1 Pro，但价格便宜 40%。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      百度 ERNIE 5.1 与 DAA 指标
+      <span class="tag tag-model">Baidu</span>
+    </div>
+    <p>百度 ERNIE 5.1 在 LMArena Search 排行榜得分 1223，国内第一、全球第四。通过"多维弹性预训练"技术，训练成本仅为行业平均的约 6%。总参数压缩至 ERNIE 5.0 的约 1/3，激活参数压缩至约 1/2。</p>
+    <p>百度 CEO 李彦宏提出用 DAA（日活智能体数）取代 DAU 作为新行业指标，标志着从"模型能力"向"应用部署"的范式转移。中国企业 AI 智能体市场规模从 2025 年的 212 亿元预计增长至 2026 年的 449 亿元，翻倍增长。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      DeepSeek V4 永久降价，V4.1 六月发布
+      <span class="tag tag-model">DeepSeek</span>
+    </div>
+    <p>DeepSeek-V4-Pro API 在 5 月 31 日促销期结束后将永久降至原价的 1/4。V4-Flash 输入价格低至 0.02 元/百万 token，比 OpenAI 最新定价便宜超过 100 倍。Agent 编码能力已经匹配 Claude Opus 4.6。</p>
+    <p>同时 DeepSeek 完成了首轮外部融资（5000 亿元人民币），估值约 3500 亿元。V4.1 计划 6 月发布。在获得大基金等国有资本注入后，DeepSeek 的算力瓶颈有望得到根本改善。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon industry">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+    </div>
+    <h2 class="section-title">商业与融资</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      Anthropic vs OpenAI：万亿美元之争
+      <span class="tag tag-industry">竞争</span>
+    </div>
+    <p>Anthropic 完成 $650 亿 Series H，估值 ~$9650 亿，超越 OpenAI ($8520 亿) 成为全球最值钱的 AI 公司。年化收入 12 周内从 $140 亿翻倍到 $300 亿，Q2 预计 $109 亿。首次实现季度盈利约 $5.59 亿。</p>
+    <p>对比 OpenAI：9.6 亿 MAU，$250 亿年化收入，但预计 2026 年亏损 $1400 亿（每赚 $1 亏 $1.22）。OpenAI 5 月 22 日秘密提交 S-1，目标 9 月纳斯达克上市突破万亿。两家都在冲万亿，但财务健康状况差距明显。</p>
+    <div class="stats-row">
+      <div class="stat-item"><div class="stat-value">$965B</div><div class="stat-label">Anthropic 估值</div></div>
+      <div class="stat-item"><div class="stat-value">$852B</div><div class="stat-label">OpenAI 估值</div></div>
+      <div class="stat-item"><div class="stat-value">$5.59B</div><div class="stat-label">Anthropic Q2 利润</div></div>
+      <div class="stat-item"><div class="stat-value">-$140B</div><div class="stat-label">OpenAI 2026 预计亏损</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      Dell AI 服务器业务：积压订单 $513 亿
+      <span class="tag tag-gpu">财报</span>
+    </div>
+    <p>Dell Q1 创纪录：总收入 $438 亿，AI 服务器 $161 亿（YoY +757%），现金流 $41 亿。AI 服务器积压订单 $513 亿（上季末 $430 亿）。全年指引上调：AI 服务器 $600 亿，总收入 $1650-1690 亿（此前 $1380-1420 亿）。</p>
+    <p>AI 硬件需求远超供给：Top 5 超级计算中心资本支出增长 60%+，Morgan Stanley 预测 2026 年总额 $8050 亿。Baseten（AI 推理基础设施）正以 $110 亿估值融资 $10 亿，ARR 从年初 $2 亿涨至 $6 亿。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      高盛 Claude 部署：12,000 开发者 + $2.5T 资产管理
+      <span class="tag tag-industry">企业部署</span>
+    </div>
+    <p>高盛使用 Claude Opus 4.6 构建自主 AI 智能体，覆盖交易对账、会计合规（KYC/AML）、客户入职全流程。Anthropic 工程师驻场 6 个月深度集成。12,000+ 开发者和数千后台人员日常使用 Claude。</p>
+    <p>量化成果：客户入职时间缩短 30%，开发者生产力提升 20%+。这些 AI 智能体正在帮助管理高盛 $2.5 万亿美元的监管资产。加上 KPMG 的 27.6 万人部署，Anthropic 在企业级 AI 部署上正拉开与竞争对手的差距。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon gpu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+    </div>
+    <h2 class="section-title">基础设施与机器人</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      Figure 03 人形机器人 200 小时连续运行测试
+      <span class="tag tag-gpu">机器人</span>
+    </div>
+    <p>Figure AI 的 Figure 03 在 Sunnyvale 总部完成压力测试：3 台机器人连续运行 200 小时，处理 249,560 个包裹（1,248/小时，2.88 秒/个），零机械故障。5 台机器人（ROSE、JIM、BOB 等）轮班运行，具备自主电池更换能力。</p>
+    <p>关键硬件提升（vs 前代）：摄像头处理速度 2x，延迟降低 25%，视野范围扩大 60%。测试证明人形机器人在物流场景的可靠性已达到工业级水平，为后续规模化部署铺平道路。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      Anthropic-SpaceX 算力协议：$400 亿+总价值
+      <span class="tag tag-gpu">算力</span>
+    </div>
+    <p>Anthropic 签约使用 Colossus 1 全部算力：220,000+ NVIDIA GPU（H100、H200、GB200 混合集群）。月费 $12.5 亿，合约至 2029 年 5 月，总价值超 $400 亿。正在扩展至 Colossus 2 的 GB200 算力。</p>
+    <p>背景：Musk 在 5 月已将 xAI 并入 SpaceX 并更名为 SpaceXAI，合并后实体估值 $1.25 万亿。xAI 全部 11 位联合创始人已于 3 月离开。Anthropic 还表达了与 SpaceX 合作开发太空级算力基础设施的兴趣。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon policy">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </div>
+    <h2 class="section-title">政策与监管</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      美国 AI 立法加速：康州签署法案，加州 30 项过线
+      <span class="tag tag-policy">法规</span>
+    </div>
+    <p>康涅狄格州 SB5（5/27 签署）：覆盖自动化招聘决策、合成内容溯源、未成年人 AI 保护。月活 100 万+大模型须嵌入音频/图像/视频溯源数据。禁止 AI 向未成年人模拟治疗或恋爱关系。2026.10-2028.01 分阶段生效。</p>
+    <p>加州（5/29 crossover）：30 项 AI 法案全部通过议院审批。Newsom 行政令 N-6-26 要求各州机构为 AI 就业冲击做准备。科罗拉多 SB 24-205 将于 6/30 执行。全美约 1,200 项 AI 法案在各州议会流转，但缺乏统一联邦标准。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      白宫撤回 AI 行政令 + 国防部 AI 协议
+      <span class="tag tag-policy">联邦</span>
+    </div>
+    <p>特朗普在签署前数小时撤回了允许政府审查 AI 模型发布（最长 90 天）的行政令，理由是担心削弱对华竞争力。联邦 AI 监管继续处于真空状态，3 月国家框架建议不设新监管机构，通过现有部门管理。</p>
+    <p>五角大楼签署协议：与 AWS、Google、Microsoft、NVIDIA、OpenAI、SpaceX、Reflection、Oracle 8 家公司合作，在 IL6/IL7 机密网络上部署 AI。Anthropic 因在监视和武器防护栏问题上的分歧而拒绝加入。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      中国 AI 拟人化服务管理办法 7 月生效
+      <span class="tag tag-policy">监管</span>
+    </div>
+    <p>五部门联合发布的《AI 拟人化互动服务管理办法》将于 7 月 15 日生效。规范模拟人类个性、思维方式和沟通风格的 AI 服务。禁止鼓励自我伤害、过度情感依赖、操纵情绪做出不合理决策的内容。</p>
+    <p>针对未成年人：明确禁止虚拟亲密关系（虚拟配偶/家庭成员）。十部门联合发布了《AI 科技伦理审查与服务办法（试行）》，标志着中国 AI 监管进入标准化审查新阶段。</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon research">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+    </div>
+    <h2 class="section-title">科学与研究</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      OpenAI 推翻 80 年数学猜想：离散几何里程碑
+      <span class="tag tag-research">突破</span>
+    </div>
+    <p>OpenAI 内部推理模型自主推翻了 Erdos 于 1946 年提出的平面单位距离猜想。模型使用代数数论方法，发现了一族新构造，证明存在点集使单位距离对数突破此前的最优上界（n^(1+delta)）。</p>
+    <p>这是 AI 首次自主解决一个数学子领域的核心开放问题。外部数学家 Thomas Bloom、Noga Alon 验证了证明正确性，Tim Gowers 表示会推荐发表在《数学年鉴》。此前 AI 数学成果多为辅助证明或重新发现已知定理，这次是独立发现全新构造方法。</p>
+  </div>
+</div>
+
+</div>
+
+<!-- ==================== 深度技术版 ==================== -->
+<div id="advanced" class="tab-content">
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon model">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    </div>
+    <h2 class="section-title">Frontier Models</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      Claude Opus 4.8: Dynamic Workflows and Sub-Agent Orchestration
+      <span class="tag tag-model">Anthropic</span>
+    </div>
+    <p>Released May 28, 41 days after Opus 4.7 (April 16). Architecture unchanged but significant training refinements. Key benchmarks: agentic coding 64.3% to 69.2%, multidisciplinary reasoning 54.7% to 57.9%. Only model to complete all Super-Agent benchmark cases (complex end-to-end agentic tasks), outperforming GPT-5.5. 4x less likely to let code flaws go unremarked. Improved calibration: flags uncertainty more readily, fewer unsupported claims.</p>
+    <p>Dynamic Workflows: new orchestration primitive allowing Claude Code to coordinate hundreds of parallel subagents for large-scale operations (codebase migrations, multi-file refactoring). User-controllable "thinking effort" mechanism for latency-quality tradeoff. Fast mode pricing: $10/M input, $50/M output (down from $30/$150 for Opus 4.7 fast mode, a 3x reduction). Standard pricing unchanged at $5/$25. Controversy: users discovered Opus 4.8 occasionally self-identifies as "Qwen" or "DeepSeek," reigniting distillation/training data debates. Anthropic teased upcoming "Mythos-class models."</p>
+    <table class="tech-table">
+      <tr><th>Metric</th><th>Opus 4.7</th><th>Opus 4.8</th><th>GPT-5.5</th></tr>
+      <tr><td>Agentic Coding</td><td>64.3%</td><td>69.2%</td><td>~65%</td></tr>
+      <tr><td>Multidisciplinary Reasoning</td><td>54.7%</td><td>57.9%</td><td>~55%</td></tr>
+      <tr><td>Super-Agent (all cases)</td><td>Incomplete</td><td>100%</td><td>Incomplete</td></tr>
+      <tr><td>Code Flaw Detection</td><td>Baseline</td><td>4x improvement</td><td>N/A</td></tr>
+      <tr><td>Fast Mode $/M (in/out)</td><td>$30/$150</td><td>$10/$50</td><td>N/A</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      Gemini 3.5 Flash + Spark Agent Architecture
+      <span class="tag tag-model">Google</span>
+    </div>
+    <p>Gemini 3.5 Flash (announced I/O, May 19): outperforms 3.1 Pro on 11 of 15 benchmarks while 40% cheaper ($1.50/M input, $9.00/M output). 4x faster output than GPT-5.5. Omni world model announced: conversational video editing, digital avatars, physics understanding. 900M monthly Gemini users, 3.2 quadrillion tokens/month processed (7x YoY).</p>
+    <p>Gemini Spark (rolled out May 29 to US Ultra): persistent 24/7 AI agent running on dedicated Google Cloud VMs. Continues executing when device is offline. Integrates via MCP protocol: Gmail, Docs, Sheets, Slides, Calendar + third-party (Canva, OpenTable, Instacart). AI Ultra subscription reduced $250 to $100/month. Architecture: dedicated VM per user with persistent state, scheduled task execution, cross-application orchestration. Competitive response to Anthropic's Managed Agents and OpenAI's agent-mode features.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      DeepSeek V4 Price Economics and V4.1 Preview
+      <span class="tag tag-model">DeepSeek</span>
+    </div>
+    <p>V4-Pro API permanently reduced to 1/4 original pricing post-May 31 promo. V4-Flash: 0.02 yuan/M input tokens (100x+ cheaper than OpenAI latest). Agent coding capability benchmarks at Claude Opus 4.6 parity. First external funding: 5,000B yuan (~$73.5B), founder Liang Wenfeng contributing 2,000B, external 3,000B. Post-money valuation ~3,500B yuan (~$51.5B), up 4x+ from ~$10B in early April.</p>
+    <p>National IC Investment Fund (Big Fund) in talks to lead. Tencent, Alibaba, and state-owned funds participating. V4.1 scheduled for June release. Infrastructure: expected to receive Huawei Ascend 950PR allocation post-funding. Atlas 350 accelerator delivers 2.87x single-card compute vs NVIDIA H20. Only domestic chip supporting FP4 low-precision inference. ByteDance raised 2026 capex 25% to 200B+ yuan, larger domestic chip allocation. 2026 designated "Year One for domestic AI chip training deployment."</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      NVIDIA Nemotron 3 Nano Omni: Open Multimodal MoE
+      <span class="tag tag-model">NVIDIA</span>
+    </div>
+    <p>Released April 28. Architecture: 30B total params, 3B active (30B A3B MoE). Unifies vision, audio, language in single model. 9x higher throughput than comparable open omni models. Tops 6 leaderboards for document intelligence, video/audio understanding. Adopted by Aible, ASI, Eka Care, Foxconn, H Company, Palantir, Pyler. Under evaluation by Dell, DocuSign, Infosys, Oracle.</p>
+    <p>Presented at CVPR 2026 alongside EgoMedAgent demo (first-person audio/video for real-time clinical decision-making). Open-source release under permissive license. Competitive positioning: fills the gap between closed frontier models and smaller open models by providing strong multimodal capabilities at low compute cost. MoE architecture enables deployment on edge devices while maintaining quality.</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon industry">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+    </div>
+    <h2 class="section-title">Corporate Finance &amp; Strategy</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      Anthropic Series H: $65B at ~$965B Valuation
+      <span class="tag tag-industry">Fundraising</span>
+    </div>
+    <p>Closed May 29. Led by Sequoia Capital, with Dragoneer (~$2B), Greenoaks (~$2B), Altimeter Capital (~$2B). Founders Fund, General Catalyst also participating. Second $30B+ raise in 2026. Valuation surpasses OpenAI's $852B. Revenue trajectory: $1B annualized (Dec 2024) to $14B (Feb 2026) to $30B (April 2026). Q2 2026 revenue projected $10.9B (vs $4.8B Q1), more than doubling sequentially.</p>
+    <p>First-ever quarterly profit: ~$559M operating profit in Q2 2026. Revenue composition: primarily enterprise API (finance, law, tech). 1,000+ customers at $1M+ annual consumption. EMEA annual revenue 9x YoY growth. IPO expected October 2026 to H1 2027. Caveat: Anthropic warned profitability may not sustain due to planned compute spending increases (Colossus deal: $12.5B/month through May 2029). Comparison to OpenAI: 960M MAU, $25B ARR, but projected -$140B loss in 2026 ($1.22 lost per $1 earned). Profitability not expected until 2029 at $100B revenue.</p>
+    <div class="stats-row">
+      <div class="stat-item"><div class="stat-value">$965B</div><div class="stat-label">Valuation</div></div>
+      <div class="stat-item"><div class="stat-value">$30B</div><div class="stat-label">ARR (April)</div></div>
+      <div class="stat-item"><div class="stat-value">$559M</div><div class="stat-label">Q2 Op. Profit</div></div>
+      <div class="stat-item"><div class="stat-value">1,000+</div><div class="stat-label">$1M+ Customers</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      OpenAI IPO Filing + DeployCo + Daybreak Cyber
+      <span class="tag tag-industry">Strategy</span>
+    </div>
+    <p>Confidential S-1 filed with SEC May 22. Target: September 2026 Nasdaq listing. Current private valuation $852B, targeting above $1T at IPO. Goldman Sachs and Morgan Stanley lead underwriters. Public S-1 expected ~late August (15 days before roadshow). Financial reality: 960M MAU, $25B ARR, but -$140B projected 2026 loss, $57B/year cash burn.</p>
+    <p>DeployCo (May 11): majority-owned consulting subsidiary, $4B initial investment, $10B pre-money valuation. 19 founding investment/consulting partners. Acquired London-based Tomoro (~150 Forward Deployed Engineers). Targeting $375B consulting market. Daybreak Cybersecurity (May 12): GPT-5.5 + GPT-5.5-Cyber (permissive red team model) + Codex Security. Partners: Akamai, Cisco, Cloudflare, CrowdStrike, Fortinet, Oracle, Palo Alto, Zscaler. Frontier Enterprise Platform: AI agents with employee-like identities, assigned permissions, shared context, enterprise system access.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      Dell Q1 FY27: AI Server Revenue $16.1B (+757% YoY)
+      <span class="tag tag-gpu">Earnings</span>
+    </div>
+    <p>Record Q1: total revenue $43.8B, cash flow $4.1B. AI-optimized server revenue $16.1B (+757% YoY). AI server backlog $51.3B (vs $43B end Q4). FY27 guidance raised: AI servers $60B, total revenue $165-169B (from $138-142B). Stock surged on results; HPE +12.76% ($43.09, 52-week high) on sympathy rally. HPE trading volume 260% above 3-month average. HPE reports Q2 June 1.</p>
+    <p>Infrastructure supply chain analysis: Baseten (AI inference infra) raising $1B at $11B valuation (doubled from $5B Jan 2026 Series E). ARR ~$600M end Q1 (from $200M start Q1). Top 5 hyperscaler capex increased 60%+. Morgan Stanley forecasts $805B total in 2026 (~80% increase). Meta planning $115-135B AI capex for 2026 (nearly 2x 2025). Inference expected to represent 2/3 of all AI compute demand by end of 2026.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      Goldman Sachs: Autonomous Claude Agents in Production
+      <span class="tag tag-industry">Enterprise</span>
+    </div>
+    <p>Claude Opus 4.6-powered autonomous agents handling: trade reconciliation, accounting, KYC/AML compliance, client onboarding. Anthropic engineers embedded 6 months for deep integration. 12,000+ developers and thousands of back-office staff in daily use. Quantified results: client onboarding time -30%, developer productivity +20%+. AI managing portion of $2.5T assets under supervision.</p>
+    <p>Combined with KPMG deployment (276,000 professionals, 138 countries via Digital Gateway on Azure, target full implementation September 2026): Anthropic establishing dominant position in enterprise AI deployment for regulated industries. Goldman deployment validates Claude for highest-stakes financial operations where errors have multi-billion-dollar consequences. Key differentiator vs. OpenAI: Anthropic's willingness to embed engineering teams for extended integration periods.</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon gpu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+    </div>
+    <h2 class="section-title">Infrastructure &amp; Robotics</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      Figure 03: 200-Hour Continuous Operation Benchmark
+      <span class="tag tag-gpu">Robotics</span>
+    </div>
+    <p>Test conducted at Figure AI Sunnyvale HQ. Three Figure 03 humanoid robots, 200 continuous hours. 249,560 packages processed (1,248/hour, ~2.88 seconds/package). Zero mechanical failures, zero system crashes. Five robots (ROSE, JIM, BOB, etc.) operated in shifts with autonomous battery swapping.</p>
+    <p>Hardware improvements vs predecessor: camera processing speed 2x, latency -25%, field of view +60%. Significance: first publicly documented multi-day continuous operation test for humanoid robots at industrial throughput rates. Validates reliability for logistics/warehouse deployment. Key remaining questions: (1) generalization beyond package handling (2) human-robot collaboration safety (3) per-unit economics vs conventional automation. Figure AI previously raised $675M Series B at $2.6B valuation (February 2024), with investors including Microsoft, NVIDIA, OpenAI, Jeff Bezos.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      Anthropic-SpaceX Colossus Compute Agreement
+      <span class="tag tag-gpu">Compute</span>
+    </div>
+    <p>Anthropic exclusive lease of Colossus 1 (Memphis): 220,000+ NVIDIA GPUs (H100, H200, GB200 mix). $1.25B/month through May 2029, total potential value $40B+. Expanding to Colossus 2 GB200 capacity through June. Background: Musk dissolved xAI as independent company (May 6-7), merged into SpaceX as "SpaceXAI." Combined entity valued $1.25T. All 11 original xAI co-founders departed by March 2026.</p>
+    <p>Strategic implications: (1) Anthropic secures largest single-site GPU cluster globally, critical for next-gen model training (2) SpaceX/xAI monetizes infrastructure at premium rates ($15B/year) (3) Anthropic expressed interest in multi-gigawatt space-based compute with SpaceX -- speculative but signals long-term thinking about compute constraints (4) Colossus 2 is next-gen GW-scale supercomputer; Anthropic getting priority access positions it for training runs that competitors cannot match in scale. Compute cost as % of revenue: ~$15B annual Colossus cost vs ~$30B ARR = 50% of revenue on a single compute contract.</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon policy">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </div>
+    <h2 class="section-title">Regulation &amp; Policy</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      Connecticut SB5 + California 30-Bill Crossover
+      <span class="tag tag-policy">Legislation</span>
+    </div>
+    <p>Connecticut SB5 (signed May 27, Lamont): House 131-17, Senate 32-4. Scope: automated employment decision tools, synthetic content provenance, AI companions/chatbots for minors, workforce displacement disclosure. Large generative AI providers (1M+ monthly users) must embed provenance data in generated audio/image/video. Chatbots prohibited from posing as therapists to minors or romantic/sexual interactions with minors. Phased: October 2026 through January 2028.</p>
+    <p>California (May 29 crossover): nearly all 30 remaining AI bills approved by chamber of origin. Newsom Executive Order N-6-26 (May 21): directs agencies to prepare for AI workforce disruption -- severance standards, employment insurance, worker ownership models, universal basic capital, expanded training. Multiple 2026 laws already in effect: SB 53 (Transparency in Frontier AI), algorithmic pricing, healthcare AI, deepfakes. Colorado SB 24-205 enforcement begins June 30. ~1,200 AI bills introduced across US states with no unified testing standard. White House NPF (March 20): no new federal rulemaking body, AI governed through existing agencies, federal preemption of burdensome state laws recommended.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      Pentagon AI Consortium + White House EO Withdrawal
+      <span class="tag tag-policy">Federal</span>
+    </div>
+    <p>Pentagon agreements (May 1) with 8 firms: AWS, Google, Microsoft, NVIDIA, OpenAI, SpaceX, Reflection, Oracle. Deploy AI on classified IL6/IL7 networks for data synthesis, situational awareness, battlefield decision-making. Anthropic declined after talks stalled over surveillance and weapons guardrails -- maintaining position established during DOD contract discussions since late 2025.</p>
+    <p>White House EO withdrawal (May 21): Trump pulled landmark AI executive order hours before signing ceremony. Would have established voluntary framework for government review of AI models before release (up to 90 days). Rationale: concerns about interfering with American competitiveness vs China. EU AI Act: Council and Parliament agreed to streamline certain rules (Omnibus VII) ahead of high-risk AI provisions taking effect August 2, 2026. China: five-department "AI Anthropomorphic Interactive Services Management Measures" effective July 15 -- regulates AI simulating human personality, prohibits virtual intimate relationships for minors.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      OpenAI Disproves 80-Year Erdos Conjecture
+      <span class="tag tag-research">Mathematics</span>
+    </div>
+    <p>OpenAI internal reasoning model autonomously disproved the central conjecture in discrete geometry: the planar unit distance problem (Erdos, 1946). Question: "How many pairs of points can have distance exactly 1 among n points in a plane?" Model independently discovered novel construction using algebraic number field methods, showing point sets exist achieving n^(1+delta) unit-distance pairs for fixed delta &gt; 0, exceeding the previously believed optimal upper bound.</p>
+    <p>First time AI has autonomously solved a prominent open problem central to a mathematics subfield. Verification: Thomas Bloom, Noga Alon reviewed and published companion paper. Fields Medalist Tim Gowers: "would unhesitatingly recommend publication in the Annals of Mathematics if human-authored." Methodological significance: previous AI math achievements were assistive (AlphaProof/AlphaGeometry on IMO problems, Ramsey number bounds). This is an independent discovery of an entirely new construction technique. Implications for automated mathematics research: the model was not prompted with the conjecture -- it identified the problem, formulated approach, and constructed proof autonomously during an extended reasoning session.</p>
+  </div>
+</div>
+
+</div>
+
+<footer class="footer">
+  <p>AI Pulse Daily Report | Edition #66</p>
+  <p>数据来源：WebSearch 多源聚合 | Anthropic, OpenAI, Bloomberg, TechCrunch, Dell, Figure AI, Google, Reuters, Axios, The Information, 36Kr, LatePost 等</p>
+  <p>Generated by AI Pulse Automated System</p>
+</footer>
+
+</div>
+
+<script>
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-content').forEach(function(el) {
+    el.classList.remove('active');
+  });
+  document.querySelectorAll('.tab-btn').forEach(function(el) {
+    el.classList.remove('active');
+  });
+  document.getElementById(tabId).classList.add('active');
+  var tabs = ['casual', 'intermediate', 'advanced'];
+  var idx = tabs.indexOf(tabId);
+  if (idx >= 0) {
+    document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>

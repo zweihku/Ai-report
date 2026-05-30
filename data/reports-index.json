@@ -62,6 +62,7 @@
     { "date": "2026-05-22", "file": "2026-05-22.html", "title": "AI Daily Report | 2026.05.22", "tags": ["Karpathy Joins Anthropic", "Meta 8K Layoffs", "NextEra-Dominion $67B"] },
     { "date": "2026-05-28", "file": "2026-05-28.html", "title": "AI Daily Report | 2026.05.28", "tags": ["Anthropic $900B", "Cognition $26B", "Copilot CUA GA", "DeepSeek V4 75% Cut"] },
     { "date": "2026-05-29", "file": "2026-05-29.html", "title": "AI Daily Report | 2026.05.29", "tags": ["KPMG Claude 276K", "OpenAI DeployCo", "Pope AI Encyclical", "Cisco Multi-Turn Attack"] },
-    { "date": "2026-05-30", "file": "2026-05-30.html", "title": "AI Daily Report | 2026.05.30", "tags": ["Anthropic $965B", "Claude Opus 4.8", "Dell AI 757%", "OpenAI IPO Filing", "DeepSeek $73.5B"] }
+    { "date": "2026-05-30", "file": "2026-05-30.html", "title": "AI Daily Report | 2026.05.30", "tags": ["Anthropic $965B", "Claude Opus 4.8", "Dell AI 757%", "OpenAI IPO Filing", "DeepSeek $73.5B"] },
+    { "date": "2026-05-31", "file": "2026-05-31.html", "title": "AI Daily Report | 2026.05.31", "tags": ["DeepSeek V4-Pro Permanent", "AMD Venice 2nm", "Anthropic Maia 200", "EU AI Act Omnibus", "Meta 8K Layoffs"] }
   ]
 }

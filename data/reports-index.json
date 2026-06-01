@@ -64,6 +64,7 @@
     { "date": "2026-05-29", "file": "2026-05-29.html", "title": "AI Daily Report | 2026.05.29", "tags": ["KPMG Claude 276K", "OpenAI DeployCo", "Pope AI Encyclical", "Cisco Multi-Turn Attack"] },
     { "date": "2026-05-30", "file": "2026-05-30.html", "title": "AI Daily Report | 2026.05.30", "tags": ["Anthropic $965B", "Claude Opus 4.8", "Dell AI 757%", "OpenAI IPO Filing", "DeepSeek $73.5B"] },
     { "date": "2026-05-31", "file": "2026-05-31.html", "title": "AI Daily Report | 2026.05.31", "tags": ["DeepSeek V4-Pro Permanent", "AMD Venice 2nm", "Anthropic Maia 200", "EU AI Act Omnibus", "Meta 8K Layoffs"] },
-    { "date": "2026-06-01", "file": "2026-06-01.html", "title": "AI Daily Report | 2026.06.01", "tags": ["NVIDIA Vera Rubin", "Microsoft Build 2026", "Copilot Token Billing", "SoftBank 75B France", "Grok V9 1.5T"] }
+    { "date": "2026-06-01", "file": "2026-06-01.html", "title": "AI Daily Report | 2026.06.01", "tags": ["NVIDIA Vera Rubin", "Microsoft Build 2026", "Copilot Token Billing", "SoftBank 75B France", "Grok V9 1.5T"] },
+    { "date": "2026-06-02", "file": "2026-06-02.html", "title": "AI Daily Report | 2026.06.02", "tags": ["Microsoft Build Keynote", "RTX Spark PC", "Anthropic $965B", "Tesla Optimus Production", "NVIDIA Cosmos 3"] }
   ]
 }

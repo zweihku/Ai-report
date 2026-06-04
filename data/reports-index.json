@@ -67,6 +67,7 @@
     { "date": "2026-06-01", "file": "2026-06-01.html", "title": "AI Daily Report | 2026.06.01", "tags": ["NVIDIA Vera Rubin", "Microsoft Build 2026", "Copilot Token Billing", "SoftBank 75B France", "Grok V9 1.5T"] },
     { "date": "2026-06-02", "file": "2026-06-02.html", "title": "AI Daily Report | 2026.06.02", "tags": ["Microsoft Build Keynote", "RTX Spark PC", "Anthropic $965B", "Tesla Optimus Production", "NVIDIA Cosmos 3"] },
     { "date": "2026-06-03", "file": "2026-06-03.html", "title": "AI Daily Report | 2026.06.03", "tags": ["Anthropic S-1 IPO", "MAI-Thinking-1", "MiniMax M3", "Broadcom Earnings", "Huawei Ascend 950PR"] },
-    { "date": "2026-06-04", "file": "2026-06-04.html", "title": "AI Daily Report | 2026.06.04", "tags": ["SpaceX IPO Roadshow", "Broadcom $10.8B AI", "Trump AI Order", "WWDC Siri 2.0", "Altman Congress"] }
+    { "date": "2026-06-04", "file": "2026-06-04.html", "title": "AI Daily Report | 2026.06.04", "tags": ["SpaceX IPO Roadshow", "Broadcom $10.8B AI", "Trump AI Order", "WWDC Siri 2.0", "Altman Congress"] },
+    { "date": "2026-06-05", "file": "2026-06-05.html", "title": "AI Daily Report | 2026.06.05", "tags": ["SpaceX IPO Retail", "OpenAI Codex Enterprise", "Claude Partner Network", "Mythos Glasswing Global", "GPT-5.6 Signals"] }
   ]
 }

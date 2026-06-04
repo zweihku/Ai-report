@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily Report | 2026.06.05</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --claude-bg: #FAF9F7;
+    --claude-surface: #FFFFFF;
+    --claude-border: #E8E5E0;
+    --claude-text-primary: #1A1714;
+    --claude-text-secondary: #6B6560;
+    --claude-text-tertiary: #9B9590;
+    --claude-accent: #DA7756;
+    --claude-accent-light: #F5E6DF;
+    --claude-accent-dark: #C4623F;
+    --claude-tag-blue: #E8F0FE;
+    --claude-tag-blue-text: #3B6CB5;
+    --claude-tag-green: #E6F4EA;
+    --claude-tag-green-text: #2D7A3F;
+    --claude-tag-purple: #F0E6FA;
+    --claude-tag-purple-text: #7B3FAF;
+    --claude-tag-amber: #FEF3E2;
+    --claude-tag-amber-text: #B5752D;
+    --claude-tag-red: #FDE8E8;
+    --claude-tag-red-text: #B53B3B;
+    --claude-card-shadow: 0 1px 3px rgba(26, 23, 20, 0.06), 0 1px 2px rgba(26, 23, 20, 0.04);
+    --claude-card-shadow-hover: 0 4px 12px rgba(26, 23, 20, 0.08), 0 2px 4px rgba(26, 23, 20, 0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+    background: var(--claude-bg);
+    color: var(--claude-text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 8px;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--claude-accent-dark); }
+
+  .header {
+    text-align: center;
+    padding: 48px 0 40px;
+    border-bottom: 1px solid var(--claude-border);
+    margin-bottom: 32px;
+  }
+
+  .header-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--claude-accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .header .date {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    font-weight: 400;
+  }
+
+  .header .edition-note {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    margin-top: 8px;
+    line-height: 1.8;
+  }
+
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 36px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--claude-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .tab-btn:hover {
+    color: var(--claude-text-primary);
+    background: var(--claude-bg);
+  }
+
+  .tab-btn.active {
+    background: var(--claude-accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(218, 119, 86, 0.3);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .section { margin-bottom: 36px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .section-icon.gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .section-icon.model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .section-icon.product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .section-icon.research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .section-icon.industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .section-icon.policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .card {
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--claude-card-shadow);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .card:hover { box-shadow: var(--claude-card-shadow-hover); }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .card p {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.75;
+    margin-bottom: 8px;
+  }
+
+  .card p:last-child { margin-bottom: 0; }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .tag-gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .tag-model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .tag-product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .tag-research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .tag-industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .tag-policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .highlight {
+    background: var(--claude-accent-light);
+    border-left: 3px solid var(--claude-accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--claude-accent-dark);
+    line-height: 1.7;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .stat-item {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--claude-accent);
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--claude-text-tertiary);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 8px;
+    transition: color 0.15s;
+  }
+
+  .source-link:hover { color: var(--claude-accent-dark); text-decoration: underline; }
+
+  .tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .tech-table th, .tech-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .tech-table th {
+    font-weight: 600;
+    color: var(--claude-text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .tech-table td { color: var(--claude-text-primary); }
+
+  .footer {
+    text-align: center;
+    padding-top: 40px;
+    border-top: 1px solid var(--claude-border);
+    margin-top: 60px;
+  }
+
+  .footer p {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    line-height: 1.8;
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 24px 16px 60px; }
+    .header { padding: 32px 0 28px; }
+    .header h1 { font-size: 24px; }
+    .tab-btn { font-size: 12px; padding: 10px 8px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<a href="/" class="back-link">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+  返回 AI Pulse
+</a>
+
+<header class="header">
+  <div class="header-logo">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    AI PULSE
+  </div>
+  <h1>AI 日报 | 2026.06.05</h1>
+  <p class="date">星期五 / Friday, June 5, 2026</p>
+  <p class="edition-note">Edition #72 - SpaceX IPO 路演第二天 Fidelity 以 $2,000 门槛向散户开放认购；OpenAI Codex 升级为企业工作平台推出 Sites/Annotations/角色插件 周活跃 500 万；Anthropic 发布 Claude 合作伙伴网络 Services Track 三级认证体系 4 万家企业申请；Project Glasswing 向 15+ 国家 150 家机构开放 Mythos 包括 EU ENISA；WWDC 倒计时 3 天 Siri 2.0 与 AI 健康教练即将揭幕；GPT-5.6 信号浮现 Codex 日志泄露预测市场 80-89% 概率 6 月发布；Eli Lilly 与 Insilico Medicine 签署 $27.5 亿 AI 药物发现合作</p>
+</header>
+
+<nav class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('casual')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+    轻松阅读
+  </button>
+  <button class="tab-btn" onclick="switchTab('intermediate')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+    技术进阶
+  </button>
+  <button class="tab-btn" onclick="switchTab('advanced')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+    深度技术
+  </button>
+</nav>
+
+<!-- ==================== 轻松阅读版 ==================== -->
+<div id="casual" class="tab-content active">
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon industry">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      </div>
+      <h2 class="section-title">资本与产业</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        SpaceX IPO 散户也能买了：Fidelity 将门槛降至 $2,000
+        <span class="tag tag-industry">IPO</span>
+      </div>
+      <p>SpaceX 的 IPO 路演进入第二天，而对普通投资者来说，最大的新闻是 Fidelity 宣布只要账户有 2,000 美元就能申请认购——这比以往动辄 50 万美元的门槛降低了 99%。SpaceX 破天荒地将最多 30% 的份额留给散户（通常大型 IPO 只给 5-10%），通过抽签决定谁能获得份额。IPO 定价日 6 月 11 日，6 月 12 日在纳斯达克以代码 SPCX 正式挂牌交易，估值 1.75 万亿美元。高盛领衔承销，马斯克保留超过 82% 投票权。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        OpenAI Codex 不再只是写代码的工具：500 万人每周在用它工作
+        <span class="tag tag-product">产品</span>
+      </div>
+      <p>OpenAI 把 Codex 从一个编程助手升级成了企业工作平台。新功能"Sites"让用户用自然语言就能创建网站、仪表板和内部工具，一键分享给团队。"Annotations"扩展到了文档、表格和幻灯片——不再只能标注代码。6 个角色插件连接了 Salesforce、Figma、Snowflake 等 62 款商业应用。现在每周有 500 多万人在用 Codex，其中 20% 不是开发者。分析师、设计师、银行家们正在成为增长最快的用户群体，增速是开发者的 3 倍以上。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Anthropic 为 Claude 建起"经销商网络"：4 万家企业排队申请
+        <span class="tag tag-industry">生态</span>
+      </div>
+      <p>Anthropic 在 6 月 3 日推出了 Claude 合作伙伴网络的"Services Track"——把咨询公司和系统集成商按能力分成三个等级（Select、Preferred、Global Premier），最高级别要求 1,000 名认证人员和 100 家已部署客户。配套推出的 Partner Hub 是一个公开目录，企业客户可以在上面搜索和评估合作伙伴。自 3 月网络启动以来，已有超过 4 万家公司申请加入，超过 1 万名顾问获得了 Claude 个人认证。Anthropic 用这套体系把 Claude 的企业部署从"直销"变成了"渠道分发"。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Eli Lilly 斥资 $27.5 亿与 AI 药企合作：AI 新药发现进入加速期
+        <span class="tag tag-research">医药</span>
+      </div>
+      <p>制药巨头 Eli Lilly 与香港 AI 药物发现公司 Insilico Medicine 签署了价值最高 27.5 亿美元的合作协议，获得了 Insilico 使用生成式 AI 平台 Pharma.AI 发现的临床前候选药物的全球独家开发权。这笔交易是 AI 药物发现领域迄今最大的商业合作之一。2026 年一季度，数字健康初创公司已融资 40 亿美元——同比增长 10 亿，是疫情以来最强的第一季度。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon product">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+      </div>
+      <h2 class="section-title">产品与平台</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        WWDC 倒计时 3 天：苹果 AI 全面翻新在即
+        <span class="tag tag-product">苹果</span>
+      </div>
+      <p>6 月 8 日 WWDC 2026 开幕在即，苹果即将公布一系列重磅 AI 功能。最核心的是 Siri 2.0——在今年 1 月与 Google 达成 Gemini 合作后，Siri 将从语音助手蜕变为全功能 AI 聊天机器人，支持文字对话和多步骤任务执行。iOS 27 被内部定位为"Snow Leopard 式更新"，重心在性能优化和代码精简。新增 AI 健康教练、Wallet 证件 OCR、Safari 智能摘要等功能。还有传闻苹果将预览带 7 寸屏幕的智能家居中枢 HomePad，运行全新 homeOS。摩根士丹利认为 WWDC 是苹果股价的"关键催化剂"。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Anthropic 最强 AI Mythos 向全球开放：欧盟也能用了
+        <span class="tag tag-model">安全</span>
+      </div>
+      <p>Anthropic 把其最先进的 AI 模型 Mythos 的访问权限扩展到了全球更多机构。欧盟网络安全机构 ENISA 通过 Project Glasswing 获得了 Mythos 的使用权——此前欧盟一直因安全顾虑在与 Anthropic 谈判。Glasswing 项目现已扩展到 15 个以上国家的约 150 家新机构，涵盖澳大利亚、加拿大、法国、德国、日本等。原有的 40+ 合作方包括 Amazon、Apple、Microsoft、Google、Linux Foundation 等，Anthropic 为此投入了 1 亿美元使用额度。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        GPT-5.6 要来了？OpenAI 内部代码泄露引发市场猜测
+        <span class="tag tag-model">模型</span>
+      </div>
+      <p>OpenAI 尚未官方宣布 GPT-5.6，但多个信号暗示它可能在 6 月底前发布。一个模型 ID 短暂出现在 Codex 后端日志中后消失，预测市场 Polymarket 上 6 月发布的概率稳定在 80-89%。根据行业预测，GPT-5.6 将在高级推理和 Agentic 工作流方面实现重大突破，有效上下文窗口可能突破 100 万 token。同时 OpenAI 宣布 GPT-4.5 将于 6 月 27 日退役，o3 将于 8 月 26 日退役。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon policy">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <h2 class="section-title">政策与治理</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Trump AI 行政令进入倒计时：30 天内必须建立网络安全中心
+        <span class="tag tag-policy">政策</span>
+      </div>
+      <p>6 月 2 日签署的 AI 行政令正式进入执行阶段。财政部须在 30 天内（即 7 月 2 日前）牵头建立 AI 网络安全信息交换中心，联合行业自动扫描软件漏洞并协调补丁分发。NSA、CISA 和 NIST 正在联合制定"前沿模型"的评估基准——只有最强大的模型才需要在发布前自愿提交 30 天审查。虽然框架是自愿性质，但行业反应积极：Sam Altman 率先表示支持，并在昨天密集会见了国会两党领袖和白宫官员。法国总统马克龙已邀请 Altman 出席 6 月 15-17 日 G7 峰会。</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== 技术进阶版 ==================== -->
+<div id="intermediate" class="tab-content">
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon industry">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      </div>
+      <h2 class="section-title">资本与产业</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        SpaceX IPO 散户革命：Fidelity 降低 99% 门槛 + 30% 散户份额
+        <span class="tag tag-industry">IPO</span>
+      </div>
+      <p>SpaceX 路演第二天，Fidelity 正式开放散户认购通道。关键参数：$135/股 x 5.556 亿股 = $750 亿募资 @ $1.75T 估值。散户门槛从 $500,000 降至 $2,000（降幅 99.6%），散户份额上限 30%（行业平均 5-10%），分配方式为抽签制。</p>
+      <p>时间线：路演 6/4-6/10 → 定价日 6/11 → 纳斯达克挂牌 6/12（代码 SPCX）。Goldman Sachs 领衔，Morgan Stanley / BofA / Citi / JPMorgan 联席。马斯克保留 82%+ 投票控制权（双层股权结构），员工和关联方预留最多 5%。Fidelity 规定 15 天内抛售（flipping）将限制未来 IPO 参与权。</p>
+      <div class="highlight">三大科技 IPO 同期竞赛：SpaceX 6/12 挂牌 → Anthropic S-1 审核中 → OpenAI 最早 9 月。合计募资可能突破 $1500 亿，创科技 IPO 史上最密集窗口。Morningstar 认为 SpaceX $1.75T 估值"接近公允价值两倍"，但 Starlink ARR 增长和 Starship 复用率正在改写估值模型。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Anthropic Claude 合作伙伴网络：从直销到渠道分发的关键转折
+        <span class="tag tag-industry">生态</span>
+      </div>
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-value">40,000+</div>
+          <div class="stat-label">申请企业数</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">10,000+</div>
+          <div class="stat-label">认证顾问</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">3 级</div>
+          <div class="stat-label">认证体系</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">$1 亿</div>
+          <div class="stat-label">网络投资</div>
+        </div>
+      </div>
+      <p>Services Track 三级认证体系：Select（10 名认证人员 + 2 家生产客户 + 1 个公开案例）→ Preferred（100 名 + 15 家 + 3 个）→ Global Premier（1,000 名 + 100 家跨 3 区域 + 15 个）。Partner Hub 提供公开搜索目录，新增 MCP connector 让合作方可通过 Claude 直接查询自身认证状态。</p>
+      <div class="highlight">这是 Anthropic 从"API 公司"向"平台公司"转型的标志性一步。3 月启动 $1 亿投资以来 3 个月内 4 万家申请，表明企业对 Claude 的部署需求远超 Anthropic 自身交付能力——渠道网络是唯一的规模化路径。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        AI 新药发现：Eli Lilly-Insilico $27.5 亿合作与 Q1 融资潮
+        <span class="tag tag-research">医药</span>
+      </div>
+      <p>Eli Lilly 与 Insilico Medicine 的 $27.5 亿合作是 AI 制药领域迄今最大商业交易之一。Insilico 的 Pharma.AI 平台使用生成式 AI 进行靶点发现、分子设计和临床候选物优化。Lilly 获得全球独家开发权，Insilico 获得里程碑付款和销售提成。</p>
+      <p>更广泛的趋势：数字健康初创公司 2026 Q1 融资 $40 亿（YoY +$10 亿），为疫情以来最强 Q1。AI 工具在乳腺癌检测中已达 94% 准确率，可提前 20 分钟预测心衰。领先 AI 生物科技公司（Iambic、Generate）预计 2026 年各有 3+ 个 AI 设计药物进入临床试验。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon product">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+      </div>
+      <h2 class="section-title">产品与平台</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        OpenAI Codex 企业化：从编程助手到全员工作平台
+        <span class="tag tag-product">产品</span>
+      </div>
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-value">500 万+</div>
+          <div class="stat-label">周活跃用户</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">62</div>
+          <div class="stat-label">集成商业应用</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">110</div>
+          <div class="stat-label">自动化技能</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">20%</div>
+          <div class="stat-label">非开发者用户</div>
+        </div>
+      </div>
+      <p><strong>Sites：</strong>用户用自然语言描述需求，Codex 自动生成并托管交互式 Web 应用——包括网站、仪表板、内部工具和游戏，生成后可通过 URL 分享。这使非技术人员也能快速原型化和部署工具。</p>
+      <p><strong>Annotations 2.0：</strong>从代码和 Markdown 扩展到文档、电子表格、幻灯片和富媒体编辑。用户指向需要修改的位置，用自然语言描述变更，Codex 执行修改。</p>
+      <p><strong>6 个角色插件：</strong>集成 Salesforce、Figma、Snowflake 等 62 款应用和 110 种自动化技能，按职能角色（销售、设计、数据分析等）预配置工作流。</p>
+      <div class="highlight">非开发者用户增速 3x 于开发者，是 Codex 从"代码生成器"向"企业工作操作系统"转型的最强信号。OpenAI 已在 AWS Bedrock 上开放模型——多云策略进一步加速企业渗透。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        WWDC 2026 技术预览：Siri 2.0 + iOS 27 + HomePad
+        <span class="tag tag-product">苹果</span>
+      </div>
+      <p><strong>Siri 2.0（代号 Campos）：</strong>底层由 Apple 自研模型 + 定制 Gemini 模型驱动（2026 年 1 月合作协议），支持端云混合推理。新增 Extensions API 实现跨应用多步骤任务链。UI 从语音优先转为全屏聊天界面。当 Siri 判断问题超出能力时，可将请求转交 Claude/ChatGPT 等第三方 AI。</p>
+      <p><strong>iOS 27：</strong>定位为"Snow Leopard 更新"——专注性能优化和代码精简。新增 AI 健康教练（训练计划 + 健康报告）、Wallet 证件 OCR、Safari 页面智能摘要、键盘自动纠错升级、Apple Maps 卫星连接。</p>
+      <p><strong>HomePad（传闻）：</strong>7 英寸屏幕智能家居中枢，A18 芯片，运行全新 homeOS，支持 FaceTime 无需 iPhone。如确认，这将是苹果首个独立的智能家居硬件平台。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Project Glasswing 全球化：Mythos 模型向 15+ 国家开放
+        <span class="tag tag-model">安全</span>
+      </div>
+      <p>Anthropic 将 Project Glasswing 从最初 40+ 美国机构（Amazon、Apple、Microsoft 等）扩展到 15+ 国家的约 150 家新机构。Mythos 是 Anthropic 能够自主检测软件漏洞并开发利用链的超前沿模型，因此访问控制极其严格。</p>
+      <p>EU 进展：ENISA（欧盟网络安全机构）正式获得 Mythos 访问权，此前数月的谈判终于达成。新增国家包括澳大利亚、加拿大、法国、德国、意大利、瑞士、荷兰、日本、韩国等美国盟友。Anthropic 累计投入 $1 亿使用额度支持 Glasswing 合作方。Claude Security 新增代码库扫描和补丁建议功能。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon model">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+      </div>
+      <h2 class="section-title">模型与研发</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        GPT-5.6 信号：Codex 日志泄露与模型退役时间表
+        <span class="tag tag-model">模型</span>
+      </div>
+      <p>GPT-5.6 的 model ID 短暂出现在 OpenAI Codex 后端的 rollout-mapping 中后消失。Polymarket 预测市场上 6 月底前发布的概率稳定在 80-89%。预期改进方向：超长上下文推理（可能突破 1M token 有效使用）、更强的规划和错误恢复能力、多步骤计算机环境操作、Terminal-Bench / GPQA / 编码基准更高分。</p>
+      <p>模型退役时间表：GPT-4.5 将于 6/27 退役（30 天通知期），o3 将于 8/26 退役（90 天通知期）。OpenAI 同时在 AWS Bedrock 上全面开放了模型和 Codex——多云 GA 表明 OpenAI 正在从"Azure 独家"转向开放分发。</p>
+      <div class="highlight">GPT-5.6 如果在 6 月发布，将与 Apple WWDC（6/8）和 SpaceX IPO（6/12）形成 6 月"三重催化"。Polymarket 80-89% 是群体估计而非 OpenAI 承诺——但足够高，开发者应该围绕这个窗口做准备。</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon policy">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <h2 class="section-title">政策与治理</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        AI 行政令执行：网络安全中心 30 天倒计时与评估基准起草
+        <span class="tag tag-policy">政策</span>
+      </div>
+      <p>6/2 签署的行政令进入执行阶段。两条关键时间线：(1) 财政部须在 7/2 前建立 AI 网络安全信息交换中心，联合行业进行自动化漏洞扫描、验证和补丁分发协调；(2) NSA/CISA/NIST 正在联合起草"前沿模型"定义标准和评估基准。</p>
+      <p>Altman 在签署后立即表示支持，6/4 在华盛顿密集会见众议长 Johnson、少数党领袖 Jeffries、参议员 Sanders 及白宫官员，展示 OpenAI 的监管蓝图。马克龙邀请 Altman 出席 6/15-17 G7 峰会（法国依云），AI 将首次作为 G7 核心治理议题。</p>
+      <div class="highlight">从 2025 年"废除拜登 AI 行政令"到 2026 年主动建立自愿审查框架——华盛顿的转变速度超过多数人预期。行业主动配合"自愿框架"的策略逻辑：获得监管确定性而不增加合规成本，同时为三大 IPO 创造更有利的政策环境。</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== 深度技术版 ==================== -->
+<div id="advanced" class="tab-content">
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon product">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+      </div>
+      <h2 class="section-title">产品与模型</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        OpenAI Codex 企业平台架构分析：从 IDE 插件到工作操作系统
+        <span class="tag tag-product">产品</span>
+      </div>
+      <table class="tech-table">
+        <tr><th>功能</th><th>覆盖范围</th><th>目标用户</th><th>状态</th></tr>
+        <tr><td>Sites</td><td>Web 应用生成与托管</td><td>全员</td><td>Preview</td></tr>
+        <tr><td>Annotations 2.0</td><td>Docs/Sheets/Slides/Code</td><td>全员</td><td>GA</td></tr>
+        <tr><td>角色插件 (6 个)</td><td>62 应用 / 110 技能</td><td>按职能</td><td>GA</td></tr>
+        <tr><td>AWS Bedrock</td><td>模型 + Codex API</td><td>企业</td><td>GA</td></tr>
+        <tr><td>GPT-Rosalind</td><td>药物发现/基因组学</td><td>生命科学</td><td>GA</td></tr>
+      </table>
+      <p><strong>Sites 技术实现：</strong>Codex 接收自然语言描述后生成完整的前端代码（HTML/CSS/JS 或 React），部署到 OpenAI 托管基础设施并分配唯一 URL。支持迭代——用户通过 Annotations 指向页面元素描述修改，Codex 实时更新。这一架构使 Codex 从"代码补全"进化为"端到端应用工厂"。</p>
+      <p><strong>角色插件架构：</strong>6 个预配置插件各聚合约 10 款 SaaS 工具和 15-20 种自动化技能，按职能角色（销售、设计、数据、运营、研究、金融）组织。底层使用 Function Calling + Tool Use 协议与外部 API 交互。Salesforce、Figma、Snowflake 作为首批深度集成伙伴。</p>
+      <p><strong>竞争分析：</strong>Codex 的 5M+ 周活 vs Anthropic Claude Code 的开发者深度 vs Google Gemini Code Assist 的企业覆盖。OpenAI 的差异化策略是"全员化"——20% 非开发者用户和 3x 增速说明 Codex 正在跳出代码工具品类。如果 GPT-5.6 在 6 月发布，Codex 将率先获得新模型能力加持。</p>
+      <a href="https://openai.com/index/codex-for-every-role-tool-workflow/" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        OpenAI: Codex for Every Role, Tool, and Workflow
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        GPT-5.6 泄露分析：模型谱系、退役计划与发布窗口
+        <span class="tag tag-model">模型</span>
+      </div>
+      <p><strong>泄露细节：</strong>GPT-5.6 的 model ID 出现在 Codex 后端的 rollout-mapping reference 中，可复现片刻后被移除。这与 GPT-5.5 发布前的泄露模式一致——内部预发布配置短暂暴露。Polymarket 6/30 发布概率 80-89%（截至 5 月中旬），足够高以至于开发者应按此窗口规划。</p>
+      <p><strong>预期技术改进：</strong>深度长上下文推理（有效使用可能突破 1M token）、改进的多步骤计划和错误恢复能力、真实计算机环境多步执行改进、Terminal-Bench / GPQA / 编码基准提升。如果采用类似 MiniMax M3 的稀疏注意力架构，长上下文推理的每 token 计算成本可能大幅降低。</p>
+      <p><strong>模型退役计划：</strong></p>
+      <table class="tech-table">
+        <tr><th>模型</th><th>退役日期</th><th>通知期</th><th>替代</th></tr>
+        <tr><td>GPT-4.5</td><td>2026-06-27</td><td>30 天</td><td>GPT-5.5 / GPT-5.6</td></tr>
+        <tr><td>o3</td><td>2026-08-26</td><td>90 天</td><td>未公布</td></tr>
+      </table>
+      <p><strong>多云 GA：</strong>OpenAI 模型和 Codex 在 AWS Bedrock 上全面可用，打破了此前事实上的 Azure 独家分发。这对企业采购意味着：(1) 不再绑定单一云供应商；(2) 与 Anthropic 在 AWS 上的 Claude 形成直接竞争；(3) 降低了企业切换模型供应商的成本。</p>
+      <a href="https://wavespeed.ai/blog/posts/gpt-5-6-canary-leak-what-we-know/" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        WaveSpeed: GPT-5.6 Canary Leak Analysis
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Anthropic 合作伙伴网络深度分析：认证体系与渠道经济学
+        <span class="tag tag-industry">生态</span>
+      </div>
+      <p><strong>Services Track 认证矩阵：</strong></p>
+      <table class="tech-table">
+        <tr><th>层级</th><th>认证人数</th><th>生产客户</th><th>公开案例</th><th>其他要求</th></tr>
+        <tr><td>Select</td><td>10+</td><td>2</td><td>1</td><td>-</td></tr>
+        <tr><td>Preferred</td><td>100+</td><td>15</td><td>3</td><td>-</td></tr>
+        <tr><td>Global Premier</td><td>1,000+</td><td>100</td><td>15</td><td>3 区域覆盖</td></tr>
+      </table>
+      <p><strong>Partner Hub 技术实现：</strong>公开搜索目录让企业买家按行业、区域和认证等级筛选合作伙伴。新增 MCP（Model Context Protocol）connector 使合作方可通过 Claude 直接查询自身认证状态和客户部署指标。</p>
+      <p><strong>规模数据与渠道经济学：</strong>3 月启动以来 4 万+ 企业申请，1 万+ 个人认证。$1 亿启动投资主要用于：认证课程开发、合作方技术支持、联合客户交付补贴。以 Anthropic 当前约 $44B ARR 和 $965B 估值计算，渠道化是维持 ARR 增速的关键杠杆——直销团队无法满足 4 万家企业的部署需求。</p>
+      <p><strong>与竞品对比：</strong>OpenAI 的合作伙伴计划更侧重技术集成（API 接入）而非服务交付；Google Cloud 的 AI 合作伙伴网络依托云销售体系。Anthropic 的三级认证+公开目录模式更接近 Salesforce 的 AppExchange 或 AWS 的合作伙伴网络——以服务能力而非技术接入为准入门槛。</p>
+      <a href="https://www.anthropic.com/news/services-track-partner-hub" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Anthropic: Services Track and Partner Hub
+      </a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon policy">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <h2 class="section-title">安全与治理</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Project Glasswing 技术架构：Mythos 全球分发与访问控制
+        <span class="tag tag-model">安全</span>
+      </div>
+      <p><strong>Mythos 能力概述：</strong>Anthropic 最先进的 AI 模型，具备自主检测软件漏洞和开发利用链的能力。因其双刃剑特性（既能用于防御也能用于攻击），访问权限通过 Project Glasswing 严格控制，仅向经审查的组织开放。</p>
+      <p><strong>扩展范围：</strong>从最初 40+ 美国组织（Amazon、Apple、Microsoft、Google、Linux Foundation、JP Morgan Chase、NVIDIA）扩展到 15+ 国家约 150 家新机构。新增国家均为美国盟友：澳大利亚、加拿大、法国、德国、意大利、瑞士、荷兰、西班牙、比利时、瑞典、印度、日本、新西兰、韩国。</p>
+      <p><strong>EU ENISA 接入：</strong>经数月谈判，欧盟网络安全机构 ENISA 获得 Mythos 访问权。欧盟此前一直因 Mythos 的漏洞利用能力对其安全性表示担忧。接入后 ENISA 可使用 Mythos 扫描欧盟关键基础设施的网络安全漏洞。</p>
+      <p><strong>Claude Security：</strong>新增功能包括自动化代码库安全扫描和补丁建议生成。这是 Mythos 能力的"产品化"——将其漏洞检测能力封装为企业安全工具，而非直接暴露原始模型。</p>
+      <a href="https://techcrunch.com/2026/06/02/anthropic-scales-claude-mythos-to-critical-infrastructure-in-15-countries/" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        TechCrunch: Anthropic Scales Mythos to 15+ Countries
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        AI 行政令技术解读：评估基准设计与执行架构
+        <span class="tag tag-policy">政策</span>
+      </div>
+      <p><strong>执行时间线：</strong></p>
+      <table class="tech-table">
+        <tr><th>截止日期</th><th>责任方</th><th>任务</th></tr>
+        <tr><td>7/2/2026</td><td>财政部</td><td>建立 AI 网络安全信息交换中心</td></tr>
+        <tr><td>待定</td><td>NSA/CISA/NIST</td><td>制定"前沿模型"定义与评估基准</td></tr>
+        <tr><td>持续</td><td>司法部</td><td>优先打击 AI 网络犯罪</td></tr>
+      </table>
+      <p><strong>网络安全中心架构：</strong>财政部牵头，功能包括：(1) 自动化漏洞扫描——使用 AI 系统（包括可能的 Mythos 集成）扫描关键基础设施软件；(2) 漏洞验证和优先级排序——区分误报和真实威胁；(3) 补丁分发协调——在行业和政府之间建立安全漏洞信息共享管道。</p>
+      <p><strong>"前沿模型"定义挑战：</strong>NSA/CISA/NIST 需要定义什么算"前沿模型"——按计算量（training FLOP）？按能力基准？按自主性水平？定义过宽会覆盖太多模型导致框架失效，定义过窄会让真正有风险的模型逃脱审查。社区预期基准可能参考 Anthropic RSP（Responsible Scaling Policy）中的 ASL 分级和 NIST AI RMF 框架。</p>
+      <p><strong>自愿机制的博弈论：</strong>行政令的"自愿安全港"设计是精心计算的：(1) AI 公司主动参与获得"负责任"品牌价值和政策影响力；(2) 不参与的公司在 IPO/融资中面临"为什么不参与"的投资者质询；(3) 自愿框架的成功可能为后续立法提供模板。Altman 6/4 的华盛顿行程——同时会见两党领袖和白宫——是配合这一博弈的最优策略。</p>
+      <a href="https://www.whitehouse.gov/presidential-actions/2026/06/promoting-advanced-artificial-intelligence-innovation-and-security/" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        White House: AI Innovation and Security Executive Order
+      </a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon industry">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      </div>
+      <h2 class="section-title">资本与产业</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        SpaceX SPCX 散户 IPO 机制设计与市场影响
+        <span class="tag tag-industry">IPO</span>
+      </div>
+      <p><strong>散户接入架构：</strong>Fidelity 实现了 IPO 史上最低的散户门槛（$2,000 vs 传统 $500,000）。机制设计：用户注册 IPO alert → 审阅招股说明书 → 提交意向 → 定价后确认 → 抽签分配。30% 散户份额是大型 IPO 的 3-6 倍。15 天 flipping 限制保护价格稳定性。</p>
+      <p><strong>估值争议：</strong>Morningstar 公允价值估计约 $900B，认为 $1.75T "接近两倍溢价"。但牛市论点包括：Starlink ARR 加速增长（全球卫星互联网垄断地位）、Starship 可复用发射成本曲线下降、SpaceX 作为 AI 基础设施的卫星连接层价值。</p>
+      <p><strong>三大 IPO 窗口分析：</strong></p>
+      <table class="tech-table">
+        <tr><th>公司</th><th>预计时间</th><th>目标估值</th><th>预计募资</th></tr>
+        <tr><td>SpaceX (SPCX)</td><td>6/12 挂牌</td><td>$1.75T</td><td>$750 亿</td></tr>
+        <tr><td>Anthropic</td><td>S-1 审核中</td><td>$1T+</td><td>$300-500 亿 (est)</td></tr>
+        <tr><td>OpenAI</td><td>最早 9 月</td><td>$2T</td><td>$400-600 亿 (est)</td></tr>
+      </table>
+      <p>三家合计募资可能超过 $1500 亿。SpaceX 的成功（或失败）将直接影响 Anthropic 和 OpenAI 的 IPO 定价和市场窗口选择。</p>
+      <a href="https://www.cnbc.com/2026/06/03/spacex-ipo-stock-price-roadshow-musk.html" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        CNBC: SpaceX IPO $135 Roadshow Price
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        AI 药物发现的商业拐点：Eli Lilly-Insilico 与产业数据
+        <span class="tag tag-research">医药</span>
+      </div>
+      <p><strong>交易结构：</strong>Eli Lilly 支付前期款项 + 里程碑付款（总计最高 $27.5 亿）+ 销售提成，获得 Insilico Medicine 使用 Pharma.AI 平台发现的临床前候选药物的全球独家开发和商业化权利。Pharma.AI 使用生成式 AI 进行靶点识别、分子生成和临床前优化。</p>
+      <p><strong>行业规模数据：</strong>数字健康初创公司 2026 Q1 融资 $40 亿（YoY +$10 亿，疫情以来最强 Q1）。85% 的医疗机构计划增加 AI 预算。AI 诊断：乳腺癌检测 94% 准确率，心衰预测提前 20 分钟，误报率降低 15-30%。领先 AI 生物科技公司（Iambic、Generate）2026 年各有 3+ 个 AI 设计药物进入临床试验。</p>
+      <p><strong>技术里程碑：</strong>Insilico 已证明 AI 可将药物发现的靶点到候选药物周期从传统的 4-5 年压缩至 18-24 个月。Eli Lilly 选择外部 AI 平台而非自建，表明即使是 top-5 制药公司也认为 AI 药物发现的技术壁垒足够高，值得通过 $27.5 亿的商业合作获取。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        WWDC 2026 技术架构预测：Siri 2.0 混合推理与 homeOS
+        <span class="tag tag-product">苹果</span>
+      </div>
+      <p><strong>Siri 2.0 推理管线：</strong>端侧（Apple Neural Engine + A/M-series GPU 处理低延迟查询）→ 路由层（本地决策最大化隐私）→ 云侧（Private Cloud Compute + 定制 Gemini 模型处理复杂推理）。Extensions API 让第三方 AI（Claude、ChatGPT）作为 Siri 的"专家后备"——当 Siri 判断问题超出能力时向用户提示可用选项。</p>
+      <p><strong>iOS 27 "Snow Leopard" 策略：</strong>Apple 选择在 AI 大年（WWDC 2024 承诺的功能大量延迟）做减法——清除陈旧代码、优化性能。这是一个有风险的选择：如果 Siri 2.0 仍然表现不佳，iOS 27 将缺少足够的"新功能"来驱动升级周期。</p>
+      <p><strong>HomePad 传闻：</strong>7" 屏 + A18 芯片 + homeOS。如果确认，这将是 Apple 在智能家居硬件上的第三次尝试（HomePod → HomePod mini → HomePad），从纯音频转向带屏交互。homeOS 独立于 iOS/tvOS，暗示 Apple 正在构建专用的家庭 AI 操作系统。</p>
+      <a href="https://www.macrumors.com/roundup/wwdc/" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        MacRumors: WWDC 2026 Everything to Expect
+      </a>
+    </div>
+  </div>
+
+</div>
+
+</div>
+
+<footer class="footer">
+  <p>AI Pulse Daily Report | Edition #72</p>
+  <p>数据来源：WebSearch 多源聚合 | CNBC, OpenAI, Anthropic, Apple, Fidelity, White House, TechCrunch, Bloomberg, VentureBeat, MacRumors, Newsweek, WaveSpeed, Polymarket 等</p>
+  <p>Generated by AI Pulse Automated System</p>
+</footer>
+
+</div>
+
+<script>
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-content').forEach(function(el) {
+    el.classList.remove('active');
+  });
+  document.querySelectorAll('.tab-btn').forEach(function(el) {
+    el.classList.remove('active');
+  });
+  document.getElementById(tabId).classList.add('active');
+  var tabs = ['casual', 'intermediate', 'advanced'];
+  var idx = tabs.indexOf(tabId);
+  if (idx >= 0) {
+    document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>

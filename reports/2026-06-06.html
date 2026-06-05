@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily Report | 2026.06.06</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --claude-bg: #FAF9F7;
+    --claude-surface: #FFFFFF;
+    --claude-border: #E8E5E0;
+    --claude-text-primary: #1A1714;
+    --claude-text-secondary: #6B6560;
+    --claude-text-tertiary: #9B9590;
+    --claude-accent: #DA7756;
+    --claude-accent-light: #F5E6DF;
+    --claude-accent-dark: #C4623F;
+    --claude-tag-blue: #E8F0FE;
+    --claude-tag-blue-text: #3B6CB5;
+    --claude-tag-green: #E6F4EA;
+    --claude-tag-green-text: #2D7A3F;
+    --claude-tag-purple: #F0E6FA;
+    --claude-tag-purple-text: #7B3FAF;
+    --claude-tag-amber: #FEF3E2;
+    --claude-tag-amber-text: #B5752D;
+    --claude-tag-red: #FDE8E8;
+    --claude-tag-red-text: #B53B3B;
+    --claude-card-shadow: 0 1px 3px rgba(26, 23, 20, 0.06), 0 1px 2px rgba(26, 23, 20, 0.04);
+    --claude-card-shadow-hover: 0 4px 12px rgba(26, 23, 20, 0.08), 0 2px 4px rgba(26, 23, 20, 0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+    background: var(--claude-bg);
+    color: var(--claude-text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 8px;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--claude-accent-dark); }
+
+  .header {
+    text-align: center;
+    padding: 48px 0 40px;
+    border-bottom: 1px solid var(--claude-border);
+    margin-bottom: 32px;
+  }
+
+  .header-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--claude-accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .header .date {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    font-weight: 400;
+  }
+
+  .header .edition-note {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    margin-top: 8px;
+    line-height: 1.8;
+  }
+
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 36px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--claude-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .tab-btn:hover {
+    color: var(--claude-text-primary);
+    background: var(--claude-bg);
+  }
+
+  .tab-btn.active {
+    background: var(--claude-accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(218, 119, 86, 0.3);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .section { margin-bottom: 36px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .section-icon.gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .section-icon.model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .section-icon.product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .section-icon.research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .section-icon.industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .section-icon.policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .card {
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--claude-card-shadow);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .card:hover { box-shadow: var(--claude-card-shadow-hover); }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .card p {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.75;
+    margin-bottom: 8px;
+  }
+
+  .card p:last-child { margin-bottom: 0; }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .tag-gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .tag-model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .tag-product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .tag-research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .tag-industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .tag-policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .highlight {
+    background: var(--claude-accent-light);
+    border-left: 3px solid var(--claude-accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--claude-accent-dark);
+    line-height: 1.7;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .stat-item {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--claude-accent);
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--claude-text-tertiary);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 8px;
+    transition: color 0.15s;
+  }
+
+  .source-link:hover { color: var(--claude-accent-dark); text-decoration: underline; }
+
+  .tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .tech-table th, .tech-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .tech-table th {
+    font-weight: 600;
+    color: var(--claude-text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .tech-table td { color: var(--claude-text-primary); }
+
+  .footer {
+    text-align: center;
+    padding-top: 40px;
+    border-top: 1px solid var(--claude-border);
+    margin-top: 60px;
+  }
+
+  .footer p {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    line-height: 1.8;
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 24px 16px 60px; }
+    .header { padding: 32px 0 28px; }
+    .header h1 { font-size: 24px; }
+    .tab-btn { font-size: 12px; padding: 10px 8px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<a href="/" class="back-link">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+  返回 AI Pulse
+</a>
+
+<header class="header">
+  <div class="header-logo">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    AI PULSE
+  </div>
+  <h1>AI 日报 | 2026.06.06</h1>
+  <p class="date">星期六 / Saturday, June 6, 2026</p>
+  <p class="edition-note">Edition #73 - Broadcom 股价暴跌拖累半导体板块 尽管 AI 芯片收入增 143% 达 $108 亿但转向纯芯片策略令投资者不安；WWDC 倒计时 2 天 Siri 2.0 与 iOS 27 AI 全面翻新在即；SpaceX IPO 路演第三天 Morningstar 认为估值高出一倍但 Starlink ARR 改写模型；GitHub Copilot 计量收费首周 开发者报告账单暴增 10-50 倍引发行业震动；NVIDIA Isaac GR00T 人形机器人参考设计发布 选定宇树科技 H2 Plus 平台；Code with Claude Tokyo 开发者大会 6 月 10 日开幕；G7 峰会 6 月 15 日在法国埃维昂 AI 治理成核心议题</p>
+</header>
+
+<nav class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('casual')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+    轻松阅读
+  </button>
+  <button class="tab-btn" onclick="switchTab('intermediate')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+    技术进阶
+  </button>
+  <button class="tab-btn" onclick="switchTab('advanced')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+    深度技术
+  </button>
+</nav>
+
+<!-- ==================== 轻松阅读版 ==================== -->
+<div id="casual" class="tab-content active">
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon industry">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      </div>
+      <h2 class="section-title">资本与产业</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Broadcom AI 芯片收入暴增 143%，股价却跌了
+        <span class="tag tag-industry">芯片</span>
+      </div>
+      <p>Broadcom 交出了一份亮眼的季报：AI 半导体收入达 108 亿美元，同比增长 143%，总收入 222 亿美元增长 48%。但股价在 6 月 5 日大跌，并拖累整个半导体板块。原因是 CEO Hock Tan 宣布公司将不再出售完整 AI 系统，只卖定制芯片本身——这个战略大转弯让投资者感到不安。不过 Broadcom 的客户名单堪称豪华：Anthropic、OpenAI、Google、Meta 都在用他们的定制 AI 芯片，积压订单高达 730 亿美元。下季度 AI 收入预计再增 200% 达 160 亿美元。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        SpaceX IPO 路演第三天：华尔街分歧加大
+        <span class="tag tag-industry">IPO</span>
+      </div>
+      <p>SpaceX 的 IPO 路演持续推进。以 $135/股定价、1.75 万亿美元估值来看，这将是有史以来最大的 IPO，募资约 750 亿美元。Fidelity 已经面向散户开放认购，账户仅需 2,000 美元即可参与抽签。但争议也在加大——Morningstar 认为 SpaceX 只值 7,800 亿美元，仅为 IPO 定价的 55%。不过支持者认为 Starlink 的年收入增速和 Starship 复用技术正在重塑估值框架。6 月 12 日纳斯达克挂牌，代码 SPCX。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        三大科技 IPO 窗口：AI 上市潮集中爆发
+        <span class="tag tag-industry">IPO</span>
+      </div>
+      <p>2026 年正在见证科技 IPO 的超级窗口。SpaceX 6 月 12 日挂牌，Anthropic 6 月 1 日提交了 S-1 机密文件、可能最早 10 月上市（估值 9,650 亿美元），OpenAI 预计最早 9 月。加上 5 月 14 日上市首日暴涨 76% 的 Cerebras，AI 芯片和大模型公司正以前所未有的密度涌入公开市场。合计募资可能突破 1,500 亿美元。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon product">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+      </div>
+      <h2 class="section-title">产品与平台</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        WWDC 倒计时 2 天：苹果要让 Siri 脱胎换骨
+        <span class="tag tag-product">苹果</span>
+      </div>
+      <p>6 月 8 日（周一），苹果 WWDC 2026 主题演讲即将揭幕。最受期待的是 Siri 2.0——在与 Google Gemini 深度合作后，Siri 将从简单的语音助手升级为全功能 AI 对话机器人，支持文字聊天和多步骤任务执行。iOS 27 被内部定为"Snow Leopard 式更新"，重心放在性能优化。还将发布 AI 健康教练、Safari 智能摘要、Wallet 证件 OCR 等功能。摩根士丹利称 WWDC 是苹果股价的"关键催化剂"。没有硬件发布预期。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        GitHub Copilot 按量收费首周：开发者账单暴增 10-50 倍
+        <span class="tag tag-product">开发者</span>
+      </div>
+      <p>6 月 1 日 GitHub Copilot 从固定订阅切换到按 token 计量收费，470 万付费用户受影响。首周反馈激烈：有开发者报告公司月账单从 29 美元飙升至 750 美元，还有人预测将从 50 美元涨到 3,000 美元。使用 AI Agent 功能的重度用户受冲击最大，成本可能增加 10-50 倍。微软内部文件显示 Copilot 运行成本自 1 月以来几乎翻倍，这解释了为什么急于转向按量收费。代码补全和"下一步编辑建议"仍然无限使用。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Code with Claude 东京站下周开幕
+        <span class="tag tag-product">活动</span>
+      </div>
+      <p>Anthropic 的开发者大会"Code with Claude"将于 6 月 10 日在东京举行，6 月 11 日还有面向独立开发者和早期创业者的加场活动。今年 5 月旧金山站的重磅发布包括多智能体协作（Multiagent Orchestration）、目标驱动迭代（Outcomes）和会话记忆（Dreaming）三大新功能。东京站预计将有更多面向亚洲市场的产品展示和日语工作坊。所有演讲将在 7-10 天内上传 Anthropic YouTube 频道。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon model">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 6v6m-7-10.9L9 12l-4 3.9M16.9 5L15 12l4.9 3"/></svg>
+      </div>
+      <h2 class="section-title">模型与研究</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        微软发布首款自研编程模型 MAI-Code-1-Flash
+        <span class="tag tag-model">模型</span>
+      </div>
+      <p>微软在 Build 2026 上发布了 MAI-Code-1-Flash，一个 50 亿参数的编程模型——这是微软首次完全不依赖 OpenAI 技术自研基础模型。它在 SWE-Bench Pro 上得分 51.2%，比 Claude Haiku 4.5 高出 16 个百分点。现在已经开始向所有 Copilot 用户（包括免费版）推送。微软同时发布了推理模型 MAI-Thinking-1。这标志着微软减少对 OpenAI 依赖、降低开发者成本的战略正在加速。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        NVIDIA 发布人形机器人参考设计：Isaac GR00T
+        <span class="tag tag-research">机器人</span>
+      </div>
+      <p>NVIDIA 发布了 Isaac GR00T 人形机器人参考设计，选定中国公司宇树科技（Unitree）的 H2 Plus 机器人作为硬件平台。这个 6 英尺高、150 磅重的机器人拥有身体 31 个自由度和双手各 25 个自由度，搭载 NVIDIA Jetson Thor 处理器（含 Blackwell GPU）。斯坦福、ETH Zurich、UC San Diego 等顶级实验室将首批使用。宇树科技同时在筹备上海科创板 IPO，拟融资 42 亿元人民币。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon policy">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <h2 class="section-title">政策与治理</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        G7 峰会 6 月 15 日聚焦 AI 治理：法国主导议程
+        <span class="tag tag-policy">政策</span>
+      </div>
+      <p>法国将于 6 月 15-17 日在埃维昂主办 G7 峰会，AI 治理是核心议题之一。CAIDP（AI 与数字政策中心）已提交正式建议，呼吁将 AI 治理扎根于基本权利和民主问责。峰会将推进广岛 AI 进程行为准则的认证机制，认证遵守准则的 AI 开发者。与此同时，6 月 2 日的 Trump AI 行政令进入执行阶段——7 月 2 日前必须建立 AI 网络安全信息交换中心，8 月 1 日前需制定前沿模型评估基准。Sam Altman 已率先表态支持，并受邀出席 G7 峰会。</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== 技术进阶版 ==================== -->
+<div id="intermediate" class="tab-content">
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon industry">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      </div>
+      <h2 class="section-title">资本与产业</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Broadcom Q2 业绩：AI 芯片 143% 增长难救股价，战略转向引震荡
+        <span class="tag tag-industry">芯片</span>
+      </div>
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-value">$108 亿</div>
+          <div class="stat-label">AI 半导体收入</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">143%</div>
+          <div class="stat-label">AI 收入同比增长</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">$730 亿</div>
+          <div class="stat-label">积压订单</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">67%</div>
+          <div class="stat-label">Non-GAAP 运营利润率</div>
+        </div>
+      </div>
+      <p>Broadcom FY2026 Q2 总收入 $222 亿（+48% YoY），其中 AI 半导体 $108 亿（+143%）。但市场反应消极，6 月 5 日股价大跌，拖累整个半导体板块。核心问题在于 CEO Hock Tan 的战略转向：Broadcom 将不再提供完整 AI 系统方案，只销售定制芯片（ASIC）。Q3 指引 AI 收入 $160 亿（+200% YoY），总收入 $294 亿（+84%），运营利润率维持 67%。</p>
+      <p>六大核心客户（Anthropic、OpenAI、Google、Meta 等）的多年承诺构成 $730 亿积压订单。Bloomberg Intelligence 预测定制 ASIC 市场 CAGR 27%（到 2033 年），高于 AI 加速器整体 16% 的增速。Broadcom 卡位了一个关键赛道：hyperscaler 自研芯片的设计与制造。</p>
+      <div class="highlight">为什么"好成绩"换来"坏股价"？Broadcom 的全年 AI 指引仅仅持平预期而非超预期，在半导体板块估值已充分反映 AI 增长的背景下，"符合预期"等同于利空。战略转向放弃系统级收入也让投资者重新评估长期收入天花板。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        SpaceX IPO 路演深入：$1.75T 估值的多空博弈
+        <span class="tag tag-industry">IPO</span>
+      </div>
+      <p>SpaceX 路演第三天，关键参数已锁定：$135/股 x 5.556 亿股 = $750 亿募资，估值 $1.75T。Goldman Sachs 领衔承销，散户通过 Fidelity 可以 $2,000 门槛参与抽签（份额上限 30%）。</p>
+      <p>估值争议加剧：Morningstar 给出 $7,800 亿公允价值（仅为 IPO 价的 55%），称显著高估。但多头论据在于 Starlink 年收入超高速增长和 Starship 复用率提升。三大科技 IPO 竞赛格局：SpaceX 6/12 → Anthropic S-1 审核中（可能 10 月）→ OpenAI 最早 9 月。合计募资可能创纪录。</p>
+      <p>关键风险：马斯克保留 82%+ 投票控制权（双层股权）、Fidelity 15 天内抛售将限制未来 IPO 参与、Morningstar 估值差距达 45%。6 月 11 日定价、6 月 12 日挂牌交易。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon product">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+      </div>
+      <h2 class="section-title">产品与平台</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        WWDC 2026 技术前瞻：Siri 2.0 + Gemini 融合的架构猜想
+        <span class="tag tag-product">苹果</span>
+      </div>
+      <p>6 月 8 日 WWDC 主题演讲在即。核心看点：Siri 2.0 整合 Google Gemini 后端，从语音命令升级为多轮对话 + 多步骤任务执行。iOS 27 定位"Snow Leopard 式更新"——优先性能和代码精简，而非功能堆叠。新增 AI 功能包括健康教练（融合 HealthKit 数据）、Safari 智能摘要、Wallet OCR 证件识别。</p>
+      <p>开发者关注点：Apple Intelligence API 的扩展范围、on-device vs. cloud 的推理策略平衡、第三方 App 接入 Siri 2.0 的新 Intents 框架。visionOS 3 和 watchOS 12 的 AI 功能也值得关注。不预期任何硬件发布。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        GitHub Copilot 计量收费首周：Token 经济学冲击开发者工作流
+        <span class="tag tag-product">开发者</span>
+      </div>
+      <p>6 月 1 日起 GitHub Copilot 全面切换为 token 计量收费，470 万付费用户从固定请求数转为 AI Credits 消耗制。首周数据触目惊心：使用 Agent 模式的开发者报告成本增长 10-50 倍，部分团队月账单从 $29 飙升至 $750。</p>
+      <p>关键变化：原有的低成本模型降级安全网已取消，Credits 耗尽后直接停止服务。代码补全（autocomplete）和 Next Edit Suggestions 仍无限免费。微软 4 月泄露的内部文件显示 Copilot 运行成本自 1 月起每周翻倍，迫使加速转向按量计费。MAI-Code-1-Flash 的发布（成本仅为 GPT-4o 的 1/10）可能是缓解策略之一。</p>
+      <div class="highlight">这次计费变更的本质影响：重度 Agent 用户（每日数百次交互）面临经济性断崖。Cursor、Windsurf 等竞品的固定订阅模式可能在短期内吸引大量迁移。GitHub 需要尽快推出更精细的分级套餐来止血。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Code with Claude 东京站：Anthropic 开发者生态的亚洲攻势
+        <span class="tag tag-product">活动</span>
+      </div>
+      <p>Anthropic 开发者大会 Code with Claude 将于 6 月 10 日在东京举行主场活动，6 月 11 日加场面向独立开发者和早期创始人。SF 站已公布三大核心能力：Multiagent Orchestration（多智能体编排）、Outcomes（目标驱动迭代）、Dreaming（跨会话记忆）。SpaceX 算力扩展带来的提升：Pro/Max/Enterprise 速率限制翻倍、Tier 1 API 输入 token +1,500%、输出 +900%、峰时限流取消。</p>
+      <p>东京站议程包括产品主题演讲、分组工作坊（英日双语同传）、全天 Demo 和 Office Hours（10:30-20:00）。免费线上直播同步开放。7-10 天内所有录像将上传 YouTube。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon model">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 6v6m-7-10.9L9 12l-4 3.9M16.9 5L15 12l4.9 3"/></svg>
+      </div>
+      <h2 class="section-title">模型与技术</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        微软 MAI-Code-1-Flash：首款脱离 OpenAI 的自研编程模型
+        <span class="tag tag-model">模型</span>
+      </div>
+      <table class="tech-table">
+        <tr><th>指标</th><th>MAI-Code-1-Flash</th><th>Claude Haiku 4.5</th></tr>
+        <tr><td>SWE-Bench Pro</td><td>51.2%</td><td>35.2%</td></tr>
+        <tr><td>参数量</td><td>50 亿</td><td>未公开</td></tr>
+        <tr><td>上下文窗口</td><td>256K tokens</td><td>200K tokens</td></tr>
+        <tr><td>训练数据</td><td>Clean & Licensed</td><td>未公开</td></tr>
+      </table>
+      <p>MAI-Code-1-Flash 是微软首个完全不依赖 OpenAI 技术的基础模型，3-5 月使用"清洁授权数据"训练。在 SWE-Bench Pro 上领先 Claude Haiku 4.5 达 16 个百分点。采用自适应思考（Adaptive Thinking）——简单任务快速响应，复杂任务自动分配更多推理预算。已通过 VS Code 模型选择器向所有 Copilot 层级推送。</p>
+      <p>战略意义：微软从纯粹的 OpenAI 分销商开始向自研模型转型。MAI-Thinking-1（推理模型）同期发布，构成 MAI 模型家族的两根支柱。运营成本约为 GPT-4o 的 1/10，有助于缓解 Copilot 的成本压力。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        NVIDIA Isaac GR00T：人形机器人研究平台的标准化尝试
+        <span class="tag tag-research">机器人</span>
+      </div>
+      <p>NVIDIA 发布 Isaac GR00T 参考人形机器人，基于宇树科技（Unitree）H2 Plus 机器人 + 新加坡 Sharpa 灵巧手 + NVIDIA Jetson Thor（含 Blackwell GPU）。规格：身高 6 英尺、重 150 磅、身体 31 DOF + 双手 50 DOF（每手 25）。面向高校研究者，首批用户包括 Ai2、ETH Zurich、Stanford Robotics Center、UC San Diego ARCL。2026 年底通过 Unitree 发售。</p>
+      <p>宇树科技正筹备上海科创板 IPO（拟融资 42 亿元人民币）。日本航空已与 GMO AI & Robotics 合作在成田机场部署 Unitree 人形机器人进行行李装卸和客舱清洁试验。Schaeffler 计划部署多达 2,000 台人形机器人，BMW 正在测试 Figure AI 机器人。人形机器人市场预计从当前 20-30 亿美元增长至 2035 年 2,000 亿美元。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        GPT-5.6 信号持续：6 月下旬发布窗口收窄
+        <span class="tag tag-model">模型</span>
+      </div>
+      <p>OpenAI 仍未正式宣布 GPT-5.6，但多项证据指向 6 月发布。Codex 后端日志中短暂出现 gpt-5.6 模型 ID，Polymarket 预测市场给出 80-89% 的 6 月底前发布概率。TokenMix 分析认为实际窗口在 6 月 15 日 - 7 月 5 日。</p>
+      <p>预期提升方向：高级推理能力（可能超过 Claude Opus 4.8 在特定任务上的表现）、Agentic 工作流优化、有效上下文窗口突破 100 万 token。同时 OpenAI 已公布 GPT-4.5 将于 6 月 27 日退役、o3 将于 8 月 26 日退役——这些时间节点暗示 GPT-5.6 需要在 6 月底前就位作为接替。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon policy">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <h2 class="section-title">政策与治理</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        G7 峰会 + Trump AI 行政令：全球 AI 治理框架加速成型
+        <span class="tag tag-policy">政策</span>
+      </div>
+      <p>法国主办的 G7 峰会（6/15-17，埃维昂）将 AI 治理列为核心议题。CAIDP 建议：将 AI 治理扎根于基本权利、推广隐私增强技术（PETs）、推进 AI 监管机构跨国合作。广岛 AI 进程行为准则的认证机制将升级为正式认证体系。</p>
+      <p>与此同时，Trump AI 行政令（6/2 签署）进入密集执行期：30 天内（7/2）财政部牵头建立 AI 网络安全信息交换中心、CISA 发布绑定性操作指令扩展 AI 防御工具；60 天内（8/1）NSA + CISA + NIST 联合制定前沿模型网络能力评估基准，确定哪些模型需要发布前 30 天自愿审查。OPM 同时扩展 US Tech Force 网络安全招聘通道。</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== 深度技术版 ==================== -->
+<div id="advanced" class="tab-content">
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon industry">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      </div>
+      <h2 class="section-title">资本与产业</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Broadcom Q2 FY2026 深度：定制 ASIC 纯化战略与估值重构
+        <span class="tag tag-industry">芯片</span>
+      </div>
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-value">$222 亿</div>
+          <div class="stat-label">总收入 (+48% YoY)</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">$108 亿</div>
+          <div class="stat-label">AI 半导体 (+143%)</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">$160 亿</div>
+          <div class="stat-label">Q3 AI 指引 (+200%)</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">6 家</div>
+          <div class="stat-label">核心定制芯片客户</div>
+        </div>
+      </div>
+      <p>Broadcom FY2026 Q2（截至 5 月 3 日）呈现经典的"超预期业绩 + 失望指引"组合。AI 半导体 $108 亿（+143% YoY）由三条业务线驱动：(1) 定制 AI ASIC（为 Anthropic、OpenAI、Google、Meta 等设计的 TPU/Trainium/Willow 级芯片）；(2) 网络交换芯片（Tomahawk 5 和 Jericho3-AI 在 AI 集群互联中的渗透率提升）；(3) 光模块控制器（800G/1.6T 光模块需求爆发）。</p>
+      <p>战略转向的深层逻辑：Hock Tan 宣布 Broadcom 将退出 AI 系统集成业务，仅保留芯片设计与制造。这意味着放弃 ODM-like 的系统级收入（毛利较低但规模大），聚焦高毛利的 ASIC 设计。$730 亿积压订单由多年 take-or-pay 合同构成。Q3 指引 $294 亿总收入 (+84% YoY)，Non-GAAP 运营利润率 67%，表明规模效应已到位。</p>
+      <p>Bloomberg Intelligence 数据：定制 ASIC 市场 CAGR 27%（vs. AI 加速器整体 16%），到 2033 年。Broadcom 在这个细分赛道的护城河在于同时服务于竞争对手（Google TPU vs. Meta MTIA vs. Anthropic/OpenAI 自研芯片），每个客户的定制设计都构成极高的切换成本。</p>
+      <div class="highlight">股价下跌的市场解读：在半导体板块整体 P/E 已反映 AI 高增长预期的环境下，Broadcom 全年 AI 指引仅持平共识（而非上修）等同于隐性利空。从系统到纯芯片的战略收缩也让市场重新测算长期 TAM。但 $730 亿 backlog + 200% Q3 增长指引意味着基本面仍在加速——这更像是估值修正而非基本面恶化。</div>
+      <a href="https://www.cnbc.com/2026/06/03/broadcom-avgo-earnings-report-q2-2026.html" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        CNBC: Broadcom Q2 Earnings
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        AI IPO 超级周期：SpaceX / Anthropic / OpenAI 三线并进
+        <span class="tag tag-industry">IPO</span>
+      </div>
+      <table class="tech-table">
+        <tr><th>公司</th><th>估值</th><th>阶段</th><th>预计时间</th></tr>
+        <tr><td>SpaceX</td><td>$1.75T</td><td>路演中</td><td>6/12 挂牌</td></tr>
+        <tr><td>Anthropic</td><td>$965B</td><td>S-1 审核</td><td>最早 10 月</td></tr>
+        <tr><td>OpenAI</td><td>TBD</td><td>筹备中</td><td>最早 9 月</td></tr>
+        <tr><td>Cerebras</td><td>$48.8B</td><td>已上市</td><td>5/14 首日 +76%</td></tr>
+      </table>
+      <p>SpaceX 路演第三天，$135/股固定定价（非传统区间定价）是一个重要信号——表明承销团对需求极度自信。Goldman Sachs 领衔，Morgan Stanley / BofA / Citi / JPMorgan 联席。关键结构：双层股权（马斯克 82%+ 投票权）、散户 30% 上限（抽签分配）、Fidelity $2,000 最低门槛（行业常规 $500K+）。</p>
+      <p>Morningstar 公允价值 $780B（IPO 价的 55%）构成最强空头论据。估值差异的核心在于 Starlink ARR 的增长曲线是否能维持——如果 ARR 每年翻倍，当前估值在 DCF 模型中可以合理化。Anthropic S-1 于 6/1 提交 SEC（Rule 135 机密方式），聘请 Wilson Sonsini（Google 2004 IPO 律所）。Series H $65B @ $965B 使其成为全球估值最高的私营 AI 公司，超过 OpenAI。</p>
+      <p>Q1 2026 全球 VC 投资 $300B+，其中 AI 融资 $255.5B（PitchBook）。历史最大四轮：OpenAI $122B + Anthropic $30B + xAI $20B + Waymo $16B = $188B（占全球 63%）。资本高度集中于头部 AI 公司。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon product">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+      </div>
+      <h2 class="section-title">产品与平台</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        WWDC 2026 技术架构：Siri 2.0 的 Gemini 后端与 On-Device/Cloud 策略
+        <span class="tag tag-product">苹果</span>
+      </div>
+      <p>WWDC 2026 主题演讲定于 6/8 1PM ET / 10AM PT。技术重点：</p>
+      <p><strong>Siri 2.0 架构重构：</strong>1 月与 Google 达成 Gemini 合作后，Siri 的后端将从传统 NLU pipeline 转向 LLM-native 架构。支持多轮对话、文字输入、多步骤任务编排。关键问题是 on-device（Apple Silicon Neural Engine）与 cloud（Gemini API）的调用策略——隐私 vs. 能力的 trade-off 将决定用户体验天花板。</p>
+      <p><strong>iOS 27 "Snow Leopard" 定位：</strong>类似 macOS Snow Leopard 的"零新功能、全力优化"策略。预计大幅精简代码库、提升启动速度和内存效率。新增 AI 功能（健康教练、Safari 摘要、Wallet OCR）可能作为 Apple Intelligence 2.0 框架的一部分发布。</p>
+      <p><strong>开发者 API 变化：</strong>预计 App Intents 框架大幅扩展以支持 Siri 2.0 的深度集成、新的 AI 推理 API（可能允许第三方调用 on-device 模型）、visionOS 3 和 watchOS 12 的 ML 框架更新。</p>
+      <a href="https://www.macrumors.com/roundup/wwdc/" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        MacRumors: WWDC 2026 Everything to Expect
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        GitHub Copilot Token 经济学：成本模型分析与替代方案评估
+        <span class="tag tag-product">开发者</span>
+      </div>
+      <p>6/1 起 Copilot 从固定订阅（$10-39/月）切换为 AI Credits token 计量制。影响 470 万付费用户。关键机制变化：</p>
+      <p><strong>成本结构：</strong>不同模型消耗不同 Credits——使用 GPT-4o 级模型的 Agent 模式单次交互可消耗数百 Credits，而代码补全（autocomplete）和 Next Edit Suggestions 保持免费无限。原有的"Credits 耗尽后降级低成本模型"安全网已完全移除。</p>
+      <p><strong>实际影响数据：</strong>开发者社区报告 Agent 模式重度用户月成本增长 10-50 倍（$29 → $750 或 $50 → $3,000）。微软 4 月 Ed Zitron 获取的内部文件显示 Copilot 周运行成本自 1 月起逐周接近翻倍，表明计费转型是成本驱动而非产品驱动。</p>
+      <p><strong>竞争格局：</strong>Cursor（$20/月固定 + 500 次高级请求）、Windsurf（$15/月）、Augment Code 等竞品维持固定订阅模式，短期内可能吸引 Copilot 迁移用户。MAI-Code-1-Flash（成本约 GPT-4o 的 1/10）的推出可能在一定程度上缓解成本压力，但 Agent 模式的 token 消耗本质上与模型成本非线性相关。</p>
+      <div class="highlight">深层问题：AI 编程助手的"unlimited"定价模型在 Agent 时代不可持续。当用户从"按 Tab 补全"转向"让 AI 自主修 10 个文件"，token 消耗量级差可达 100-1000 倍。GitHub 的转型可能是行业范式转换的先兆——所有 AI 编程工具最终都将面对按量计费的经济学。</div>
+      <a href="https://techcrunch.com/2026/05/30/what-a-joke-github-copilots-new-token-based-billing-spurs-consternation-among-devs/" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        TechCrunch: GitHub Copilot Token Billing Backlash
+      </a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon model">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 6v6m-7-10.9L9 12l-4 3.9M16.9 5L15 12l4.9 3"/></svg>
+      </div>
+      <h2 class="section-title">模型与技术</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        MAI-Code-1-Flash 技术分析：微软自研模型的架构与战略意义
+        <span class="tag tag-model">模型</span>
+      </div>
+      <table class="tech-table">
+        <tr><th>Benchmark</th><th>MAI-Code-1-Flash</th><th>Claude Haiku 4.5</th><th>差异</th></tr>
+        <tr><td>SWE-Bench Pro</td><td>51.2%</td><td>35.2%</td><td>+16.0pt</td></tr>
+        <tr><td>参数量</td><td>5B</td><td>未公开</td><td>-</td></tr>
+        <tr><td>上下文窗口</td><td>256K</td><td>200K</td><td>+28%</td></tr>
+        <tr><td>可用层级</td><td>Free/Pro/Pro+/Max</td><td>API Only</td><td>-</td></tr>
+      </table>
+      <p><strong>训练方法论：</strong>2026 年 3-5 月训练，使用"clean and appropriately licensed data"（暗示避免了版权纠纷高风险的代码库）。256K token 上下文窗口。关键创新是 Adaptive Thinking——模型根据请求复杂度自动调整推理深度，简单补全快速响应，复杂重构分配更多 compute budget。</p>
+      <p><strong>架构推测：</strong>5B 参数在 SWE-Bench Pro 上 51.2% 的表现非常出色（作为参考，GPT-4o 级别模型通常在 40-50% 区间）。微软可能采用了代码专用的 tokenizer + 针对编程任务的 RL fine-tuning。256K 上下文使其可以处理中大型代码库的跨文件修改。</p>
+      <p><strong>战略解读：</strong>MAI-Code-1-Flash + MAI-Thinking-1 构成微软自研模型的两根支柱，标志着从 OpenAI 独家分销商向多供应商 + 自研混合策略转型。推理成本约为 GPT-4o 的 1/10——这直接缓解 Copilot token 计费模式下的用户成本压力。Auto Router 机制根据任务复杂度自动在 MAI-Code-1-Flash 和 GPT-4o/Claude 之间切换，优化成本效率。</p>
+      <a href="https://microsoft.ai/news/introducingmai-code-1-flash/" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Microsoft AI: MAI-Code-1-Flash
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        NVIDIA Isaac GR00T：人形机器人研究的标准化基础设施
+        <span class="tag tag-research">机器人</span>
+      </div>
+      <table class="tech-table">
+        <tr><th>规格</th><th>数值</th></tr>
+        <tr><td>平台</td><td>Unitree H2 Plus + Sharpa 灵巧手</td></tr>
+        <tr><td>计算</td><td>NVIDIA Jetson Thor (Blackwell GPU)</td></tr>
+        <tr><td>身体自由度</td><td>31 DOF</td></tr>
+        <tr><td>手部自由度</td><td>25 DOF x 2 = 50 DOF</td></tr>
+        <tr><td>身高 / 体重</td><td>6 ft / 150 lbs</td></tr>
+        <tr><td>发售</td><td>2026 年底 (Unitree)</td></tr>
+      </table>
+      <p><strong>设计哲学：</strong>NVIDIA 将 Isaac GR00T 定位为"人形机器人的 NVIDIA DGX"——提供标准化硬件平台，让研究者专注于算法而非机械工程。选择 Unitree 而非 Figure/Tesla Optimus 反映了对开放生态 vs. 封闭生态的取向判断。</p>
+      <p><strong>技术栈：</strong>Jetson Thor 的 Blackwell GPU 提供 on-device 推理能力，配合 NVIDIA Isaac Sim 的 sim-to-real 转移框架（ICRA 2026 上发表 8 篇论文聚焦该方向）。GR00T Foundation Model 提供感知-规划-执行的端到端基础模型。</p>
+      <p><strong>产业背景：</strong>人形机器人正从实验室走向产线——BMW 测试 Figure AI、JAL 在成田机场部署 Unitree、Schaeffler 计划 2,000 台。市场规模从当前 $20-30 亿预计增长至 2035 年 $2,000 亿（Goldman Sachs 估计）。NVIDIA 通过标准化研究平台 + 基础模型 + 仿真环境的三层策略，试图复制其在 AI 训练市场的垄断地位。</p>
+      <a href="https://nvidianews.nvidia.com/news/nvidia-open-humanoid-robot-reference-design" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        NVIDIA Newsroom: Isaac GR00T Reference Design
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        GPT-5.6 预测分析：时间线、能力推测与竞争格局
+        <span class="tag tag-model">模型</span>
+      </div>
+      <p><strong>证据链：</strong>(1) Codex 后端日志中短暂出现 gpt-5.6 模型 ID 后被移除；(2) Polymarket 6 月发布概率 80-89%；(3) GPT-4.5 退役日 6/27 + o3 退役日 8/26 构成产品线空窗；(4) TokenMix 独立分析认为实际窗口 6/15-7/5。OpenAI 未做任何官方确认。</p>
+      <p><strong>能力推测：</strong>基于 GPT-5.5 的升级方向——(1) 高级推理（可能在 GPQA Diamond 等学术推理 benchmark 上超过 Claude Opus 4.8）；(2) Agentic 工作流原生支持（与 Codex 平台深度整合）；(3) 有效上下文窗口突破 1M tokens（可能通过稀疏注意力或 KV-cache 压缩）；(4) 多模态增强（视频/音频理解能力提升）。</p>
+      <p><strong>竞争格局：</strong>GPT-5.6 的发布窗口恰好在 WWDC 后（6/8）、G7 峰会期间（6/15-17）、SpaceX IPO 后（6/12）。这个时间点的选择可能是为了最大化媒体注意力。竞品方面：Claude Opus 4.8 已建立推理/编程标杆、Gemini 3.5 Flash 占据速度/成本优势、MiniMax M3 在多模态开放领域有差异化。GPT-5.6 需要在至少一个维度实现代际跃迁才能重新定义竞争格局。</p>
+      <a href="https://tokenmix.ai/blog/gpt-5-6-release-date-leaks-2026" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        TokenMix: GPT-5.6 Release Analysis
+      </a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon policy">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <h2 class="section-title">政策与治理</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        全球 AI 治理双轨并进：G7 多边框架 vs. 美国单边行动
+        <span class="tag tag-policy">政策</span>
+      </div>
+      <p><strong>G7 层面（6/15-17 埃维昂）：</strong>法国主导的议程将 AI 治理列为核心。CAIDP 正式建议：(1) 将 AI 治理扎根于基本权利和民主问责；(2) 推广 PETs（Privacy Enhancing Technologies）；(3) 推进跨国 AI 监管机构合作。广岛 AI 进程行为准则升级为正式认证体系——AI 开发者可自愿申请认证以表明合规。</p>
+      <p><strong>美国层面（Trump AI EO 6/2）：</strong>执行令结构分层：(1) 30 天内（7/2 前）——DHS/CISA 发布 Binding Operational Directives 扩展 AI 防御工具覆盖联邦/州/地方/关键基础设施、财政部牵头建立 AI 网络安全信息交换中心；(2) 60 天内（8/1 前）——NSA + CISA + NIST 联合制定前沿模型网络能力评估基准（classified benchmarking process）、确定"covered frontier model"触发阈值、实施发布前 30 天自愿审查机制；(3) OMB 评估联邦拨款可否定向 AI 漏洞检测；(4) OPM 扩展 US Tech Force 网络安全招聘。</p>
+      <p><strong>关键对比：</strong>G7 路线偏重"权利保护 + 自愿认证"，美国路线偏重"网络安全 + 国家安全"。两者在前沿模型审查上有交集（G7 行为准则 vs. 美国 30 天自愿审查），但在强制力和覆盖范围上存在显著差异。Sam Altman 同时受邀出席 G7 峰会（马克龙邀请）和密集会见美国国会两党领袖——OpenAI 在主动塑造两条治理路线。</p>
+      <a href="https://www.whitehouse.gov/presidential-actions/2026/06/promoting-advanced-artificial-intelligence-innovation-and-security/" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        White House: AI Executive Order Full Text
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>AI Pulse Daily Report | Edition #73 | 2026.06.06</p>
+  <p>数据来源：CNBC, TechCrunch, MacRumors, NVIDIA Newsroom, White House, Bloomberg, Morningstar, TokenMix, Microsoft AI</p>
+  <p>本报告由 AI 自动生成，内容仅供参考</p>
+</footer>
+
+</div>
+
+<script>
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-content').forEach(function(el) {
+    el.classList.remove('active');
+  });
+  document.querySelectorAll('.tab-btn').forEach(function(el) {
+    el.classList.remove('active');
+  });
+  document.getElementById(tabId).classList.add('active');
+  var tabs = { casual: 0, intermediate: 1, advanced: 2 };
+  document.querySelectorAll('.tab-btn')[tabs[tabId]].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>

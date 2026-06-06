@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily Report | 2026.06.07</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --claude-bg: #FAF9F7;
+    --claude-surface: #FFFFFF;
+    --claude-border: #E8E5E0;
+    --claude-text-primary: #1A1714;
+    --claude-text-secondary: #6B6560;
+    --claude-text-tertiary: #9B9590;
+    --claude-accent: #DA7756;
+    --claude-accent-light: #F5E6DF;
+    --claude-accent-dark: #C4623F;
+    --claude-tag-blue: #E8F0FE;
+    --claude-tag-blue-text: #3B6CB5;
+    --claude-tag-green: #E6F4EA;
+    --claude-tag-green-text: #2D7A3F;
+    --claude-tag-purple: #F0E6FA;
+    --claude-tag-purple-text: #7B3FAF;
+    --claude-tag-amber: #FEF3E2;
+    --claude-tag-amber-text: #B5752D;
+    --claude-tag-red: #FDE8E8;
+    --claude-tag-red-text: #B53B3B;
+    --claude-card-shadow: 0 1px 3px rgba(26, 23, 20, 0.06), 0 1px 2px rgba(26, 23, 20, 0.04);
+    --claude-card-shadow-hover: 0 4px 12px rgba(26, 23, 20, 0.08), 0 2px 4px rgba(26, 23, 20, 0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+    background: var(--claude-bg);
+    color: var(--claude-text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 8px;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--claude-accent-dark); }
+
+  .header {
+    text-align: center;
+    padding: 48px 0 40px;
+    border-bottom: 1px solid var(--claude-border);
+    margin-bottom: 32px;
+  }
+
+  .header-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--claude-accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .header .date {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    font-weight: 400;
+  }
+
+  .header .edition-note {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    margin-top: 8px;
+    line-height: 1.8;
+  }
+
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 36px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--claude-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .tab-btn:hover {
+    color: var(--claude-text-primary);
+    background: var(--claude-bg);
+  }
+
+  .tab-btn.active {
+    background: var(--claude-accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(218, 119, 86, 0.3);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .section { margin-bottom: 36px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .section-icon.gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .section-icon.model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .section-icon.product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .section-icon.research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .section-icon.industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .section-icon.policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .card {
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--claude-card-shadow);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .card:hover { box-shadow: var(--claude-card-shadow-hover); }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .card p {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.75;
+    margin-bottom: 8px;
+  }
+
+  .card p:last-child { margin-bottom: 0; }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .tag-gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .tag-model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .tag-product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .tag-research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .tag-industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .tag-policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .highlight {
+    background: var(--claude-accent-light);
+    border-left: 3px solid var(--claude-accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--claude-accent-dark);
+    line-height: 1.7;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .stat-item {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--claude-accent);
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--claude-text-tertiary);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 8px;
+    transition: color 0.15s;
+  }
+
+  .source-link:hover { color: var(--claude-accent-dark); text-decoration: underline; }
+
+  .tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .tech-table th, .tech-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .tech-table th {
+    font-weight: 600;
+    color: var(--claude-text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .tech-table td { color: var(--claude-text-primary); }
+
+  .footer {
+    text-align: center;
+    padding-top: 40px;
+    border-top: 1px solid var(--claude-border);
+    margin-top: 60px;
+  }
+
+  .footer p {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    line-height: 1.8;
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 24px 16px 60px; }
+    .header { padding: 32px 0 28px; }
+    .header h1 { font-size: 24px; }
+    .tab-btn { font-size: 12px; padding: 10px 8px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<a href="/" class="back-link">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+  返回 AI Pulse
+</a>
+
+<header class="header">
+  <div class="header-logo">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    AI PULSE
+  </div>
+  <h1>AI 日报 | 2026.06.07</h1>
+  <p class="date">星期日 / Sunday, June 7, 2026</p>
+  <p class="edition-note">Edition #74 - ChatGPT 突破 10 亿月活成史上最快达成里程碑；Claude 已编写 Anthropic 80% 以上生产代码引发递归自改进担忧；WWDC 2026 明天开幕 Siri 2.0 将支持第三方 AI 服务；美国国会发布 269 页《伟大美国人工智能法案》讨论稿；SpaceX IPO 下周四定价 $135/股 估值 $1.77 万亿；BYD 正式确认进军人形机器人赛道 150 台原型机已在工厂测试；Broadcom AI 芯片收入 $108 亿同比增 143% 全年 AI 收入指引 $560 亿；欧洲首个商业 Robotaxi 即将落地马德里</p>
+</header>
+
+<nav class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('casual')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+    轻松阅读
+  </button>
+  <button class="tab-btn" onclick="switchTab('intermediate')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+    技术进阶
+  </button>
+  <button class="tab-btn" onclick="switchTab('advanced')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+    深度技术
+  </button>
+</nav>
+
+<!-- ==================== 轻松阅读版 ==================== -->
+<div id="casual" class="tab-content active">
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon product">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+      </div>
+      <h2 class="section-title">产品与平台</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        ChatGPT 月活突破 10 亿，成史上最快达成的应用
+        <span class="tag tag-product">里程碑</span>
+      </div>
+      <p>ChatGPT 在 5 月突破了 10 亿月活跃用户大关，仅用三年就达成了这个里程碑——比 TikTok、Instagram、YouTube 都快得多。作为对比，Google Maps、YouTube、TikTok 等应用用了 5 到 8 年才达到这个数字。不过值得注意的是，Anthropic 的 Claude 虽然总量还远不及，但增速惊人：全球月活达 5,600 万，同比增长 640%，远超 ChatGPT 的 62% 增速。AI 助手的用户争夺战正在加速。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        WWDC 2026 明天开幕：Siri 要开放第三方 AI 了
+        <span class="tag tag-product">苹果</span>
+      </div>
+      <p>苹果 WWDC 2026 主题演讲将于明天（6 月 8 日）上午 10 点（太平洋时间）开始。最大的悬念是 Siri 2.0——在与 Google Gemini 深度合作后，Siri 将支持文字聊天和多步骤任务执行。更重磅的是，iOS 27 将允许用户将 Claude 或 Gemini 等第三方 AI 设为默认助手，用于 Writing Tools 和 Image Playground 等 Apple Intelligence 功能。苹果还将强调设备端推理的隐私优势。Morgan Stanley 称这是苹果股价的"关键催化剂"。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Claude 已编写 Anthropic 80% 代码，公司呼吁保留"暂停键"
+        <span class="tag tag-product">Anthropic</span>
+      </div>
+      <p>6 月 4 日，Anthropic 发布文章《When AI Builds Itself》，披露 Claude 在 5 月已编写了公司 80% 以上的合并代码——而 2025 年初这个比例还只有个位数。工程师现在每季度合并的代码量是 2021-2025 年的 8 倍。在最困难的编程任务上，Claude 的成功率达到 76%，半年内提升了 50 个百分点。Anthropic 同时呼吁国际社会保留"暂停前沿 AI 开发"的选项，以应对递归自改进的风险。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon industry">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      </div>
+      <h2 class="section-title">资本与产业</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        SpaceX IPO 下周四定价：史上最大 IPO 进入冲刺
+        <span class="tag tag-industry">IPO</span>
+      </div>
+      <p>SpaceX 的 IPO 路演持续推进，定价日锁定 6 月 11 日盘后，6 月 12 日纳斯达克上市，股票代码 SPCX。以 $135/股计算，估值 1.77 万亿美元，募资约 750 亿美元，将超过阿里巴巴成为有史以来最大的 IPO。Fidelity 已向散户开放认购，最低 2,000 美元即可参与。承销商还拥有额外 8,330 万股的超额配售权（约 112 亿美元）。Morningstar 认为合理估值仅 7,800 亿美元，但 Starlink 的 ARR 增速正在重塑估值逻辑。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Broadcom AI 芯片收入增 143%，全年指引 560 亿美元
+        <span class="tag tag-industry">芯片</span>
+      </div>
+      <p>Broadcom 在 Q2 财报中交出了令人瞩目的成绩单：AI 半导体收入 108 亿美元（+143%），总收入 222 亿美元（+48%）。CEO Hock Tan 将全年 AI 半导体收入指引上调至 560 亿美元，几乎是去年的三倍。本季度新增 AI 半导体订单超 300 亿美元，积压订单延续至 2028 年。Broadcom 的定制芯片客户包括 Anthropic、OpenAI、Google 和 Meta。不过公司宣布放弃完整 AI 系统业务、只卖芯片的战略转向，短期内仍压制股价。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        BYD 正式进军人形机器人：150 台原型机已测试
+        <span class="tag tag-industry">机器人</span>
+      </div>
+      <p>中国电动车巨头 BYD 正式确认进军人形机器人赛道。秘密项目代号"尧舜禹"，已运行四年。执行副总裁李珂表示，汽车 AI 与机器人技术共享共同基础，BYD 在电池、传感器、软件和 AI 方面的积累可以直接迁移。目前已有约 150 台原型机在 BYD 自有工厂内测试，计划今年在自有工厂部署 2 万台。西安新产业园区建成后年产能可达 5 万台。如果人形机器人最终进入消费市场，BYD 可以利用现有经销商网络进行分销。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon policy">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <h2 class="section-title">政策与治理</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        美国国会亮出 269 页《伟大美国人工智能法案》
+        <span class="tag tag-policy">法规</span>
+      </div>
+      <p>6 月 4 日，众议员 Jay Obernolte（共和党）和 Lori Trahan（民主党）联合发布了 269 页的《伟大美国人工智能法案》讨论稿——这是美国国会迄今最全面的 AI 立法框架。核心亮点是"三年冻结"：州政府保留监管 AI 使用的权力，但三年内不得立法限制 AI 系统的构建方式。年收入超 5 亿美元的前沿 AI 实验室必须每半年接受独立审计，违规罚款最高每天 100 万美元。法案将设立商务部下属的 AI 标准与创新中心，三年拨款 3 亿美元。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        欧洲首个商业 Robotaxi 落地马德里
+        <span class="tag tag-policy">自动驾驶</span>
+      </div>
+      <p>Uber、WeRide 和 AVOMO 宣布在马德里地区启动西班牙首个商业 Robotaxi 服务——这也是欧洲首个商业化自动驾驶出行服务。乘客可通过 Uber App 直接叫车。此举标志着自动驾驶出行在欧洲迈出了关键一步，预计将加速欧洲其他城市的跟进部署。</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== 技术进阶版 ==================== -->
+<div id="intermediate" class="tab-content">
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon product">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+      </div>
+      <h2 class="section-title">产品与平台</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        ChatGPT 10 亿月活：用户增长曲线与竞争格局分析
+        <span class="tag tag-product">里程碑</span>
+      </div>
+      <p>根据 Sensor Tower 数据，ChatGPT 在 5 月突破 10 亿 MAU——从上线到达成仅用约三年，远超 TikTok（约 5 年）和 Instagram（约 6 年）的移动端增长记录。需要注意的是，这一数据来自 Sensor Tower 对移动 App 的估算，而非 OpenAI 官方审计披露，不包含 Web 和 API 用户。</p>
+      <p>竞争格局正在变化：Anthropic Claude 全球月活达 5,600 万，同比增长约 640%，增速远超 ChatGPT 的 62%。虽然总量差距仍然巨大（约 18 倍），但 Claude 在企业端和开发者生态中的渗透速度值得关注。Google Gemini 成为 Search 默认后端后，其"被动 MAU"已难以与独立产品直接比较。</p>
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-value">10 亿+</div>
+          <div class="stat-label">ChatGPT MAU</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">5,600 万</div>
+          <div class="stat-label">Claude MAU</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">640%</div>
+          <div class="stat-label">Claude YoY 增速</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        WWDC 2026 明天开幕：iOS 27 AI 架构全面开放
+        <span class="tag tag-product">苹果</span>
+      </div>
+      <p>WWDC 2026 主题演讲定于 6 月 8 日 10:00 AM PT，贯穿至 6 月 12 日。iOS 27 的 AI 架构调整是核心看点：</p>
+      <p><strong>Siri 2.0：</strong>基于 Google Gemini 合作（2026 年 1 月签署），Siri 将从语音命令助手升级为全功能对话 AI，支持文字聊天、多步骤任务执行。新界面将嵌入 Dynamic Island，触发"Search or Ask"提示并展示发光光标。</p>
+      <p><strong>第三方 AI 开放：</strong>iOS 27、iPadOS 27 和 macOS 27 将允许用户将 Claude、Gemini 等第三方 AI 设为 Apple Intelligence 功能的默认服务——包括 Writing Tools 和 Image Playground。这是苹果首次在系统级 AI 功能上开放第三方替代。</p>
+      <p><strong>设备端推理策略：</strong>苹果将展示 A/M 系列芯片在本地推理上的优势，将 on-device inference 定位为隐私保护和成本节约的替代方案，对标依赖大规模数据中心的云端模型。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Claude 编写 80% 代码：递归自改进的技术信号
+        <span class="tag tag-product">Anthropic</span>
+      </div>
+      <p>Anthropic 于 6 月 4 日发布《When AI Builds Itself》报告，披露 Claude 在 2026 年 5 月编写了公司超过 80% 的合并生产代码。这个数字在 2025 年 2 月 Claude Code 研究预览版上线前还在低个位数。</p>
+      <p>工程效率数据令人瞩目：工程师每季度合并代码量是 2021-2025 年均值的 8 倍。在规范最模糊、难度最高的编程任务上，Claude 5 月成功率达 76%，六个月内提升 50 个百分点。</p>
+      <div class="highlight">Anthropic 研究院明确指出，AI 已经开始加速 AI 开发本身。如果这一趋势持续，可能导致"递归自改进"——模型独立设计和构建自己的后继版本。Anthropic 呼吁国际社会保留暂停前沿 AI 开发的"全球暂停键"选项。</div>
+      <p>这一披露对 AI 安全领域影响深远：如果一个 AI 系统编写了自己大部分代码，传统的代码审查流程是否足以确保安全性？Anthropic 目前仍依赖人类工程师进行最终审查，但审查者与生成者之间的"理解差距"可能在扩大。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon industry">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      </div>
+      <h2 class="section-title">资本与产业</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        SpaceX IPO 冲刺：定价机制与估值争议
+        <span class="tag tag-industry">IPO</span>
+      </div>
+      <p>SpaceX IPO 路演始于 6 月 4 日，比原计划提前——得益于 SEC 审核速度超预期。固定定价 $135/股，估值 $1.77 万亿，计划发行 5.556 亿股，募资约 $750 亿。承销商拥有 8,330 万股超额配售权（绿鞋，约 $112 亿）。全额行使后总募资可达 $862 亿。</p>
+      <p>估值争议加剧：Morningstar 给出 $7,800 亿公允价值估计，仅为 IPO 定价的 55%。争议焦点在于 Starlink ARR 增速是否足以支撑科技公司估值（而非传统航天工业估值），以及 Starship 完全复用后发射成本曲线的折现方式。</p>
+      <p>散户入口：Fidelity 已开放认购抽签，最低 $2,000。6 月 11 日盘后定价，6 月 12 日纳斯达克首日交易，代码 SPCX。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Broadcom：定制 AI 芯片之王的转型阵痛
+        <span class="tag tag-industry">芯片</span>
+      </div>
+      <p>Broadcom Q2 FY2026 业绩：总收入 $222 亿（+48% YoY），AI 半导体收入 $108 亿（+143% YoY）。AI 收入现在占总收入近 49%，Broadcom 实质上已转型为一家 AI 芯片公司。</p>
+      <p><strong>六大客户战略：</strong>Broadcom 目前为 6 家超大规模客户（Anthropic、OpenAI、Google、Meta 及另两家未披露）共同设计定制 XPU（AI 加速器）。这些 XPU 为每个客户的特定工作负载定制，不同于 NVIDIA 的通用 GPU 路线。同时 Broadcom 还提供连接数千个芯片的数据中心网络芯片。</p>
+      <p><strong>战略转向的代价：</strong>CEO Hock Tan 宣布放弃完整 AI 系统业务（包含服务器机柜组装），专注芯片本身。这一决定虽然提高了毛利率潜力，但短期内削减了收入规模预期，导致股价下跌并拖累整个半导体板块。</p>
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-value">$560 亿</div>
+          <div class="stat-label">FY2026 AI 收入指引</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">$730 亿</div>
+          <div class="stat-label">积压订单</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">6 家</div>
+          <div class="stat-label">核心定制芯片客户</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        BYD 人形机器人：从汽车到通用机器人的技术路径
+        <span class="tag tag-industry">机器人</span>
+      </div>
+      <p>BYD 正式确认代号"尧舜禹"的人形机器人项目已运行四年。执行副总裁李珂认为汽车 AI 与机器人的关键竞争要素——制造、软件、硬件——高度重合，BYD 在电池管理、传感器融合、嵌入式 AI 和大规模制造方面的积累可以直接迁移。</p>
+      <p>目前 150 台原型机在 BYD 自有工厂内进行实际作业测试，今年计划在自有工厂部署 2 万台用于产线作业。西安新产业园建成后年产能达 5 万台。长期战略是在机器人成为消费产品后利用现有经销商网络进行分销。</p>
+      <p>BYD 的路线与 Tesla Optimus 类似——先在自家工厂实现规模化验证，再推向外部市场。但 BYD 的优势在于垂直整合程度更高（自有电池、芯片、传感器供应链），以及中国制造业成本优势。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon policy">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <h2 class="section-title">政策与治理</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        《伟大美国人工智能法案》：联邦 vs. 州的管辖权之争
+        <span class="tag tag-policy">法规</span>
+      </div>
+      <p>6 月 4 日发布的 269 页讨论稿由众议员 Obernolte（R-CA）和 Trahan（D-MA）牵头，另有 4 名两党议员联署。这是美国迄今最全面的联邦 AI 立法尝试。</p>
+      <p><strong>核心机制设计：</strong></p>
+      <p>1. <strong>三年州法冻结（Preemption）：</strong>州政府保留监管 AI 使用的权力，但三年内不得立法限制 AI 系统的构建方式。这直接回应了加州 SB 1047 等争议性州法案。</p>
+      <p>2. <strong>前沿实验室义务：</strong>年收入超 $5 亿的"大型前沿开发者"必须制定安全计划，每半年接受持牌独立审计师审查。审计师拥有完整的记录、人员和系统访问权限。</p>
+      <p>3. <strong>执法机制：</strong>违规罚款最高每天 $100 万，由商务部下属新设的"AI 标准与创新中心"负责执法，三年拨款 $3 亿。</p>
+      <p>争议点：Public Citizen 批评该法案"剥夺了州保护消费者、工人和儿童的权力"。ITI（信息技术产业协会）则表示支持联邦统一框架。目前仍为讨论稿阶段，公众反馈期开放中。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        欧洲 Robotaxi 破冰：Uber + WeRide 登陆马德里
+        <span class="tag tag-policy">自动驾驶</span>
+      </div>
+      <p>Uber、WeRide（中国自动驾驶公司文远知行）和西班牙本地运营商 AVOMO 宣布在马德里地区启动欧洲首个商业 Robotaxi 服务。乘客可通过 Uber App 呼叫无人驾驶出租车。</p>
+      <p>这是自动驾驶商业化在欧洲的重要里程碑。与美国（Waymo 在旧金山、凤凰城等城市运营）和中国（百度萝卜快跑在多城运营）相比，欧洲此前一直缺乏商业化运营的 Robotaxi 服务。马德里的突破可能加速伦敦、柏林、巴黎等城市的跟进。</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== 深度技术版 ==================== -->
+<div id="advanced" class="tab-content">
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon product">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+      </div>
+      <h2 class="section-title">产品与平台</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        ChatGPT 10 亿 MAU：数据方法论与竞争动态深度分析
+        <span class="tag tag-product">里程碑</span>
+      </div>
+      <p>Sensor Tower 估算 ChatGPT 在 2026 年 5 月突破 10 亿 MAU，从 2022 年 11 月上线到达成仅约 30 个月（移动端计）。关键方法论注意点：这是移动 App MAU，不包含 web 端（chat.openai.com）和 API 调用量。OpenAI 自身未发布官方审计数据。实际全渠道 MAU 可能更高。</p>
+      <p><strong>增长驱动分析：</strong>ChatGPT 的增长来自三个引擎——(1) GPT-5.5/5.6 模型能力提升带来的口碑传播；(2) 移动端 voice mode 降低使用门槛；(3) 企业版 ChatGPT Team/Enterprise 的组织内扩散。Q1 2026 付费转化率约 7-8%，对应约 7,000-8,000 万付费用户。</p>
+      <p><strong>竞争格局量化：</strong></p>
+      <table class="tech-table">
+        <tr><th>产品</th><th>MAU（估算）</th><th>YoY 增速</th><th>付费用户</th></tr>
+        <tr><td>ChatGPT</td><td>10 亿+</td><td>~62%</td><td>~7,000-8,000 万</td></tr>
+        <tr><td>Claude</td><td>5,600 万</td><td>~640%</td><td>未披露</td></tr>
+        <tr><td>Gemini</td><td>N/A（嵌入 Search）</td><td>N/A</td><td>Ultra: $200/月</td></tr>
+      </table>
+      <p>Claude 640% 的 YoY 增速反映了 Opus 4.7/4.8 在 SWE-bench 和 coding benchmark 上的领先地位对开发者群体的吸引力。Anthropic $44B ARR（5 月数据）中企业合同占主导，B2C 增长仍处于早期。</p>
+      <a href="https://www.benzinga.com/markets/tech/26/06/52960810/chatgpt-outpaces-tiktok-youtube-1-billion-monthly-users-claude-gaining-ground" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Benzinga: ChatGPT Outpaces TikTok, YouTube
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        WWDC 2026 技术架构深度预览：Siri 2.0 与第三方 AI 框架
+        <span class="tag tag-product">苹果</span>
+      </div>
+      <p>WWDC 2026（6 月 8-12 日）的 AI 架构变化在工程层面意义重大：</p>
+      <p><strong>Siri 2.0 技术架构：</strong>2026 年 1 月苹果与 Google 签署 Gemini 合作协议后，Siri 底层从基于 intent 分类的 pipeline 架构转向 LLM-native 对话引擎。新架构支持：多轮对话状态管理、跨应用上下文传递（App Intents 2.0）、文字/语音双模态输入。Dynamic Island 内嵌新 UI，支持"Search or Ask"模式切换。</p>
+      <p><strong>第三方 AI Default API：</strong>iOS 27 引入新的系统级 API，允许第三方 AI 服务（Claude、Gemini 等）注册为 Apple Intelligence 功能的默认提供者。这意味着 Writing Tools、Image Playground、Safari 摘要等功能的底层模型可由用户切换。这是 Apple 首次在系统级 AI 功能上提供 provider-agnostic 架构。</p>
+      <p><strong>On-device inference 栈：</strong>Apple 将展示 M4/A18 Pro 系列芯片的 Neural Engine 在本地运行 3B-7B 参数模型的能力，定位为"无需上传数据到云端"的隐私方案。与 Qualcomm Snapdragon X Elite 和 NVIDIA RTX Spark 的 on-device AI 策略形成三足鼎立。</p>
+      <a href="https://www.newsweek.com/wwdc-2026-everything-apple-is-expected-to-announce-on-june-8-12016937" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Newsweek: WWDC 2026 Full Preview
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Claude 80% 代码贡献率：递归自改进的技术边界与安全含义
+        <span class="tag tag-product">Anthropic</span>
+      </div>
+      <p>Anthropic 6 月 4 日发布的《When AI Builds Itself》是迄今最详细的 AI 自编程能力披露。核心数据：</p>
+      <table class="tech-table">
+        <tr><th>指标</th><th>2025 年 2 月前</th><th>2026 年 5 月</th><th>变化</th></tr>
+        <tr><td>Claude 编写的合并代码比例</td><td>低个位数 %</td><td>80%+</td><td>>16x</td></tr>
+        <tr><td>工程师每季度代码合并量</td><td>基准线</td><td>8x 基准线</td><td>8x</td></tr>
+        <tr><td>最难任务成功率</td><td>~26%（2025.11）</td><td>76%</td><td>+50pp</td></tr>
+      </table>
+      <p><strong>递归自改进（RSI）定义：</strong>AI 模型独立设计、训练和部署自己的后继版本，人类仅在循环外部进行监督。Anthropic 明确表示 RSI 尚未发生，但指出当前趋势——AI 加速 AI 开发——是 RSI 的前兆条件（precursor condition）。</p>
+      <p><strong>安全隐患分析：</strong></p>
+      <p>1. <strong>审查差距（Review Gap）：</strong>当 AI 编写 80%+ 代码时，人类审查者面临信息不对称——他们审查的代码量远超自己编写的量，理解深度可能下降。</p>
+      <p>2. <strong>测试覆盖率悖论：</strong>AI 编写的测试可能系统性地遗漏 AI 编写的代码中的特定类别缺陷。</p>
+      <p>3. <strong>供应链风险：</strong>如果 Claude 自身包含对齐缺陷（alignment flaws），这些缺陷可能通过自编写代码被放大而非纠正。</p>
+      <p><strong>政策提案：</strong>Anthropic 呼吁国际社会保留"全球暂停键"——在发现 RSI 或其他危险信号时能够协调暂停前沿 AI 开发。这需要多边协议框架，类似于核不扩散条约的精神。</p>
+      <a href="https://www.tomshardware.com/tech-industry/artificial-intelligence/anthropic-says-claude-now-writes-more-than-80-percent-of-its-merged-code" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Tom's Hardware: Anthropic Warns Claude AI Is Building Itself
+      </a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon industry">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      </div>
+      <h2 class="section-title">资本与产业</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        SpaceX IPO 估值模型：$1.77T 定价的技术支撑与风险
+        <span class="tag tag-industry">IPO</span>
+      </div>
+      <p>SpaceX 固定定价 $135/股，总估值 $1.77T，发行 5.556 亿股（含 8,330 万绿鞋），最大募资 $862 亿。关键日期：6 月 11 日盘后定价，6 月 12 日 SPCX 纳斯达克首日交易。</p>
+      <p><strong>估值分歧核心：</strong>Morningstar 给出 $7,800 亿公允价值（IPO 定价的 55%），主要因为：(1) Starlink ARR 虽然增速惊人，但 ARPU 面临下行压力；(2) Starship 完全复用的 timeline 仍有不确定性；(3) 传统 DCF 模型对太空经济的适用性存疑。</p>
+      <p><strong>多头论据：</strong>(1) Starlink 在全球覆盖率仍低，TAM 远未触顶；(2) Starship 每次发射成本如降至 $2M 以下将颠覆整个发射经济学；(3) SpaceX 的政府合同（NASA、DoD）提供高确定性收入基座。</p>
+      <p><strong>技术估值挑战：</strong>SpaceX 跨越航天、电信、制造三个行业，没有直接可比公司。市场可能用 Starlink 给 SaaS 倍数、Starship 给航天倍数、SpaceXAI 给 AI 基础设施倍数，然后做 sum-of-parts，但各部分的独立估值依赖高度前瞻性假设。</p>
+      <a href="https://www.cnbc.com/2026/06/03/spacex-ipo-stock-price-roadshow-musk.html" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        CNBC: SpaceX IPO Roadshow
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Broadcom 定制 AI ASIC 战略：XPU 架构与六大客户深度解析
+        <span class="tag tag-industry">芯片</span>
+      </div>
+      <p>Broadcom Q2 FY2026 AI 半导体收入 $108 亿（+143% YoY），总收入 $222 亿（+48%）。AI 收入占比从 2024 年的 ~25% 提升至 ~49%。</p>
+      <p><strong>XPU 定制芯片架构：</strong>Broadcom 为每个超大规模客户共同设计定制 AI 加速器（XPU），不同于 NVIDIA 通用 GPU 的一刀切方案。XPU 针对客户特定工作负载优化——例如 Google 的 TPU 即由 Broadcom 协助设计。目前已披露的六大客户包括 Anthropic、OpenAI、Google、Meta，另两家未公开。每个 XPU 项目从设计到量产约 18-24 个月。</p>
+      <p><strong>网络芯片战略：</strong>除了计算芯片，Broadcom 还提供 Tomahawk/Jericho 系列交换芯片，用于 AI 数据中心内数千个加速器之间的高速互联。在 AI 集群规模扩展到 100K+ 芯片时，网络带宽和延迟成为瓶颈，Broadcom 在这一层面几乎没有竞争对手。</p>
+      <p><strong>战略转向分析：</strong>CEO Hock Tan 宣布放弃完整 AI 系统（rack-level integration），专注芯片设计和销售。这一决定的逻辑：(1) 系统集成毛利率低于纯芯片；(2) 避免与 OEM（Dell、HPE、Supermicro）竞争；(3) 客户越来越倾向于自建定制系统。短期股价承压，长期毛利率结构改善。</p>
+      <p><strong>前瞻指引：</strong>下季度 AI 收入预计增 200%+ 至 $160 亿；FY2026 全年 AI 半导体收入指引 $560 亿，接近去年三倍。新增订单 $300 亿+，积压订单延至 2028。</p>
+      <a href="https://www.techtimes.com/articles/317865/20260605/broadcom-pivots-chips-only-ai-guidance-miss-drags-down-semiconductor-sector.htm" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        TechTimes: Broadcom Pivots to Chips Only
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        BYD "尧舜禹" 人形机器人：垂直整合路线 vs. Tesla Optimus
+        <span class="tag tag-industry">机器人</span>
+      </div>
+      <p>BYD 执行副总裁李珂正式披露代号"尧舜禹"的人形机器人项目，已秘密运行四年。150 台原型机在 BYD 工厂进行实际产线作业测试。</p>
+      <p><strong>技术路线对比：</strong></p>
+      <table class="tech-table">
+        <tr><th>维度</th><th>BYD "尧舜禹"</th><th>Tesla Optimus</th><th>NVIDIA Isaac GR00T</th></tr>
+        <tr><td>定位</td><td>垂直整合制造商</td><td>垂直整合制造商</td><td>参考设计/软件栈</td></tr>
+        <tr><td>电池</td><td>自研刀片电池</td><td>自研 4680</td><td>N/A</td></tr>
+        <tr><td>芯片</td><td>自研（部分）</td><td>自研 FSD 芯片复用</td><td>Thor SoC</td></tr>
+        <tr><td>工厂验证规模</td><td>150 台 / 计划 2 万台</td><td>已在 Fremont 部署</td><td>参考设计阶段</td></tr>
+        <tr><td>年产能规划</td><td>5 万台（西安新园区）</td><td>未明确</td><td>N/A</td></tr>
+        <tr><td>分销渠道</td><td>现有经销商网络</td><td>直营</td><td>N/A</td></tr>
+      </table>
+      <p>BYD 的核心优势在于垂直整合深度——自有电池（刀片电池）、部分自研芯片、传感器和大规模制造能力。中国制造业成本优势使 BYD 在价格竞争力上可能显著领先 Tesla。不过 BYD 在 AI 软件栈（运动控制、环境感知、任务规划）方面的能力尚未被验证，这是人形机器人最核心的技术壁垒。</p>
+      <a href="https://technode.com/2026/06/04/byd-is-developing-humanoid-robots-according-to-source/" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        TechNode: BYD Developing Humanoid Robots
+      </a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon policy">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <h2 class="section-title">政策与治理</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        《伟大美国人工智能法案》技术条款深度解读
+        <span class="tag tag-policy">法规</span>
+      </div>
+      <p>269 页讨论稿的技术条款涉及 AI 系统全生命周期：</p>
+      <p><strong>前沿开发者定义（Section 3）：</strong>年收入超 $5 亿 + 训练过最强大 AI 模型的实体。按当前标准，OpenAI、Anthropic、Google DeepMind、Meta FAIR、xAI 均满足条件。中等规模公司（如 Mistral、Cohere）可能不受约束。</p>
+      <p><strong>安全计划要求（Section 101-107）：</strong>前沿开发者必须制定公开的"模型安全计划"，涵盖：训练数据审计、red-teaming 频率和方法论、模型能力评估阈值（capabilities threshold）、部署前风险评估、事件响应协议。</p>
+      <p><strong>审计机制（Section 201-205）：</strong>每半年一次由持牌独立审计师执行，审计师拥有完整的系统访问权限（包括模型权重、训练日志、内部评估数据）。审计报告的摘要版本必须公开发布。</p>
+      <p><strong>州法冻结条款（Section 301）：</strong>三年内各州不得立法限制 AI 系统的"构建方式"（development），但可以监管"使用方式"（deployment/use）。这一区分在实践中可能模糊——例如训练数据版权问题同时涉及开发和使用。</p>
+      <p><strong>执法与罚则：</strong>AI 标准与创新中心（隶属商务部）负责执法。违规罚款：每天 $100 万，无上限累计。三年拨款 $3 亿用于中心运营、标准制定和研究。</p>
+      <p><strong>业界反应：</strong>ITI 表示欢迎联邦统一框架；Public Citizen 批评其削弱州级消费者保护能力；AI 实验室普遍持谨慎欢迎态度（统一规则降低合规成本，但审计要求增加运营负担）。</p>
+      <a href="https://obernolte.house.gov/media/press-releases/obernolte-trahan-release-discussion-draft-great-american-ai-act" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Rep. Obernolte: Great American AI Act Discussion Draft
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        欧洲 Robotaxi 监管框架与商业化路径
+        <span class="tag tag-policy">自动驾驶</span>
+      </div>
+      <p>Uber/WeRide/AVOMO 马德里 Robotaxi 项目的监管路径值得关注：西班牙 DGT（交通总局）在 2025 年底发布的自动驾驶临时运营许可框架（ODD-based permitting）为商业化打开了通道。与美国各州各自为政不同，西班牙采用了国家级统一框架。</p>
+      <p><strong>技术栈：</strong>WeRide 使用 L4 级自动驾驶系统，基于 NVIDIA DRIVE Orin + 自研感知算法。初期运营将限定在马德里特定区域（geo-fenced ODD），根据安全数据逐步扩展运营范围。</p>
+      <p><strong>欧洲 vs. 美国 vs. 中国：</strong>美国由州级监管（加州 DMV、亚利桑那 ADOT），缺乏联邦框架；中国由工信部和交通部联合发放试点许可。欧洲的 UN ECE R157（自动车道保持系统法规）和正在起草的 L4 运营框架可能最终形成全球最系统化的自动驾驶监管体系。</p>
+      <p>EU AI Act 将于 2026 年 8 月 2 日全面生效，自动驾驶系统被列为"高风险 AI 系统"，需满足数据治理、透明度、人类监督等强制要求。马德里项目的运营数据将成为 EU 监管框架实施的重要参考。</p>
+    </div>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>AI Pulse Daily Report | Edition #74 | 2026.06.07</p>
+  <p>数据来源：Sensor Tower, Benzinga, Newsweek, MacRumors, TechCrunch, Tom's Hardware, VentureBeat, CNBC, TechTimes, TechNode, Roll Call, CarnewsChina</p>
+  <p>本报告由 AI 自动生成，内容仅供参考</p>
+</footer>
+
+</div>
+
+<script>
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-content').forEach(function(el) {
+    el.classList.remove('active');
+  });
+  document.querySelectorAll('.tab-btn').forEach(function(el) {
+    el.classList.remove('active');
+  });
+  document.getElementById(tabId).classList.add('active');
+  var tabs = { casual: 0, intermediate: 1, advanced: 2 };
+  document.querySelectorAll('.tab-btn')[tabs[tabId]].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>

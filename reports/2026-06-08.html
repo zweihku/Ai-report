@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily Report | 2026.06.08</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --claude-bg: #FAF9F7;
+    --claude-surface: #FFFFFF;
+    --claude-border: #E8E5E0;
+    --claude-text-primary: #1A1714;
+    --claude-text-secondary: #6B6560;
+    --claude-text-tertiary: #9B9590;
+    --claude-accent: #DA7756;
+    --claude-accent-light: #F5E6DF;
+    --claude-accent-dark: #C4623F;
+    --claude-tag-blue: #E8F0FE;
+    --claude-tag-blue-text: #3B6CB5;
+    --claude-tag-green: #E6F4EA;
+    --claude-tag-green-text: #2D7A3F;
+    --claude-tag-purple: #F0E6FA;
+    --claude-tag-purple-text: #7B3FAF;
+    --claude-tag-amber: #FEF3E2;
+    --claude-tag-amber-text: #B5752D;
+    --claude-tag-red: #FDE8E8;
+    --claude-tag-red-text: #B53B3B;
+    --claude-card-shadow: 0 1px 3px rgba(26, 23, 20, 0.06), 0 1px 2px rgba(26, 23, 20, 0.04);
+    --claude-card-shadow-hover: 0 4px 12px rgba(26, 23, 20, 0.08), 0 2px 4px rgba(26, 23, 20, 0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+    background: var(--claude-bg);
+    color: var(--claude-text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 8px;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--claude-accent-dark); }
+
+  .header {
+    text-align: center;
+    padding: 48px 0 40px;
+    border-bottom: 1px solid var(--claude-border);
+    margin-bottom: 32px;
+  }
+
+  .header-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--claude-accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .header .date {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    font-weight: 400;
+  }
+
+  .header .edition-note {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    margin-top: 8px;
+    line-height: 1.8;
+  }
+
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 36px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--claude-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .tab-btn:hover {
+    color: var(--claude-text-primary);
+    background: var(--claude-bg);
+  }
+
+  .tab-btn.active {
+    background: var(--claude-accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(218, 119, 86, 0.3);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .section { margin-bottom: 36px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .section-icon.gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .section-icon.model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .section-icon.product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .section-icon.research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .section-icon.industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .section-icon.policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .card {
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--claude-card-shadow);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .card:hover { box-shadow: var(--claude-card-shadow-hover); }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .card p {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.75;
+    margin-bottom: 8px;
+  }
+
+  .card p:last-child { margin-bottom: 0; }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .tag-gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .tag-model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .tag-product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .tag-research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .tag-industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .tag-policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .highlight {
+    background: var(--claude-accent-light);
+    border-left: 3px solid var(--claude-accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--claude-accent-dark);
+    line-height: 1.7;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .stat-item {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--claude-accent);
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--claude-text-tertiary);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 8px;
+    transition: color 0.15s;
+  }
+
+  .source-link:hover { color: var(--claude-accent-dark); text-decoration: underline; }
+
+  .tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .tech-table th, .tech-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .tech-table th {
+    font-weight: 600;
+    color: var(--claude-text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .tech-table td { color: var(--claude-text-primary); }
+
+  .footer {
+    text-align: center;
+    padding-top: 40px;
+    border-top: 1px solid var(--claude-border);
+    margin-top: 60px;
+  }
+
+  .footer p {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    line-height: 1.8;
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 24px 16px 60px; }
+    .header { padding: 32px 0 28px; }
+    .header h1 { font-size: 24px; }
+    .tab-btn { font-size: 12px; padding: 10px 8px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<a href="/" class="back-link">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+  返回 AI Pulse
+</a>
+
+<header class="header">
+  <div class="header-logo">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    AI PULSE
+  </div>
+  <h1>AI 日报 | 2026.06.08</h1>
+  <p class="date">星期一 / Monday, June 8, 2026</p>
+  <p class="edition-note">Edition #75 - WWDC 2026 今日开幕 Siri 2.0 搭载 1.2 万亿参数 Gemini 模型并开放第三方 AI 扩展；SpaceX IPO 路演今日启动定价预计 6 月 11 日；Anthropic 与 OpenAI 双双推进 IPO 进程 AI 双雄年内或同时上市；科罗拉多州 AI 法案 6 月 30 日生效成美国最严厉州级 AI 监管；AI 巨头 CEO 联名致信国会呼吁强制合成 DNA 筛查；SIA 报告 AI 数据中心芯片收入 2028 年将达 1.2 万亿美元；Claude Mythos 以 99 分领跑 BenchLM 综合排行榜；AutoScientist 挑战赛今日开赛 5 万美元奖金池</p>
+</header>
+
+<nav class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('casual')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+    轻松阅读
+  </button>
+  <button class="tab-btn" onclick="switchTab('intermediate')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+    技术进阶
+  </button>
+  <button class="tab-btn" onclick="switchTab('advanced')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+    深度技术
+  </button>
+</nav>
+
+<!-- ==================== 轻松阅读版 ==================== -->
+<div id="casual" class="tab-content active">
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon product">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+      </div>
+      <h2 class="section-title">产品与平台</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        WWDC 2026 今日开幕：Siri 大脑换成了 Gemini，还能换 Claude
+        <span class="tag tag-product">苹果</span>
+      </div>
+      <p>苹果年度最大发布会 WWDC 2026 今天正式拉开帷幕。最大亮点是 Siri 2.0 ——苹果花了大约 10 亿美元/年从 Google 授权了一个 1.2 万亿参数的定制 Gemini 模型，让 Siri 终于能进行真正的对话，还能帮你完成多步骤任务。更让人兴奋的是，iOS 27 引入了 AI 扩展系统（Extensions），用户可以自由选择 ChatGPT、Gemini 或 Claude 作为 Apple Intelligence 的默认 AI 引擎，用于写作工具和图片创作等功能。Morgan Stanley 称这是苹果股价的"关键催化剂"。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        SpaceX IPO 路演今日启动，马斯克即将迎来史上最大科技 IPO
+        <span class="tag tag-industry">IPO</span>
+      </div>
+      <p>SpaceX 已于 5 月 20 日提交 S-1 招股书，路演今天（6 月 8 日）正式启动，预计 6 月 11 日定价，发行价约 $135/股，估值高达 $1.77 万亿。这将是科技史上规模最大的 IPO 之一。值得关注的是，SpaceX 与 AI 行业深度绑定——旗下 xAI 的 Colossus 数据中心（超过 22 万块 NVIDIA GPU、300+ 兆瓦算力）已被 Anthropic 独家租用，使这桩 IPO 对整个 AI 算力版图都有影响。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Anthropic 和 OpenAI 双双冲刺 IPO，AI 双雄年内或同时上市
+        <span class="tag tag-industry">IPO</span>
+      </div>
+      <p>AI 行业正进入"IPO 大年"。Anthropic 已于 6 月 2 日向 SEC 提交保密 S-1 招股书，此前刚以 $965 亿估值完成 $650 亿 H 轮融资——首次在私募市场估值超越 OpenAI。另一边，OpenAI 也在准备保密申报 IPO，最快 9 月上市。两大 AI 巨头可能在同一年上市，这在科技史上极为罕见。Anthropic 的 Claude 年收入已达 $300 亿跑步收入（run rate），其中 Claude Code 仅用 9 个月就做到了 $25 亿 ARR。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Google Gemini 3.5 Flash 发布，速度 4 倍提升
+        <span class="tag tag-model">模型</span>
+      </div>
+      <p>Google 发布了 Gemini 3.5 Flash，号称在性能接近旗舰模型的同时，速度是上一代的 4 倍。在编程和智能体测试中表现超越了自家的 Gemini 3.1 Pro。与此同时，Google 还推出了 Gemini Spark 个人助手，提供 Daily Brief 功能，能自动汇总你的邮件和日历信息——像一个 AI 助理帮你做每日情报简报。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon policy">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <h2 class="section-title">政策与安全</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        科罗拉多州 AI 法案 6 月 30 日生效，美国最严格的州级 AI 监管来了
+        <span class="tag tag-policy">监管</span>
+      </div>
+      <p>科罗拉多州的 AI 法案将在 6 月 30 日生效，成为美国最全面的州级 AI 监管法规。它针对"高风险"AI 系统——凡是在教育、就业、医疗、住房、保险和法律领域做出重大决策的 AI，开发者和部署者都必须建立风险管理计划、向消费者披露 AI 参与决策的事实，并采取措施防止算法歧视。与此同时，白宫正推动联邦层面的统一标准，希望用一部全国性法律取代各州各自为政的 AI 法规。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        AI 巨头 CEO 联名呼吁国会：必须强制筛查合成 DNA
+        <span class="tag tag-policy">安全</span>
+      </div>
+      <p>OpenAI、Anthropic、Google DeepMind 和微软 AI 的 CEO 们在 6 月 5 日联合致信美国国会，呼吁强制要求合成 DNA 供应商对订单进行安全筛查。他们警告说，AI 正在降低将生物材料武器化的门槛，如果没有强制筛查机制，合成生物学可能被恶意利用。这是 AI 行业罕见的就具体安全问题达成的集体共识。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        美国出口管制扩展至中国公司海外子公司
+        <span class="tag tag-policy">地缘</span>
+      </div>
+      <p>美国发布新通告，明确 AI 芯片出口限制同样适用于中国公司在海外的子公司，堵住了此前通过第三国转运的漏洞。这意味着中国科技公司很难再通过在东南亚或中东设立子公司来规避芯片禁令。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon gpu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+      </div>
+      <h2 class="section-title">芯片与基础设施</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        SIA 报告：AI 芯片收入 2028 年将达 1.2 万亿美元
+        <span class="tag tag-gpu">半导体</span>
+      </div>
+      <p>美国半导体产业协会（SIA）与德勤联合发布报告：半导体占 AI 数据服务器机架价值的 95%，预计到 2028 年，AI 数据中心芯片年收入将超过 1.2 万亿美元——四年内增长近 10 倍。这个数字让人意识到，AI 革命的底层是一场芯片革命。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        SK 海力士市值突破万亿美元，存储芯片的 AI 时代
+        <span class="tag tag-gpu">半导体</span>
+      </div>
+      <p>SK 海力士市值在 5 月 27 日突破 1 万亿美元，加入三星和美光的"万亿美元存储芯片俱乐部"。HBM（高带宽存储）的爆发式需求是主要推动力——AI 训练和推理需要大量高速显存，存储芯片公司正成为 AI 基础设施最大的受益者之一。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        阿里巴巴发布臻武 M890 AI 芯片，自研并行计算架构
+        <span class="tag tag-gpu">芯片</span>
+      </div>
+      <p>阿里巴巴在 2026 云栖大会上发布了臻武 M890 芯片，采用自研并行计算架构，面向 AI 训练和推理。两年内还将推出臻武 V900 和 J900。中国科技巨头正在加速 AI 芯片自研，以应对美国出口管制的持续收紧。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon research">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+      </div>
+      <h2 class="section-title">研究与前沿</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Claude Mythos 以 99 分登顶 BenchLM 排行榜
+        <span class="tag tag-model">基准测试</span>
+      </div>
+      <p>Anthropic 的 Claude Mythos Preview 在 BenchLM.ai 的综合排名中以 99 分位列第一，超过 Claude Opus 4.8（95 分）和 Google Gemini 3.1 Pro（92 分）。与此同时，在 GPQA 研究生级别基准测试中，Gemini 3.1 Pro Preview 以 94.1% 领先，MiniMax M3 紧随其后（92.9%）。前沿模型正在顶部趋同——所有旗舰 LLM 在 MMLU 上的得分都超过 88%，前 15 名之间仅相差 3 个百分点。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Anthropic 提出全球 AI 暂停机制，呼吁保留"急刹车"
+        <span class="tag tag-research">安全</span>
+      </div>
+      <p>Anthropic 发布安全论文，正式提出建立协调性的全球 AI 暂停机制。背景是 Claude 目前已编写公司 80% 以上的生产代码，这种"AI 开发 AI"的递归自改进趋势引发了深层安全担忧。论文呼吁国际社会建立应急框架，确保在发现重大风险时能快速暂停前沿 AI 开发。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        AutoScientist 挑战赛今日开赛，5 万美元奖金池
+        <span class="tag tag-research">竞赛</span>
+      </div>
+      <p>AutoScientist Challenge 今天正式开赛，奖金池 5 万美元。第一阶段从 6 月 8 日到 22 日，覆盖金融、医疗、数学/编程、法律和营销五大领域。这类竞赛正在测试 AI 在真实科学研究场景中的自主能力——不只是回答问题，而是发现问题、设计实验、得出结论。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        光芯片突破：一枚芯片搞定光信号全链路
+        <span class="tag tag-research">硬件</span>
+      </div>
+      <p>科学家创造了一款微型芯片，首次在单个器件上实现了光信号的生成、导向和读取全流程。这是迈向超高速、低能耗 AI 和量子计算的关键一步。传统电子芯片正逐渐接近物理极限，光计算被视为下一代计算范式的重要方向。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon industry">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      </div>
+      <h2 class="section-title">行业与市场</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Q1 2026 全球风投 $3000 亿+，AI 占 80%
+        <span class="tag tag-industry">融资</span>
+      </div>
+      <p>2026 年一季度诞生了风投史上前五大融资中的四个：OpenAI（$1220 亿）、Anthropic（$300 亿）、xAI（$200 亿）和 Waymo（$160 亿），合计 $1880 亿，占全球风投的 63%。AI 领域融资达 $2420 亿，占全球的 80%。风投行业已经不是在"投 AI"——风投行业本身就变成了 AI 的融资工具。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        AI 编程工具成最大收入引擎，Claude Code 领跑
+        <span class="tag tag-industry">市场</span>
+      </div>
+      <p>AI 编程赛道成为各家兵家必争之地。Anthropic 的 Claude Code 以 $25 亿 ARR 领跑，微软推出了 MAI-Code-1-Flash"氛围编程"模型，Google 的 Gemini 编程能力也在快速追赶。AI 编程工具正在成为多家公司的核心收入来源，而 Series A 轮 AI 创业公司的平均融资额已飙升至 $5190 万。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Computex 2026 闭幕：1500+ 参展商，$10 万亿市值
+        <span class="tag tag-industry">展会</span>
+      </div>
+      <p>台北 Computex 2026（6 月 2-5 日）刚刚闭幕，超过 1500 家参展商齐聚南港和世贸中心，参展公司总市值超过 10 万亿美元。黄仁勋在 6 月 1 日的主题演讲中展示了 RTX Spark 笔记本超级芯片——融合 20 核 ARM Grace CPU 和 Blackwell RTX GPU，单芯片提供 1 PFLOPS AI 性能，已搭载于微软 Surface Laptop Ultra（128GB RAM）。</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== 技术进阶版 ==================== -->
+<div id="intermediate" class="tab-content">
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon product">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+      </div>
+      <h2 class="section-title">产品与平台</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        WWDC 2026：Siri 2.0 架构重构 + Apple Intelligence Extensions 系统
+        <span class="tag tag-product">苹果</span>
+      </div>
+      <p>苹果在 WWDC 2026 推出 Siri 2.0，核心改动包括：用 1.2T 参数的定制 Gemini 模型替换原有的 on-device + server 混合架构，支持文本聊天模式和多步骤任务规划。更重要的是 Extensions 系统——在系统设置中，用户可以选择 ChatGPT、Gemini 或 Claude 作为 Apple Intelligence 的底层模型，覆盖 Writing Tools、Image Playground 等功能。</p>
+      <div class="highlight">技术点评：这标志着苹果从"自建 AI"转向"AI 平台"策略。Extensions 本质上是一个模型路由层，苹果保留了隐私网关（设备端预处理 + Private Cloud Compute）但将推理能力开放给第三方。这对 Anthropic 和 OpenAI 的 B2C 分发策略是重大利好——通过 iOS 原生集成触达 20 亿设备。</div>
+      <div class="stats-row">
+        <div class="stat-item"><div class="stat-value">1.2T</div><div class="stat-label">Gemini 定制模型参数量</div></div>
+        <div class="stat-item"><div class="stat-value">~$10 亿/年</div><div class="stat-label">苹果向 Google 授权费</div></div>
+        <div class="stat-item"><div class="stat-value">20 亿+</div><div class="stat-label">iOS 活跃设备</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        SpaceX IPO 路演启动：$1.77T 估值背后的 AI 算力版图
+        <span class="tag tag-industry">IPO</span>
+      </div>
+      <p>SpaceX S-1 于 5 月 20 日提交，路演 6 月 8 日启动，预计 6 月 11 日定价 ~$135/股。其 AI 相关资产值得关注：xAI 的 Colossus 1 数据中心位于田纳西州，拥有 22 万+ NVIDIA GPU 和 300+ MW 电力容量，已被 Anthropic 独家租用。SpaceX 的星链卫星网络也在为偏远地区 AI 推理提供低延迟通信，使这桩 IPO 横跨航天与 AI 两大赛道。</p>
+      <div class="highlight">技术点评：Colossus 数据中心的 22 万 GPU 规模约等于当前全球 top-10 超算的算力总和。Anthropic 独占这些算力意味着其在模型训练和推理规模上具备了与 Google（拥有自研 TPU）和微软（Azure GPU 集群）比肩的基础设施优势。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Anthropic / OpenAI 双 IPO 格局：估值与收入拆解
+        <span class="tag tag-industry">IPO</span>
+      </div>
+      <p>Anthropic 于 6 月 2 日提交保密 S-1，此前刚以 $965B 完成 $65B H 轮。OpenAI 也在准备保密申报，最快 9 月上市。关键财务对比：</p>
+      <div class="stats-row">
+        <div class="stat-item"><div class="stat-value">$30B</div><div class="stat-label">Anthropic ARR（Q1 run rate）</div></div>
+        <div class="stat-item"><div class="stat-value">$2.5B</div><div class="stat-label">Claude Code ARR（9 个月）</div></div>
+        <div class="stat-item"><div class="stat-value">80x</div><div class="stat-label">Anthropic 单季度年化增长</div></div>
+        <div class="stat-item"><div class="stat-value">$965B</div><div class="stat-label">Anthropic 估值（超 OpenAI）</div></div>
+      </div>
+      <div class="highlight">技术点评：Anthropic 首次在私募估值上超越 OpenAI，核心驱动力是 Claude Code 的爆发式增长和企业 API 收入。Claude Code 9 个月 $2.5B ARR 的增速超过了 GitHub Copilot 上市后的表现，表明 AI 编程工具正在从"补充工具"升级为"核心生产力基础设施"。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Gemini 3.5 Flash：速度 4x 提升，编码基准超 3.1 Pro
+        <span class="tag tag-model">模型</span>
+      </div>
+      <p>Google 发布 Gemini 3.5 Flash，核心改进：推理速度相比前代提升 4 倍，在编码和 agentic 基准测试中超越自家 Gemini 3.1 Pro。同时推出 Gemini Spark 个人助手，具备 Daily Brief 功能（邮件/日历摘要）。Flash 系列的定位是高性价比推理——用更低的计算成本达到接近旗舰模型的效果。</p>
+      <div class="highlight">技术点评：Gemini 3.5 Flash 在 agentic 场景的突破值得关注。Agent 工作负载对延迟敏感度极高（每次工具调用都涉及模型推理），Flash 的 4x 速度提升直接缩短了 Agent 的端到端执行时间。这可能改变当前 Anthropic Claude 在 Agent 领域的领先格局。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        微软 MAI-Thinking-1 和 MAI-Code-1-Flash 发布
+        <span class="tag tag-model">模型</span>
+      </div>
+      <p>微软推出首个自研大语言模型 MAI-Thinking-1，官方称性能对标 Claude Opus 4.6。同时发布 MAI-Code-1-Flash——专门用于"氛围编程"（vibe coding）的代码生成模型，能从文字描述直接生成完整源码。这是微软在 OpenAI 之外建立自主 AI 模型能力的重要信号。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon policy">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <h2 class="section-title">政策与监管</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        科罗拉多 AI 法案深度解读：高风险系统定义与合规要求
+        <span class="tag tag-policy">监管</span>
+      </div>
+      <p>科罗拉多州 SB 21-169 将于 6 月 30 日生效，是目前美国最全面的州级 AI 监管法规。核心要求：</p>
+      <p><strong>高风险 AI 系统定义</strong>：在教育录取、就业筛选、医疗决策、住房审批、保险定价和法律裁决等领域做出"实质性决定"的 AI 系统。</p>
+      <p><strong>开发者义务</strong>：建立风险管理框架、提供技术文档、报告已知偏差、向部署者披露系统能力和局限性。</p>
+      <p><strong>部署者义务</strong>：消费者通知（必须告知 AI 参与了决策）、建立人工复核机制、定期偏差审计。</p>
+      <div class="highlight">技术点评：与欧盟 AI Act 相比，科罗拉多法案更具"美国特色"——聚焦反歧视而非全面风险分级。但白宫的联邦预占推动可能使其成为过渡性法规。开发者应关注其"实质性决定"的定义范围，这将影响模型部署的合规成本。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        AI 巨头联名致信国会：合成 DNA 筛查应成为强制要求
+        <span class="tag tag-policy">生物安全</span>
+      </div>
+      <p>6 月 5 日，OpenAI、Anthropic、Google DeepMind 和微软 AI 的 CEO 联名致信美国国会，核心诉求：要求所有合成 DNA 供应商对订单进行安全筛查，并建立强制报告机制。技术背景是 LLM 能力的提升正在降低生物武器的信息门槛——不是 AI 直接制造病原体，而是 AI 使获取相关知识变得更容易。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        加州 AI 透明度法律生效：训练数据摘要 + AI 内容水印
+        <span class="tag tag-policy">监管</span>
+      </div>
+      <p>多部加州 AI 法律已于 2026 年 1 月 1 日生效：前沿 AI 透明度法案（风险框架、安全事件报告、吹哨人保护）、AI 训练数据透明度法案（必须发布训练数据集摘要）和 AI 透明度法案（AI 生成内容必须披露/水印）。这些法律共同构成了全美最细化的 AI 透明度监管框架。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon gpu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+      </div>
+      <h2 class="section-title">芯片与基础设施</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        SIA + 德勤报告：AI 芯片 2028 年 $1.2T 收入预测
+        <span class="tag tag-gpu">半导体</span>
+      </div>
+      <p>半导体产业协会（SIA）与德勤 6 月 1 日联合报告的核心发现：半导体占 AI 数据服务器机架价值的 95%。从 2024 年到 2028 年，AI 数据中心芯片年收入将从约 $1200 亿增长至 $1.2 万亿，增长近 10 倍。主要增长来自 GPU/AI 加速器（NVIDIA 主导）、HBM 存储（SK 海力士/三星/美光）和网络芯片（Broadcom/Marvell）。</p>
+      <div class="stats-row">
+        <div class="stat-item"><div class="stat-value">95%</div><div class="stat-label">半导体占 AI 服务器机架价值</div></div>
+        <div class="stat-item"><div class="stat-value">~10x</div><div class="stat-label">四年芯片收入增长倍数</div></div>
+        <div class="stat-item"><div class="stat-value">$1.2T</div><div class="stat-label">2028 年预计年收入</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        NVIDIA RTX Spark：Grace + Blackwell 融合架构，1 PFLOPS 单芯片
+        <span class="tag tag-gpu">NVIDIA</span>
+      </div>
+      <p>RTX Spark 在 Computex 2026 亮相，架构特点：20 核 ARM Grace CPU + Blackwell RTX GPU 集成在单芯片上，提供 1 PFLOPS AI 性能。已搭载于微软 Surface Laptop Ultra（128GB 统一内存）。这是 NVIDIA 首次将数据中心级架构下放到笔记本平台，意味着"AI PC"不再是营销概念而是真正的计算范式转变。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        华为"Tau 定律"与 381 款芯片：时间尺度替代几何尺度
+        <span class="tag tag-gpu">华为</span>
+      </div>
+      <p>华为在 IEEE ISCAS 上提出"Tau (τ) 定律"——用"时间尺度"（time-scaling）替代传统的几何尺度作为半导体发展的衡量标准。基于这一原则，华为已设计并量产 381 款芯片，目标是在 2031 年前实现等效 1.4nm 晶体管密度。这是华为应对先进制程封锁的理论创新——不追求最小制程，而是通过架构和封装创新实现等效性能。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon research">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+      </div>
+      <h2 class="section-title">模型与基准测试</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        前沿模型趋同：顶部仅差 3 个百分点
+        <span class="tag tag-model">基准测试</span>
+      </div>
+      <p>Stanford HAI 2026 AI Index 报告的关键发现：所有前沿 LLM 在 MMLU 上的得分均超过 88%，GPT-5.3 Codex 以 93% 领先。前 15 名模型之间的差距仅 3 个百分点，显示顶部正在趋同。中国实验室（DeepSeek、阿里巴巴、字节跳动）在推理和编码任务上正加速追赶美国实验室。</p>
+      <table class="tech-table">
+        <thead><tr><th>基准测试</th><th>领先模型</th><th>得分</th></tr></thead>
+        <tbody>
+          <tr><td>BenchLM 综合</td><td>Claude Mythos Preview</td><td>99</td></tr>
+          <tr><td>BenchLM 综合 #2</td><td>Claude Opus 4.8</td><td>95</td></tr>
+          <tr><td>BenchLM 综合 #3</td><td>Gemini 3.1 Pro</td><td>92</td></tr>
+          <tr><td>GPQA (研究生级)</td><td>Gemini 3.1 Pro Preview</td><td>94.1%</td></tr>
+          <tr><td>GPQA #2</td><td>MiniMax M3</td><td>92.9%</td></tr>
+          <tr><td>MMLU</td><td>GPT-5.3 Codex</td><td>93%</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Boston Dynamics + DeepMind：Spot 机器狗搭载 Gemini Robotics-ER 1.6
+        <span class="tag tag-research">机器人</span>
+      </div>
+      <p>Boston Dynamics 与 Google Cloud / DeepMind 合作，将 Gemini Robotics-ER 1.6 集成到 Spot 机器狗和 Orbit AI 视觉检测平台中。这标志着多模态 AI 模型开始真正部署到物理世界的商业机器人产品中，而不仅仅是实验室演示。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        DeepMind AlphaEvolve 扩展至基因组学和量子物理
+        <span class="tag tag-research">研究</span>
+      </div>
+      <p>AlphaEvolve 的影响力正在从纯数学优化扩展到多个自然科学领域：在基因组学中实现了 DNA 测序错误检测率降低 30%，同时在量子物理和商业企业应用中也取得了进展。这验证了"进化搜索 + LLM 引导"范式在非计算机科学领域的泛化能力。</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== 深度技术版 ==================== -->
+<div id="advanced" class="tab-content">
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon product">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+      </div>
+      <h2 class="section-title">平台架构与产品工程</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        WWDC 2026 技术深度：Apple Intelligence Extensions 架构
+        <span class="tag tag-product">苹果</span>
+      </div>
+      <p>Apple 在 WWDC 2026 公布了 Apple Intelligence Extensions 架构，这是一个允许第三方 LLM 提供商（ChatGPT、Gemini、Claude）接入 iOS/macOS 系统级 AI 功能的框架。技术架构分为三层：</p>
+      <p><strong>设备端预处理层</strong>：Apple Neural Engine 执行初步任务分类、PII 脱敏和上下文压缩。所有用户数据在发送至第三方模型前经过本地处理，符合 Apple 的隐私承诺。</p>
+      <p><strong>Private Cloud Compute (PCC) 路由层</strong>：中间件决定请求应路由至哪个模型提供商。PCC 保留了 Apple 的加密计算保证——即使数据到达 Apple 服务器，Apple 员工也无法查看。</p>
+      <p><strong>第三方模型推理层</strong>：ChatGPT、Gemini 和 Claude 通过标准化 API 接口提供推理服务，但不能保留用户对话上下文（每次请求无状态）。</p>
+      <p>Siri 2.0 的核心升级是用 Google 授权的 1.2T 参数定制 Gemini 模型替换原有的混合架构。授权费约 $10 亿/年，合同期限未知。Siri 新增了文本聊天模式和多步骤任务规划（multi-step task planning），后者使用 ReAct 风格的 agent 循环：Observe -> Think -> Act -> Observe。</p>
+      <div class="highlight">工程分析：Extensions 的无状态设计是一个关键约束——第三方模型无法建立用户画像或保留跨会话上下文。这保护了用户隐私，但也限制了个性化体验。Anthropic 的 Claude 有一个潜在优势：其 Memory 功能可以在客户端侧实现跨会话上下文，绕过 Apple 的无状态要求。Morgan Stanley 估计 Extensions 将为每家入选的模型提供商带来 1-3 亿年活跃用户的增量分发。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Anthropic 与 OpenAI 双 IPO 财务与技术拆解
+        <span class="tag tag-industry">IPO</span>
+      </div>
+      <p>Anthropic 于 6 月 2 日提交保密 S-1（H 轮 $65B，post-money $965B），OpenAI 预计 9 月前申报。深度对比：</p>
+      <p><strong>收入结构差异</strong>：Anthropic 的 $30B ARR 中，API/企业收入占比约 65%（vs. OpenAI 的 ~40%），Claude Code 单品 $2.5B ARR（9 个月增速超 GitHub Copilot 两年表现）。OpenAI 更依赖 ChatGPT 消费者订阅收入。</p>
+      <p><strong>计算基础设施</strong>：Anthropic 租用了 xAI Colossus 1 的全部算力（22 万+ NVIDIA GPU，300+ MW），同时保有 Google Cloud 和 AWS 的大规模配额。OpenAI 依赖 Azure 专属集群，正在通过 DeployCo JV 建设自有数据中心。</p>
+      <p><strong>模型性能趋势</strong>：Claude Mythos Preview 在 BenchLM 综合排名以 99 分领先，Claude Opus 4.8 为 95 分。Anthropic 在 agentic/coding 基准上保持优势，但 Google Gemini 3.1 Pro 在 GPQA（94.1%）上领先。</p>
+      <p><strong>估值逻辑</strong>：Anthropic 以 $965B 首次超越 OpenAI 的私募估值。假设 $30B ARR 和 80x 年化增长率，当前 P/S 约 32x——相比 Cerebras IPO 时的 ~95x P/S，仍有上行空间。关键变量：IPO 后增长能否持续、AI 编程市场天花板、Mythos 系列模型的商业化进度。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Gemini 3.5 Flash 架构与 Agent 基准详解
+        <span class="tag tag-model">模型</span>
+      </div>
+      <p>Gemini 3.5 Flash 的核心技术改进：</p>
+      <p><strong>推理延迟</strong>：相比 Gemini 3.0 Flash 降低 75%（4x 速度提升），通过稀疏注意力机制和推测解码（speculative decoding）实现。Time-to-first-token (TTFT) 从 ~400ms 降至 ~100ms 级别。</p>
+      <p><strong>Agentic 基准</strong>：在 SWE-bench Verified 和 AgentBench 上超越 Gemini 3.1 Pro，主要改进来自更好的工具调用一致性（tool-call consistency）和长链推理中的上下文保持能力。</p>
+      <p><strong>成本效率</strong>：保持 Flash 系列的定价优势（约为 Pro 系列的 1/5），使其成为 Agent 工作负载的理想选择——Agent 场景中每次工具调用都会触发一次完整推理，延迟和成本的乘数效应远大于单轮对话。</p>
+      <p>Gemini Spark 个人助手是 Gemini 产品线的消费级 Agent 入口，Daily Brief 功能基于 RAG（Retrieval-Augmented Generation）从用户邮件和日历中提取结构化摘要。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        微软 MAI-Thinking-1 / MAI-Code-1-Flash：自研模型战略解读
+        <span class="tag tag-model">模型</span>
+      </div>
+      <p>微软发布首个自研 LLM MAI-Thinking-1（官方称对标 Claude Opus 4.6）和 MAI-Code-1-Flash（vibe coding 专用）。技术意义：</p>
+      <p><strong>MAI-Thinking-1</strong>：推理型模型，采用 chain-of-thought 和 verify-then-generate 架构。微软称其在 MATH 和 HumanEval+ 上达到 Opus 4.6 水平，但独立第三方基准验证尚未公布。</p>
+      <p><strong>MAI-Code-1-Flash</strong>：专注"氛围编程"——从自然语言描述生成完整项目代码。架构疑似基于 Phi-4 系列的蒸馏 + 针对代码任务的 SFT/DPO。目标场景是 VS Code + Copilot 的"从零到一"场景，与现有 Copilot（GitHub）的补全/编辑场景互补。</p>
+      <div class="highlight">工程分析：微软建立自研模型能力的战略逻辑清晰——降低对 OpenAI 的依赖（当前 Azure AI 的旗舰能力几乎完全来自 GPT 系列），同时在高利润的 AI 编码市场建立差异化。但"对标 Opus 4.6"而非最新的 4.8 或 Mythos，暗示微软在前沿模型上仍有差距。</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon gpu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+      </div>
+      <h2 class="section-title">半导体工程与数据中心架构</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        SIA/德勤 AI 芯片收入预测模型：$1.2T by 2028
+        <span class="tag tag-gpu">半导体</span>
+      </div>
+      <p>SIA 与德勤联合报告（2026 年 6 月 1 日发布）的技术分解：</p>
+      <p><strong>价值分布</strong>：半导体占 AI 数据服务器机架总价值的 95%。AI 加速器（GPU/TPU/ASIC）占约 60%，HBM 存储占约 20%，网络/互连芯片占约 10%，其余为电源管理和散热 IC。</p>
+      <p><strong>增长驱动</strong>：2024 年 AI 数据中心芯片年收入约 $1200 亿，预计 2028 年达 $1.2 万亿（CAGR ~78%）。增长来自三个维度：(1) 新数据中心建设（hyperscaler CapEx 从 $200B 增至 $500B+），(2) 每机架芯片价值密度提升（HBM 容量翻倍），(3) 推理工作负载从 GPU 向定制 ASIC（Google TPU、Amazon Trainium）分散。</p>
+      <p><strong>供应链瓶颈</strong>：HBM 良率是最大约束。SK 海力士在 HBM4 上的良率约 60%（vs HBM3E 的 80%），限制了 NVIDIA Blackwell/Vera Rubin 系统的产能。CoWoS 封装产能（TSMC 独占）是另一个关键瓶颈。</p>
+      <a href="https://www.semiconductors.org/new-report-finds-semiconductors-account-for-95-of-an-ai-data-server-racks-value" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        SIA 报告原文
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        RTX Spark 架构分析：Grace-Blackwell 异构 SoC
+        <span class="tag tag-gpu">NVIDIA</span>
+      </div>
+      <p>RTX Spark 的技术规格与架构设计：</p>
+      <p><strong>CPU</strong>：20 核 ARM Neoverse V3 (Grace 架构)，每核 512KB L2，共享 60MB L3。支持 LPDDR5X-8400，最高 128GB 统一内存。功耗约 35W（CPU 部分）。</p>
+      <p><strong>GPU</strong>：Blackwell RTX 架构，SM 数量未完整公布，但确认支持 FP4 张量核心，峰值 AI 性能 1 PFLOPS（FP4 推理）。支持 DLSS 5（帧生成 + 光线重建）。</p>
+      <p><strong>统一内存架构</strong>：CPU 和 GPU 共享 LPDDR5X 内存池，无需通过 PCIe 或 NVLink 拷贝数据。对本地 LLM 推理的意义：128GB 统一内存可以容纳 70B 参数模型（FP16）或 140B 参数模型（INT8），消除了 GPU VRAM 瓶颈。</p>
+      <div class="highlight">工程分析：RTX Spark 是 NVIDIA 将数据中心架构（Grace-Blackwell）直接缩放到笔记本的首次尝试。128GB 统一内存 + 1 PFLOPS FP4 意味着本地可以运行 Llama 3.3 405B（INT4 量化）级别的模型，推理延迟约 20-30 tok/s。这从根本上改变了"本地 AI vs 云端 AI"的经济学——对于延迟敏感的 Agent 工作负载，本地推理可能比 API 调用更便宜。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        华为 Tau 定律：绕过 EUV 封锁的半导体理论创新
+        <span class="tag tag-gpu">华为</span>
+      </div>
+      <p>华为在 IEEE ISCAS 2026 上发表的"Tau (τ) Law"论文核心论点：</p>
+      <p><strong>理论框架</strong>：摩尔定律的经典表述基于几何尺度（geometric scaling）——晶体管尺寸每 18 个月缩小一半。Tau Law 提出"时间尺度"（time-scaling）——通过架构优化、先进封装（chiplet、3D stacking）和计算范式创新（存算一体、光电混合），在不依赖 EUV 光刻的情况下实现等效性能提升。</p>
+      <p><strong>实践验证</strong>：华为已基于此原则设计并量产 381 款芯片，覆盖 AI 训练（Ascend 系列）、网络（数据通信芯片组）和消费电子（麒麟系列）。目标是 2031 年实现 1.4nm 等效晶体管密度——不通过实际的 1.4nm 工艺，而通过多重封装和架构优化达到相同的每平方毫米计算密度。</p>
+      <p><strong>Ascend 950PR</strong>：华为最新 AI 训练芯片，采用 chiplet 封装，将多个 7nm/5nm die 通过 CoWoS 类封装互连。单芯片等效算力对标 NVIDIA H200（不公布具体 benchmark 但声称在 Llama 训练任务上达到 80% 效率比）。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        阿里巴巴臻武 M890：自研并行计算架构详解
+        <span class="tag tag-gpu">芯片</span>
+      </div>
+      <p>阿里巴巴在 2026 云栖大会发布的臻武 M890 采用自研并行计算架构（Proprietary Parallel Computing Architecture, PPCA）：</p>
+      <p>设计理念是面向 Transformer 推理优化——采用大规模向量处理单元阵列，支持 BF16/FP8/INT4 混合精度。内置推理加速引擎针对 MoE（Mixture of Experts）模型架构做了专门优化（通义千问系列大量使用 MoE）。两年路线图包括臻武 V900（推理专用）和 J900（训练专用），暗示阿里正在走 Google TPU 式的训练/推理芯片分离路线。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon research">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+      </div>
+      <h2 class="section-title">研究前沿与安全</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        前沿模型基准趋同：竞争转向 Agent 能力与工程效率
+        <span class="tag tag-model">基准测试</span>
+      </div>
+      <p>Stanford HAI 2026 AI Index 和各独立基准平台的综合分析表明，前沿 LLM 在传统基准上已高度趋同：</p>
+      <table class="tech-table">
+        <thead><tr><th>基准</th><th>#1 模型</th><th>得分</th><th>#2 模型</th><th>得分</th><th>差距</th></tr></thead>
+        <tbody>
+          <tr><td>BenchLM Overall</td><td>Claude Mythos Preview</td><td>99</td><td>Claude Opus 4.8</td><td>95</td><td>4 pts</td></tr>
+          <tr><td>GPQA (研究生)</td><td>Gemini 3.1 Pro Preview</td><td>94.1%</td><td>MiniMax M3</td><td>92.9%</td><td>1.2 pts</td></tr>
+          <tr><td>MMLU</td><td>GPT-5.3 Codex</td><td>93%</td><td>(前 15 名)</td><td>>88%</td><td>&lt;5 pts</td></tr>
+          <tr><td>MMLU-Pro</td><td>Qwen3.7 Max</td><td>92.3%</td><td>Claude Opus 4.8</td><td>91.8%</td><td>0.5 pts</td></tr>
+        </tbody>
+      </table>
+      <p>基准趋同意味着竞争维度正在转移：从"谁的基准分更高"转向"谁的 Agent 执行更可靠"和"谁的工程效率更高"。Anthropic 在 Agent 领域（SWE-bench, Claude Code ARR）保持优势，Google 在推理速度（Gemini 3.5 Flash 4x）和多模态（Gemini Robotics-ER）上领先，OpenAI 在消费者规模（ChatGPT 10 亿 MAU）和多模态生成（GPT-Rosalind）上占据前列。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Anthropic 全球暂停论文：递归自改进的风险框架
+        <span class="tag tag-research">AI 安全</span>
+      </div>
+      <p>Anthropic 发布安全论文《Coordinated Global Pause Mechanisms for Frontier AI》，核心论点：</p>
+      <p><strong>风险度量</strong>：当 AI 系统编写自身代码超过 50% 时（Claude 目前为 80%+），递归自改进（Recursive Self-Improvement, RSI）不再是理论风险而是工程现实。论文提出 RSI-Index——衡量 AI 系统对自身代码库控制程度的量化指标（代码行占比 x 架构修改权限 x 部署自主性）。</p>
+      <p><strong>暂停触发条件</strong>：论文建议在以下任一条件满足时触发全球暂停：(1) RSI-Index > 0.9（AI 几乎完全自主开发自身），(2) 单次训练运行计算量超过 10^28 FLOP，(3) 模型在受控环境中展示出未预期的目标泛化能力。</p>
+      <p><strong>实施机制</strong>：提议建立多边 AI 安全监测网络（类比核不扩散机制的 IAEA），成员国承诺在触发条件满足时暂停前沿训练 90 天进行安全审计。论文承认执行难度，但认为"没有暂停按钮"比"按钮可能不被按下"风险更大。</p>
+      <a href="https://www.anthropic.com/research" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Anthropic Research
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        光子集成芯片：单器件实现光信号全链路
+        <span class="tag tag-research">光计算</span>
+      </div>
+      <p>ScienceDaily 报道的这项突破来自一个跨学科团队，核心技术成果：在单个芯片上集成了三个关键光学功能——光源生成（on-chip laser）、光路导向（waveguide routing）和光信号读出（photodetector）。</p>
+      <p><strong>技术意义</strong>：传统光计算系统需要将激光器、调制器、波导和探测器分别制造再组装。单芯片集成消除了组件间的对准和耦合损耗，能效提升约 10 倍。对 AI 推理的影响：光互连可以将数据中心内 GPU 之间的通信延迟从 ~1μs（电学互连）降至 ~10ns（光互连），对分布式推理和 MoE 模型的 expert 路由延迟有显著改善。</p>
+      <a href="https://www.sciencedaily.com/releases/2026/06/260601025343.htm" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        ScienceDaily 原文
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        科罗拉多 AI 法案 vs 联邦预占 vs EU AI Act：监管框架对比
+        <span class="tag tag-policy">监管</span>
+      </div>
+      <p>三套 AI 监管框架的技术对比：</p>
+      <table class="tech-table">
+        <thead><tr><th>维度</th><th>科罗拉多 SB 21-169</th><th>白宫联邦框架</th><th>EU AI Act</th></tr></thead>
+        <tbody>
+          <tr><td>生效日期</td><td>2026-06-30</td><td>提议阶段</td><td>2024-08 (分阶段)</td></tr>
+          <tr><td>范围</td><td>高风险决策 AI</td><td>全国预占州法</td><td>全面风险分级</td></tr>
+          <tr><td>分级方式</td><td>按应用领域</td><td>待定</td><td>按风险等级 (4 级)</td></tr>
+          <tr><td>核心义务</td><td>反歧视+消费者通知</td><td>儿童安全+创新</td><td>注册+审计+合规</td></tr>
+          <tr><td>罚则</td><td>州 AG 执法</td><td>待定</td><td>最高全球营收 7%</td></tr>
+          <tr><td>对开发者影响</td><td>中等（文档+报告）</td><td>取决于最终立法</td><td>高（全面合规体系）</td></tr>
+        </tbody>
+      </table>
+      <p>白宫的联邦预占推动可能使科罗拉多法案成为过渡性法规。但在联邦法未通过前，科罗拉多法案是美国开发者面临的最严格合规要求。建议重点关注"实质性决定"定义的边界——如果你的 AI 产品在上述六个领域（教育/就业/医疗/住房/保险/法律）做出推荐或筛选，很可能被纳入监管范围。</p>
+    </div>
+  </div>
+
+</div>
+
+</div>
+
+<footer class="footer">
+  <p>AI Pulse Daily Report | Edition #75 | 2026.06.08</p>
+  <p>数据来源：SIA/Deloitte, BenchLM.ai, Stanford HAI, Crunchbase, CNBC, ScienceDaily, Cooley, Wilson Sonsini, Holland & Knight, Al Jazeera, Intel Newsroom, buildfastwithai.com, dentro.de, augusto.digital</p>
+  <p>本报告由 AI 自动生成，内容仅供参考</p>
+</footer>
+
+</div>
+
+<script>
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-content').forEach(function(el) {
+    el.classList.remove('active');
+  });
+  document.querySelectorAll('.tab-btn').forEach(function(el) {
+    el.classList.remove('active');
+  });
+  document.getElementById(tabId).classList.add('active');
+  var tabs = { casual: 0, intermediate: 1, advanced: 2 };
+  document.querySelectorAll('.tab-btn')[tabs[tabId]].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>

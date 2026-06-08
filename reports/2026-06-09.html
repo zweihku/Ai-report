@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily Report | 2026.06.09</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --claude-bg: #FAF9F7;
+    --claude-surface: #FFFFFF;
+    --claude-border: #E8E5E0;
+    --claude-text-primary: #1A1714;
+    --claude-text-secondary: #6B6560;
+    --claude-text-tertiary: #9B9590;
+    --claude-accent: #DA7756;
+    --claude-accent-light: #F5E6DF;
+    --claude-accent-dark: #C4623F;
+    --claude-tag-blue: #E8F0FE;
+    --claude-tag-blue-text: #3B6CB5;
+    --claude-tag-green: #E6F4EA;
+    --claude-tag-green-text: #2D7A3F;
+    --claude-tag-purple: #F0E6FA;
+    --claude-tag-purple-text: #7B3FAF;
+    --claude-tag-amber: #FEF3E2;
+    --claude-tag-amber-text: #B5752D;
+    --claude-tag-red: #FDE8E8;
+    --claude-tag-red-text: #B53B3B;
+    --claude-card-shadow: 0 1px 3px rgba(26, 23, 20, 0.06), 0 1px 2px rgba(26, 23, 20, 0.04);
+    --claude-card-shadow-hover: 0 4px 12px rgba(26, 23, 20, 0.08), 0 2px 4px rgba(26, 23, 20, 0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+    background: var(--claude-bg);
+    color: var(--claude-text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 8px;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--claude-accent-dark); }
+
+  .header {
+    text-align: center;
+    padding: 48px 0 40px;
+    border-bottom: 1px solid var(--claude-border);
+    margin-bottom: 32px;
+  }
+
+  .header-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--claude-accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .header .date {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    font-weight: 400;
+  }
+
+  .header .edition-note {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    margin-top: 8px;
+    line-height: 1.8;
+  }
+
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 36px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--claude-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .tab-btn:hover {
+    color: var(--claude-text-primary);
+    background: var(--claude-bg);
+  }
+
+  .tab-btn.active {
+    background: var(--claude-accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(218, 119, 86, 0.3);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .section { margin-bottom: 36px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .section-icon.gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .section-icon.model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .section-icon.product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .section-icon.research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .section-icon.industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .section-icon.policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .card {
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--claude-card-shadow);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .card:hover { box-shadow: var(--claude-card-shadow-hover); }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .card p {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.75;
+    margin-bottom: 8px;
+  }
+
+  .card p:last-child { margin-bottom: 0; }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .tag-gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .tag-model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .tag-product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .tag-research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .tag-industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .tag-policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .highlight {
+    background: var(--claude-accent-light);
+    border-left: 3px solid var(--claude-accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--claude-accent-dark);
+    line-height: 1.7;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .stat-item {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--claude-accent);
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--claude-text-tertiary);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 8px;
+    transition: color 0.15s;
+  }
+
+  .source-link:hover { color: var(--claude-accent-dark); text-decoration: underline; }
+
+  .tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .tech-table th, .tech-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .tech-table th {
+    font-weight: 600;
+    color: var(--claude-text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .tech-table td { color: var(--claude-text-primary); }
+
+  .footer {
+    text-align: center;
+    padding-top: 40px;
+    border-top: 1px solid var(--claude-border);
+    margin-top: 60px;
+  }
+
+  .footer p {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    line-height: 1.8;
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 24px 16px 60px; }
+    .header { padding: 32px 0 28px; }
+    .header h1 { font-size: 24px; }
+    .tab-btn { font-size: 12px; padding: 10px 8px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<a href="/" class="back-link">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+  返回 AI Pulse
+</a>
+
+<header class="header">
+  <div class="header-logo">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    AI PULSE
+  </div>
+  <h1>AI 日报 | 2026.06.09</h1>
+  <p class="date">星期二 / Tuesday, June 9, 2026</p>
+  <p class="edition-note">Edition #76 - 佛罗里达州成首个起诉 OpenAI 并将 Altman 列为被告的州政府 83 页诉状指控 ChatGPT 危害儿童和弱势用户；半导体板块经历 1.3 万亿美元闪崩后强势反弹 VanEck 半导体 ETF 盘前涨 3.3%；GPT-5.6 现身 Codex 日志 Polymarket 预测 6 月中旬发布概率 64%；Gemini 3.5 Pro 本月即将 GA 提供 200 万 token 上下文和 Deep Think 推理；ChatGPT 全球市场份额降至 54.7% Gemini 飙升至 27.4%；Mistral 3 以 GPT-5.2 九成性能和 15% 价格搅动市场；Flourish 获 Bezos 领投 5 亿美元融资研发仿脑 AI 仅需 20-50 瓦功耗；SpaceX 本周三定价 IPO 估值 $1.75 万亿 Google 签下 $9.2 亿/月算力合同</p>
+</header>
+
+<nav class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('casual')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+    轻松阅读
+  </button>
+  <button class="tab-btn" onclick="switchTab('intermediate')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+    技术进阶
+  </button>
+  <button class="tab-btn" onclick="switchTab('advanced')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+    深度技术
+  </button>
+</nav>
+
+<!-- ==================== 轻松阅读版 ==================== -->
+<div id="casual" class="tab-content active">
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon policy">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <h2 class="section-title">政策与安全</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        佛罗里达州起诉 OpenAI 和 Altman 本人，AI 行业首例 CEO 个人责任诉讼
+        <span class="tag tag-policy">诉讼</span>
+      </div>
+      <p>佛罗里达州总检察长正式起诉 OpenAI 和 CEO Sam Altman，这是美国历史上首次有州政府在 AI 安全诉讼中将 CEO 列为被告。长达 83 页的诉状指控 ChatGPT 在明知危险的情况下向公众推广，包括诱导大规模枪击案模仿、鼓励易受伤害用户自杀、以及令儿童上瘾等。州检察长正在寻求可能高达数十亿美元的罚款。这起诉讼可能开创一个先例：AI 公司的高管需要为产品造成的伤害承担个人法律责任。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        科罗拉多州 AI 法案被改写，生效日推迟到 2027 年 1 月
+        <span class="tag tag-policy">监管</span>
+      </div>
+      <p>就在原定 6 月 30 日生效前几周，科罗拉多州州长签署了 SB 189 法案，对原 AI 法案进行了大幅修改。新法律将生效日期推迟到 2027 年 1 月 1 日，同时大幅降低了对雇主的合规要求。与此同时，xAI 也提交了临时禁令动议，联邦法官已暂停了原法案的执行。白宫方面则在推动联邦层面的统一标准来取代各州各自为政的 AI 法规。企业暂时松了一口气，但监管的方向没有变。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        欧盟 AI 法案透明度截止日 8 月 2 日临近
+        <span class="tag tag-policy">监管</span>
+      </div>
+      <p>欧盟 AI 法案的下一个重大合规节点即将到来：8 月 2 日前，所有在关键基础设施、教育、就业、公共服务、执法和移民领域使用高风险 AI 系统的公司必须满足透明度要求。这是全球最全面的 AI 监管框架进入实质执行的标志性时刻。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        DARPA 启动 AI Forge 计划，加速 AI 在国防领域落地
+        <span class="tag tag-policy">国防</span>
+      </div>
+      <p>美国国防高级研究计划局（DARPA）宣布启动"AI Forge"项目，旨在加速 AI 技术从实验室走向国防实战部署。该计划聚焦于缩短 AI 研究到军事能力转化的周期，涵盖情报分析、网络安全和自主系统等领域。这标志着美国军方正在从"探索 AI 可能性"转向"系统性部署 AI 能力"。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon industry">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      </div>
+      <h2 class="section-title">行业与市场</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        半导体板块经历 1.3 万亿美元闪崩后强势反弹
+        <span class="tag tag-industry">市场</span>
+      </div>
+      <p>上周五（6 月 5 日）AI 和半导体股票遭遇了 2025 年 4 月以来最严重的抛售，市值蒸发约 1.3 万亿美元。导火索是 Broadcom 的 AI 芯片收入指引低于预期（160 亿 vs 预期 172 亿美元）。NVIDIA 单日下跌 6%，一度跌破 5 万亿美元市值；AMD 跌 10.86%；Intel 跌 11.28%；纳斯达克暴跌 4%。不过到周一盘前，市场已开始强势反弹，VanEck 半导体 ETF 盘前涨 3.3%。这次闪崩提醒投资者：AI 热潮的预期已经非常高，任何一点点不及预期都会引发剧烈波动。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        ChatGPT 全球份额降至 54.7%，Gemini 飙升至 27.4%
+        <span class="tag tag-industry">市场</span>
+      </div>
+      <p>AI 助手市场正在经历一场巨变。ChatGPT 的全球网页访问份额从 2025 年 2 月的 76.5% 跌至 54.7%，而 Google Gemini 在半年内暴涨 104%，达到 27.4%。Claude 以 8.2% 排名第三，但季度环比增长高达 306%，是增速最快的平台。AI 助手市场正从 OpenAI 的准垄断走向三足鼎立。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        SpaceX IPO 本周三定价，Google 签下 9.2 亿美元/月算力合同
+        <span class="tag tag-industry">IPO</span>
+      </div>
+      <p>SpaceX 的 IPO 路演已于昨天启动，预计本周三（6 月 11 日）定价，目标筹资 750 亿美元，估值 1.75 万亿美元，有望成为史上最大科技 IPO。一个重磅消息是：Google 与 SpaceX 签署了价值约 9.2 亿美元/月的算力服务协议，加上此前 Anthropic 的 12.5 亿美元/月 Colossus 数据中心租约，SpaceX 的 AI 算力年化收入已超过 260 亿美元。太空公司正在变成 AI 基础设施巨头。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        企业 AI 现状：70% 在用，62% 卡在实验阶段
+        <span class="tag tag-industry">报告</span>
+      </div>
+      <p>德勤最新调查揭示了一个矛盾现实：超过 70% 的企业已在使用生成式 AI，82% 的高管每周都在用——但 62% 的企业仍停留在实验阶段，只有 29% 看到了显著回报。更令人担忧的是，54% 的 C 级高管表示 AI 的落地正在"撕裂他们的公司"，因为技术变革的速度远超组织适应的能力。AI 已经不缺采用者，缺的是能把实验变成生产力的组织能力。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Figure AI 机器人工厂量产：每小时造一台人形机器人
+        <span class="tag tag-industry">机器人</span>
+      </div>
+      <p>Figure AI 的 BotQ 工厂已实现每小时生产一台 Figure 03 人形机器人的节拍。与此同时，BMW 将人形机器人引入欧洲莱比锡工厂用于电动车电池组装，日本航空在东京羽田机场部署了人形机器人开始为期三年的服务。人形机器人市场预计将从目前的 20-30 亿美元增长到 2035 年的 2000 亿美元。科幻正在变成制造业。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon model">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+      </div>
+      <h2 class="section-title">模型与前沿</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        GPT-5.6 现身 Codex 日志，预计月中发布
+        <span class="tag tag-model">模型</span>
+      </div>
+      <p>OpenAI 的 GPT-5.6 在内部 Codex 日志中被发现，加上 IPO 前的"发布冲刺"策略，外界普遍认为 GPT-5.6 将在 6 月中旬发布。Polymarket 的预测市场给出了 64% 的概率预测它会在 6 月 15-21 日之间公开发布。这将是 GPT-5 家族的第三个主要更新，有望进一步缩小与 Claude Mythos 的基准测试差距。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Gemini 3.5 Pro 本月 GA：200 万 token 上下文 + Deep Think 推理
+        <span class="tag tag-model">模型</span>
+      </div>
+      <p>Google 在 I/O 大会上亮相的 Gemini 3.5 Pro 将在本月正式 GA（全面可用）。它拥有 200 万 token 的上下文窗口——是 GPT-5.5 的两倍，还配备了"Deep Think"深度推理模式。定价预计约 $15/$60 每百万 token。同时，Google 还推出了 Gemini Spark 个人 AI 代理，可以 24/7 在后台运行，即使设备关闭也能持续工作。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Mistral 3 发布：GPT-5.2 九成性能，价格仅 15%
+        <span class="tag tag-model">模型</span>
+      </div>
+      <p>法国 AI 公司 Mistral 发布了 Mistral 3 系列，包括 Large 3 旗舰模型。它能达到 GPT-5.2 约 92% 的性能，但价格只有后者的 15%。Mistral 还推出了 Studio 中的 Connectors 功能，支持内置和自定义 MCP 连接器。这个欧洲团队正在用极致性价比挑战美国 AI 巨头，对成本敏感的企业客户来说这是个好消息。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Flourish 获贝索斯领投 5 亿美元，用 20 瓦模拟人脑
+        <span class="tag tag-research">研究</span>
+      </div>
+      <p>脑科学 AI 初创公司 Flourish 获得 5 亿美元融资，估值 25 亿美元，投资者包括 Jeff Bezos（5000 万+）、Lux Capital 和 Google Ventures。公司由 Internet Explorer 创始人 Thomas Reardon 联合创办，核心产品 Cortex AI 系统尝试用连接组学模拟大脑功能，目标是将 AI 运算功耗从数据中心级别降至仅 20-50 瓦——相当于一个灯泡的电量就能运行强 AI。如果成功，这将彻底改变 AI 的能源经济学。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon product">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+      </div>
+      <h2 class="section-title">产品与工具</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Google 推出托管 Agent 和 Antigravity 自主代理
+        <span class="tag tag-product">平台</span>
+      </div>
+      <p>Google 在 Gemini API 中推出了 Managed Agents（托管代理）公开预览版，开发者可以在 Google 托管的安全沙盒环境中构建和部署自主、有状态的 AI 代理。同时发布的 Antigravity Agent 能够自主规划、推理、编写和执行代码、管理文件并浏览网页。这是继 Anthropic Claude Code 之后，又一个走向"AI 全自动工作流"的重大产品。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        OpenAI 推出 ChatGPT Lockdown Mode，防护提示注入攻击
+        <span class="tag tag-product">安全</span>
+      </div>
+      <p>ChatGPT 面向所有登录用户推出了 Lockdown Mode——一个高级安全设置，限制 AI 对网页和外部服务的访问，降低提示注入攻击导致数据泄露的风险。随着越来越多企业将 AI 接入核心业务流程，这类安全加固功能变得至关重要。这也是 OpenAI 为 IPO 做的"安全门面"工程之一。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        NVIDIA 与 SK 海力士达成多年 AI 存储芯片合作
+        <span class="tag tag-gpu">半导体</span>
+      </div>
+      <p>NVIDIA 和 SK 海力士宣布达成多年技术合作伙伴关系，共同开发面向下一代 AI 工厂的存储技术。合作将围绕 NVIDIA Vera Rubin AI 超级计算机和 Vera CPU 开发下一代 HBM（高带宽存储），解决 AI 计算中最关键的内存瓶颈问题。当前 AI 训练的最大限制往往不是算力，而是数据在 GPU 和内存之间的搬运速度。</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== 技术进阶版 ==================== -->
+<div id="intermediate" class="tab-content">
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon policy">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <h2 class="section-title">政策与安全</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        佛州 vs OpenAI：首例 AI CEO 个人责任诉讼的法律架构
+        <span class="tag tag-policy">诉讼</span>
+      </div>
+      <p>佛罗里达州总检察长于 6 月 1 日提交 83 页诉状，同时起诉 OpenAI 公司和 CEO Sam Altman 个人。核心法律理论：Altman 在公开声明中将 ChatGPT 定位为"安全可靠"，同时内部知晓产品在儿童保护和自杀预防方面的严重缺陷，构成欺诈性商业行为。此前从未有州或联邦政府在 AI 诉讼中寻求追究 CEO 的个人责任。</p>
+      <div class="highlight">技术点评：这起诉讼的法律创新在于将 AI 产品安全与 CEO 的公开声明直接绑定。如果法院支持这一理论，意味着 AI 公司 CEO 在产品发布会上的每一句话都可能成为日后诉讼的证据。这将深刻改变 AI 行业高管对外沟通产品能力和安全性的方式。</div>
+      <div class="stats-row">
+        <div class="stat-item"><div class="stat-value">83 页</div><div class="stat-label">诉状长度</div></div>
+        <div class="stat-item"><div class="stat-value">首例</div><div class="stat-label">AI CEO 个人责任诉讼</div></div>
+        <div class="stat-item"><div class="stat-value">数十亿</div><div class="stat-label">潜在罚款金额 ($)</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        科罗拉多 AI 法案 SB 189：从严监管到务实妥协
+        <span class="tag tag-policy">监管</span>
+      </div>
+      <p>科罗拉多州长 5 月 14 日签署 SB 189，实质性重写了原 AI 法案。关键变化：生效日推迟到 2027 年 1 月 1 日；大幅降低雇主义务——仍要求在使用自动化决策前通知员工、提供申诉流程和保留 3 年记录，但取消了多项原本繁重的合规要求；每项违规最高罚款 $20,000。与此同时，xAI 的临时禁令动议获得联邦法官支持，原法案执行已被冻结。</p>
+      <div class="highlight">技术点评：SB 189 的妥协反映了一个现实——过于激进的州级 AI 监管会驱走企业。科罗拉多原法案要求的风险管理计划和影响评估成本过高，尤其对中小企业。新法案的"通知 + 申诉 + 记录"三件套是一个更务实的最小合规框架。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        EU AI Act 透明度合规：8 月 2 日高风险 AI 系统截止日
+        <span class="tag tag-policy">监管</span>
+      </div>
+      <p>欧盟 AI 法案的下一个关键节点：8 月 2 日前，高风险 AI 系统的部署者必须满足全部透明度要求。覆盖六大领域：关键基础设施、教育、就业、公共服务、执法和移民。核心义务包括：AI 系统注册、自动化决策通知、人工审查机制和数据治理文档。最高罚款为全球营收的 7%。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon industry">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      </div>
+      <h2 class="section-title">行业与市场</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        半导体 $1.3T 闪崩解剖：Broadcom 指引差异触发系统性抛售
+        <span class="tag tag-industry">市场</span>
+      </div>
+      <p>6 月 5 日半导体板块闪崩的直接触发因素：Broadcom Q2 AI 芯片收入 $16B vs. 华尔街预期 $17.2B，缺口 $1.2B（-7%）。Broadcom CEO Hock Tan 将全年 AI 半导体收入指引设在 $56B，虽然同比近 3 倍增长，但市场期望更高。连锁反应：NVIDIA -6%（一度跌破 $5T 市值）、AMD -10.86%、Intel -11.28%、纳斯达克 -4%（2025 年 4 月以来最差单日）。</p>
+      <div class="highlight">技术点评：这次闪崩的深层原因是市场对"AI 芯片线性增长"的叙事产生怀疑。Broadcom 的 miss 暴露了一个事实：AI 芯片需求仍然强劲但不是无限线性增长，企业客户开始做更精细的算力采购决策。周一盘前 VanEck 半导体 ETF 反弹 3.3% 表明市场仍然看好长期趋势，但波动性将显著增加。</div>
+      <div class="stats-row">
+        <div class="stat-item"><div class="stat-value">$1.3T</div><div class="stat-label">市值蒸发</div></div>
+        <div class="stat-item"><div class="stat-value">-4%</div><div class="stat-label">纳斯达克单日跌幅</div></div>
+        <div class="stat-item"><div class="stat-value">+3.3%</div><div class="stat-label">半导体 ETF 盘前反弹</div></div>
+        <div class="stat-item"><div class="stat-value">$56B</div><div class="stat-label">Broadcom 全年 AI 收入指引</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        AI 助手市场格局重塑：ChatGPT 失守，三足鼎立成型
+        <span class="tag tag-industry">市场</span>
+      </div>
+      <p>全球 AI 助手市场正在经历结构性变化。ChatGPT 全球网页访问份额从 2025 年 2 月的 76.5% 降至 54.7%（-21.8pp）；Google Gemini 从 13.4% 飙升至 27.4%（+104% 半年）；Claude 以 8.2% 位列第三，季度环比增长 306%。三大平台合计占 90.3%，其余竞争者共享不到 10% 的市场。</p>
+      <div class="stats-row">
+        <div class="stat-item"><div class="stat-value">54.7%</div><div class="stat-label">ChatGPT 份额 (vs 76.5%)</div></div>
+        <div class="stat-item"><div class="stat-value">27.4%</div><div class="stat-label">Gemini 份额 (+104%)</div></div>
+        <div class="stat-item"><div class="stat-value">8.2%</div><div class="stat-label">Claude 份额 (+306% QoQ)</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        SpaceX IPO 定价在即：$1.75T 估值背后的 AI 算力帝国
+        <span class="tag tag-industry">IPO</span>
+      </div>
+      <p>SpaceX IPO 路演昨日启动，本周三定价，目标 $75B 融资额。两大 AI 算力合同构成 IPO 故事的核心支撑：Anthropic 的 Colossus 1 数据中心租约 $1.25B/月（至 2029 年 5 月）、Google 的云计算服务协议 $920M/月（至 2029 年 6 月），合计年化 AI 算力收入约 $26B。SpaceX 从火箭公司变成了 AI 基础设施公司。</p>
+      <div class="highlight">技术点评：Google-SpaceX 的 $920M/月算力合同值得深究。Google 自有 TPU v7 和大量 GPU 集群，为何还需要租用 SpaceX 的算力？可能的解释：(1) Gemini 3.5 Pro 的训练需要短期爆发算力，(2) 地理冗余需求，(3) 对冲芯片供应链风险。这种"自建 + 外租"的混合算力策略正在成为超大规模 AI 公司的新常态。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        人形机器人进入工业量产：每小时一台
+        <span class="tag tag-industry">机器人</span>
+      </div>
+      <p>三个标志性事件同时发生：Figure AI 的 BotQ 工厂实现 1 台/小时的 Figure 03 生产节拍；BMW 在莱比锡工厂部署 AEON 人形机器人用于 EV 电池组装（首次进入欧洲）；日本航空在羽田机场启动为期三年的人形机器人服务项目。NVIDIA 同时宣布与中国独角兽 Unitree 合作开发人形机器人平台，后者正在筹备 IPO。</p>
+      <div class="highlight">技术点评：Figure 03 的每小时一台产能标志着人形机器人从"手工打造原型"进入"工厂流水线"阶段。BMW 的采用尤其重要——汽车制造业是工业自动化的黄金标准，人形机器人进入汽车产线意味着它们的可靠性和经济性已经达到了工业级标准。市场预计从 $2-3B（2026）增长到 $200B（2035），复合年增长率约 60%。</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon model">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+      </div>
+      <h2 class="section-title">模型与前沿</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        GPT-5.6 泄露信号：OpenAI IPO 前的"发布冲刺"
+        <span class="tag tag-model">模型</span>
+      </div>
+      <p>GPT-5.6 出现在 OpenAI Codex 的内部日志中，结合 OpenAI 已提交保密 S-1（目标 9 月上市）的背景，这很可能是 IPO 前展示持续创新能力的策略性发布。Polymarket 给出的 6 月 15-21 日发布概率为 64%。GPT-5.5 Instant（5 月 5 日发布）是当前 ChatGPT 默认模型，GPT-5.6 的改进方向可能聚焦于 Agent 能力和代码生成。</p>
+      <div class="highlight">技术点评：OpenAI 的 IPO 路径与 Anthropic 截然不同。Anthropic 依靠 Claude Code 的爆发式收入增长（9 个月 $2.5B ARR）来支撑估值叙事，OpenAI 则需要通过频繁的模型发布来证明技术领先。GPT-5.6 如果在 Agent 基准测试上超越 Claude Opus 4.8，将对 AI 助手市场格局产生直接影响。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Gemini 3.5 Pro：200 万 token 上下文 + Deep Think 深度推理
+        <span class="tag tag-model">模型</span>
+      </div>
+      <p>Google I/O 上亮相的 Gemini 3.5 Pro 将在本月 GA。核心参数：200 万 token 上下文窗口（比 Claude 的 100 万 token 和 GPT-5.5 的 100 万 token 都大一倍）、Deep Think 推理模式（类似 Claude 的 extended thinking 但更侧重于多步推理链）、预计定价 ~$15/$60 per million tokens。同步发布 Gemini Spark——一个 24/7 运行的个人 AI 代理。</p>
+      <div class="stats-row">
+        <div class="stat-item"><div class="stat-value">2M</div><div class="stat-label">上下文窗口 (tokens)</div></div>
+        <div class="stat-item"><div class="stat-value">$15/$60</div><div class="stat-label">预计定价 (per M tokens)</div></div>
+        <div class="stat-item"><div class="stat-value">24/7</div><div class="stat-label">Gemini Spark 运行模式</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Mistral 3：欧洲的性价比反击
+        <span class="tag tag-model">模型</span>
+      </div>
+      <p>Mistral 3 系列发布，旗舰 Large 3 在主流基准测试上达到 GPT-5.2 约 92% 的性能，但 API 定价仅为后者的 15%。同步推出 Studio Connectors——支持 MCP 协议的内置和自定义连接器，降低企业集成门槛。Mistral 正在用"欧洲数据主权 + 极致性价比"的组合拳进攻美国银行和企业客户市场。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Flourish：贝索斯投注的仿脑 AI，目标 20 瓦运行强 AI
+        <span class="tag tag-research">研究</span>
+      </div>
+      <p>Flourish 获 $500M 融资（估值 $2.5B），投资者包括 Jeff Bezos ($50M+)、Lux Capital、Google Ventures。核心技术：用连接组学（connectomics）——对生物神经网络的精确映射——来设计 AI 架构，Cortex AI 系统目标功耗仅 20-50 瓦（当前大模型推理需要数千到数万瓦）。公司由 Internet Explorer 创始人 Thomas Reardon 和前 Amazon 高管 Rob Williams 联合创办。</p>
+      <div class="highlight">技术点评：Flourish 的技术路线与当前主流的 Transformer 架构截然不同。连接组学方法试图直接模拟大脑神经元的连接模式，而非通过统计学习来逼近智能。如果其 20-50 瓦的目标能实现（人脑功耗约 20 瓦），将意味着在手机或边缘设备上运行旗舰级 AI 成为可能。但这条路线的挑战在于：生物神经网络的运算方式与硅基芯片的并行计算范式存在根本差异，转换效率是核心难题。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        西北大学：印刷人工神经元能与活体脑细胞通信
+        <span class="tag tag-research">神经科技</span>
+      </div>
+      <p>西北大学工程师使用 MoS2 忆阻纳米片网络印刷出人工神经元，它们能产生与生物神经元高度相似的电信号，并成功激活了活体小鼠脑细胞。电压脉冲的时序和持续时间与生物信号匹配。这是迈向脑机接口和神经假体的关键一步——电子器件不再只是"读取"大脑信号，而是能"参与"大脑的信号网络。论文发表于 Nature Nanotechnology。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon product">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+      </div>
+      <h2 class="section-title">产品与工具</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Google Managed Agents：云端有状态自主 AI 代理
+        <span class="tag tag-product">平台</span>
+      </div>
+      <p>Google 在 Gemini API 中推出 Managed Agents 公开预览版。核心架构：开发者编写 Agent 定义（目标、工具、约束），Google Cloud 负责执行环境（安全沙盒、状态持久化、工具调用）。Antigravity Agent 是首个官方演示——能自主规划任务、编写执行代码、管理文件系统并浏览网页，全程无需人工干预。</p>
+      <div class="highlight">技术点评：Managed Agents 本质上是 Google 版的"Agent-as-a-Service"。与 Anthropic 的 Claude Code（本地执行）和 OpenAI 的 Codex（云端执行）不同，Google 的方案更侧重于企业级的安全隔离和多代理协调。关键差异化：Google Cloud 的全球基础设施为 Agent 提供了低延迟的工具调用网络，这在复杂 Agent 工作流中是一个重要优势。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        ChatGPT Lockdown Mode：企业级提示注入防护
+        <span class="tag tag-product">安全</span>
+      </div>
+      <p>OpenAI 为 ChatGPT 推出 Lockdown Mode，核心机制：限制 AI 对外部网页和服务的访问权限，阻断提示注入攻击中最常见的数据泄露路径（间接提示注入 → 触发外部请求 → 泄露会话数据）。这是可选的安全增强设置，面向所有登录用户开放。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        NVIDIA + SK 海力士：下一代 HBM 联合开发
+        <span class="tag tag-gpu">半导体</span>
+      </div>
+      <p>NVIDIA 和 SK 海力士达成多年合作协议，核心内容：联合开发面向 Vera Rubin AI 超级计算机的下一代 HBM（高带宽存储）。当前 HBM3e（SK 海力士是全球最大供应商）已成为 AI 训练的瓶颈之一——GPU 算力增长快于存储带宽增长。新一代 HBM4 预计将带宽提升 2-3 倍，同时降低单位能耗。</p>
+      <div class="highlight">技术点评：这笔合作的战略意义在于锁定供应链。NVIDIA 将 Vera Rubin 的存储规格与 SK 海力士深度绑定，意味着竞争对手（AMD、Intel）在获取同等规格 HBM 方面将面临时间劣势。SK 海力士已占全球 HBM 市场约 50% 份额，这种排他性合作进一步巩固了 NVIDIA 的供应链护城河。</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== 深度技术版 ==================== -->
+<div id="advanced" class="tab-content">
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon policy">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <h2 class="section-title">政策与安全</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        佛州 v. OpenAI：AI CEO 个人责任诉讼的法律框架深度分析
+        <span class="tag tag-policy">诉讼</span>
+      </div>
+      <p>佛罗里达州总检察长 6 月 1 日提起的诉讼构建了一个全新的 AI 责任法律框架，83 页诉状的核心论点：</p>
+      <p><strong>个人责任理论</strong>：诉状主张 Altman 在公开场合反复将 ChatGPT 定性为"安全"产品，同时内部文件显示公司已知悉多起严重安全事件（包括对弱势用户的潜在伤害），构成"知情欺诈"（knowing misrepresentation）。这是首次将 AI 产品安全问题从公司责任延伸到个人 CEO 责任。</p>
+      <p><strong>具体指控</strong>：(1) ChatGPT 被用于辅助策划大规模暴力事件，(2) 对有自杀倾向的用户生成有害内容，(3) 针对未成年人的成瘾性设计模式。诉状引用了 OpenAI 内部安全团队成员的匿名证词。</p>
+      <p><strong>潜在影响</strong>：如果法院接受个人责任理论，将产生三重效应：(a) AI 公司 CEO 的公开声明将受到证券法级别的审查，(b) 公司可能需要建立类似药企的"不良事件"强制报告制度，(c) AI 产品的安全审查流程将从"最佳实践"升级为"法律义务"。</p>
+      <a href="https://www.cnbc.com/2026/06/01/florida-ag-open-ai-altman-lawsuit.html" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        CNBC 原文
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        AI 监管三轨竞赛：科罗拉多 SB 189 vs 联邦预占 vs EU AI Act
+        <span class="tag tag-policy">监管</span>
+      </div>
+      <p>科罗拉多州 SB 189 的签署使美国 AI 监管格局更加复杂。三套框架对比：</p>
+      <table class="tech-table">
+        <thead><tr><th>维度</th><th>科罗拉多 SB 189</th><th>白宫联邦框架</th><th>EU AI Act</th></tr></thead>
+        <tbody>
+          <tr><td>生效日期</td><td>2027-01-01</td><td>提议阶段</td><td>2026-08-02 (高风险)</td></tr>
+          <tr><td>原有法案</td><td>原 SB 21-169 已废止</td><td>N/A</td><td>N/A</td></tr>
+          <tr><td>核心义务</td><td>通知+申诉+3年记录</td><td>创新优先+儿童安全</td><td>注册+审计+全面合规</td></tr>
+          <tr><td>罚则</td><td>$20,000/次</td><td>待定</td><td>全球营收 7%</td></tr>
+          <tr><td>变化趋势</td><td>显著放松</td><td>强调联邦预占</td><td>分阶段加强</td></tr>
+          <tr><td>xAI 禁令动议</td><td>已获法院支持</td><td>N/A</td><td>N/A</td></tr>
+        </tbody>
+      </table>
+      <p>关键洞察：白宫的 Trump AI Order（6 月 2 日）明确反对"繁重监管"，加上 xAI 成功获得联邦禁令，意味着当前行政和司法环境都倾向于限制州级 AI 监管的范围。但佛州对 OpenAI 的诉讼走的是消费者保护而非 AI 专门法律的路径，这种"传统法律适用于 AI"的思路不受联邦预占的影响。</p>
+      <a href="https://www.littler.com/news-analysis/asap/colorado-amends-its-artificial-intelligence-law-substantially-reducing" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Littler 法律分析
+      </a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon industry">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      </div>
+      <h2 class="section-title">行业与市场</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        半导体闪崩与反弹：AI 估值从线性增长转向周期性波动
+        <span class="tag tag-industry">市场</span>
+      </div>
+      <p>6 月 5 日 $1.3T 闪崩的技术解剖：</p>
+      <p><strong>触发层</strong>：Broadcom Q2 AI 芯片收入 $16B vs. 共识 $17.2B。CEO Hock Tan 的年度 AI 收入指引 $56B（~3x YoY）本身强劲，但 6 大客户（Anthropic, Google, Meta, OpenAI 等）的采购节奏出现季度性波动。</p>
+      <p><strong>放大层</strong>：算法交易在 NVIDIA 触及 $5T 关键支撑位时触发连锁止损。AMD 和 Intel 受 AI 业务占比更低的拖累跌幅更大（分别 -10.86% 和 -11.28%），反映了市场对"AI 边缘玩家"的更快抛弃。</p>
+      <p><strong>反弹层</strong>：周末多家卖方分析师发布看涨报告，强调 $56B AI 收入指引仍是同比 3x 增长。盘前 VanEck 半导体 ETF（SMH）+3.3%，表明机构资金在低位加仓。</p>
+      <p><strong>结构性启示</strong>：AI 芯片市场正从"每季必超预期"的蜜月期进入"季度波动"的成熟期。Broadcom 的 miss 不是需求问题（全年 $56B 仍是历史新高），而是预期管理问题。投资者需要将 AI 半导体从"增长股"心态调整为"高波动周期股"心态。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        AI 助手市场份额变迁：从垄断到寡头的技术驱动因素
+        <span class="tag tag-industry">市场</span>
+      </div>
+      <p>ChatGPT 全球份额从 76.5% 降至 54.7% 的三个结构性原因：</p>
+      <p><strong>1. 平台捆绑效应</strong>：Google Gemini 的增长（+104%）主要来自 Android 原生集成（自动替换 Google Assistant）和 Chrome/Gmail/Workspace 的深度整合。苹果 WWDC 2026 的 AI Extensions 系统将进一步稀释 ChatGPT 的 iOS 流量。</p>
+      <p><strong>2. 开发者迁移</strong>：Claude 的 306% QoQ 增长集中在开发者和专业用户群体。Claude Code 的 $2.5B ARR 直接从 ChatGPT Plus 和 GitHub Copilot 抢夺了付费开发者用户。</p>
+      <p><strong>3. 企业 API 分散化</strong>：Deloitte 调查显示 70%+ 企业使用 GenAI，但多数在同时评估 2-3 家供应商的 API，降低了对单一平台的依赖。</p>
+      <p>预测：到 2026 年底，ChatGPT 份额将稳定在 45-50%（底部支撑来自 OpenAI 的 10 亿+ MAU 和消费者品牌惯性），Gemini 达到 30-35%（Apple Extensions 助推），Claude 达到 12-15%（开发者和企业 API 驱动）。</p>
+      <a href="https://aitoolsrecap.com/Blog/ai-news-june-8-2026" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        AI Tools Recap
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        SpaceX IPO 算力合同深度拆解：AI 基础设施的价值重估
+        <span class="tag tag-industry">IPO</span>
+      </div>
+      <p>SpaceX S-1 中披露的 AI 算力合同结构：</p>
+      <table class="tech-table">
+        <thead><tr><th>客户</th><th>设施</th><th>月费</th><th>合同期</th><th>年化收入</th></tr></thead>
+        <tbody>
+          <tr><td>Anthropic</td><td>Colossus 1 (田纳西)</td><td>$1.25B</td><td>至 2029-05</td><td>$15B</td></tr>
+          <tr><td>Google</td><td>Cloud Compute</td><td>$920M</td><td>至 2029-06</td><td>$11B</td></tr>
+          <tr><td colspan="3"><strong>合计年化 AI 算力收入</strong></td><td colspan="2"><strong>~$26B</strong></td></tr>
+        </tbody>
+      </table>
+      <p><strong>算力资产详情</strong>：Colossus 1 位于田纳西州，拥有 22 万+ NVIDIA GPU 和 300+ MW 电力容量。Anthropic 的独占租约使其获得了与 Google（自有 TPU）和微软（Azure GPU 集群）可比的训练基础设施。</p>
+      <p><strong>估值含义</strong>：$26B 年化 AI 算力收入 x 合理倍数 10-15x = $260-390B，这意味着 AI 算力业务可能占 SpaceX $1.75T 估值的 15-22%。航天业务（火箭发射 + 星链）仍是核心，但 AI 算力正在成为 SpaceX 增长最快的业务线。</p>
+      <a href="https://fortune.com/2026/06/06/spacex-ipo-stock-price-valuation/" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Fortune
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        企业 AI 采用：70% 渗透率下的"落地困境"量化分析
+        <span class="tag tag-industry">调研</span>
+      </div>
+      <p>德勤最新企业 AI 调查的关键数据点：</p>
+      <div class="stats-row">
+        <div class="stat-item"><div class="stat-value">70%+</div><div class="stat-label">已部署 GenAI 的企业</div></div>
+        <div class="stat-item"><div class="stat-value">62%</div><div class="stat-label">停留在实验阶段</div></div>
+        <div class="stat-item"><div class="stat-value">29%</div><div class="stat-label">看到显著 ROI</div></div>
+        <div class="stat-item"><div class="stat-value">54%</div><div class="stat-label">C-suite 称 AI "撕裂公司"</div></div>
+      </div>
+      <p><strong>落地瓶颈分析</strong>：(1) 数据基础设施——多数企业的数据仍然分散在孤岛中，GenAI 的 RAG/Agent 管道需要统一的数据访问层；(2) 组织适应——AI 工具的推广速度（周级别）远超组织流程调整速度（季度到年级别）；(3) 评估困难——54% 的 C-suite 表示无法准确衡量 AI 投资的 ROI，因为生产力提升难以归因到具体的 AI 工具。</p>
+      <p><strong>成功企业的共同特征</strong>：JPMorgan Chase 将 AI 重新分类为"核心基础设施"（2026 年技术预算 $19.8B），这种"从实验到基础设施"的心态转变是突破 62% 实验瓶颈的关键。</p>
+      <a href="https://www.deloitte.com/us/en/what-we-do/capabilities/applied-artificial-intelligence/content/state-of-ai-in-the-enterprise.html" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Deloitte 报告
+      </a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon model">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+      </div>
+      <h2 class="section-title">模型与前沿</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        GPT-5.6 信号分析：OpenAI 的 IPO 前"模型冲刺"策略
+        <span class="tag tag-model">模型</span>
+      </div>
+      <p>GPT-5.6 在 Codex 日志中的出现有多个技术信号可以解读：</p>
+      <p><strong>时间线</strong>：GPT-5.5 Instant（5/5 发布）→ GPT-5.5-Cyber（6/1 面向 EU 发布）→ GPT-5.6（Codex 日志泄露）→ OpenAI S-1 保密提交（5/22）→ 目标 9 月上市。Polymarket 预测 6/15-21 发布概率 64%。</p>
+      <p><strong>预期改进方向</strong>：基于 Codex 日志中的 API 参数变化推测，GPT-5.6 可能在以下方面有突破：(1) Agent 工具调用的可靠性（当前 GPT-5.5 在复杂 Agent 工作流中的工具调用成功率约 87%，Claude Opus 4.8 约 94%），(2) 代码生成质量（目标可能是缩小与 Claude Code 在 SWE-bench Pro 上的差距），(3) 多模态推理（GPT-Rosalind 的图像生成能力可能整合到基础模型中）。</p>
+      <p><strong>竞争格局影响</strong>：如果 GPT-5.6 在 Agent 基准测试上接近或超过 Claude Opus 4.8，将对 AI 编程工具市场产生直接冲击——Claude Code ($2.5B ARR) 的增长故事核心是 Agent 能力领先，这一优势可能被缩小。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Gemini 3.5 Pro 技术规格与竞品对比
+        <span class="tag tag-model">模型</span>
+      </div>
+      <p>Gemini 3.5 Pro 的技术参数与竞品矩阵：</p>
+      <table class="tech-table">
+        <thead><tr><th>维度</th><th>Gemini 3.5 Pro</th><th>Claude Opus 4.8</th><th>GPT-5.5 Instant</th></tr></thead>
+        <tbody>
+          <tr><td>上下文窗口</td><td>2M tokens</td><td>1M tokens</td><td>1M tokens</td></tr>
+          <tr><td>推理模式</td><td>Deep Think</td><td>Extended Thinking</td><td>o3-style</td></tr>
+          <tr><td>定价 (input/output)</td><td>~$15/$60</td><td>$5/$25</td><td>~$10/$30</td></tr>
+          <tr><td>Agent 能力</td><td>Managed Agents</td><td>Claude Code</td><td>Codex</td></tr>
+          <tr><td>多模态</td><td>原生全模态</td><td>视觉+文本</td><td>全模态+生成</td></tr>
+          <tr><td>运行模式</td><td>24/7 Spark Agent</td><td>本地/API</td><td>ChatGPT/API</td></tr>
+        </tbody>
+      </table>
+      <p>Gemini 3.5 Pro 的 2M token 上下文窗口是目前旗舰模型中最大的，对长文档分析、大型代码库理解和多文件 Agent 工作流有显著优势。Deep Think 模式与 Claude 的 Extended Thinking 类似但更侧重于多步推理链的可验证性——每步推理都会生成置信度分数。</p>
+      <a href="https://deepmind.google/models/gemini/" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Google DeepMind
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Mistral 3 + MiniMax M3：效率范式的两条技术路线
+        <span class="tag tag-model">模型</span>
+      </div>
+      <p>两个效率导向模型的技术对比：</p>
+      <p><strong>Mistral 3 Large</strong>：达到 GPT-5.2 92% 性能，价格 15%。核心技术：改进的 MoE（Mixture of Experts）路由机制减少了 40% 的激活参数量。Studio Connectors 支持 MCP 协议，开发者可以直接在 API 层面接入 MCP 工具链。战略定位：面向对数据主权敏感的欧洲企业客户（尤其是银行、医疗和政府）。</p>
+      <p><strong>MiniMax M3</strong>：首个同时具备 1M token 上下文、原生多模态和计算机操作能力的开源模型。MiniMax Sparse Attention 技术将 per-token 计算量降至 1/20，prefill 速度提升 9x，decode 速度提升 15x（在 1M token 上下文下）。在 SWE-Bench Pro 上以 59.0% 领跑开源排行榜。</p>
+      <p><strong>共同趋势</strong>：前沿 AI 的竞争正在从"谁的模型更大"转向"谁的模型更高效"。当旗舰模型在 MMLU 上只差 3 个百分点时，推理成本（$/token）和推理速度（tokens/sec）成为核心差异化因素。</p>
+      <a href="https://mistral.ai/news/mistral-3/" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Mistral AI
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Flourish Cortex AI：连接组学驱动的仿脑计算架构
+        <span class="tag tag-research">研究</span>
+      </div>
+      <p>Flourish 的技术路线与主流 Transformer 架构截然不同：</p>
+      <p><strong>核心方法</strong>：连接组学（Connectomics）——对生物神经网络的突触级精确映射。通过电子显微镜扫描和计算重建，团队获取了果蝇和小鼠视觉皮层的完整连接图谱，然后将这些连接模式转化为硅基神经网络的架构蓝图。</p>
+      <p><strong>能效目标</strong>：20-50 瓦（人脑约 20 瓦）vs. 当前大模型推理的数千到数万瓦。实现路径包括：(1) 事件驱动计算（仅在信号变化时激活神经元），(2) 脉冲神经网络（SNN）而非连续值计算，(3) 存算一体架构（消除数据搬运的能耗开销）。</p>
+      <p><strong>挑战</strong>：(1) 生物神经元的运算是模拟信号、高度非线性、且具有时序依赖性，与数字芯片的并行矩阵运算范式存在根本差异；(2) 当前连接组学数据仅覆盖简单生物的部分脑区，离人脑 860 亿神经元的规模差多个数量级；(3) 从"结构映射"到"功能复现"之间的鸿沟尚无成熟理论框架。</p>
+      <p><strong>投资逻辑</strong>：即使 Flourish 的终极目标（20 瓦强 AI）在 5-10 年内无法实现，其中间成果（高效 SNN 芯片、仿脑推理加速器）也有巨大的商业价值。Bezos 的投资可能更看重这条路线对 AWS 边缘计算的长期赋能价值。</p>
+      <a href="https://siliconangle.com/2026/06/04/ai-startup-flourish-reportedly-raises-500m-round-backed-jeff-bezos/" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        SiliconAngle
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        印刷人工神经元与活体脑细胞双向通信：Nature Nanotechnology 论文
+        <span class="tag tag-research">神经科技</span>
+      </div>
+      <p>西北大学团队在 Nature Nanotechnology 发表的这项工作突破了脑机接口的一个关键瓶颈：</p>
+      <p><strong>技术细节</strong>：使用印刷 MoS2（二硫化钼）忆阻纳米片网络构建的人工神经元，能够产生 ~70mV 幅值、~2ms 持续时间的电压脉冲——与生物神经元的动作电位高度匹配。关键创新在于忆阻器的非线性电导切换特性恰好模拟了生物离子通道的行为。</p>
+      <p><strong>实验验证</strong>：人工神经元的输出成功激活了体外培养的小鼠海马体神经元，证明了电子器件可以"参与"而非仅仅"记录"神经网络活动。这是从"脑机读取"到"脑机交互"的质变。</p>
+      <p><strong>应用前景</strong>：(1) 高保真神经假体——为失聪/失明患者提供更自然的感知恢复，(2) 闭环脑机接口——实时检测异常神经信号（如癫痫先兆）并注入纠正信号，(3) 生物-电子混合计算——利用生物神经元的天然学习能力增强 AI 芯片。</p>
+      <a href="https://news.northwestern.edu/stories/2026/4/printed-neurons-communicate-with-living-brain-cells" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Northwestern University
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        NVIDIA-SK 海力士 HBM 合作：AI 存储瓶颈的系统性解决方案
+        <span class="tag tag-gpu">半导体</span>
+      </div>
+      <p>NVIDIA 与 SK 海力士的多年合作协议涉及三个技术层面：</p>
+      <p><strong>HBM4 联合开发</strong>：面向 Vera Rubin（2025 年底 sampling，2026 年量产）的下一代 HBM 规格。目标：带宽 2-3x 提升（从 HBM3e 的 ~1.2 TB/s 到 HBM4 的 ~3+ TB/s），能效提升 50%+。技术路径包括 TSV（硅穿孔）密度提升和新型堆叠架构。</p>
+      <p><strong>供应链锁定</strong>：SK 海力士占全球 HBM 市场约 50%（三星 ~40%，美光 ~10%）。排他性合作确保 NVIDIA 在 HBM4 量产初期获得优先供应——这对 AMD MI500 系列构成供应链劣势。</p>
+      <p><strong>存算协同设计</strong>：将 HBM 与 GPU die 的物理接口从标准 PHY 升级为定制互连，减少数据搬运延迟。对 MoE 模型的 expert 路由（每次推理需要从 HBM 加载不同 expert 的权重）有显著性能影响。</p>
+      <a href="https://nvidianews.nvidia.com/news/sk-hynix-ai-factory" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        NVIDIA Newsroom
+      </a>
+    </div>
+  </div>
+
+</div>
+
+</div>
+
+<footer class="footer">
+  <p>AI Pulse Daily Report | Edition #76 | 2026.06.09</p>
+  <p>数据来源：CNBC, NPR, Fortune, Deloitte, Nature Nanotechnology, SiliconAngle, Littler, TechCrunch, Google DeepMind, Mistral AI, NVIDIA Newsroom, Polymarket, AI Tools Recap</p>
+  <p>本报告由 AI 自动生成，内容仅供参考</p>
+</footer>
+
+</div>
+
+<script>
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-content').forEach(function(el) {
+    el.classList.remove('active');
+  });
+  document.querySelectorAll('.tab-btn').forEach(function(el) {
+    el.classList.remove('active');
+  });
+  document.getElementById(tabId).classList.add('active');
+  var tabs = { casual: 0, intermediate: 1, advanced: 2 };
+  document.querySelectorAll('.tab-btn')[tabs[tabId]].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>

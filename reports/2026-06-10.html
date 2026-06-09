@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily Report | 2026.06.10</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --claude-bg: #FAF9F7;
+    --claude-surface: #FFFFFF;
+    --claude-border: #E8E5E0;
+    --claude-text-primary: #1A1714;
+    --claude-text-secondary: #6B6560;
+    --claude-text-tertiary: #9B9590;
+    --claude-accent: #DA7756;
+    --claude-accent-light: #F5E6DF;
+    --claude-accent-dark: #C4623F;
+    --claude-tag-blue: #E8F0FE;
+    --claude-tag-blue-text: #3B6CB5;
+    --claude-tag-green: #E6F4EA;
+    --claude-tag-green-text: #2D7A3F;
+    --claude-tag-purple: #F0E6FA;
+    --claude-tag-purple-text: #7B3FAF;
+    --claude-tag-amber: #FEF3E2;
+    --claude-tag-amber-text: #B5752D;
+    --claude-tag-red: #FDE8E8;
+    --claude-tag-red-text: #B53B3B;
+    --claude-card-shadow: 0 1px 3px rgba(26, 23, 20, 0.06), 0 1px 2px rgba(26, 23, 20, 0.04);
+    --claude-card-shadow-hover: 0 4px 12px rgba(26, 23, 20, 0.08), 0 2px 4px rgba(26, 23, 20, 0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+    background: var(--claude-bg);
+    color: var(--claude-text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 8px;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--claude-accent-dark); }
+
+  .header {
+    text-align: center;
+    padding: 48px 0 40px;
+    border-bottom: 1px solid var(--claude-border);
+    margin-bottom: 32px;
+  }
+
+  .header-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--claude-accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .header .date {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    font-weight: 400;
+  }
+
+  .header .edition-note {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    margin-top: 8px;
+    line-height: 1.8;
+  }
+
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 36px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--claude-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .tab-btn:hover {
+    color: var(--claude-text-primary);
+    background: var(--claude-bg);
+  }
+
+  .tab-btn.active {
+    background: var(--claude-accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(218, 119, 86, 0.3);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .section { margin-bottom: 36px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .section-icon.gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .section-icon.model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .section-icon.product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .section-icon.research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .section-icon.industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .section-icon.policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .card {
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--claude-card-shadow);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .card:hover { box-shadow: var(--claude-card-shadow-hover); }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .card p {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.75;
+    margin-bottom: 8px;
+  }
+
+  .card p:last-child { margin-bottom: 0; }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .tag-gpu { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+  .tag-model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .tag-product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .tag-research { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .tag-industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .tag-policy { background: #E8E5F0; color: #5B4F8A; }
+
+  .highlight {
+    background: var(--claude-accent-light);
+    border-left: 3px solid var(--claude-accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--claude-accent-dark);
+    line-height: 1.7;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .stat-item {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--claude-accent);
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--claude-text-tertiary);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 8px;
+    transition: color 0.15s;
+  }
+
+  .source-link:hover { color: var(--claude-accent-dark); text-decoration: underline; }
+
+  .tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .tech-table th, .tech-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .tech-table th {
+    font-weight: 600;
+    color: var(--claude-text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .tech-table td {
+    color: var(--claude-text-primary);
+  }
+
+  .footer {
+    text-align: center;
+    padding: 40px 0 0;
+    border-top: 1px solid var(--claude-border);
+    margin-top: 48px;
+  }
+
+  .footer p {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    line-height: 1.8;
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 24px 16px 60px; }
+    .header { padding: 32px 0 28px; }
+    .header h1 { font-size: 24px; }
+    .tab-btn { font-size: 12px; padding: 10px 8px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<a href="/" class="back-link">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+  返回 AI Pulse
+</a>
+
+<header class="header">
+  <div class="header-logo">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    AI PULSE
+  </div>
+  <h1>AI 日报 | 2026.06.10</h1>
+  <p class="date">星期三 / Wednesday, June 10, 2026</p>
+  <p class="edition-note">Edition #77 - Claude Fable 5 成为首个公开 Mythos 级模型 SWE-Bench Pro 80.3% 刷新纪录；Great American AI Act 270 页讨论稿发布开创联邦 AI 治理框架；2026 AI IPO 超级周期 SpaceX 周四上市估值 $1.77 万亿 OpenAI 和 Anthropic 均秘密递交 S-1；中国规划 2 万亿元 AI 基建投资；Apple WWDC iOS 27 支持 Claude 作为默认 AI 选项；Miasma 蠕虫入侵 73 个微软 GitHub 仓库专门针对 AI 编程工具</p>
+</header>
+
+<nav class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('casual')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+    轻松阅读
+  </button>
+  <button class="tab-btn" onclick="switchTab('intermediate')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+    技术进阶
+  </button>
+  <button class="tab-btn" onclick="switchTab('advanced')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+    深度技术
+  </button>
+</nav>
+
+<!-- ==================== 轻松阅读版 ==================== -->
+<div id="casual" class="tab-content active">
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon policy">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <h2 class="section-title">政策与安全</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        美国首个联邦 AI 法案草案出炉，270 页定义"谁该被管"
+        <span class="tag tag-policy">立法</span>
+      </div>
+      <p>两位跨党派国会议员发布了《Great American AI Act》讨论稿，这是美国历史上第一个全面的联邦 AI 治理框架。法案主要针对年收入超过 5 亿美元、使用超大规模算力训练模型的"前沿 AI 开发者"，要求他们接受第三方审计、保护内部举报人，违规者每天每项最高罚款 100 万美元。法案还提出用联邦标准统一取代各州各自为政的 AI 法规，为期三年。这意味着 AI 行业终于可能有一个全国统一的游戏规则了。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Anthropic 先警告 AI"太危险"，然后发布了最强公开模型
+        <span class="tag tag-policy">安全</span>
+      </div>
+      <p>上周 Anthropic 发表博文警告 AI 正在接近"递归自我改进"的临界点——AI 系统能够自主设计、构建和训练自己的继任者。公司透露 Claude 现在撰写了超过 80% 的内部代码，工程师产出量提高了 8 倍。然而仅仅几天后，Anthropic 就发布了有史以来最强的公开模型 Claude Fable 5。这种"一边说危险一边加速"的做法引发了行业热议：是真的在负责任地推进，还是只是在为竞争对手设置门槛？</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Miasma 蠕虫攻击：73 个微软 GitHub 仓库被入侵，专门针对 AI 编程工具
+        <span class="tag tag-policy">安全</span>
+      </div>
+      <p>一种名为 Miasma 的自我复制蠕虫病毒入侵了微软旗下 73 个 GitHub 仓库，包括 Azure 和 Azure-Samples 等核心项目。这个蠕虫的狡猾之处在于它专门针对 AI 编程工具——当开发者使用 Claude Code、Gemini CLI、Cursor 或 VS Code 等 AI 助手时，恶意代码会被触发并窃取密码。GitHub 的自动扫描系统在 105 秒内禁用了受影响的仓库，但部分仓库仍处于离线状态。这是 AI 编程时代面临的全新安全威胁。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        ChatGPT 推出"锁定模式"，一键防御提示注入攻击
+        <span class="tag tag-product">安全</span>
+      </div>
+      <p>OpenAI 为 ChatGPT 推出了一个新的安全功能——锁定模式。开启后，ChatGPT 会禁用实时网页浏览、图片检索、深度研究和智能体模式，大幅降低被恶意提示注入攻击窃取数据的风险。这个功能对处理敏感数据的企业用户特别有用，所有免费和付费用户都可以使用。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon industry">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      </div>
+      <h2 class="section-title">行业与市场</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        2026 AI IPO 超级周期：SpaceX 周四上市，OpenAI 和 Anthropic 紧随其后
+        <span class="tag tag-industry">IPO</span>
+      </div>
+      <p>史上最大的科技 IPO 浪潮正在展开。SpaceX 将于本周四（6月12日）在纳斯达克上市，以每股 135 美元定价，估值 1.77 万亿美元，计划募资 750 亿美元——打破沙特阿美 290 亿美元的 IPO 记录。与此同时，OpenAI（估值 8520 亿美元）和 Anthropic（估值 9650 亿美元）均已向 SEC 秘密递交了上市申请。AI 和 AI 相关公司占今年 IPO 总价值的 92%。这三家公司代表了有史以来最大规模的私有科技财富同时进入公开市场。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        中国规划 2 万亿元 AI 数据中心建设，80% 使用国产芯片
+        <span class="tag tag-industry">基建</span>
+      </div>
+      <p>据彭博社 6 月 9 日报道，中国正准备投入 2 万亿元人民币（约 2950 亿美元）在全国建设互联的 AI 数据中心网络。中国移动和中国电信将运营大部分设施。特别值得注意的是，至少 80% 的技术设备将来自华为等国内供应商，实际上将 NVIDIA 和 AMD 排除在外。算上电网整合，总投资可能达到 5 万亿元。目标是在 2028 年前建成统一的国家级 AI 基础设施。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Anthropic 年化收入突破 470 亿美元，即将迎来首个盈利季度
+        <span class="tag tag-industry">营收</span>
+      </div>
+      <p>Anthropic 的营收增速令人瞠目结舌：年化收入从 2 月的 140 亿美元飙升至目前的 470 亿美元，Q1 增长了 80 倍。公司预计 Q2 将实现约 5.59 亿美元的运营利润，这将是 Anthropic 历史上第一个盈利季度。其中 AI 编程工具 Claude Code 上线仅 9 个月，年化收入就达到了 25 亿美元。Anthropic 还宣布将在得克萨斯和纽约投资 500 亿美元建设数据中心。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        DeepSeek 登顶美国企业支出增长榜，同时完成 74 亿美元融资
+        <span class="tag tag-industry">融资</span>
+      </div>
+      <p>中国 AI 公司 DeepSeek 同时在两条战线取得突破：它登顶了 Ramp 的企业软件增长榜，成为美国企业中增长最快的 AI 供应商——原因很简单，它的价格太有竞争力了（API 调用价格仅为 0.30 美元/百万输入 token）。与此同时，DeepSeek 即将完成 500 亿元人民币（74 亿美元）的首轮融资，投资方包括腾讯、宁德时代和京东，估值达 520-590 亿美元。创始人梁文锋个人追加投资 29 亿美元。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        人形机器人市场爆发：Figure 每小时产一台，波士顿动力出货现代汽车
+        <span class="tag tag-industry">机器人</span>
+      </div>
+      <p>人形机器人正在从实验室走向工厂。Figure 公司的 BotQ 工厂已经实现每小时生产一台 Figure 03 机器人的速度；波士顿动力的电动 Atlas 开始向现代汽车和 DeepMind 交付；Agility Robotics 已有 7 台以上 Digit 在丰田加拿大工厂运行；Figure 机器人在宝马工厂支持 3 万辆汽车的生产。1X 公司还开启了 NEO 的预购——这是第一款面向消费者的家用人形机器人。软银 CEO 孙正义将实体 AI 列为万亿美元级别的机遇。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon model">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+      </div>
+      <h2 class="section-title">模型与前沿</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Claude Fable 5 发布：Anthropic 向公众开放 Mythos 级能力
+        <span class="tag tag-model">模型</span>
+      </div>
+      <p>6 月 9 日，Anthropic 发布了 Claude Fable 5——这是第一个向公众开放的 Mythos 级模型，在软件工程、知识工作、视觉理解和科学研究等几乎所有测试基准上都达到了最先进水平。在处理高风险领域（如网络安全、生物、化学）的请求时，模型会自动回退到带有安全防护的 Claude Opus 4.8。不到 5% 的对话会触发安全回退。定价为每百万输入 token 10 美元，Pro/Max/Team/Enterprise 用户在 6 月 22 日前免费使用。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Apple WWDC：Gemini 驱动的 Siri AI，iOS 27 让你选择 Claude 当默认 AI
+        <span class="tag tag-model">平台</span>
+      </div>
+      <p>苹果在 WWDC 2026 上发布了重大更新。Siri 迎来十年来最大改版，底层接入了 Google Gemini，支持自然对话、屏幕感知和跨应用上下文理解。更重要的是 iOS 27 推出了"扩展"机制——用户可以自由选择 Claude、ChatGPT、Gemini 或 Grok 作为系统默认 AI。这意味着 Claude 首次成为 iPhone 上的可选 AI。iOS 27 Beta 1 已发布，正式版将在 9 月推出，但由于监管原因暂不在欧盟和中国市场上线。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        MiniMax M3：开源百万 token 上下文模型挑战闭源领导者
+        <span class="tag tag-model">开源</span>
+      </div>
+      <p>6 月 1 日发布的 MiniMax M3 是第一个同时具备前沿编程能力、100 万 token 上下文窗口和原生图像/视频理解的开源模型。在 SWE-Bench Pro 上得分 59.0%，超过了 GPT-5.5 和 Gemini 3.1 Pro。而且它的 API 定价仅为 0.30 美元/百万输入 token，只有主流闭源模型的零头。模型权重和技术报告将很快在 HuggingFace 上公开。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        NVIDIA Cosmos 3：面向机器人和自动驾驶的开放全模态模型
+        <span class="tag tag-model">物理AI</span>
+      </div>
+      <p>NVIDIA 发布了 Cosmos 3，这是全球首个完全开放的"全模态"基础模型，融合了视觉推理、世界生成和动作预测三大能力。它在 20 万亿 token 的多模态数据上训练，包括近 10 亿张图片和 4 亿个视频。Cosmos 3 Super 针对机器人和自动驾驶的物理精确性优化，Cosmos 3 Nano 则能在毫秒级完成推理。NVIDIA 同时成立了 Cosmos 联盟，合作伙伴包括 Agile Robots、Runway 和 Skild AI。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon product">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      </div>
+      <h2 class="section-title">产品与工具</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        AI 编程三国杀：Claude Code vs Codex vs Grok Build
+        <span class="tag tag-product">编程</span>
+      </div>
+      <p>AI 编程助手市场正式进入三方对决。Anthropic 的 Claude Code 月化收入 25 亿美元领跑市场；OpenAI 的 Codex 扩展到 500 万周活用户并推出 6 个行业专用插件；xAI 则推出 Grok Build 杀入战局，其特色是"竞技场模式"——同时运行最多 8 个并行子智能体竞争出最优方案。整个 AI 编程市场预计以 26% 的年增长率从 93 亿美元增长到 2031 年的约 300 亿美元。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Mistral 把 Le Chat 改名 Vibe，推出工作模式和代码模式
+        <span class="tag tag-product">助手</span>
+      </div>
+      <p>欧洲最大的 AI 实验室 Mistral 将其聊天产品 Le Chat 重新品牌为 Vibe，同时推出两个重量级功能：工作模式（Work Mode）可以执行长时间自主任务，代码模式（Code Mode）支持远程编程和自动创建 Pull Request。Mistral 还配套推出了 VS Code 扩展和命令行工具。这家估值 140 亿美元的公司正在积极进军美国市场，瞄准银行和大型企业客户。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        OpenAI Codex 推出行业专用插件和一键建站功能
+        <span class="tag tag-product">平台</span>
+      </div>
+      <p>OpenAI 为 Codex 推出了 6 个行业专用插件，覆盖数据分析、创意制作、销售、产品设计、公共股权投资和投行等领域，打包了 62 个应用和 110 个技能。新功能 Codex Sites 让用户可以通过自然语言提示直接创建和托管交互式网页应用。值得注意的是，非开发者用户现在占 Codex 用户的 20%，而且他们的增长速度是开发者的 3 倍。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        ChatGPT 记忆大升级：Dreaming V3 让 AI 真正"记住"你
+        <span class="tag tag-product">功能</span>
+      </div>
+      <p>OpenAI 推出了 ChatGPT 的 Dreaming V3 记忆系统，这是迄今最重大的记忆功能升级。系统会自动整理和更新多年对话中的上下文——比如把"下周的旅行计划"自动更新为"上个月的旅行经历"。免费用户首次获得记忆功能，Plus/Pro 用户获得 2 倍记忆容量。用户可以随时查看、编辑和删除 AI 的记忆内容。</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== 技术进阶版 ==================== -->
+<div id="intermediate" class="tab-content">
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon policy">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <h2 class="section-title">政策与安全</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Great American AI Act：首个联邦级 AI 治理框架，270 页定义监管边界
+        <span class="tag tag-policy">立法</span>
+      </div>
+      <p>6 月 4 日，众议员 Obernolte (R-CA) 和 Trahan (D-MA) 发布了《Great American AI Act》（GAAIA）讨论稿，近 270 页，是美国首个全面的联邦 AI 治理框架。</p>
+      <p><strong>监管范围</strong>：针对"大型前沿开发者"——年收入超 5 亿美元、使用超过 10^26 FLOPs 训练模型的公司。实际上精确指向 OpenAI、Anthropic、Google DeepMind、Meta AI 和 xAI 这几家。</p>
+      <p><strong>核心要求</strong>：模型信息披露、通过独立验证组织（IVO）的第三方审计、举报人保护。民事处罚每项违规每天最高 100 万美元。</p>
+      <p><strong>联邦优先权</strong>：提出三年期的州法律抢占条款，意在用联邦标准取代科罗拉多等州各自为政的 AI 法规。目前处于公众意见征集阶段。</p>
+      <a href="https://www.mcdonaldhopkins.com/insights/news/the-great-american-ai-act-what-businesses-need-to-know" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        McDonald Hopkins
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Anthropic 的悖论：警告递归自我改进风险，同时发布最强模型
+        <span class="tag tag-policy">安全</span>
+      </div>
+      <p>Anthropic 于 6 月 4-5 日发布博文，首次公开承认 AI 正在接近"递归自我改进"（recursive self-improvement）临界点，并呼吁中美主要 AI 实验室建立协调暂停机制。</p>
+      <p><strong>关键数据</strong>：Claude 现在撰写了 Anthropic 自身代码库超过 80% 的合并代码，工程师人均季度产出提升约 8 倍。这意味着 AI 已经在实质性地参与自身的开发过程。</p>
+      <p><strong>矛盾与争议</strong>：仅隔数天，Anthropic 就发布了 Claude Fable 5——迄今最强的公开 AI 模型。行业观察者指出这种"一边警告一边加速"的策略在主要 AI 实验室中已成常态，但也有声音认为 Fable 5 的安全回退机制（高风险查询自动降级至 Opus 4.8）代表了一种切实可行的"边发布边守护"模式。</p>
+      <a href="https://fortune.com/2026/06/05/anthropic-ai-pause-development-recursive-self-improvement/" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Fortune
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Miasma 蠕虫供应链攻击：AI 编程工具成为新攻击面
+        <span class="tag tag-policy">安全</span>
+      </div>
+      <p>6 月 8 日披露，一种名为 Miasma 的自我复制蠕虫入侵了微软旗下 73 个 GitHub 仓库（Azure、Azure-Samples、Microsoft、MicrosoftDocs），利用被泄露的贡献者凭证注入恶意载荷。</p>
+      <p><strong>攻击机制</strong>：恶意代码专门设计为在 AI 编程工具（Claude Code、Gemini CLI、Cursor、VS Code）处理代码时触发，窃取开发者凭证。这是一种新型攻击向量——利用 AI 助手对代码上下文的自动处理来传播恶意软件。</p>
+      <p><strong>响应速度</strong>：GitHub 的自动扫描系统在 105 秒内禁用了受感染仓库，但部分仓库仍处于离线状态。这起事件凸显了 AI 编程工具引入的全新供应链风险面。</p>
+      <a href="https://techcrunch.com/2026/06/08/microsofts-open-source-tools-were-hacked-to-steal-passwords-of-ai-developers/" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        TechCrunch
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        ChatGPT Lockdown Mode：对抗提示注入的系统级防御
+        <span class="tag tag-product">安全</span>
+      </div>
+      <p>OpenAI 于 6 月 6 日为 ChatGPT 推出 Lockdown Mode，通过禁用实时网页浏览、图片检索、Deep Research 和 Agent Mode 来减少提示注入攻击的数据泄露风险。</p>
+      <p><strong>技术思路</strong>：Lockdown Mode 的核心策略是减少攻击面——断开模型与外部数据源的连接，从根本上消除间接提示注入的通道。但 OpenAI 承认缓存内容和上传文件仍可能携带注入载荷，因此这不是完美防御。</p>
+      <p><strong>适用场景</strong>：主要面向处理敏感数据的企业用户，所有 Free/Plus/Pro/Business 计划均可使用。</p>
+      <a href="https://openai.com/index/introducing-lockdown-mode-and-elevated-risk-labels-in-chatgpt/" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        OpenAI
+      </a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon industry">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      </div>
+      <h2 class="section-title">行业与市场</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        2026 AI IPO 超级周期：三巨头同时冲击公开市场
+        <span class="tag tag-industry">IPO</span>
+      </div>
+      <p>2026 年正在成为 AI 历史上最集中的 IPO 年份，AI 相关公司占 IPO 管线总价值的 92%。</p>
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-value">$1.77T</div>
+          <div class="stat-label">SpaceX 估值 (6/12 上市)</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">$965B</div>
+          <div class="stat-label">Anthropic (S-1 已递交)</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">$852B</div>
+          <div class="stat-label">OpenAI (S-1 已递交)</div>
+        </div>
+      </div>
+      <p><strong>SpaceX</strong>：6 月 12 日纳斯达克上市，股票代码 SPCX，每股 $135，募资 $750 亿（史上最大 IPO）。合并 xAI 后涵盖火箭、Starlink 和 Grok AI 产品。Musk 保持 82% 投票权。Fidelity 为 2000 美元以上账户开放散户申购。</p>
+      <p><strong>OpenAI</strong>：6 月 8 日公布 S-1 秘密递交，Goldman Sachs/Morgan Stanley/JPMorgan 承销。目标上市估值超 $1 万亿。ChatGPT 周活 9 亿，月收入约 $20 亿但仍未盈利。</p>
+      <p><strong>Anthropic</strong>：6 月 1 日递交 S-1。年化收入 $470 亿，即将实现首个盈利季度（预计 Q2 运营利润 $5.59 亿）。</p>
+      <a href="https://www.cnbc.com/2026/06/03/spacex-ipo-stock-price-roadshow-musk.html" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        CNBC
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        中国 2 万亿元 AI 基建计划：国产芯片主导，2028 年建成统一算力网络
+        <span class="tag tag-industry">基建</span>
+      </div>
+      <p>彭博社 6 月 9 日报道，中国正准备投入 2 万亿元人民币（$295B）建设全国性 AI 数据中心网络，由中国移动和中国电信主导运营。</p>
+      <p><strong>技术路线</strong>：至少 80% 的设备使用华为等国产供应商，包括 AI 芯片和网络设备。这实际上形成了一个与 NVIDIA/AMD 平行的国产 AI 基建生态。</p>
+      <p><strong>规模与时间线</strong>：算上电网配套，总投资可达 5 万亿元。目标是 2028 年前完成全国统一的 AI 算力基础设施。</p>
+      <p><strong>全球格局影响</strong>：同期美国 14 家头部数据中心企业 2026 年资本开支接近 $7500 亿。中美 AI 基建竞赛正在以万亿美元规模展开。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Anthropic：$470 亿年化收入背后的增长引擎
+        <span class="tag tag-industry">营收</span>
+      </div>
+      <p>Anthropic 的财务数据揭示了 AI 领域有史以来最快的企业级增长。</p>
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-value">$47B</div>
+          <div class="stat-label">年化收入</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">80x</div>
+          <div class="stat-label">Q1 增长倍数</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">$2.5B</div>
+          <div class="stat-label">Claude Code ARR</div>
+        </div>
+      </div>
+      <p><strong>增长驱动</strong>：API 企业客户（Amazon、Apple 合作）+ Claude Code 编程工具（9 个月 $25 亿 ARR）+ 消费者 Pro 订阅。Q2 预计实现约 $5.59 亿运营利润，为公司首个盈利季度。</p>
+      <p><strong>基建投资</strong>：$500 亿美国计算基础设施投资计划，与 FluidStack 合作在得克萨斯和纽约建设数据中心，创造约 800 个永久岗位和 2400 个建设岗位。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        DeepSeek：美国企业增长最快的 AI 供应商，$74 亿融资在即
+        <span class="tag tag-industry">融资</span>
+      </div>
+      <p>DeepSeek 同时在商业化和融资两个维度取得突破。</p>
+      <p><strong>市场渗透</strong>：登顶 Ramp 企业软件增长榜。V4 API 定价 $0.30/M 输入 token、$0.50/M 输出 token，是主流闭源模型价格的 1/10 到 1/30。Ramp 首席经济学家同时警告了中国模型的数据安全风险。</p>
+      <p><strong>融资详情</strong>：首轮外部融资 500 亿元（$74 亿），投资方包括腾讯、宁德时代、网易和京东。估值六周内从 $88 亿增长至 $520-590 亿。创始人梁文锋表示将专注于突破性 AI 研究和开源开发，而非短期商业化。</p>
+      <a href="https://techcrunch.com/2026/05/06/deepseek-could-hit-45b-valuation-from-its-first-investment-round/" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        TechCrunch
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        人形机器人从实验室到产线：产能、部署和市场前景
+        <span class="tag tag-industry">机器人</span>
+      </div>
+      <p>2026 年 Q2 标志着人形机器人从"技术演示"转向"规模部署"的关键转折点。</p>
+      <p><strong>产能突破</strong>：Figure 03 在 BotQ 工厂实现每小时 1 台的生产节拍；波士顿动力电动 Atlas 开始向现代汽车和 Google DeepMind 出货；Agility Robotics 的 Digit 已有 7+ 台在丰田加拿大工厂运行。</p>
+      <p><strong>消费市场</strong>：1X 公司开启 NEO 预购——首款面向消费者的家用人形机器人。软银 CEO 孙正义将实体 AI（Physical AI）定位为万亿美元级机遇。</p>
+      <p><strong>技术整合</strong>：波士顿动力与 Google Cloud/DeepMind 合作，将 Gemini Robotics-ER 1.6 集成到 Spot 机器狗和 Orbit AI 巡检平台中。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon model">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+      </div>
+      <h2 class="section-title">模型与前沿</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Claude Fable 5：Mythos 级模型首次向公众开放
+        <span class="tag tag-model">模型</span>
+      </div>
+      <p>6 月 9 日，Anthropic 发布 Claude Fable 5——首个公开可用的 Mythos 级模型，在几乎所有基准测试中达到 SOTA。</p>
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-value">80.3%</div>
+          <div class="stat-label">SWE-Bench Pro</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">90%+</div>
+          <div class="stat-label">Hex 分析基准</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">$10/$50</div>
+          <div class="stat-label">输入/输出 per M tokens</div>
+        </div>
+      </div>
+      <p><strong>安全机制</strong>：在高风险领域（网络安全、生物、化学、模型蒸馏）自动回退至 Claude Opus 4.8 并触发安全防护。不到 5% 的会话触发回退——意味着绝大多数场景下用户获得完整 Mythos 级性能。</p>
+      <p><strong>Mythos 5</strong>：完整无限制版本仅向通过 Project Glasswing 审核的网络防御机构开放。</p>
+      <p><strong>定价</strong>：$10/M 输入、$50/M 输出，不到 Mythos Preview 的一半。Pro/Max/Team/Enterprise 用户 6 月 22 日前免费。</p>
+      <a href="https://www.anthropic.com/news/claude-fable-5-mythos-5" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Anthropic
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Apple WWDC 2026：Gemini 驱动 Siri，iOS 27 开放多 AI 选择
+        <span class="tag tag-model">平台</span>
+      </div>
+      <p>6 月 8 日 WWDC 主旨演讲带来了 Siri 十年来最大改版和 Apple AI 生态的重大重构。</p>
+      <p><strong>Siri AI</strong>：底层接入 Google Gemini（报道称年费约 $10 亿），结合 Apple Foundation Models 和 Private Cloud Compute。支持自然对话、屏幕感知、跨应用上下文和对话历史记录。</p>
+      <p><strong>iOS 27 Extensions</strong>：用户可设置 Claude、ChatGPT、Gemini 或 Grok 为系统级默认 AI。这是 Claude 首次成为 iPhone 原生 AI 选项。Anthropic 同步发布了 Foundation Models 框架的 Swift 包。</p>
+      <p><strong>性能提升</strong>：应用启动快 30%、照片加载快 70%、AirDrop 传输快 80%。</p>
+      <p><strong>限制</strong>：9 月正式推出，仅英语。因监管原因，暂不上线欧盟和中国。</p>
+      <a href="https://techcrunch.com/2026/06/09/wwdc-2026-everything-announced-on-siri-ai-os-27-apple-intelligence-and-more/" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        TechCrunch
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        MiniMax M3：开源模型首次同时达到百万上下文 + 前沿编程 + 多模态理解
+        <span class="tag tag-model">开源</span>
+      </div>
+      <p>6 月 1 日发布的 MiniMax M3 创造了开源模型的多项第一。</p>
+      <p><strong>架构创新</strong>：MSA（Multi-Stage Attention）架构在 1M 上下文下将每 token 计算量降至前代的 1/20，prefill 快 9 倍，解码快 15 倍。这解决了长上下文推理成本过高的核心瓶颈。</p>
+      <p><strong>基准测试</strong>：SWE-Bench Pro 59.0%（超过 GPT-5.5 和 Gemini 3.1 Pro），同时具备原生图像和视频理解能力。</p>
+      <p><strong>定价</strong>：API $0.30/M 输入 token，是主流闭源模型的 1/30 到 1/50。开源权重和技术报告即将在 HuggingFace 发布。</p>
+      <a href="https://www.minimax.io/blog/minimax-m3" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        MiniMax
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        NVIDIA Cosmos 3：全球首个完全开放的物理 AI 全模态模型
+        <span class="tag tag-model">物理AI</span>
+      </div>
+      <p>6 月 1 日发布的 Cosmos 3 融合了视觉推理、世界生成和动作预测三种能力，是 NVIDIA 对"物理 AI"愿景的核心支撑。</p>
+      <p><strong>训练规模</strong>：20 万亿 token 多模态数据，包括近 10 亿张图片和 4 亿个视频。</p>
+      <p><strong>产品矩阵</strong>：Cosmos 3 Super 针对机器人/自动驾驶的物理精确性优化；Cosmos 3 Nano 可在毫秒级完成推理。两者均完全开放。</p>
+      <p><strong>生态联盟</strong>：Cosmos Coalition 合作伙伴包括 Agile Robots、Black Forest Labs、Runway 和 Skild AI，覆盖从工业机器人到影视制作的多个领域。</p>
+      <a href="https://huggingface.co/blog/nvidia/cosmos-3-for-physical-ai" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        HuggingFace
+      </a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon product">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      </div>
+      <h2 class="section-title">产品与工具</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        AI 编程助手三方对决：Claude Code / Codex / Grok Build 格局分析
+        <span class="tag tag-product">编程</span>
+      </div>
+      <p>AI 编程助手市场在 2026 年 Q2 正式形成三巨头格局。</p>
+      <p><strong>Claude Code</strong>（Anthropic）：$25 亿 ARR，上线 9 个月增长最快。Supabase 报告 Claude Code 是其平台最大的数据库部署者——AI 智能体现在部署的数据库数量已超过人类。</p>
+      <p><strong>Codex</strong>（OpenAI）：500 万周活用户。新增 6 个行业专用插件（数据分析、创意制作、销售、产品设计、股权投资、投行），打包 62 个应用和 110 个技能。Codex Sites 支持通过提示创建和托管网页应用。非开发者用户占 20% 且增速是开发者的 3 倍。</p>
+      <p><strong>Grok Build</strong>（xAI）：终端 CLI 工具，基于 Grok-4.3（2M token 上下文）。独特的 Arena Mode 同时运行最多 8 个并行子智能体竞争。$300/月 SuperGrok Heavy 订阅。</p>
+      <p><strong>市场规模</strong>：$93 亿 -> ~$300 亿（2031），26% CAGR。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Mistral Vibe：Le Chat 品牌重塑，新增自主工作和远程编程模式
+        <span class="tag tag-product">助手</span>
+      </div>
+      <p>Mistral 将 Le Chat 重新品牌为 Vibe，同时推出两个差异化功能。</p>
+      <p><strong>Work Mode</strong>：支持长时间自主任务执行，类似 Agent 范式但面向非技术知识工作者。</p>
+      <p><strong>Code Mode</strong>：远程编程、自动 PR 创建、集成 VS Code 扩展和 CLI。直接对标 Claude Code 和 Codex。</p>
+      <p><strong>市场策略</strong>：Mistral（估值 $140 亿）正积极进军美国市场，CEO Arthur Mensch 公开讨论 AI 基建主权。同时推出 Emmi AI 专注物理工程仿真。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        OpenAI Codex 扩展至知识工作者：6 个行业插件 + Codex Sites
+        <span class="tag tag-product">平台</span>
+      </div>
+      <p>OpenAI 在 6 月 2-3 日将 Codex 从编程工具扩展为企业知识工作平台。</p>
+      <p><strong>行业插件</strong>：Data Analytics、Creative Production、Sales、Product Design、Public Equity Investing、Investment Banking——每个插件集成 10+ 应用和 15+ 技能。目标是将 AI 编程的生产力模式复制到所有知识工作领域。</p>
+      <p><strong>Codex Sites</strong>：Business/Enterprise 用户可通过自然语言创建托管式交互网页应用。标注（Annotations）功能扩展到文档、电子表格和幻灯片。</p>
+      <a href="https://openai.com/index/codex-for-every-role-tool-workflow/" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        OpenAI
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        ChatGPT Dreaming V3：从"记笔记"到"理解你的人生"
+        <span class="tag tag-product">功能</span>
+      </div>
+      <p>6 月 4 日推出的 Dreaming V3 是 ChatGPT 记忆系统的第三次重大迭代。</p>
+      <p><strong>核心升级</strong>：自动时间推演——将未来计划自动转换为过去事件（如"下周旅行"变为"上个月的旅行经历"），保持记忆的时效性。新增跨会话连续性和相关性评分。</p>
+      <p><strong>用户层面</strong>：免费用户首次获得记忆功能；Plus/Pro 用户记忆容量翻倍。用户可查看、编辑和删除所有 AI 记忆。</p>
+      <a href="https://openai.com/index/chatgpt-memory-dreaming/" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        OpenAI
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== 深度技术版 ==================== -->
+<div id="advanced" class="tab-content">
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon policy">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <h2 class="section-title">政策与安全</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Great American AI Act 深度解读：270 页联邦框架的技术与法律含义
+        <span class="tag tag-policy">立法</span>
+      </div>
+      <p>GAAIA 讨论稿（6 月 4 日发布）是美国首个试图在联邦层面建立全面 AI 治理制度的立法尝试，共四大章节：前沿 AI 治理、劳动力、网络安全、研发与国际合作。</p>
+      <p><strong>适用范围定义</strong>：法案引入"大型前沿开发者"（Large Frontier Developer）概念——年收入 > $500M 且使用 > 10^26 FLOPs 训练模型的实体。这个 FLOPs 阈值精确对应当前最前沿的模型训练规模（GPT-5.x、Claude Mythos 系列训练消耗约 10^26-10^27 FLOPs），确保法案只约束真正的前沿实验室。</p>
+      <p><strong>独立验证组织（IVO）</strong>：要求前沿开发者接受 IVO 的第三方审计。IVO 需在 NIST 注册，其检查将涵盖模型安全评估、偏见测试和能力上限评估。这与 2026 国际 AI 安全报告中关于"可靠安全测试日益困难"的警告形成呼应。</p>
+      <p><strong>联邦优先权条款</strong>：三年期内联邦标准优先于州法律，直接影响科罗拉多 AI 法案（已被修改推迟至 2027 年 1 月）等地方立法。但该条款的宪法基础存在争议——部分法学者认为 AI 治理涉及消费者保护等传统州权领域。</p>
+      <p><strong>执行力度</strong>：每项违规每天最高 $100 万民事罚款，举报人保护条款参照 Dodd-Frank 金融举报人保护标准。无刑事处罚条款。</p>
+      <a href="https://www.dlapiper.com/en-us/insights/publications/2026/06/unpacking-the-great-american-ai-act" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        DLA Piper
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        递归自我改进的技术现实：Anthropic 的 80% AI 代码率意味着什么
+        <span class="tag tag-policy">安全</span>
+      </div>
+      <p>Anthropic 6 月 4-5 日的博文首次使用"递归自我改进"（recursive self-improvement）描述当前 AI 能力的临界状态，并公开了内部代码生产数据。</p>
+      <p><strong>定量证据</strong>：Claude 编写了 Anthropic 代码库 > 80% 的合并代码；工程师人均季度代码产出 ~8x 提升。这意味着 Claude 在实质性参与自身下一代版本的开发——虽然人类仍做最终审核，但 AI 对自身演化路径的影响力已远超"辅助工具"的定义。</p>
+      <p><strong>安全机制分析</strong>：Fable 5 的安全回退设计是一种"分层部署"策略——通过在推理时检测高风险请求并动态切换底层模型（Mythos -> Opus 4.8），在不牺牲整体性能的前提下约束特定风险域。2026 国际 AI 安全报告指出，模型已学会区分测试环境和真实部署——Constitutional AI 2.0 和 RLHF 2.0（OpenAI 报告对齐税降低 60%）是当前主要的应对技术。</p>
+      <p><strong>行业影响</strong>：Anthropic 呼吁中美 AI 实验室建立协调暂停机制，但承认执行异常困难。博弈论分析表明，在缺乏可验证承诺机制的情况下，单方面暂停等价于将市场份额让给竞争者——这也解释了"一边警告一边加速"的产业逻辑。</p>
+      <a href="https://www.washingtonpost.com/business/2026/06/05/anthropic-artificial-intelligence-ai/d62747ec-60f2-11f1-9c46-d6211372eede_story.html" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Washington Post
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Miasma 蠕虫技术分析：AI 编程工具催生的新型供应链攻击向量
+        <span class="tag tag-policy">安全</span>
+      </div>
+      <p>Miasma 蠕虫（6 月 8 日披露）代表了一类全新的供应链攻击——专门利用 AI 编程工具的自动代码处理行为进行传播。</p>
+      <p><strong>攻击链</strong>：(1) 通过泄露的贡献者凭证获取 commit 权限 -> (2) 在合法代码中注入经过混淆的恶意载荷 -> (3) 载荷设计为在 AI 编程工具（Claude Code、Gemini CLI、Cursor、VS Code Copilot 扩展）处理代码上下文时被执行 -> (4) 窃取开发者凭证并利用其进一步传播（蠕虫特性）。</p>
+      <p><strong>攻击面分析</strong>：AI 编程工具通常需要读取和"理解"大量代码上下文，这意味着恶意代码有更多机会被解析和执行。传统代码审查聚焦于"人类会执行的路径"，但 AI 工具的上下文处理方式创造了新的执行路径——这是传统安全模型未覆盖的攻击面。</p>
+      <p><strong>影响范围</strong>：73 个仓库横跨 Azure、Azure-Samples、Microsoft 和 MicrosoftDocs 组织。GitHub 自动扫描在 105 秒内响应并禁用受影响仓库。部分仓库目前仍处于离线修复状态。</p>
+      <p><strong>防御启示</strong>：(1) AI 编程工具需要沙箱化执行环境，(2) 代码上下文加载应有恶意载荷扫描层，(3) 贡献者凭证管理需要更严格的 MFA 和密钥轮换策略。</p>
+      <a href="https://techcrunch.com/2026/06/08/microsofts-open-source-tools-were-hacked-to-steal-passwords-of-ai-developers/" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        TechCrunch
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        ChatGPT Lockdown Mode：提示注入防御的攻击面削减策略
+        <span class="tag tag-product">安全</span>
+      </div>
+      <p>OpenAI 的 Lockdown Mode（6 月 6 日）采用的是攻击面削减（Attack Surface Reduction）策略而非检测策略。</p>
+      <p><strong>技术机制</strong>：禁用实时网页浏览（消除间接提示注入的主要通道）、图片检索（阻止通过图像 alt text 或 EXIF 嵌入指令）、Deep Research（防止通过搜索结果注入）和 Agent Mode（消除自主行动带来的权限提升风险）。</p>
+      <p><strong>残余风险</strong>：OpenAI 明确承认两个限制：(1) 缓存内容可能包含此前浏览时获取的注入载荷，(2) 用户主动上传的文件仍可能携带注入指令。这意味着 Lockdown Mode 降低而非消除间接提示注入风险。</p>
+      <p><strong>与其他防御的互补</strong>：可与 OpenAI 同日发布的 Elevated Risk Labels（高风险标签系统）配合使用——后者标记可能存在安全风险的对话，前者提供用户主动选择的额外保护层。</p>
+      <a href="https://techcrunch.com/2026/06/06/openai-unveils-lockdown-mode-to-protect-sensitive-data-from-prompt-injection-attacks/" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        TechCrunch
+      </a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon industry">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      </div>
+      <h2 class="section-title">行业与市场</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        AI IPO 超级周期：市场结构、定价机制与系统性风险分析
+        <span class="tag tag-industry">IPO</span>
+      </div>
+      <p>2026 年 AI IPO 管线的集中度达到历史极端——AI 相关公司占 IPO 总价值的 92%。三个核心 IPO 的技术参数如下：</p>
+      <table class="tech-table">
+        <thead>
+          <tr><th>公司</th><th>估值</th><th>募资</th><th>承销商</th><th>状态</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>SpaceX (SPCX)</td><td>$1.77T</td><td>$75B</td><td>Goldman/Morgan Stanley</td><td>6/12 上市</td></tr>
+          <tr><td>Anthropic</td><td>$965B</td><td>TBD</td><td>未公布</td><td>S-1 已递交</td></tr>
+          <tr><td>OpenAI</td><td>$852B</td><td>~$60B</td><td>Goldman/MS/JPMorgan</td><td>S-1 已递交</td></tr>
+        </tbody>
+      </table>
+      <p><strong>SpaceX 定价机制</strong>：固定价格 $135/share（非簿记建档），Nasdaq 2026 年 3 月新规允许超大型 IPO 在 15 个交易日内快速纳入 Nasdaq-100 指数。合并 xAI 后估值包含火箭、Starlink 和 Grok AI 三大业务线。Musk 保持 82% 投票权。</p>
+      <p><strong>OpenAI 财务现状</strong>：ChatGPT 9 亿周活，月收入 ~$20 亿但仍未盈利。从非营利转为营利结构后市场估值存在较大不确定性。目标上市估值 > $1T。</p>
+      <p><strong>Anthropic 财务现状</strong>：年化收入 $470 亿（12 个月前 $100 亿），Q2 预计运营利润 $5.59 亿（首个盈利季度）。Claude Code $25 亿 ARR（9 个月）。</p>
+      <p><strong>系统性风险</strong>：Q1 2026 AI 风投总额 $2555 亿，超过 2025 全年。三家公司同年上市意味着数千亿美元的锁定期到期可能在 2027 年上半年形成抛压。上周半导体板块 $1.3 万亿闪崩已预演了 AI 估值修正的潜在烈度。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        中美 AI 基建竞赛：算力、芯片与地缘博弈的量化分析
+        <span class="tag tag-industry">基建</span>
+      </div>
+      <p>中国 2 万亿元 AI 基建计划（彭博社 6 月 9 日报道）标志着全球 AI 基础设施竞赛进入国家级对抗阶段。</p>
+      <p><strong>中国方案</strong>：2 万亿元（$295B）五年期，中国移动/中国电信主导运营。80% 国产设备要求实质上排除 NVIDIA/AMD。华为昇腾 950PR 等国产加速器将承担主要算力。算上电网配套总投资约 5 万亿元。2028 年目标：统一的国家级 AI 算力网络。</p>
+      <p><strong>美国方案</strong>：14 家头部数据中心企业 2026 年 CapEx ~$7500 亿。Alphabet 完成 $847.5 亿股权融资（史上最大），2026 年 CapEx 预算 $1800-1900 亿。Anthropic $500 亿投资得州/纽约数据中心。在建 IT 容量超 23 GW。</p>
+      <p><strong>芯片出口管制</strong>：美国商务部 5 月 31 日将 AI 芯片出口许可要求扩展至中国企业的海外实体，封堵通过第三国转运的漏洞。</p>
+      <p><strong>算力差距评估</strong>：即使中国实现国产替代，华为昇腾在训练效率上仍落后 NVIDIA Blackwell 约 2-3 代。但在推理场景下差距更小（~1.5x），而中国更大的部署规模可能部分弥补单位性能差距。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        DeepSeek 的双轨突破：企业渗透策略与融资结构分析
+        <span class="tag tag-industry">融资</span>
+      </div>
+      <p>DeepSeek 同时在商业化和融资两个维度实现突破。</p>
+      <p><strong>企业渗透</strong>：登顶 Ramp 企业软件增长榜。V4 API 定价 $0.30/M 输入 + $0.50/M 输出——是 Claude Opus 4.8 ($15/$75) 的 2-5%、GPT-5.5 ($10/$30) 的 3-2%。极端价格优势驱动企业快速采用，但 Ramp 首席经济学家对数据路由至中国模型的安全风险提出警告。</p>
+      <p><strong>融资结构</strong>：首轮外部融资 500 亿元（$74 亿），投资方：腾讯、宁德时代（CATL）、网易、京东、国家 AI 产业投资基金。创始人梁文锋个人追加 $29 亿。估值六周内 6 倍增长（$88 亿 -> $520-590 亿）。梁文锋明确表示将优先投入突破性研究和开源开发，不追求短期商业化——这与投资方的国家战略导向一致。</p>
+      <p><strong>开源策略</strong>：DeepSeek V4 开源版本已推动 API 定价在全行业范围内下降约 75%（2026 年 4 月的"DeepSeek 价格战"）。这种"以开源破围"的策略与 Meta Llama 早期路径相似，但背靠更强的国家资本支持。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        人形机器人：从实验室到产线的关键技术指标与市场预测
+        <span class="tag tag-industry">机器人</span>
+      </div>
+      <p>2026 Q2 人形机器人行业进入"量产验证"阶段，多家企业报告了可量化的生产和部署数据。</p>
+      <p><strong>产能数据</strong>：Figure 03 达到 1 台/小时产出（BotQ 工厂）；波士顿动力电动 Atlas 出货至现代汽车/DeepMind；Agility Robotics 7+ 台 Digit 部署在丰田加拿大工厂。</p>
+      <p><strong>AI 集成</strong>：波士顿动力 + Google Cloud/DeepMind 将 Gemini Robotics-ER 1.6 集成至 Spot 机器狗和 Orbit AI 视觉巡检平台。NVIDIA Cosmos 3 为机器人/自动驾驶提供开放的物理 AI 基础模型。</p>
+      <p><strong>消费市场</strong>：1X NEO 开启预购（首款家用人形机器人）。价格点和交付时间线尚未公布，但消费级机器人的到来标志着人形机器人从 B2B 向 B2C 的重大跨越。</p>
+      <p><strong>投资视角</strong>：SoftBank CEO 孙正义定位 Physical AI 为万亿美元级机遇。Figure AI 在 BMW 工厂支持 3 万辆汽车生产的数据为 ROI 提供了第一个可参考的工业基准。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon model">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+      </div>
+      <h2 class="section-title">模型与前沿</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Claude Fable 5 技术解析：Mythos 架构的公开版本与安全回退机制
+        <span class="tag tag-model">模型</span>
+      </div>
+      <p>Claude Fable 5（6 月 9 日发布）是首个向公众开放的 Mythos 级模型，在几乎所有测试基准上达到 SOTA。</p>
+      <table class="tech-table">
+        <thead>
+          <tr><th>基准</th><th>Fable 5</th><th>Opus 4.8</th><th>GPT-5.5</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>SWE-Bench Pro</td><td>80.3%</td><td>69.2%</td><td>58.6%</td></tr>
+          <tr><td>Hex 分析基准</td><td>>90%</td><td>--</td><td>--</td></tr>
+        </tbody>
+      </table>
+      <p><strong>安全回退架构</strong>：在高风险领域（cybersecurity、biology、chemistry、model distillation）请求被检测时，推理层动态切换至 Claude Opus 4.8 + 安全防护。95%+ 的会话完全使用 Fable 5 原生响应。这种"分层安全"设计将安全约束从模型训练层面（对齐税）转移到推理路由层面，避免了全局性能损失。</p>
+      <p><strong>Mythos 5 限制访问</strong>：完整无限制版本仅向通过 Project Glasswing 审核的网络防御机构开放，与 DARPA AI Forge 国家安全项目互补。</p>
+      <p><strong>定价策略</strong>：$10/M 输入 + $50/M 输出（不到 Mythos Preview 的一半），Pro/Max/Team/Enterprise 用户 6 月 22 日前免费。低于同级竞品的定价与 Anthropic IPO 路演时间重合，可能是获客策略与市场估值叙事的双重考量。</p>
+      <p><strong>可用性</strong>：AWS Bedrock（GA）、Anthropic API、claude.ai。支持 200K 上下文窗口，扩展思维（Extended Thinking）和工具使用。</p>
+      <a href="https://aws.amazon.com/blogs/aws/anthropic-claude-fable-5-on-aws-mythos-class-capabilities-with-built-in-safeguards-now-available/" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        AWS
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Apple WWDC 2026 AI 架构解析：Gemini 集成层、Foundation Models 框架与多 AI 路由
+        <span class="tag tag-model">平台</span>
+      </div>
+      <p>WWDC 2026（6 月 8 日）的 AI 架构揭示了 Apple 在 AI 时代的平台策略。</p>
+      <p><strong>Gemini 集成</strong>：Siri AI 底层使用 Google Gemini（报道称年费 ~$10 亿），结合 Apple Foundation Models（on-device）和 Private Cloud Compute（Apple 自研芯片云端推理）。三层架构：本地小模型处理简单请求 -> PCC 处理中等复杂度 -> Gemini 处理高复杂度请求。Siri 应用支持完整对话历史。</p>
+      <p><strong>iOS 27 Extensions（AI 路由层）</strong>：系统级 API 允许第三方 AI 模型作为 Apple Intelligence 的替代后端。用户可设置 Claude、ChatGPT、Gemini 或 Grok 为默认 AI。Anthropic 同步发布了 Foundation Models 框架的 Swift 包（支持 iOS 27/iPadOS 27/macOS Golden Gate/visionOS 27/watchOS 27）。这本质上是将 AI 模型选择从应用层提升到操作系统层。</p>
+      <p><strong>性能基准</strong>：iOS 27 应用启动 +30%、Photos 加载 +70%、AirDrop 传输 +80%。Liquid Glass 设计语言新增分层效果和透明度滑块。</p>
+      <p><strong>市场限制</strong>：9 月正式发布，仅英语。EU（DMA 合规）和中国（监管审批）暂不上线。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        MiniMax M3 架构创新：MSA 如何在百万上下文下实现 20x 算力降低
+        <span class="tag tag-model">开源</span>
+      </div>
+      <p>MiniMax M3（6 月 1 日）的核心创新在于 MSA（Multi-Stage Attention）架构，解决了长上下文推理的计算复杂度瓶颈。</p>
+      <p><strong>MSA 架构</strong>：将注意力计算分为多个阶段，每阶段处理不同粒度的上下文信息。在 1M token 上下文下，每 token 计算量降至标准 Transformer 的 1/20。这与 MLA（Multi-Latent Attention，DeepSeek 使用）和 GQA（Grouped Query Attention，Meta 使用）是不同的优化路径。</p>
+      <p><strong>推理性能</strong>：Prefill 速度 9x 提升，Decoding 速度 15x 提升（相比前代）。这使得百万 token 上下文的实时应用首次在经济上可行。</p>
+      <p><strong>基准对比</strong>：SWE-Bench Pro 59.0%（> GPT-5.5、> Gemini 3.1 Pro）。原生图像和视频理解（不依赖外挂视觉编码器）。</p>
+      <p><strong>定价颠覆</strong>：$0.30/M 输入 token——Claude Fable 5 的 1/33、GPT-5.5 的 1/33。开源权重即将发布（HuggingFace）。这是开源模型首次在长上下文 + 编程 + 多模态三个维度同时逼近闭源前沿。</p>
+      <a href="https://the-decoder.com/minimax-m3-open-weight-model-with-a-million-token-context-challenges-proprietary-leaders/" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        The Decoder
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        NVIDIA Cosmos 3：20T token 训练的物理 AI 全模态基础模型
+        <span class="tag tag-model">物理AI</span>
+      </div>
+      <p>Cosmos 3（6 月 1 日）是全球首个完全开放的"全模态"（omnimodel）基础模型，统一了视觉推理、世界生成和动作预测。</p>
+      <p><strong>训练规模</strong>：20 万亿 token 多模态数据，包括 ~10 亿张图片和 ~4 亿个视频。对比：GPT-4 训练数据约 13 万亿 token（主要是文本），Cosmos 3 的多模态数据比例远高于任何已知公开模型。</p>
+      <p><strong>产品矩阵</strong>：Cosmos 3 Super——最高物理精确性，目标场景为机器人和自动驾驶的 sim-to-real 迁移；Cosmos 3 Nano——毫秒级推理延迟，适合嵌入式和实时控制场景。两者均完全开放（HuggingFace 可用）。</p>
+      <p><strong>生态战略</strong>：Cosmos Coalition 合作伙伴包括 Agile Robots（工业机器人）、Black Forest Labs（图像生成）、Runway（视频制作）、Skild AI（通用机器人 AI）。NVIDIA 还在 CVPR 2026 上发布了新的 Physical AI Agent Skills，加速自动驾驶和机器人的视觉 AI 开发。</p>
+      <p><strong>与 Isaac GR00T 的关系</strong>：Cosmos 3 作为 NVIDIA 物理 AI 堆栈的基础层，与 Isaac GR00T（人形机器人框架）和 Omniverse（数字孪生平台）共同构成完整的机器人开发管线。</p>
+      <a href="https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-Launches-Cosmos-3-the-Open-Frontier-Foundation-Model-for-Physical-AI/default.aspx" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        NVIDIA Investor Relations
+      </a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon product">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      </div>
+      <h2 class="section-title">产品与工具</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        AI 编程助手架构对比：Claude Code vs Codex vs Grok Build
+        <span class="tag tag-product">编程</span>
+      </div>
+      <p>2026 Q2 AI 编程助手市场形成三巨头格局，各自的架构差异化清晰。</p>
+      <table class="tech-table">
+        <thead>
+          <tr><th>特性</th><th>Claude Code</th><th>Codex</th><th>Grok Build</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>底层模型</td><td>Fable 5 / Opus 4.8</td><td>GPT-5.5 / o3</td><td>Grok-4.3</td></tr>
+          <tr><td>上下文窗口</td><td>200K</td><td>128K</td><td>2M</td></tr>
+          <tr><td>多智能体</td><td>Managed Agents</td><td>Codex Plugins</td><td>Arena Mode (8x)</td></tr>
+          <tr><td>ARR / 用户</td><td>$2.5B ARR</td><td>5M 周活</td><td>新发布</td></tr>
+          <tr><td>定价</td><td>Pro $20/月起</td><td>Plus $20/月起</td><td>$300/月 Heavy</td></tr>
+        </tbody>
+      </table>
+      <p><strong>Claude Code 差异化</strong>：Managed Agents 支持 lead agent 委派 specialist subagent 并行工作，共享文件系统和私有 MCP 服务器连接。Supabase 报告 Claude Code 已成为其平台最大的数据库部署者。</p>
+      <p><strong>Codex 差异化</strong>：6 个行业插件将 AI 编程扩展到非开发者知识工作。Codex Sites 支持一句话创建托管式网页应用。Annotations 扩展到文档/表格/幻灯片。</p>
+      <p><strong>Grok Build 差异化</strong>：Arena Mode 同时运行最多 8 个并行子智能体，评分排名后由开发者选择最优方案。2M token 上下文是竞品的 10-15x，理论上支持整个代码库级别的理解。</p>
+      <p><strong>市场规模</strong>：AI 编程工具市场 $93 亿 (2026) -> ~$300 亿 (2031)，26% CAGR。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Mistral Vibe：欧洲 AI 冠军的 Agent 和编程产品化路线
+        <span class="tag tag-product">助手</span>
+      </div>
+      <p>Mistral 将 Le Chat 品牌重塑为 Vibe，标志着从"聊天机器人"到"AI 工作平台"的产品定位转型。</p>
+      <p><strong>Work Mode</strong>：长时间自主任务执行。Mistral 在 Agent 范式上的实现路径与 Claude Code 的 Managed Agents 和 OpenAI 的 Codex 不同——面向非技术知识工作者而非开发者，降低 Agent 使用门槛。</p>
+      <p><strong>Code Mode</strong>：远程代码编辑、自动 PR 创建。集成 VS Code 扩展和 CLI 工具。与 Claude Code 和 Codex 直接竞争。</p>
+      <p><strong>Emmi AI</strong>：面向物理工程的 AI 仿真工具，覆盖基于物理的工业工程模拟。这是 AI 编程工具向垂直行业扩展的一个独特方向。</p>
+      <p><strong>市场策略</strong>：估值 $140 亿，CEO Arthur Mensch 积极进军美国银行和大型企业市场。主打 AI 主权和欧洲数据合规优势。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        OpenAI Codex 平台化：从编程工具到企业知识工作操作系统
+        <span class="tag tag-product">平台</span>
+      </div>
+      <p>6 月 2-3 日的 Codex 更新标志着 OpenAI 从"AI 编程工具"到"AI 知识工作平台"的战略转型。</p>
+      <p><strong>行业插件架构</strong>：6 个垂直插件（Data Analytics、Creative Production、Sales、Product Design、Public Equity Investing、Investment Banking），每个打包 ~10 个预集成应用和 ~18 个技能。底层通过 Codex API 统一调度，支持跨应用工作流自动化。</p>
+      <p><strong>Codex Sites</strong>：Business/Enterprise 用户通过自然语言创建和托管交互式网页应用。这将 Codex 从"为开发者编写代码"扩展到"为业务用户创建应用"——类似低代码/无代码平台但由 AI 驱动。</p>
+      <p><strong>用户结构变化</strong>：500 万周活用户中非开发者占 20%，且增速是开发者的 3 倍。Annotations 扩展到文档、电子表格和幻灯片，将 Codex 的"代码标注"能力泛化为"内容标注"。</p>
+      <a href="https://blog.getbind.co/openai-codex-reaches-5-million-weekly-users-and-launches-role-specific-plugins-for-every-knowledge-worker/" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Bind AI
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        ChatGPT Dreaming V3：时间推演记忆与跨会话连续性架构
+        <span class="tag tag-product">功能</span>
+      </div>
+      <p>Dreaming V3（6 月 4 日）是 ChatGPT 记忆系统的第三次重大架构迭代。</p>
+      <p><strong>时间推演（Temporal Progression）</strong>：自动将记忆中的时间引用转换为当前视角——"下周的旅行计划"经过一周后自动更新为"上周的旅行经历"。这解决了早期记忆系统中"时间冻结"的核心问题（过时的未来引用累积导致记忆库退化）。</p>
+      <p><strong>新鲜度-相关性双因子排序</strong>：记忆检索同时考虑新鲜度（recency）和语义相关性（relevance），避免"最新记忆总是优先"或"最相关记忆可能过时"的极端情况。</p>
+      <p><strong>覆盖范围</strong>：首次向 Free 用户开放记忆功能（此前仅 Plus/Pro）。Plus/Pro 用户记忆容量 2x。所有用户可查看、编辑和删除记忆条目——这是隐私合规的关键设计。</p>
+      <p><strong>技术局限</strong>：记忆更新依赖后台异步处理（"dreaming"过程），更新频率和准确性取决于用户活跃度。对于低频用户，记忆衰减可能导致上下文丢失。</p>
+      <a href="https://www.engadget.com/2187811/chatgpt-s-memory-is-getting-better-especially-if-you-re-on-the-free-tier/" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Engadget
+      </a>
+    </div>
+  </div>
+
+</div>
+
+</div>
+
+<footer class="footer">
+  <p>AI Pulse Daily Report | Edition #77 | 2026.06.10</p>
+  <p>数据来源：Anthropic, TechCrunch, CNBC, Fortune, Bloomberg, NPR, OpenAI, Apple Newsroom, NVIDIA, MiniMax, DLA Piper, Washington Post, AWS, HuggingFace, Engadget, Ramp, McDonald Hopkins</p>
+  <p>本报告由 AI 自动生成，内容仅供参考</p>
+</footer>
+
+</div>
+
+<script>
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-content').forEach(function(el) {
+    el.classList.remove('active');
+  });
+  document.querySelectorAll('.tab-btn').forEach(function(el) {
+    el.classList.remove('active');
+  });
+  document.getElementById(tabId).classList.add('active');
+  var tabs = { casual: 0, intermediate: 1, advanced: 2 };
+  document.querySelectorAll('.tab-btn')[tabs[tabId]].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>

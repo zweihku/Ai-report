@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Daily Report | 2026.06.11</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --claude-bg: #FAF9F7;
+    --claude-surface: #FFFFFF;
+    --claude-border: #E8E5E0;
+    --claude-text-primary: #1A1714;
+    --claude-text-secondary: #6B6560;
+    --claude-text-tertiary: #9B9590;
+    --claude-accent: #DA7756;
+    --claude-accent-light: #F5E6DF;
+    --claude-accent-dark: #C4623F;
+    --claude-tag-blue: #E8F0FE;
+    --claude-tag-blue-text: #3B6CB5;
+    --claude-tag-green: #E6F4EA;
+    --claude-tag-green-text: #2D7A3F;
+    --claude-tag-purple: #F0E6FA;
+    --claude-tag-purple-text: #7B3FAF;
+    --claude-tag-amber: #FEF3E2;
+    --claude-tag-amber-text: #B5752D;
+    --claude-tag-red: #FDE8E8;
+    --claude-tag-red-text: #B53B3B;
+    --claude-card-shadow: 0 1px 3px rgba(26, 23, 20, 0.06), 0 1px 2px rgba(26, 23, 20, 0.04);
+    --claude-card-shadow-hover: 0 4px 12px rgba(26, 23, 20, 0.08), 0 2px 4px rgba(26, 23, 20, 0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+    background: var(--claude-bg);
+    color: var(--claude-text-primary);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 8px;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--claude-accent-dark); }
+
+  .header {
+    text-align: center;
+    padding: 48px 0 40px;
+    border-bottom: 1px solid var(--claude-border);
+    margin-bottom: 32px;
+  }
+
+  .header-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--claude-accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .header .date {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    font-weight: 400;
+  }
+
+  .header .edition-note {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    margin-top: 8px;
+    line-height: 1.8;
+  }
+
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 36px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--claude-text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .tab-btn:hover {
+    color: var(--claude-text-primary);
+    background: var(--claude-bg);
+  }
+
+  .tab-btn.active {
+    background: var(--claude-accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(218, 119, 86, 0.3);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .section { margin-bottom: 36px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .section-icon.industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .section-icon.model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .section-icon.product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .section-icon.policy { background: #E8E5F0; color: #5B4F8A; }
+  .section-icon.security { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .section-icon.infra { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .card {
+    background: var(--claude-surface);
+    border: 1px solid var(--claude-border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--claude-card-shadow);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .card:hover { box-shadow: var(--claude-card-shadow-hover); }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .card p {
+    font-size: 15px;
+    color: var(--claude-text-secondary);
+    line-height: 1.75;
+    margin-bottom: 8px;
+  }
+
+  .card p:last-child { margin-bottom: 0; }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .tag-industry { background: var(--claude-tag-red); color: var(--claude-tag-red-text); }
+  .tag-model { background: var(--claude-tag-blue); color: var(--claude-tag-blue-text); }
+  .tag-product { background: var(--claude-tag-purple); color: var(--claude-tag-purple-text); }
+  .tag-policy { background: #E8E5F0; color: #5B4F8A; }
+  .tag-security { background: var(--claude-tag-amber); color: var(--claude-tag-amber-text); }
+  .tag-infra { background: var(--claude-tag-green); color: var(--claude-tag-green-text); }
+
+  .highlight {
+    background: var(--claude-accent-light);
+    border-left: 3px solid var(--claude-accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--claude-accent-dark);
+    line-height: 1.7;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .stat-item {
+    background: var(--claude-bg);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--claude-accent);
+    letter-spacing: -0.02em;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--claude-text-tertiary);
+    margin-top: 2px;
+    font-weight: 500;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--claude-accent);
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 8px;
+    transition: color 0.15s;
+  }
+
+  .source-link:hover { color: var(--claude-accent-dark); text-decoration: underline; }
+
+  .tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+
+  .tech-table th, .tech-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--claude-border);
+  }
+
+  .tech-table th {
+    font-weight: 600;
+    color: var(--claude-text-secondary);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .tech-table td {
+    color: var(--claude-text-primary);
+  }
+
+  .footer {
+    text-align: center;
+    padding: 40px 0 0;
+    border-top: 1px solid var(--claude-border);
+    margin-top: 48px;
+  }
+
+  .footer p {
+    font-size: 13px;
+    color: var(--claude-text-tertiary);
+    line-height: 1.8;
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 24px 16px 60px; }
+    .header { padding: 32px 0 28px; }
+    .header h1 { font-size: 24px; }
+    .tab-btn { padding: 10px 8px; font-size: 13px; }
+    .card { padding: 18px; }
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<a href="/" class="back-link">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+  返回 AI Pulse
+</a>
+
+<header class="header">
+  <div class="header-logo">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+    AI PULSE
+  </div>
+  <h1>AI Daily Report</h1>
+  <p class="date">2026 年 6 月 11 日 星期三</p>
+  <p class="edition-note">Edition #78 | SpaceX 史上最大 IPO 今日定价 | Anthropic Claude Fable 5 持续引爆行业 | WeChat AI Agent 生态开放</p>
+</header>
+
+<nav class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('casual')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+    轻松阅读
+  </button>
+  <button class="tab-btn" onclick="switchTab('intermediate')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+    技术进阶
+  </button>
+  <button class="tab-btn" onclick="switchTab('advanced')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+    深度技术
+  </button>
+</nav>
+
+<!-- ==================== 轻松阅读版 ==================== -->
+<div id="casual" class="tab-content active">
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon industry">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      </div>
+      <h2 class="section-title">商业与市场</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        SpaceX 史上最大 IPO 今日定价，估值 1.77 万亿美元
+        <span class="tag tag-industry">IPO</span>
+      </div>
+      <p>SpaceX 今天正式确定 IPO 定价，每股 135 美元，估值达 1.77 万亿美元，计划募资 750 亿美元。这是人类历史上最大的 IPO，是沙特阿美 2019 年记录的 2.5 倍。明天将以 SPCX 代码在纳斯达克开始交易。</p>
+      <p>这次 IPO 的一大亮点是散户友好：30% 的份额留给普通投资者，Fidelity 账户只需 2000 美元即可参与。SpaceX 上市后将成为美国第七大公司，市值超过特斯拉。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Anthropic 与 OpenAI 争相 IPO，AI 超级周期来了
+        <span class="tag tag-industry">IPO</span>
+      </div>
+      <p>Anthropic 以近万亿美元估值秘密提交了上市申请，OpenAI 紧随其后在 6 月 8 日也提交了 S-1 文件。加上 SpaceX，三家公司的 IPO 估值合计约 3.6 万亿美元，这是华尔街历史上前所未有的科技 IPO 浪潮。</p>
+      <p>Anthropic 年收入已达 470 亿美元，Claude Code 上线仅 9 个月年化收入就达 25 亿美元。OpenAI 估值超过 8500 亿美元，最快 9 月上市。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        DeepSeek 即将完成 74 亿美元融资，中国 AI 资本大爆发
+        <span class="tag tag-industry">融资</span>
+      </div>
+      <p>中国 AI 公司 DeepSeek 正在完成约 500 亿元人民币的融资，投资方包括腾讯和创始人梁文锋，估值 350-400 亿元。这是中国历史上最大的创业公司融资之一。</p>
+      <p>有意思的是，DeepSeek 正在美国企业中悄悄走红。它登上了企业支出管理平台 Ramp 的热门软件榜首，美国公司正在因为价格优势而转向使用中国 AI。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        字节跳动 AI 预算提高到 300 亿美元，豆包日活破 2 亿
+        <span class="tag tag-industry">投资</span>
+      </div>
+      <p>字节跳动把今年的 AI 预算提高到了 2000 亿元（约 300 亿美元），比原计划增加 25%，一半以上用于采购芯片。字节的 AI 助手"豆包"在春节后日活跃用户突破 2 亿，成为中国最受欢迎的 AI 产品之一。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon model">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+      </div>
+      <h2 class="section-title">模型与产品</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Claude Fable 5 上线两天，重新定义 AI 能力上限
+        <span class="tag tag-model">模型</span>
+      </div>
+      <p>Anthropic 在 6 月 9 日发布的 Claude Fable 5 持续在行业内引发震动。这是第一个公开可用的 Mythos 级模型，在软件工程、知识工作和科学研究等几乎所有基准测试中都创下最高分。Pro/Max/Team 用户到 6 月 22 日前免费使用。</p>
+      <p>与此同时，未经安全限制的 Mythos 5 仍然只对约 200 家合作组织开放，通过 Project Glasswing 项目专门用于发现网络安全漏洞。这些组织在测试中已发现数千个零日漏洞。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Apple 在 WWDC 彻底重塑 Siri，改用 Google Gemini
+        <span class="tag tag-product">产品</span>
+      </div>
+      <p>苹果在 WWDC 2026 发布了全新的 Siri AI，底层由 Google Gemini 驱动。新 Siri 变成了一个独立 App，可以理解你屏幕上的内容，跨应用执行多步骤任务，还能在通话时自动调取相关邮件和消息。</p>
+      <p>iOS 27 还推出了"扩展"系统，用户可以把 Claude、ChatGPT、Gemini 或 Grok 设为默认 AI 助手。这意味着 Claude 第一次能成为 iPhone 用户的系统级 AI 选择。不过 Siri AI 暂时不会在欧洲和中国推出。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        微信正式开放 AI Agent 生态，美团、携程、滴滴首批接入
+        <span class="tag tag-product">产品</span>
+      </div>
+      <p>微信在 6 月 8 日正式开放了 AI Agent 生态。首批合作伙伴包括美团（外卖）、携程/同程（旅行）和滴滴（出行）。用户可以在小程序内直接调用 AI 应用服务，实现跨场景的智能生活服务。</p>
+      <p>这是腾讯将 AI 直接整合进微信 10 亿+用户群的最大动作，标志着中国超级应用的 AI 化进程显著提速。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Claude 托管 Agent 支持定时任务，AI 开始"自动上班"
+        <span class="tag tag-product">功能</span>
+      </div>
+      <p>Anthropic 的 Claude Managed Agents 现在支持 cron 定时调度和安全凭证保管库。你可以设定 Agent 每晚自动同步数据、每周跑合规检查、每天生成摘要报告。日本的乐天已经在用它自动分析电子表格。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        阿里 Qwen3.7-Plus：多模态 Agent 模型，价格仅竞品六分之一
+        <span class="tag tag-model">模型</span>
+      </div>
+      <p>阿里巴巴发布了通义千问 Qwen3.7-Plus，支持图像/视频理解、深度推理、工具调用和自主迭代。在手机屏幕操作和 Android 系统任务上的得分超过了 GPT-5.4 和 Gemini 3.1 Pro，价格却只有 Qwen 3.7 Max 的六分之一。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon policy">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <h2 class="section-title">政策与监管</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        《伟大的美国 AI 法案》：美国首个联邦 AI 框架来了
+        <span class="tag tag-policy">法案</span>
+      </div>
+      <p>美国国会两党议员发布了《伟大的美国 AI 法案》(GAAIA) 讨论草案。这是美国第一个全面的联邦 AI 治理框架，涵盖前沿 AI 治理、劳动力、网络安全和国际合作四大板块。年收入超过 5 亿美元的大型 AI 公司需要每半年接受独立审计。</p>
+      <p>最具争议的条款是对州 AI 法律的三年"先占权"——联邦法优先于各州法律，但现有的隐私法和消费者保护法不受影响。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        AI 巨头 CEO 联名呼吁国会管控生物安全风险
+        <span class="tag tag-policy">安全</span>
+      </div>
+      <p>OpenAI、Anthropic、Google DeepMind 和 Microsoft 的 CEO 罕见地联名致信国会，要求立法强制筛查合成 DNA。他们警告说，AI 在实验室技术上的表现已经超过了很多博士级别的病毒学家，降低了生物武器制造的门槛。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        中国推出 2 万亿元 AI 数据中心建设计划
+        <span class="tag tag-policy">基建</span>
+      </div>
+      <p>中国国家发改委起草了一项约 2 万亿元（2950 亿美元）的五年数据中心建设计划。这是北京迄今最激进的 AI 基础设施投资方案，要求至少 80% 的技术来自华为等国内供应商，实质上将 NVIDIA 和 AMD 排除在外。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon security">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+      </div>
+      <h2 class="section-title">安全与基础设施</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        ChatGPT 推出"锁定模式"，防止数据被偷
+        <span class="tag tag-security">安全</span>
+      </div>
+      <p>OpenAI 为所有 ChatGPT 用户推出了"锁定模式"。开启后，ChatGPT 会禁用实时网页浏览、图片获取和 Agent 模式，防止恶意提示词注入攻击窃取你的数据。OpenAI 坦承锁定模式不能阻止注入本身，但能切断数据外泄的最后一步。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        微软发布史上最大补丁日：一次修复 206 个漏洞
+        <span class="tag tag-security">安全</span>
+      </div>
+      <p>微软 6 月补丁星期二发布了有史以来最大规模的安全更新，修复了 206 个漏洞（含 6 个零日漏洞和 33 个严重级别漏洞）。打破了此前 167 个补丁的记录，涉及 Windows 11、Office、Exchange 和 Azure 等众多产品。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        人形机器人跑步进入量产时代
+        <span class="tag tag-infra">机器人</span>
+      </div>
+      <p>Figure 03 在 BotQ 工厂达到每小时 1 台的生产速度。Boston Dynamics Atlas 向现代集团和 DeepMind 交付首批 2026 年产品。Figure AI 机器人已支撑宝马生产了 3 万多辆 X3，搬运超过 9 万个钣金零件。特斯拉 Optimus Gen 3 计划今年夏天在 Fremont 工厂开始量产。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        NVIDIA Computex 全面出击：RTX Spark、Vera Rubin 量产、Nemotron 3 Ultra
+        <span class="tag tag-infra">硬件</span>
+      </div>
+      <p>NVIDIA 在台北 Computex 上一口气发布了多款产品：RTX Spark 超级芯片把 1 PFLOPS AI 算力装进轻薄笔记本；Vera Rubin 平台进入全面量产阶段，供应链规模是 Grace Blackwell 的 2 倍；开源 Nemotron 3 Ultra 550B 参数模型成为美国最强开源 AI。</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== 技术进阶版 ==================== -->
+<div id="intermediate" class="tab-content">
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon industry">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      </div>
+      <h2 class="section-title">商业与市场</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        SpaceX IPO 今日定价 $1.77T：史上最大 IPO 的技术信号
+        <span class="tag tag-industry">IPO</span>
+      </div>
+      <p>SpaceX IPO 今日以每股 $135 定价，估值 $1.77T，募资 $750 亿。高盛领衔 21 家承销银行，30% 份额向散户开放。这是沙特阿美 2019 年 $256 亿记录的近 3 倍。Nasdaq 交易代码 SPCX 明日开盘。</p>
+      <p>SpaceX 本身不是 AI 公司，但这次 IPO 是整个 AI IPO 超级周期的风向标。Anthropic（~$1T 估值）、OpenAI（~$850B 估值）的上市进程将密切参考 SpaceX 的市场接受度和定价机制。三者合计 IPO 管线超 $3.6T。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Anthropic vs OpenAI 的 IPO 竞赛
+        <span class="tag tag-industry">IPO</span>
+      </div>
+      <p>Anthropic 6 月 3 日秘密提交 IPO 申请，Series H 估值 $965B，年收入 run rate $47B。Morgan Stanley 和 Goldman Sachs 领投。Claude Code ARR $2.5B（上线 9 个月），公司披露 Claude 编写了 80% 的内部生产代码，工程师生产力提升 8 倍。</p>
+      <p>OpenAI 6 月 8 日跟进提交 S-1，最近一轮估值 $852B。OpenAI 表示上市时间未定，因为"有些事情作为私有公司更容易完成"。Polymarket 预测 Anthropic 年内 IPO 概率 89.5%。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        DeepSeek $7.4B 融资 + 美国企业渗透
+        <span class="tag tag-industry">融资</span>
+      </div>
+      <p>DeepSeek 即将完成约 500 亿元人民币融资，腾讯参投，估值 $52-59B。V4-Pro 永久降价至 $0.30/M input、$0.50/M output（75% 降幅）。DeepSeek 登上 Ramp 六月热门软件榜首，美国企业正在直接向 DeepSeek 付费并路由数据。</p>
+      <p>技术层面：V4-Pro 1.6T 参数（49B 激活），单 token 推理 FLOPs 仅为 V3.2 的 27%，KV cache 缩减 90%。在 MATH 92%、HumanEval 90%、MMLU 89% 上表现强劲。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        字节跳动 AI 预算 $30B，四大战略方向明确
+        <span class="tag tag-industry">战略</span>
+      </div>
+      <p>字节跳动将 2026 年 AI 预算提升至 2000 亿元（~$30B），同比增加 25%，超一半用于芯片采购。四大优先方向：世界模型、Seedance 视频（冲击顶级水平）、编码/Agent 能力、豆包商业化（办公生产力）。</p>
+      <p>豆包 DAU 突破 2 亿，成为中国最大 AI 应用之一。但 Seedance 视频模型面临迪士尼和 Paramount/Skydance 的知识产权纠纷。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        半导体闪崩 $1.3T 后出现抄底信号
+        <span class="tag tag-industry">市场</span>
+      </div>
+      <p>AMD、Intel 在更广泛的半导体抛售中大幅下跌，由 Broadcom 谨慎的 AI 芯片展望、存储芯片危机和智能手机需求崩塌引发，总计抹去 $1.3T 市值。但 Broadcom 仍报告 AI 芯片收入增长 143%，2026 年目标 $560 亿。</p>
+      <p>分析师在 6 月 10 日称这是买入机会：微软、谷歌、亚马逊、Meta 2026 年合计承诺 $3000 亿+ AI 基础设施投资，硬件需求基本面未变。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon model">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+      </div>
+      <h2 class="section-title">模型与产品</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Claude Fable 5：Mythos 级能力的公开版本
+        <span class="tag tag-model">模型</span>
+      </div>
+      <p>Anthropic 6 月 9 日发布 Claude Fable 5，SWE-bench Verified 95%、SWE-bench Pro 80.3%（比 Opus 4.8 高 11 个百分点，比 GPT 5.5 高 20+），FrontierCode 29.3%（Opus 4.8 为 13.4%）。定价 $10/$50 per M tokens（是 Opus 4.8 的 2 倍）。</p>
+      <p>安全机制：敏感话题（网络安全、生物、化学）自动降级到 Opus 4.8，触发率 &lt;5%。Mythos 5（无限制版）通过 Project Glasswing 扩展至 ~200 家组织，覆盖电力、水利、医疗、通信等关键基础设施行业。测试中已发现数千个零日漏洞，包括一个存在 27 年的 OpenBSD bug。</p>
+      <a href="https://www.anthropic.com/news/claude-fable-5-mythos-5" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Anthropic
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Apple WWDC 2026：Siri AI + iOS 27 Extensions 重塑移动 AI 格局
+        <span class="tag tag-product">平台</span>
+      </div>
+      <p>Apple 在 WWDC 发布全新 Siri AI，底层由 Google Gemini 驱动（合同约 $10 亿/年），通过 Apple Private Cloud Compute 保障隐私。新 Siri 拥有跨应用上下文感知、屏幕理解和多步骤任务自动化能力。</p>
+      <p>iOS 27 Extensions 系统允许 Claude、ChatGPT、Gemini、Grok 作为默认 AI 助手。Apple Foundation Models v2 理解语音、文本和图像。Apple 从双边 AI 交易转向开放市场模式——任何合格 AI 供应商都可通过 App Store 加入，iPhone 11 及以上设备支持。欧洲和中国因监管原因暂不可用。</p>
+      <a href="https://www.apple.com/newsroom/2026/06/apple-unveils-next-generation-of-apple-intelligence-siri-ai-and-more/" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Apple Newsroom
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        微信 AI Agent 生态开放：超级应用的 Agent 化
+        <span class="tag tag-product">生态</span>
+      </div>
+      <p>微信 6 月 8 日正式开放 AI Agent 生态，首批合作伙伴包括美团、携程、同程旅行和滴滴。用户在小程序中即可调用 AI Agent 完成点外卖、订机票、叫车等跨场景任务。</p>
+      <p>技术架构上，这是将 Agent 能力嵌入微信小程序框架，通过统一接口连接 10 亿+ 用户和各垂直领域服务商。这种"超级 App + AI Agent"模式与 Apple 的 Extensions 和 Google 的 Managed Agents 形成三种不同的 Agent 分发路径。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        微软 MAI-Thinking-1：自研模型摆脱 OpenAI 依赖
+        <span class="tag tag-model">模型</span>
+      </div>
+      <p>微软在 Build 2026 发布 7 个自研 MAI 模型，核心是 MAI-Thinking-1：35B 激活参数（~1T 总参数 MoE），256K 上下文窗口，从零用商业授权数据训练（无蒸馏）。AIME 2025 得分 97.0%、SWE-Bench Pro 匹配 Claude Opus 4.6。</p>
+      <p>MAI-Code-1-Flash（5B 参数）在 SWE-Bench Pro 上领先 Claude Haiku 4.5 达 16 个百分点。微软 AI 负责人公开表示"已从 OpenAI 获得自由"。Microsoft Foundry 模型目录已超 11,000 个模型。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Claude Managed Agents：定时任务 + 凭证保险库
+        <span class="tag tag-product">功能</span>
+      </div>
+      <p>Claude Managed Agents 公开测试版新增 cron 调度和安全凭证保管库。Agent 可按定时计划运行：每晚数据同步、每周合规扫描、每日报告生成。安全模型确保密钥永不进入模型上下文——真实凭证仅在网络边界为白名单域名附加。</p>
+      <p>6 月 15 日起 Agent SDK 使用将从订阅中分离，采用独立月度信用额度计费（Pro $20、Max 5x $100、Max 20x $200）。之前 Pro 用户以 $20/月访问了价值 $300-600 的 API 算力。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Alibaba Qwen3.7-Plus：Agent 能力超越 GPT-5.4
+        <span class="tag tag-model">模型</span>
+      </div>
+      <p>阿里 Qwen3.7-Plus 支持图像/视频理解、深度推理、工具调用和自主迭代。ScreenSpot Pro 79.0（GPT-5.4 为 67.4）、AndroidWorld 81.0（Gemini 3.1 Pro 为 70.7），Agent 类任务领先竞品。</p>
+      <p>定价 $0.40/M input、$1.60/M output，是 Qwen 3.7 Max 的六分之一。这是中国 AI 在 Agent 实用能力上的又一次突破——不只是追求基准分数，而是在真实场景中超越 GPT。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon policy">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <h2 class="section-title">政策与监管</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        《伟大的美国 AI 法案》：联邦 vs 州的监管博弈
+        <span class="tag tag-policy">法案</span>
+      </div>
+      <p>GAAIA 讨论草案覆盖四大领域：前沿 AI 治理、劳动力保护、网络安全、研发/国际合作。年收入 &gt;$500M 的"大型前沿开发者"须每 6 个月接受独立验证组织（IVO）审计，禁止打击举报人。</p>
+      <p>关键争议：三年先占权冻结各州 AI 开发相关法律。科罗拉多 AI 法案（6 月 30 日生效）将首当其冲。众议院民主党 AI 委员会在数小时内即表示反对。这场联邦 vs 州权的博弈将决定美国 AI 监管的基本架构。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        AI CEO 联名信：生物安全已成 AI 最紧迫威胁
+        <span class="tag tag-policy">安全</span>
+      </div>
+      <p>OpenAI（Altman）、Anthropic（Amodei）、Google DeepMind、Microsoft AI 的 CEO 联合致信国会，要求强制筛查合成 DNA。他们指出 AI 在实验室技术上已超过很多 PhD 级病毒学家，极大降低了生物武器制造门槛。</p>
+      <p>呼吁对所有美国合成 DNA 供应商实施强制筛查和记录保存。相关立法：2026 年《生物安全现代化与创新法案》(S.3741)。这种跨竞争对手的共同行动在 AI 行业中极为罕见。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        中国 2 万亿元 AI 基建计划：国产替代全面提速
+        <span class="tag tag-policy">基建</span>
+      </div>
+      <p>发改委起草的五年计划要求数据中心技术国产化率 80%+，华为等本土供应商优先。总投资约 2 万亿元（$295B）。同时工信部发布三年 AI+电信融合计划，目标 2028 年实现自主网络和低延迟计算全面覆盖。</p>
+      <p>这意味着 NVIDIA 和 AMD 在中国数据中心市场的份额将被系统性压缩。中国正在构建完全独立于美国供应链的 AI 基础设施体系。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon security">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+      </div>
+      <h2 class="section-title">安全与基础设施</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        ChatGPT Lockdown Mode：Agent 时代的安全降级方案
+        <span class="tag tag-security">安全</span>
+      </div>
+      <p>OpenAI 为所有 ChatGPT 登录用户推出 Lockdown Mode，禁用实时网页浏览（仅缓存）、网页图片获取、deep research 和 Agent 模式。覆盖 Free/Go/Plus/Pro/Business 全部计划。</p>
+      <p>技术定位：不能防止 prompt injection 进入上下文，但切断最终数据外泄阶段（exfiltration）。这是一种"纵深防御"思路——承认注入不可避免，转而限制注入后的攻击面。对比 Anthropic 的 Mythos/Fable 双版本策略和微软的 206 CVE 补丁，三巨头在 AI 安全上各走不同路线。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        微软补丁星期二：206 CVE 创历史记录
+        <span class="tag tag-security">安全</span>
+      </div>
+      <p>6 月 10 日微软发布 206 个 CVE 修复（含 33 个 Critical、6 个零日、28 个 RCE）。涉及 Windows 11、Server、Office、Exchange、.NET、Azure、Hyper-V、Remote Desktop。</p>
+      <p>AI 安全趋势：5 月提示注入被正式纳入 CVE 分类体系（CVE-2026-25592 演示了 Agent 宿主上的 RCE），与 AI 生成代码相关的 CVE 数量同比增长近 6 倍。安全行业正在建立 AI 时代的威胁分类框架。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        NVIDIA Computex：从芯片到平台的全栈布局
+        <span class="tag tag-infra">硬件</span>
+      </div>
+      <p>RTX Spark：20 核 ARM Grace CPU + Blackwell RTX GPU，1 PFLOPS AI 算力，128GB LPDDR5X，300 GB/s 带宽，已用于 Microsoft Surface Laptop Ultra。DGX Station for Windows 面向本地企业 AI 开发。</p>
+      <p>Vera Rubin 平台全面量产，供应链规模 2x Grace Blackwell。Spectrum-X Ethernet 硅光子 CPO 技术量产，解决 AI 数据中心网络带宽瓶颈。Nemotron 3 Ultra（550B MoE，~55B 激活）在 AI Intelligence Index 得分 48，美国开源模型最高。合成视频检测器 92% 准确率，22ms 延迟。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        人形机器人：从实验室到工厂的关键一步
+        <span class="tag tag-infra">机器人</span>
+      </div>
+      <p>Figure 03 BotQ 工厂达到 1 台/小时产能。Figure AI 机器人已支撑宝马 30,000+ 辆 X3 生产（搬运 90,000+ 钣金零件）。Boston Dynamics Atlas 向现代和 DeepMind 交付首批 2026 年产品。Agility Digit 以 RaaS 模式在丰田加拿大部署 7+ 台。</p>
+      <p>特斯拉 Optimus Gen 3 计划夏季在 Fremont 开始量产，集成 AI5 芯片和 Grok。1X 开放 NEO 消费级机器人预购。市场规模 $2-3B，预计 2035 年达 $200B。人形机器人正在跨过"能用"到"量产"的鸿沟。</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== 深度技术版 ==================== -->
+<div id="advanced" class="tab-content">
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon industry">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      </div>
+      <h2 class="section-title">商业与市场</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        SpaceX IPO 定价 $1.77T：AI 超级周期的压力测试
+        <span class="tag tag-industry">IPO</span>
+      </div>
+      <p>SpaceX 今日定价 IPO：$135/share，$1.77T 估值，出售 555.6M 股（$75B 募资），Goldman Sachs 领衔 21 家承销商。30% 份额向散户开放（Fidelity 最低 $2K 门槛）。Nasdaq 代码 SPCX，6 月 12 日开盘。</p>
+      <p>这次 IPO 是整个科技 IPO 市场的系统性压力测试。如果 SpaceX 以高溢价成交，将直接为 Anthropic（$1T 目标估值，Polymarket 89.5% 概率年内上市）和 OpenAI（$852B 上轮估值，Goldman/Morgan Stanley/JPMorgan 领投）的上市铺路。三家合计 IPO 管线 $3.6T+，这意味着公开市场需要在 12 个月内消化相当于整个 S&P 500 市值 5% 的新科技股供应。</p>
+      <div class="stats-row">
+        <div class="stat-item"><div class="stat-value">$1.77T</div><div class="stat-label">SpaceX 估值</div></div>
+        <div class="stat-item"><div class="stat-value">$75B</div><div class="stat-label">募资规模</div></div>
+        <div class="stat-item"><div class="stat-value">$3.6T+</div><div class="stat-label">三大 IPO 管线</div></div>
+        <div class="stat-item"><div class="stat-value">30%</div><div class="stat-label">散户份额</div></div>
+      </div>
+      <a href="https://www.cnbc.com/2026/06/03/spacex-ipo-stock-price-roadshow-musk.html" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        CNBC
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Anthropic $47B ARR vs OpenAI $852B 估值：双 IPO 的技术与商业分析
+        <span class="tag tag-industry">IPO</span>
+      </div>
+      <p><strong>Anthropic</strong>：Series H $65B 融资，$965B post-money。年收入 run rate $47B，其中 Claude Code ARR $2.5B（9 个月）。公司自报 Claude 编写 80% 内部生产代码，工程师生产力 8x。6 月 3 日秘密提交 IPO 申请，Morgan Stanley/Goldman Sachs 领投。</p>
+      <p><strong>OpenAI</strong>：6 月 8 日秘密提交 S-1，$852B 上轮估值。ChatGPT 全球 web 访问份额 54.7%，Claude 8.2% 但 QoQ 增长 306%。最快 9 月上市，但 OpenAI 暗示"有些事情作为私有公司更容易完成"。</p>
+      <p><strong>关键对比</strong>：Anthropic 在 benchmark 上全面领先（Fable 5 SWE-bench Pro 80.3% vs GPT-5.5），但 OpenAI 在用户规模上仍有 6.7x 优势。IPO 市场将首次在同一时间窗口定价两个 AI foundation model 公司——这将建立整个行业的估值框架。</p>
+      <div class="highlight">Q1 2026 AI 风投总额 $242B（占全球 VC 的 80%），四大融资：OpenAI $122B + Anthropic $30B + xAI $20B + Waymo $16B = $188B（全球 VC 的 63%）</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        DeepSeek 融资 $7.4B + 中国 AI 模型称霸开源排行榜
+        <span class="tag tag-industry">中国 AI</span>
+      </div>
+      <p><strong>融资</strong>：500 亿元人民币，腾讯 + 创始人梁文锋参投，估值 350-400 亿元（$52-59B）。V4-Pro 永久降价 75%：$0.30/M input、$0.50/M output。</p>
+      <p><strong>技术细节</strong>：V4-Pro 1.6T 参数（49B 激活），V4-Flash 284B（13B 激活），均支持 1M token 上下文。推理效率：单 token FLOPs 仅 V3.2 的 27%，KV cache 缩减 90%。MATH 92%、HumanEval 90%、MMLU 89%。</p>
+      <p><strong>开源格局变化</strong>：Artificial Analysis Intelligence Index v4.0 排名——Moonshot Kimi K2.6 (#1, 53.9)、MiniMax MMo-V2.5-Pro (#2, 53.8)、DeepSeek V4 Pro (#3, 51.5)。中国实验室在推理、编码、Agent、知识基准上全面领先，这一转变速度超出西方分析师预期。</p>
+      <a href="https://www.cnbc.com/2026/06/03/deepseek-slated-to-draw-7-billion-in-maiden-fundraising-sources-say.html" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        CNBC
+      </a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon model">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+      </div>
+      <h2 class="section-title">模型与产品</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Claude Fable 5 vs Mythos 5：双版本发行策略的技术解析
+        <span class="tag tag-model">模型</span>
+      </div>
+      <p><strong>Fable 5 性能</strong>：SWE-bench Verified 95%、SWE-bench Pro 80.3%（Opus 4.8 69.2%、GPT-5.5 ~60%）、FrontierCode 29.3%（Opus 4.8 13.4%、GPT-5.5 5.7%）。定价 $10/$50 per M input/output tokens，是 Opus 4.8 的 2 倍。Pro/Max/Team/Enterprise 6 月 22 日前免费。</p>
+      <p><strong>安全架构</strong>：Fable 5 的安全过滤器不是简单的 content filter，而是一个分类器将敏感话题查询（cybersecurity、biology、chemistry）路由到 Opus 4.8 处理，触发率 &lt;5%。这种"能力分层路由"设计是 frontier model 部署的新范式——模型能力不受限，但访问路径受控。</p>
+      <p><strong>Mythos 5 / Project Glasswing</strong>：无安全限制的完整版本，合作组织从 50 扩展至 ~200 家（15+ 国家），覆盖电力、水利、医疗、通信、硬件行业。Anthropic 承诺投入 $100M+ 信用额度。测试结果：每个主流 OS 和浏览器中都发现了零日漏洞，包括 OpenBSD 中一个存在 27 年的 bug。这验证了 AI 在安全研究中的"superhuman discovery"能力。</p>
+      <div class="highlight">Anthropic 披露 Claude 编写了其 80% 的内部生产代码，工程师生产力提升 8 倍。Claude Sonnet 4 和 Opus 4 将于 6 月 15 日从 API 退役，开发者须迁移至 Sonnet 4.6/Opus 4.8。</div>
+      <a href="https://www.anthropic.com/news/claude-fable-5-mythos-5" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Anthropic
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Apple WWDC 2026 技术架构：Gemini 驱动 Siri AI + Extension API 开放
+        <span class="tag tag-product">平台</span>
+      </div>
+      <p><strong>Siri AI 架构</strong>：底层 Google Gemini（合同 ~$1B/年），经由 Apple Private Cloud Compute 中转。新 Siri 拥有完整的对话式界面（iMessage 风格），支持 onscreen awareness（屏幕感知）、personal context（个人上下文）、multi-step automation（多步骤自动化）。独立 App 形态而非传统的覆盖层设计。</p>
+      <p><strong>iOS 27 Extensions</strong>：开放 AI 助手 API，Claude/ChatGPT/Gemini/Grok 可作为系统默认 AI。Apple Foundation Models v2 原生理解语音、文本、图像。新增 Spatial Reframing（3D 建模 + AI 调整照片角度）、AI 回复建议（Messages）、通话中自动调取上下文（Mail/Messages）。</p>
+      <p><strong>Claude for Foundation Models Swift Package</strong>：Anthropic 发布 Swift SDK，Apple 开发者可通过 Foundation Models framework 调用 Claude，支持 typed output passing、streaming SwiftUI 响应。适用 iOS 27/iPadOS 27/macOS 27/visionOS 27/watchOS 27。</p>
+      <p><strong>地缘限制</strong>：Siri AI 暂不可用于欧洲（DMA/AI Act 合规问题）和中国（数据主权要求）。这是 AI 产品全球化面临的监管碎片化挑战的典型案例。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        微信 AI Agent 生态 vs Apple Extensions vs Google Managed Agents：三种 Agent 分发架构
+        <span class="tag tag-product">架构</span>
+      </div>
+      <p><strong>微信模式</strong>：Agent 嵌入小程序框架，通过微信统一接口连接 10 亿+ 用户和垂直服务商（美团、携程、同程、滴滴）。优势：用户零迁移成本，服务商现有小程序即可升级。限制：闭合生态，Agent 能力受限于微信 API 边界。</p>
+      <p><strong>Apple Extensions 模式</strong>：开放系统级 AI 助手 API，第三方 AI 供应商通过 App Store 分发。用户选择默认 AI，系统级集成（Siri、Messages、Mail、Safari）。优势：深度系统集成、隐私架构。限制：仅 Apple 设备，区域性监管阻断。</p>
+      <p><strong>Google Managed Agents 模式</strong>：通过 Gemini API 提供云端沙箱，Antigravity Agent 自主规划/推理/编程/浏览。优势：最大灵活性，开发者完全控制 Agent 行为。限制：需要开发者建设前端分发渠道。</p>
+      <p>三种模式代表了 Agent 时代的三条路径：超级 App 聚合、操作系统开放平台、开发者 API 基础设施。未来 12 个月的 Agent 市场份额将决定哪种模式主导下一代人机交互。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        微软 MAI 模型家族：从 OpenAI 依赖到自研模型矩阵
+        <span class="tag tag-model">模型</span>
+      </div>
+      <p><strong>MAI-Thinking-1</strong>：35B 激活参数 / ~1T 总参数 sparse MoE，Hybrid Mamba-Transformer 架构，256K 上下文窗口。从零训练（零蒸馏、商业授权数据）。AIME 2025 97.0%、AIME 2026 94.5%。SWE-Bench Pro 匹配 Claude Opus 4.6。Private preview via Microsoft Foundry。</p>
+      <p><strong>MAI-Code-1-Flash</strong>：5B 参数编码模型，面向 GitHub Copilot 全量付费用户。SWE-Bench Pro 51.2%（Claude Haiku 4.5 35.2%，+16pp）。在四个核心编码基准上均领先 Haiku 4.5。</p>
+      <table class="tech-table">
+        <tr><th>模型</th><th>参数</th><th>亮点</th><th>状态</th></tr>
+        <tr><td>MAI-Thinking-1</td><td>35B active / ~1T total</td><td>推理，匹配 Opus 4.6</td><td>Private Preview</td></tr>
+        <tr><td>MAI-Code-1-Flash</td><td>5B</td><td>编码，超越 Haiku 4.5</td><td>GA (Copilot)</td></tr>
+        <tr><td>MAI-Image-2.5</td><td>--</td><td>文本到图像 + 编辑</td><td>Preview</td></tr>
+        <tr><td>MAI-Transcribe-1.5</td><td>--</td><td>SOTA 语音识别</td><td>Preview</td></tr>
+      </table>
+      <p>微软 AI 负责人公开表示"已从 OpenAI 获得自由"，Foundry 模型目录已超 11,000 个模型。这标志着 Microsoft-OpenAI 关系从排他性合作转向多供应商竞争。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Claude Managed Agents Cron + 计费重构：Agent 经济学的重新定价
+        <span class="tag tag-product">Agent</span>
+      </div>
+      <p><strong>Cron 调度</strong>：支持标准 cron 表达式定义执行周期。安全模型：密钥存储在 credential vault 中，永不进入模型上下文窗口——真实凭证仅在网络边界为白名单域名附加（域名粒度的最小权限设计）。</p>
+      <p><strong>6 月 15 日计费变更</strong>：Agent SDK 使用（claude -p、GitHub Actions、第三方 SDK 认证应用）从订阅分离，采用独立月度信用额度：Pro $20、Max 5x $100、Max 20x $200，按标准 API 费率计费。之前 Pro 用户以 $20/月获取了 $300-600 的 API 算力（15-30x 补贴）。交互式 Claude 使用不受影响。</p>
+      <p>这次定价调整反映了一个关键洞察：Agent 工作负载的 token 消耗量级远超对话式使用，原有的 flat-rate 订阅模型在 Agent 时代不可持续。Anthropic 选择保留对话体验的简洁性，同时对 Agent 使用引入用量计费——这可能成为行业标准。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        Alibaba Qwen3.7-Plus：Agent 能力在真实场景中超越 GPT-5.4
+        <span class="tag tag-model">模型</span>
+      </div>
+      <p><strong>架构</strong>：多模态 Agent 模型，原生支持图像/视频理解、深度推理链、工具调用（函数调用 + MCP）和自主迭代（multi-turn agent loop）。通过 Alibaba Cloud Bailian 平台提供。</p>
+      <p><strong>关键基准</strong>：ScreenSpot Pro 79.0（GPT-5.4 67.4，+17%）、AndroidWorld 81.0（Gemini 3.1 Pro 70.7，+15%）。在 GUI Agent 类任务上的领先意味着 Qwen 在理解和操作真实用户界面方面已经超越了西方最强闭源模型。</p>
+      <p><strong>定价</strong>：$0.40/M input、$1.60/M output，是 Qwen 3.7 Max 的 1/6。结合中国 AI 模型在开源排行榜的统治地位（Kimi K2.6 #1、MiniMax #2、DeepSeek V4 Pro #3），中国 AI 产业正在从"追赶"切换到"在特定领域领先"。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon policy">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <h2 class="section-title">政策与监管</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        GAAIA 技术分析：联邦 AI 治理框架的四根支柱
+        <span class="tag tag-policy">法案</span>
+      </div>
+      <p><strong>Title I - 前沿 AI 治理</strong>："大型前沿开发者"（年收入 &gt;$500M）须向政府披露信息、每 6 个月接受独立验证组织（IVO）审计、禁止打击举报人。定义了"covered frontier model"分类的政府基准测试。</p>
+      <p><strong>Title II - 劳动力</strong>：AI 对就业市场影响的评估和再培训机制。</p>
+      <p><strong>Title III - 网络安全</strong>：联邦系统强化、Treasury 主导的 AI 网络安全信息交换所、关键基础设施的前沿模型访问便利化。</p>
+      <p><strong>Title IV - 研发/国际合作</strong>：AI R&D 联邦资助框架和跨国合作机制。</p>
+      <p><strong>争议焦点</strong>：三年先占权冻结各州"specifically regulating development"的 AI 法律。现有隐私法（CCPA 等）和消费者保护法不受影响。Colorado AI Act（6 月 30 日生效，要求高风险 AI 系统影响评估和消费者披露）将首当其冲。众议院民主党 AI 委员会在草案发布数小时内即表示反对。Five Eyes 联盟也首次发布了针对 Agent AI 部署的安全指南。</p>
+      <a href="https://www.dlapiper.com/en-us/insights/publications/2026/06/unpacking-the-great-american-ai-act" class="source-link" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        DLA Piper
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        中国 AI 基础设施国产化：$295B 计划 + 三年电信融合路线图
+        <span class="tag tag-policy">地缘</span>
+      </div>
+      <p><strong>数据中心计划</strong>：发改委起草，5 年投资 2 万亿元（$295B），强制 80%+ 国产技术（华为 Ascend、海光、壁仞等）。这将系统性压缩 NVIDIA/AMD 的中国市场份额。</p>
+      <p><strong>三年 AI+电信计划</strong>：工信部发布，目标 2028 年实现：自主网络运维、低延迟边缘计算全覆盖、AI 应用在电信行业全面部署。</p>
+      <p><strong>市场影响</strong>：与美国 $300B+ 云厂商 AI 投资（Microsoft/Google/Amazon/Meta）形成并行的双轨制基础设施竞赛。中国 AI 创业公司 Q1 2026 融资 $16.5B（StepFun、Moonshot AI、Galaxy Bot 等），资本市场对中国 AI 仍保持强劲信心。</p>
+      <p>百度被美国国防部列入"中国军事公司"清单（6 月 9 日），尽管百度否认与军方关联且清单不限制证券交易，但进一步加剧了中美 AI 脱钩趋势。</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon security">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+      </div>
+      <h2 class="section-title">安全与基础设施</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        AI 安全三巨头策略对比：Lockdown Mode vs Mythos/Fable vs Patch Tuesday
+        <span class="tag tag-security">安全</span>
+      </div>
+      <p><strong>OpenAI - Lockdown Mode</strong>：用户可选的安全降级。禁用实时 web 浏览（仅缓存）、图片获取、deep research、Agent mode。设计理念：不能阻止 prompt injection 进入上下文，但切断 exfiltration 通道。纵深防御策略。</p>
+      <p><strong>Anthropic - Dual Release</strong>：Fable 5（公开，敏感查询路由到 Opus 4.8）+ Mythos 5（仅 ~200 家组织通过 Glasswing 访问）。设计理念：能力不受限，访问路径受控。已发现数千个零日漏洞（每个主流 OS/浏览器）。$100M+ 安全信用投入。</p>
+      <p><strong>Microsoft - Patch at Scale</strong>：6 月 206 CVE 创记录（33 Critical、6 零日、28 RCE），涵盖全产品线。AI 安全维度：prompt injection 5 月被正式纳入 CVE 体系（CVE-2026-25592 演示 Agent 宿主 RCE），AI 生成代码相关 CVE 同比增长 ~6x。</p>
+      <p><strong>Meta - 实战教训</strong>：AI 支持聊天机器人被社会工程攻击，攻击者通过要求机器人将账户关联到攻击者邮箱，劫持 20,000+ Instagram 账号（含奥巴马时代白宫账号）。MFA 阻止了许多接管尝试。Wired 还发现 Meta AI App 中未发布的面部识别代码。</p>
+      <div class="highlight">AI CEOs（Altman/Amodei/Google DeepMind/Microsoft AI）联名致信国会要求强制合成 DNA 筛查——AI 已超过 PhD 级病毒学家的实验室技术能力。相关立法：Biosecurity Modernization and Innovation Act (S.3741)。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        NVIDIA 全栈布局：从消费级 AI PC 到数据中心光互联
+        <span class="tag tag-infra">硬件</span>
+      </div>
+      <p><strong>消费级</strong>：RTX Spark 超级芯片——20 核 ARM Grace CPU + Blackwell RTX GPU（6144 CUDA 核心），1 PFLOPS AI 算力，128GB LPDDR5X，300 GB/s 带宽。已用于 Microsoft Surface Laptop Ultra。DGX Station for Windows 用于本地企业 AI 开发。</p>
+      <p><strong>数据中心</strong>：Vera Rubin 平台全面量产（供应链 2x Grace Blackwell）。Spectrum-X Ethernet 硅光子 CPO 量产，解决 AI 集群网络瓶颈。与 TSMC 合作将 AI 深度集成到半导体制造（计算光刻、晶体管仿真、缺陷检测、工厂调度）——AI 加速 AI 芯片生产的递归循环。</p>
+      <p><strong>开源 AI</strong>：Nemotron 3 Ultra 550B MoE（~55B 激活），Hybrid Mamba-Transformer，1M token 上下文，AI Intelligence Index 48（美国开源最高）。300+ tokens/s 推理速度，Agent 任务成本降低 30%。Cosmos 3 物理 AI Omnimodel（Mixture-of-Transformers，统一视觉推理+世界生成+动作预测）。</p>
+      <p><strong>基础设施扩张</strong>：SK Telecom 将在韩国建设 GW 级 AI Cloud（DSX 平台），NAVER 从 55MW 扩展到 GW 级。NVIDIA-SK hynix 多年内存合作。SIA/Deloitte 报告：半导体占 AI 服务器机架价值的 95%，AI 数据中心芯片年收入将在 2028 年达 $1.2T（4 年 ~10x 增长）。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        人形机器人：从 PoC 到量产的工程化里程碑
+        <span class="tag tag-infra">机器人</span>
+      </div>
+      <p><strong>产能突破</strong>：Figure 03 BotQ 工厂 1 台/小时。Figure AI 支撑宝马 30,000+ X3 生产（90,000+ 钣金零件搬运）。Boston Dynamics Atlas 向现代/DeepMind 交付首批 2026 产品。Agility Digit 7+ 台以 RaaS 模式在丰田加拿大运营。</p>
+      <p><strong>新产品</strong>：Tesla Optimus Gen 3 计划夏季在 Fremont 量产（集成 AI5 + Grok）。1X NEO 消费级机器人开放预购。天津世界智能博览会展出 ~150 种机器人（四足消防犬、自主电缆隧道巡检机器人效率 5x 人类）。</p>
+      <p><strong>市场预测</strong>：当前市场 $2-3B，2035 年预计 $200B。Gartner 将 Agentic AI 列为 2026 年最重要的战略技术趋势——33% 企业 AI 应用将在 2028 年前集成自主 Agent（2024 年 &lt;1%）。Q2 2026 AI 融资 $42.6B，其中 Agent 类创业公司占 $20B（近一半）。</p>
+      <p><strong>基础研究</strong>：MegaTrain 突破实现单 GPU 训练 100B+ 参数（NVIDIA H200 上成功训练 120B 参数）。Google TurboQuant KV cache 压缩至 3-bit/coordinate（6x 内存减少、8x 注意力加速，ICLR 2026 接收）。Mayo Clinic + Microsoft 合作开发医疗 frontier AI 模型。Majorana 2 量子芯片 qubit 寿命 20 秒（上代 1000x 提升）。</p>
+    </div>
+  </div>
+
+</div>
+
+</div>
+
+<footer class="footer">
+  <p>AI Pulse Daily Report | Edition #78 | 2026.06.11</p>
+  <p>数据来源：Anthropic, OpenAI, Apple, CNBC, Bloomberg, TechCrunch, NVIDIA, Microsoft, Google, Fortune, DLA Piper, Caixin, NPR, Ramp, SIA, Crunchbase</p>
+  <p>本报告由 AI 自动生成，内容仅供参考</p>
+</footer>
+
+</div>
+
+<script>
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-content').forEach(function(el) {
+    el.classList.remove('active');
+  });
+  document.querySelectorAll('.tab-btn').forEach(function(el) {
+    el.classList.remove('active');
+  });
+  document.getElementById(tabId).classList.add('active');
+  var tabs = { casual: 0, intermediate: 1, advanced: 2 };
+  document.querySelectorAll('.tab-btn')[tabs[tabId]].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
